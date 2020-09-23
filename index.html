@@ -3,8 +3,8 @@
 
 <head>
     <!-- Material Design Lite -->
-    <script src="./material.min.js"></script>
-    <link rel="stylesheet" href="./material.indigo-pink.min.css">
+    <script src="./js/material.min.js"></script>
+    <link rel="stylesheet" href="./css/material.indigo-pink.min.css">
     <!-- Material Design icon font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
@@ -19,12 +19,6 @@
             color: white;
         }
     </style>
-    <script>
-        $(function () {
-            alert("Load")
-            $("#includedContent").load("./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html");
-        });
-    </script>
 </head>
 
 <body>
@@ -48,30 +42,15 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">Title</span>
             <nav id="drawer-index" class="mdl-navigation">
-                <a class="mdl-navigation__link" onclick="loadTo()">01讲崩溃优化（上）：关于“崩溃”那些事儿</a>
+                <a class="mdl-navigation__link" href="articles/ASM库介绍与使用.md">ASM库介绍与使用</a>
                 <a class="mdl-navigation__link" href="">Link</a>
                 <a class="mdl-navigation__link" href="">Link</a>
                 <a class="mdl-navigation__link" href="">Link</a>
             </nav>
         </div>
         <main class="mdl-layout__content">
-            <div id="includeContent" w3-include-html="./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html"></div>
         </main>
     </div>
 </body>
-<!-- <script >
-    var fs = require('fs');
-    var loc = window.location.pathname;
-    var dir = loc.substring(0, loc.lastIndexOf('/'));
-    var files = fs.readdirSync(dir);
-    alert(files.size)
-</script> -->
-<script type="text/javascript">
-    function loadTo() {
-        alert(document.getElementById("includeContent"))
-        $("#includedContent").load("./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html");
-        // document.getElementById("includeContent").load("./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html")
-    }
-</script>
 
 </html>
