@@ -1,56 +1,37 @@
-<!DOCTYPE HTML>
-<html>
+---
+layout: default
+title: Home
+---
 
-<head>
-    <!-- Material Design Lite -->
-    <script src="./js/material.min.js"></script>
-    <link rel="stylesheet" href="./css/material.indigo-pink.min.css">
-    <!-- Material Design icon font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <style>
-        .demo-layout-transparent {
-            background: url('./bg.jpg') center / cover;
-        }
+<div class="posts">
+  {% for post in paginator.posts %}
+  <div class="post">
+    <h1 class="post-title">
+      <a href="{{ post.url | absolute_url }}">
+        {{ post.title }}
+      </a>
+    </h1>
 
-        .demo-layout-transparent .mdl-layout__header,
-        .demo-layout-transparent .mdl-layout__drawer-button {
-            /* This background is dark, so we set text to white. Use 87% black instead if
-     your background is light. */
-            color: white;
-        }
-    </style>
-</head>
+    <span class="post-date">{{ post.date | date_to_string }}</span>
 
-<body>
-    <!-- Uses a transparent header that draws on top of the layout's background -->
-    <div class="demo-layout-transparent mdl-layout mdl-js-layout">
-        <header class="mdl-layout__header mdl-layout__header--transparent">
-            <div class="mdl-layout__header-row">
-                <!-- Title -->
-                <span class="mdl-layout-title">Boybeak</span>
-                <!-- Add spacer, to align navigation to the right -->
-                <div class="mdl-layout-spacer"></div>
-                <!-- Navigation -->
-                <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                    <a class="mdl-navigation__link" href="">Link</a>
-                </nav>
-            </div>
-        </header>
-        <div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">Title</span>
-            <nav id="drawer-index" class="mdl-navigation">
-                <a class="mdl-navigation__link" href="./articles/ASM库介绍与使用.html">ASM库介绍与使用</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-                <a class="mdl-navigation__link" href="">Link</a>
-            </nav>
-        </div>
-        <main class="mdl-layout__content">
-        </main>
-    </div>
-</body>
+    {{ post.content }}
+  </div>
+  {% endfor %}
+</div>
 
-</html>
+<div class="pagination">
+  {% if paginator.next_page %}
+    <a class="pagination-item older" href="{{ paginator.next_page_path | absolute_url }}">Older</a>
+  {% else %}
+    <span class="pagination-item older">Older</span>
+  {% endif %}
+  {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+      <a class="pagination-item newer" href="{{ '/' | absolute_url }}">Newer</a>
+    {% else %}
+      <a class="pagination-item newer" href="{{ paginator.previous_page_path | absolute_url }}">Newer</a>
+    {% endif %}
+  {% else %}
+    <span class="pagination-item newer">Newer</span>
+  {% endif %}
+</div>
