@@ -1,9 +1,77 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-    <head>
 
-    </head>
-    <body>
-        
-    </body>
+<head>
+    <!-- Material Design Lite -->
+    <script src="./material.min.js"></script>
+    <link rel="stylesheet" href="./material.indigo-pink.min.css">
+    <!-- Material Design icon font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        .demo-layout-transparent {
+            background: url('./bg.jpg') center / cover;
+        }
+
+        .demo-layout-transparent .mdl-layout__header,
+        .demo-layout-transparent .mdl-layout__drawer-button {
+            /* This background is dark, so we set text to white. Use 87% black instead if
+     your background is light. */
+            color: white;
+        }
+    </style>
+    <script>
+        $(function () {
+            alert("Load")
+            $("#includedContent").load("./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html");
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Uses a transparent header that draws on top of the layout's background -->
+    <div class="demo-layout-transparent mdl-layout mdl-js-layout">
+        <header class="mdl-layout__header mdl-layout__header--transparent">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">Title</span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation -->
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="">Link</a>
+                    <a class="mdl-navigation__link" href="">Link</a>
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Title</span>
+            <nav id="drawer-index" class="mdl-navigation">
+                <a class="mdl-navigation__link" onclick="loadTo()">01讲崩溃优化（上）：关于“崩溃”那些事儿</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+                <a class="mdl-navigation__link" href="">Link</a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <div id="includeContent" w3-include-html="./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html"></div>
+        </main>
+    </div>
+</body>
+<!-- <script >
+    var fs = require('fs');
+    var loc = window.location.pathname;
+    var dir = loc.substring(0, loc.lastIndexOf('/'));
+    var files = fs.readdirSync(dir);
+    alert(files.size)
+</script> -->
+<script type="text/javascript">
+    function loadTo() {
+        alert(document.getElementById("includeContent"))
+        $("#includedContent").load("./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html");
+        // document.getElementById("includeContent").load("./lessons/01讲崩溃优化（上）：关于“崩溃”那些事儿.html")
+    }
+</script>
+
 </html>
