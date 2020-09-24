@@ -58,8 +58,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --body-color: var(--gray-800);
-    --body-bg: var(--gray-300);
+    --body-color: var(--gray-300);
+    --body-bg: var(--gray-800);
 
     --heading-color: #fff;
 
@@ -74,11 +74,16 @@
 
 // Dark Poole theme
 [data-theme="dark-poole"] {
-  --body-color: var(--dark-poole-001);
-  --body-bg: var(--dark-poole-002);
+  --body-color: var(--dark-poole-002);
+  --body-bg: var(--dark-poole-001);
   --heading-color: var(--dark-poole-002);
   --link-color: var(--dark-poole-link-color);
   --link-hover-color: var(--dark-poole-link-hover);
   --border-color: rgba(255, 255, 255, 0.15);
   --code-bg: var(--gray-900);
+}
+
+[data-theme="light-poole"] {
+  --body-bg: var(--blue);
+  --body-color: #fff;
 }
