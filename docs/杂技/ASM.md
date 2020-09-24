@@ -15,7 +15,7 @@ parent: 杂技
 
 
 
-![img](./assets/images/ezgif-6-73b502b11e16.jpg)
+![img]({{site.baseurl}}/assets/images/ezgif-6-73b502b11e16.jpg)
 
 catalog.png
 

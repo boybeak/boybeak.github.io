@@ -1,4 +1,56 @@
-<!DOCTYPE html><html lang="en-US"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><link rel="shortcut icon" href="/just-the-docs/favicon.ico" type="image/x-icon"><link rel="stylesheet" href="/just-the-docs/assets/css/just-the-docs-default.css"> <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2709176-10"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-2709176-10', { 'anonymize_ip': true }); </script> <script type="text/javascript" src="/just-the-docs/assets/js/vendor/lunr.min.js"></script> <script type="text/javascript" src="/just-the-docs/assets/js/just-the-docs.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><title>ASM | Boybeak</title><meta name="generator" content="Jekyll v4.1.1" /><meta property="og:title" content="ASM" /><meta property="og:locale" content="en_US" /><meta name="description" content="My blog" /><meta property="og:description" content="My blog" /><link rel="canonical" href="http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80/ASM/" /><meta property="og:url" content="http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80/ASM/" /><meta property="og:site_name" content="Boybeak" /> <script type="application/ld+json"> {"headline":"ASM","url":"http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80/ASM/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/just-the-docs/assets/images/just-the-docs.png"}},"description":"My blog","@type":"WebPage","@context":"https://schema.org"}</script><body> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="svg-link" viewBox="0 0 24 24"><title>Link</title><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path> </svg> </symbol> <symbol id="svg-search" viewBox="0 0 24 24"><title>Search</title><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"> <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line> </svg> </symbol> <symbol id="svg-menu" viewBox="0 0 24 24"><title>Menu</title><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line> </svg> </symbol> <symbol id="svg-arrow-right" viewBox="0 0 24 24"><title>Expand</title><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline> </svg> </symbol> <symbol id="svg-doc" viewBox="0 0 24 24"><title>Document</title><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline> </svg> </symbol> </svg><div class="side-bar"><div class="site-header"> <a href="http://localhost:4000/just-the-docs/" class="site-title lh-tight"><div class="site-logo"></div></a> <a href="#" id="menu-button" class="site-button"> <svg viewBox="0 0 24 24" class="icon"><use xlink:href="#svg-menu"></use></svg> </a></div><nav role="navigation" aria-label="Main" id="site-nav" class="site-nav"><ul class="nav-list"><li class="nav-list-item"><a href="http://localhost:4000/just-the-docs/" class="nav-list-link">Home</a><li class="nav-list-item"><a href="http://localhost:4000/just-the-docs/docs/configuration/" class="nav-list-link">Configuration</a><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="http://localhost:4000/just-the-docs/docs/ui-components" class="nav-list-link">UI Components</a><ul class="nav-list "><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/ui-components/typography/" class="nav-list-link">Typography</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/ui-components/buttons/" class="nav-list-link">Buttons</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/ui-components/labels/" class="nav-list-link">Labels</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/ui-components/tables/" class="nav-list-link">Tables</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/ui-components/lists/" class="nav-list-link">Lists</a><li class="nav-list-item "><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="http://localhost:4000/just-the-docs/docs/ui-components/code/" class="nav-list-link">Code</a><ul class="nav-list"><li class="nav-list-item "> <a href="http://localhost:4000/just-the-docs/docs/ui-components/code/line-numbers/" class="nav-list-link">Code with line numbers</a></ul></ul><li class="nav-list-item active"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80" class="nav-list-link">杂技</a><ul class="nav-list "><li class="nav-list-item active"><a href="http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80/ASM/" class="nav-list-link active">ASM</a></ul><li class="nav-list-item"><a href="#" class="nav-list-expander"><svg viewBox="0 0 24 24"><use xlink:href="#svg-arrow-right"></use></svg></a><a href="http://localhost:4000/just-the-docs/docs/utilities" class="nav-list-link">Utilities</a><ul class="nav-list "><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/utilities/color/" class="nav-list-link">Color</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/utilities/layout/" class="nav-list-link">Layout</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/utilities/responsive-modifiers/" class="nav-list-link">Responsive Modifiers</a><li class="nav-list-item "><a href="http://localhost:4000/just-the-docs/docs/utilities/typography/" class="nav-list-link">Typography</a></ul><li class="nav-list-item"><a href="http://localhost:4000/just-the-docs/docs/navigation-structure/" class="nav-list-link">Navigation Structure</a><li class="nav-list-item"><a href="http://localhost:4000/just-the-docs/docs/customization/" class="nav-list-link">Customization</a><li class="nav-list-item"><a href="http://localhost:4000/just-the-docs/docs/search/" class="nav-list-link">Search</a><li class="nav-list-item"><a href="http://localhost:4000/just-the-docs/docs/index-test/" class="nav-list-link">Markdown kitchen sink</a></ul></nav><footer class="site-footer"> This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</footer></div><div class="main" id="top"><div id="main-header" class="main-header"><div class="search"><div class="search-input-wrap"> <input type="text" id="search-input" class="search-input" tabindex="0" placeholder="Search Boybeak" aria-label="Search Boybeak" autocomplete="off"> <label for="search-input" class="search-label"><svg viewBox="0 0 24 24" class="search-icon"><use xlink:href="#svg-search"></use></svg></label></div><div id="search-results" class="search-results"></div></div><nav aria-label="Auxiliary" class="aux-nav"><ul class="aux-nav-list"><li class="aux-nav-list-item"> <a href="//github.com/pmarsceill/just-the-docs" class="site-button" > Just the Docs on GitHub </a></ul></nav></div><div id="main-content-wrap" class="main-content-wrap"><nav aria-label="Breadcrumb" class="breadcrumb-nav"><ol class="breadcrumb-nav-list"><li class="breadcrumb-nav-list-item"><a href="http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80">杂技</a><li class="breadcrumb-nav-list-item"><span>ASM</span></ol></nav><div id="main-content" class="main-content" role="main"><h1 id="asm库介绍与使用"> <a href="#asm库介绍与使用" class="anchor-heading" aria-labelledby="asm库介绍与使用"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> ASM库介绍与使用</h1><blockquote><p><a href="https://www.jianshu.com/p/905be2a9a700">原文</a></p></blockquote><p>前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可能会看不懂，所以推荐先看下前面几篇文章。 这篇文章主要介绍 ASM 库的结构、主要的 API，并且通过两个示例说明如何通过 ASM 修改 .class 文件中的方法和属性。</p><p><img src="/just-the-docs/assets/images/ezgif-6-73b502b11e16.jpg" alt="img" /></p><p>catalog.png</p><h3 id="一-asm-的结构"> <a href="#一-asm-的结构" class="anchor-heading" aria-labelledby="一-asm-的结构"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 一. ASM 的结构</h3><p>ASM 库是一款基于 Java 字节码层面的代码分析和修改工具。ASM 可以直接生产二进制的 class 文件，也可以在类被加载入 JVM 之前动态修改类行为。 ASM 库的结构如下所示：</p><div class="table-wrapper"><table><tbody><tr><td>![img](https://upload-images.jianshu.io/upload_images/4179925-d4f950ec94a12cde.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/820/format/webp)</table></div><p>asm_arch.png</p><ul><li>Core：为其他包提供基础的读、写、转化Java字节码和定义的API，并且可以生成Java字节码和实现大部分字节码的转换，在 <a href="https://www.jianshu.com/p/e4b8cb0b3204">访问者模式和 ASM</a> 中介绍的几个重要的类就在 Core API 中：ClassReader、ClassVisitor 和 ClassWriter 类.<li>Tree：提供了 Java 字节码在内存中的表现<li>Commons：提供了一些常用的简化字节码生成、转换的类和适配器<li>Util：包含一些帮助类和简单的字节码修改类，有利于在开发或者测试中使用<li>XML：提供一个适配器将XML和SAX-comliant转化成字节码结构，可以允许使用XSLT去定义字节码转化</ul><h3 id="二-core-api-介绍"> <a href="#二-core-api-介绍" class="anchor-heading" aria-labelledby="二-core-api-介绍"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 二. Core API 介绍</h3><h4 id="21-classvisitor-抽象类"> <a href="#21-classvisitor-抽象类" class="anchor-heading" aria-labelledby="21-classvisitor-抽象类"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.1 ClassVisitor 抽象类</h4><div class="table-wrapper"><table><tbody><tr><td>如下所示，在 ClassVisitor 中提供了和类结构同名的一些方法，这些方法会对类中相应的部分进行操作，而且是有顺序的：visit [ visitSource ] [ visitOuterClass ] ( visitAnnotation<td>visitAttribute )* (visitInnerClass<td>visitField<td>visitMethod )* visitEnd</table></div><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ClassVisitor</span> <span class="o">{</span>
+I"��<h1 id="asm库介绍与使用">ASM库介绍与使用</h1>
+
+<blockquote>
+  <p><a href="https://www.jianshu.com/p/905be2a9a700">原文</a></p>
+</blockquote>
+
+<p>前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可能会看不懂，所以推荐先看下前面几篇文章。
+ 这篇文章主要介绍 ASM 库的结构、主要的 API，并且通过两个示例说明如何通过 ASM 修改 .class 文件中的方法和属性。</p>
+
+<p><img src="https://github.com/boybeak/boybeak.github.io/blob/master/assets/images/ezgif-6-73b502b11e16.jpg" alt="img" /></p>
+
+<p>catalog.png</p>
+
+<h3 id="一-asm-的结构">一. ASM 的结构</h3>
+
+<p>ASM 库是一款基于 Java 字节码层面的代码分析和修改工具。ASM 可以直接生产二进制的 class 文件，也可以在类被加载入 JVM 之前动态修改类行为。
+ ASM 库的结构如下所示：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https://upload-images.jianshu.io/upload_images/4179925-d4f950ec94a12cde.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/820/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>asm_arch.png</p>
+
+<ul>
+  <li>Core：为其他包提供基础的读、写、转化Java字节码和定义的API，并且可以生成Java字节码和实现大部分字节码的转换，在 <a href="https://www.jianshu.com/p/e4b8cb0b3204">访问者模式和 ASM</a> 中介绍的几个重要的类就在 Core API 中：ClassReader、ClassVisitor 和 ClassWriter 类.</li>
+  <li>Tree：提供了 Java 字节码在内存中的表现</li>
+  <li>Commons：提供了一些常用的简化字节码生成、转换的类和适配器</li>
+  <li>Util：包含一些帮助类和简单的字节码修改类，有利于在开发或者测试中使用</li>
+  <li>XML：提供一个适配器将XML和SAX-comliant转化成字节码结构，可以允许使用XSLT去定义字节码转化</li>
+</ul>
+
+<h3 id="二-core-api-介绍">二. Core API 介绍</h3>
+
+<h4 id="21-classvisitor-抽象类">2.1 ClassVisitor 抽象类</h4>
+
+<table>
+  <tbody>
+    <tr>
+      <td>如下所示，在 ClassVisitor 中提供了和类结构同名的一些方法，这些方法会对类中相应的部分进行操作，而且是有顺序的：visit [ visitSource ] [ visitOuterClass ] ( visitAnnotation</td>
+      <td>visitAttribute )* (visitInnerClass</td>
+      <td>visitField</td>
+      <td>visitMethod )* visitEnd</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ClassVisitor</span> <span class="o">{</span>
 
         <span class="o">......</span>
 
@@ -13,7 +65,74 @@
     <span class="kd">public</span> <span class="nc">MethodVisitor</span> <span class="nf">visitMethod</span><span class="o">(</span><span class="kt">int</span> <span class="n">access</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="nc">String</span> <span class="n">desc</span><span class="o">,</span> <span class="nc">String</span> <span class="n">signature</span><span class="o">,</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">exceptions</span><span class="o">);</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visitEnd</span><span class="o">();</span>
 <span class="o">}</span>
-</code></pre></div></div><ol><li>void visit(int version, int access, String name, String signature, String superName, String[] interfaces) 该方法是当扫描类时第一个调用的方法，主要用于类声明使用。下面是对方法中各个参数的示意：visit( 类版本 , 修饰符 , 类名 , 泛型信息 , 继承的父类 , 实现的接口)<li>AnnotationVisitor visitAnnotation(String desc, boolean visible) 该方法是当扫描器扫描到类注解声明时进行调用。下面是对方法中各个参数的示意：visitAnnotation(注解类型 , 注解是否可以在 JVM 中可见)。<li>FieldVisitor visitField(int access, String name, String desc, String signature, Object value) 该方法是当扫描器扫描到类中字段时进行调用。下面是对方法中各个参数的示意：visitField(修饰符 , 字段名 , 字段类型 , 泛型描述 , 默认值)<li>MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) 该方法是当扫描器扫描到类的方法时进行调用。下面是对方法中各个参数的示意：visitMethod(修饰符 , 方法名 , 方法签名 , 泛型信息 , 抛出的异常)<li>void visitEnd() 该方法是当扫描器完成类扫描时才会调用，如果想在类中追加某些方法</ol><h4 id="22-classreader-类"> <a href="#22-classreader-类" class="anchor-heading" aria-labelledby="22-classreader-类"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.2 ClassReader 类</h4><p>这个类会将 .class 文件读入到 ClassReader 中的字节数组中，它的 accept 方法接受一个 ClassVisitor 实现类，并按照顺序调用 ClassVisitor 中的方法</p><h4 id="23-classwriter-类"> <a href="#23-classwriter-类" class="anchor-heading" aria-labelledby="23-classwriter-类"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.3 ClassWriter 类</h4><p>ClassWriter 是一个 ClassVisitor 的子类，是和 ClassReader 对应的类，ClassReader 是将 .class 文件读入到一个字节数组中，ClassWriter 是将修改后的类的字节码内容以字节数组的形式输出。</p><h4 id="24-methodvisitor--adviceadapter"> <a href="#24-methodvisitor--adviceadapter" class="anchor-heading" aria-labelledby="24-methodvisitor--adviceadapter"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.4 MethodVisitor &amp; AdviceAdapter</h4><p>MethodVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Method 时就转入 MethodVisitor 接口处理。 AdviceAdapter 是 MethodVisitor 的子类，使用 AdviceAdapter 可以更方便的修改方法的字节码。 AdviceAdapter 的方法如下所示：</p><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-f5a428b729962860.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1160/format/webp)</table></div><p>AdviceAdapter.png</p><p>其中比较重要的几个方法如下：</p><ol><li>void visitCode()：表示 ASM 开始扫描这个方法<li>void onMethodEnter()：进入这个方法<li>void onMethodExit()：即将从这个方法出去<li>void onVisitEnd()：表示方法扫码完毕</ol><h4 id="25-fieldvisitor-抽象类"> <a href="#25-fieldvisitor-抽象类" class="anchor-heading" aria-labelledby="25-fieldvisitor-抽象类"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.5 FieldVisitor 抽象类</h4><p>FieldVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Field 时就转入 FieldVisitor 接口处理。和分析 MethodVisitor 的方法一样，也可以查看源码注释进行学习，这里不再详细介绍</p><h4 id="26-操作流程"> <a href="#26-操作流程" class="anchor-heading" aria-labelledby="26-操作流程"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 2.6 操作流程</h4><ol><li>需要创建一个 ClassReader 对象，将 .class 文件的内容读入到一个字节数组中<li>然后需要一个 ClassWriter 的对象将操作之后的字节码的字节数组回写<li>需要事件过滤器 ClassVisitor。在调用 ClassVisitor 的某些方法时会产生一个新的 XXXVisitor 对象，当我们需要修改对应的内容时只要实现自己的 XXXVisitor 并返回就可以了</ol><h3 id="三-示例"> <a href="#三-示例" class="anchor-heading" aria-labelledby="三-示例"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 三. 示例</h3><h4 id="31-修改类中方法的字节码"> <a href="#31-修改类中方法的字节码" class="anchor-heading" aria-labelledby="31-修改类中方法的字节码"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3.1 修改类中方法的字节码</h4><p>假如现在我们有一个 HelloWorld 类，如下</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.lijiankun24.asmpractice.demo</span><span class="o">;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>void visit(int version, int access, String name, String signature, String superName, String[] interfaces)
+ 该方法是当扫描类时第一个调用的方法，主要用于类声明使用。下面是对方法中各个参数的示意：visit( 类版本 , 修饰符 , 类名 , 泛型信息 , 继承的父类 , 实现的接口)</li>
+  <li>AnnotationVisitor visitAnnotation(String desc, boolean visible)
+ 该方法是当扫描器扫描到类注解声明时进行调用。下面是对方法中各个参数的示意：visitAnnotation(注解类型 , 注解是否可以在 JVM 中可见)。</li>
+  <li>FieldVisitor visitField(int access, String name, String desc, String signature, Object value)
+ 该方法是当扫描器扫描到类中字段时进行调用。下面是对方法中各个参数的示意：visitField(修饰符 , 字段名 , 字段类型 , 泛型描述 , 默认值)</li>
+  <li>MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions)
+ 该方法是当扫描器扫描到类的方法时进行调用。下面是对方法中各个参数的示意：visitMethod(修饰符 , 方法名 , 方法签名 , 泛型信息 , 抛出的异常)</li>
+  <li>void visitEnd()
+ 该方法是当扫描器完成类扫描时才会调用，如果想在类中追加某些方法</li>
+</ol>
+
+<h4 id="22-classreader-类">2.2 ClassReader 类</h4>
+
+<p>这个类会将 .class 文件读入到 ClassReader 中的字节数组中，它的 accept 方法接受一个 ClassVisitor 实现类，并按照顺序调用 ClassVisitor 中的方法</p>
+
+<h4 id="23-classwriter-类">2.3 ClassWriter 类</h4>
+
+<p>ClassWriter 是一个 ClassVisitor 的子类，是和 ClassReader 对应的类，ClassReader 是将 .class 文件读入到一个字节数组中，ClassWriter 是将修改后的类的字节码内容以字节数组的形式输出。</p>
+
+<h4 id="24-methodvisitor--adviceadapter">2.4 MethodVisitor &amp; AdviceAdapter</h4>
+
+<p>MethodVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Method 时就转入 MethodVisitor 接口处理。
+ AdviceAdapter 是 MethodVisitor 的子类，使用 AdviceAdapter 可以更方便的修改方法的字节码。
+ AdviceAdapter 的方法如下所示：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-f5a428b729962860.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1160/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>AdviceAdapter.png</p>
+
+<p>其中比较重要的几个方法如下：</p>
+
+<ol>
+  <li>void visitCode()：表示 ASM 开始扫描这个方法</li>
+  <li>void onMethodEnter()：进入这个方法</li>
+  <li>void onMethodExit()：即将从这个方法出去</li>
+  <li>void onVisitEnd()：表示方法扫码完毕</li>
+</ol>
+
+<h4 id="25-fieldvisitor-抽象类">2.5 FieldVisitor 抽象类</h4>
+
+<p>FieldVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Field 时就转入 FieldVisitor 接口处理。和分析 MethodVisitor 的方法一样，也可以查看源码注释进行学习，这里不再详细介绍</p>
+
+<h4 id="26-操作流程">2.6 操作流程</h4>
+
+<ol>
+  <li>需要创建一个 ClassReader 对象，将 .class 文件的内容读入到一个字节数组中</li>
+  <li>然后需要一个 ClassWriter 的对象将操作之后的字节码的字节数组回写</li>
+  <li>需要事件过滤器 ClassVisitor。在调用 ClassVisitor 的某些方法时会产生一个新的 XXXVisitor 对象，当我们需要修改对应的内容时只要实现自己的 XXXVisitor 并返回就可以了</li>
+</ol>
+
+<h3 id="三-示例">三. 示例</h3>
+
+<h4 id="31-修改类中方法的字节码">3.1 修改类中方法的字节码</h4>
+
+<p>假如现在我们有一个 HelloWorld 类，如下</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.lijiankun24.asmpractice.demo</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorld</span> <span class="o">{</span>
 
@@ -25,7 +144,11 @@
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div></div><p>通过 <code class="language-plaintext highlighter-rouge">javac HelloWorld.java</code> 和 <code class="language-plaintext highlighter-rouge">javap -verbose HelloWorld.class</code> 可以查看到 sayName() 方法的字节码如下所示：</p><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>通过 <code class="language-plaintext highlighter-rouge">javac HelloWorld.java</code> 和 <code class="language-plaintext highlighter-rouge">javap -verbose HelloWorld.class</code> 可以查看到 sayName() 方法的字节码如下所示：</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="p">();</span>
     <span class="n">descriptor</span><span class="o">:</span> <span class="p">()</span><span class="n">V</span>
     <span class="n">flags</span><span class="o">:</span> <span class="n">ACC_PUBLIC</span>
     <span class="n">Code</span><span class="o">:</span>
@@ -50,7 +173,11 @@
         <span class="n">frame_type</span> <span class="o">=</span> <span class="mi">73</span> <span class="cm">/* same_locals_1_stack_item */</span>
           <span class="n">stack</span> <span class="o">=</span> <span class="p">[</span> <span class="k">class</span> <span class="nc">java</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="n">InterruptedException</span> <span class="p">]</span>
         <span class="n">frame_type</span> <span class="o">=</span> <span class="mi">4</span> <span class="cm">/* same */</span>
-</code></pre></div></div><p>我们通过 ASM 修改 HelloWorld.class 字节码文件，实现统计方法执行时间的功能</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CostTime</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>我们通过 ASM 修改 HelloWorld.class 字节码文件，实现统计方法执行时间的功能</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CostTime</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">redefinePersonClass</span><span class="o">();</span>
@@ -139,12 +266,88 @@
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div></div><p>执行结果如下图所示</p><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-32ee7bd0974a4679.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1200/format/webp)</table></div><p>Class.png</p><p>反编译 HelloWorld2.class 文件的内容如下所示</p><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-af582100631d7eec.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1200/format/webp)</table></div><p>Class1.png</p><h4 id="32-修改类中属性的字节码"> <a href="#32-修改类中属性的字节码" class="anchor-heading" aria-labelledby="32-修改类中属性的字节码"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3.2 修改类中属性的字节码</h4><p>这一节中我们将展示一下如何使用 Core API 对类中的属性进行操作。</p><p>假如说，现在有一个 Person.java 类如下所示：</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>执行结果如下图所示</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-32ee7bd0974a4679.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1200/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Class.png</p>
+
+<p>反编译 HelloWorld2.class 文件的内容如下所示</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-af582100631d7eec.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1200/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Class1.png</p>
+
+<h4 id="32-修改类中属性的字节码">3.2 修改类中属性的字节码</h4>
+
+<p>这一节中我们将展示一下如何使用 Core API 对类中的属性进行操作。</p>
+
+<p>假如说，现在有一个 Person.java 类如下所示：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
     <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
     <span class="kd">public</span> <span class="kt">int</span> <span class="n">sex</span><span class="o">;</span>
 <span class="o">}</span>
-</code></pre></div></div><p>我们想为这个类，添加一个 ‘public int age’ 的属性该怎么添加呢？我们会面对两个问题：</p><ol><li>该调用 ASM 的哪个 API 添加属性呢？<li>在何时写添加属性的代码？</ol><p>接下来，我们就一一解决上面的两个问题？</p><h5 id="321-添加属性的-api"> <a href="#321-添加属性的-api" class="anchor-heading" aria-labelledby="321-添加属性的-api"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3.2.1 添加属性的 API</h5><p>按照我们分析的上述的 2.6 操作流程叙述，需要以下三个步骤：</p><ol><li>需要创建一个 ClassReader 对象，将 .class 文件的内容读入到一个字节数组中<li>然后需要一个 ClassWriter 的对象将操作之后的字节码的字节数组回写<li>需要创建一个事件过滤器 ClassVisitor。事件过滤器中的某些方法可以产生一个新的XXXVisitor对象，当我们需要修改对应的内容时只要实现自己的XXXVisitor并返回就可以了</ol><p>在上面三个步骤中，可以操作的就是 ClassVisitor 了。ClassVisitor 接口提供了和类结构同名的一些方法，这些方法可以对相应的类结构进行操作。</p><p>在使用 ClassVisitor 添加类属性的时候，只需要添加一句话就可以了：</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">classVisitor</span><span class="o">.</span><span class="na">visitField</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">ACC_PUBLIC</span><span class="o">,</span> <span class="s">"age"</span><span class="o">,</span> <span class="nc">Type</span><span class="o">.</span><span class="na">getDescriptor</span><span class="o">(</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-</code></pre></div></div><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-8c703df0b005aae7.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1200/format/webp)</table></div><p>visitField.png</p><h5 id="322-添加属性的时机"> <a href="#322-添加属性的时机" class="anchor-heading" aria-labelledby="322-添加属性的时机"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3.2.2 添加属性的时机</h5><p>我们先暂且在 ClassVisitor 的 visitEnd() 方法中写入上面的代码，如下所示</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Transform</span> <span class="kd">extends</span> <span class="nc">ClassVisitor</span> <span class="o">{</span>  
+</code></pre></div></div>
+
+<p>我们想为这个类，添加一个 ‘public int age’ 的属性该怎么添加呢？我们会面对两个问题：</p>
+
+<ol>
+  <li>该调用 ASM 的哪个 API 添加属性呢？</li>
+  <li>在何时写添加属性的代码？</li>
+</ol>
+
+<p>接下来，我们就一一解决上面的两个问题？</p>
+
+<h5 id="321-添加属性的-api">3.2.1 添加属性的 API</h5>
+
+<p>按照我们分析的上述的 2.6 操作流程叙述，需要以下三个步骤：</p>
+
+<ol>
+  <li>需要创建一个 ClassReader 对象，将 .class 文件的内容读入到一个字节数组中</li>
+  <li>然后需要一个 ClassWriter 的对象将操作之后的字节码的字节数组回写</li>
+  <li>需要创建一个事件过滤器 ClassVisitor。事件过滤器中的某些方法可以产生一个新的XXXVisitor对象，当我们需要修改对应的内容时只要实现自己的XXXVisitor并返回就可以了</li>
+</ol>
+
+<p>在上面三个步骤中，可以操作的就是 ClassVisitor 了。ClassVisitor 接口提供了和类结构同名的一些方法，这些方法可以对相应的类结构进行操作。</p>
+
+<p>在使用 ClassVisitor 添加类属性的时候，只需要添加一句话就可以了：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">classVisitor</span><span class="o">.</span><span class="na">visitField</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">ACC_PUBLIC</span><span class="o">,</span> <span class="s">"age"</span><span class="o">,</span> <span class="nc">Type</span><span class="o">.</span><span class="na">getDescriptor</span><span class="o">(</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</code></pre></div></div>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-8c703df0b005aae7.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1200/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>visitField.png</p>
+
+<h5 id="322-添加属性的时机">3.2.2 添加属性的时机</h5>
+
+<p>我们先暂且在 ClassVisitor 的 visitEnd() 方法中写入上面的代码，如下所示</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Transform</span> <span class="kd">extends</span> <span class="nc">ClassVisitor</span> <span class="o">{</span>  
 
     <span class="kd">public</span> <span class="nf">Transform</span><span class="o">(</span><span class="nc">ClassVisitor</span> <span class="n">cv</span><span class="o">)</span> <span class="o">{</span>  
         <span class="kd">super</span><span class="o">(</span><span class="n">cv</span><span class="o">);</span>  
@@ -155,7 +358,11 @@
         <span class="n">cv</span><span class="o">.</span><span class="na">visitField</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">ACC_PUBLIC</span><span class="o">,</span> <span class="s">"age"</span><span class="o">,</span> <span class="nc">Type</span><span class="o">.</span><span class="na">getDescriptor</span><span class="o">(</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>  
     <span class="o">}</span>  
 <span class="o">}</span>
-</code></pre></div></div><p>我们写如下的测试类，测试一下</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FieldPractice</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>我们写如下的测试类，测试一下</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FieldPractice</span> <span class="o">{</span>
 
     <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
         <span class="n">addAgeField</span><span class="o">();</span>
@@ -183,7 +390,24 @@
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div></div><p>其输出入下所示：</p><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-a718d240e05a2198.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1200/format/webp)</table></div><p>visitFieldResult.png</p><p>那如果我们尝试在 ClassVisitor#visitField() 方法中添加属性可以吗？我们可以修改 Transform 测试一下：</p><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Transform</span> <span class="kd">extends</span> <span class="nc">ClassVisitor</span> <span class="o">{</span>
+</code></pre></div></div>
+
+<p>其输出入下所示：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-a718d240e05a2198.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1200/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>visitFieldResult.png</p>
+
+<p>那如果我们尝试在 ClassVisitor#visitField() 方法中添加属性可以吗？我们可以修改 Transform 测试一下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Transform</span> <span class="kd">extends</span> <span class="nc">ClassVisitor</span> <span class="o">{</span>
 
     <span class="nc">Transform</span><span class="o">(</span><span class="nc">ClassVisitor</span> <span class="n">classVisitor</span><span class="o">)</span> <span class="o">{</span>
         <span class="kd">super</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">ASM5</span><span class="o">,</span> <span class="n">classVisitor</span><span class="o">);</span>
@@ -195,7 +419,32 @@
         <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">visitField</span><span class="o">(</span><span class="n">access</span><span class="o">,</span> <span class="n">name</span><span class="o">,</span> <span class="n">desc</span><span class="o">,</span> <span class="n">signature</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div></div><p>还是使用上面的测试代码测试一下，会有如下的测试结果</p><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-e2e730e41623be28.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1200/format/webp)</table></div><p>visitFieldError.png</p><p>在 Person 类中有重复的属性，为什么会报这个错误呢？</p><p>分析 ClassVisitor#visitField() 方法可得知，只要访问类中的一个属性，visitField() 方法就会被调用一次，在 Person 类中有两个属性，所以 visitField() 方法就会被调用两次，也就添加了两次 ‘public int age’ 属性，就报了上述的错误，而 visitEnd() 方法只有在最后才会被调用且只调用一次，所以在 visitEnd() 方法中是添加属性的最佳时机</p><h4 id="33-asmifier"> <a href="#33-asmifier" class="anchor-heading" aria-labelledby="33-asmifier"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> 3.3 ASMifier</h4><p>可能有人会问，我刚开始学，上面例子中那些 ASM 的代码我还不会写，怎么办呢？ASM 官方为我们提供了 <a href="https://asm.ow2.io/#Q10">ASMifier</a>，可以帮助我们生成这些晦涩难懂的 ASM 代码。</p><p>比如，我想通过 ASM 实现统计一个方法的执行时间，该怎么做呢？一般会有如下的代码：</p><div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">package</span> <span class="n">com</span><span class="p">.</span><span class="n">lijiankun24</span><span class="p">.</span><span class="n">classpractice</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>还是使用上面的测试代码测试一下，会有如下的测试结果</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-e2e730e41623be28.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1200/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>visitFieldError.png</p>
+
+<p>在 Person 类中有重复的属性，为什么会报这个错误呢？</p>
+
+<p>分析 ClassVisitor#visitField() 方法可得知，只要访问类中的一个属性，visitField() 方法就会被调用一次，在 Person 类中有两个属性，所以 visitField() 方法就会被调用两次，也就添加了两次 ‘public int age’ 属性，就报了上述的错误，而 visitEnd() 方法只有在最后才会被调用且只调用一次，所以在 visitEnd() 方法中是添加属性的最佳时机</p>
+
+<h4 id="33-asmifier">3.3 ASMifier</h4>
+
+<p>可能有人会问，我刚开始学，上面例子中那些 ASM 的代码我还不会写，怎么办呢？ASM 官方为我们提供了 <a href="https://asm.ow2.io/#Q10">ASMifier</a>，可以帮助我们生成这些晦涩难懂的 ASM 代码。</p>
+
+<p>比如，我想通过 ASM 实现统计一个方法的执行时间，该怎么做呢？一般会有如下的代码：</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">package</span> <span class="n">com</span><span class="p">.</span><span class="n">lijiankun24</span><span class="p">.</span><span class="n">classpractice</span><span class="p">;</span>
 
 <span class="k">public</span> <span class="k">class</span> <span class="nc">Demo</span> <span class="p">{</span>
 
@@ -206,6 +455,46 @@
         <span class="n">System</span><span class="p">.</span><span class="k">out</span><span class="p">.</span><span class="nf">println</span><span class="p">(</span><span class="s">"The cost time of this method is "</span> <span class="p">+</span> <span class="n">duration</span> <span class="p">+</span> <span class="s">" ms"</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div></div><p>那上面这段代码对应的 ASM 代码是什么呢？我们可以通过以下两个步骤，使用 ASMifier 自动生成：</p><ol><li>通过 <code class="language-plaintext highlighter-rouge">javac</code> 编译该 <code class="language-plaintext highlighter-rouge">Demo.java</code> 文件生成对应的 <code class="language-plaintext highlighter-rouge">Demo.class</code> 文件，如下所示</ol><div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">javac</span> <span class="nt">Demo</span><span class="nc">.java</span>
-</code></pre></div></div><ol><li>通过 ASMifier 自动生成对应的 ASM 代码。首先需要在<a href="https://asm.ow2.io/#Q10">ASM官网</a> 下载 <code class="language-plaintext highlighter-rouge">asm-all.jar</code> 库，我下载的是最新的 <code class="language-plaintext highlighter-rouge">asm-all-5.2.jar</code>，然后使用如下命令，即可生成</ol><div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">java</span> <span class="o">-</span><span class="n">classpath</span> <span class="n">asm</span><span class="o">-</span><span class="n">all</span><span class="o">-</span><span class="mf">5.2</span><span class="o">.</span><span class="na">jar</span> <span class="n">org</span><span class="o">.</span><span class="na">objectweb</span><span class="o">.</span><span class="na">asm</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">ASMifier</span> <span class="nc">Demo</span><span class="o">.</span><span class="na">class</span>
-</code></pre></div></div><p>截图如下：</p><div class="table-wrapper"><table><tbody><tr><td>![img](https:////upload-images.jianshu.io/upload_images/4179925-0cc8712718f08ea0.png?imageMogr2/auto-orient/strip<td>imageView2/2/w/1200/format/webp)</table></div><p>DemoDump.png</p><p><a href="https://my.oschina.net/ta8210/blog/163550">深入字节码 – 玩转 ASM-Bytecode 原 荐</a> <a href="http://www.easemob.com/news/729">美团热更方案ASM实践</a></p><p>43人点赞</p><p><a href="">Java 相关</a></p><p>作者：lijiankun24 链接：https://www.jianshu.com/p/905be2a9a700 来源：简书 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p><hr><footer><p><a href="#top" id="back-to-top">Back to top</a></p><p class="text-small text-grey-dk-000 mb-0">Copyright &copy; 2017-2020 Patrick Marsceill. Distributed by an <a href="https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt">MIT license.</a></p><div class="d-flex mt-2"><p class="text-small text-grey-dk-000 mb-0"> <a href="https://github.com/pmarsceill/just-the-docs/tree/master/docs/杂技/ASM.md" id="edit-this-page">Edit this page on GitHub</a></p></div></footer></div></div><div class="search-overlay"></div></div>
+</code></pre></div></div>
+
+<p>那上面这段代码对应的 ASM 代码是什么呢？我们可以通过以下两个步骤，使用 ASMifier 自动生成：</p>
+
+<ol>
+  <li>通过 <code class="language-plaintext highlighter-rouge">javac</code> 编译该 <code class="language-plaintext highlighter-rouge">Demo.java</code> 文件生成对应的 <code class="language-plaintext highlighter-rouge">Demo.class</code> 文件，如下所示</li>
+</ol>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">javac</span> <span class="nt">Demo</span><span class="nc">.java</span>
+</code></pre></div></div>
+
+<ol>
+  <li>通过 ASMifier 自动生成对应的 ASM 代码。首先需要在<a href="https://asm.ow2.io/#Q10">ASM官网</a> 下载 <code class="language-plaintext highlighter-rouge">asm-all.jar</code> 库，我下载的是最新的 <code class="language-plaintext highlighter-rouge">asm-all-5.2.jar</code>，然后使用如下命令，即可生成</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">java</span> <span class="o">-</span><span class="n">classpath</span> <span class="n">asm</span><span class="o">-</span><span class="n">all</span><span class="o">-</span><span class="mf">5.2</span><span class="o">.</span><span class="na">jar</span> <span class="n">org</span><span class="o">.</span><span class="na">objectweb</span><span class="o">.</span><span class="na">asm</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">ASMifier</span> <span class="nc">Demo</span><span class="o">.</span><span class="na">class</span>
+</code></pre></div></div>
+
+<p>截图如下：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>![img](https:////upload-images.jianshu.io/upload_images/4179925-0cc8712718f08ea0.png?imageMogr2/auto-orient/strip</td>
+      <td>imageView2/2/w/1200/format/webp)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>DemoDump.png</p>
+
+<p><a href="https://my.oschina.net/ta8210/blog/163550">深入字节码 – 玩转 ASM-Bytecode 原 荐</a>
+ <a href="http://www.easemob.com/news/729">美团热更方案ASM实践</a></p>
+
+<p>43人点赞</p>
+
+<p><a href="">Java 相关</a></p>
+
+<p>作者：lijiankun24
+链接：https://www.jianshu.com/p/905be2a9a700
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+:ET
