@@ -1,0 +1,584 @@
+{"0": {
+    "doc": "ASM",
+    "title": "ASM库介绍与使用",
+    "content": "原文 . 前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可能会看不懂，所以推荐先看下前面几篇文章。 这篇文章主要介绍 ASM 库的结构、主要的 API，并且通过两个示例说明如何通过 ASM 修改 .class 文件中的方法和属性。 . catalog.png . 一. ASM 的结构 . ASM 库是一款基于 Java 字节码层面的代码分析和修改工具。ASM 可以直接生产二进制的 class 文件，也可以在类被加载入 JVM 之前动态修改类行为。 ASM 库的结构如下所示： . | ![img](https://upload-images.jianshu.io/upload_images/4179925-d4f950ec94a12cde.png?imageMogr2/auto-orient/strip | imageView2/2/w/820/format/webp) | . asm_arch.png . | Core：为其他包提供基础的读、写、转化Java字节码和定义的API，并且可以生成Java字节码和实现大部分字节码的转换，在 访问者模式和 ASM 中介绍的几个重要的类就在 Core API 中：ClassReader、ClassVisitor 和 ClassWriter 类. | Tree：提供了 Java 字节码在内存中的表现 | Commons：提供了一些常用的简化字节码生成、转换的类和适配器 | Util：包含一些帮助类和简单的字节码修改类，有利于在开发或者测试中使用 | XML：提供一个适配器将XML和SAX-comliant转化成字节码结构，可以允许使用XSLT去定义字节码转化 | . 二. Core API 介绍 . 2.1 ClassVisitor 抽象类 . | 如下所示，在 ClassVisitor 中提供了和类结构同名的一些方法，这些方法会对类中相应的部分进行操作，而且是有顺序的：visit [ visitSource ] [ visitOuterClass ] ( visitAnnotation | visitAttribute )* (visitInnerClass | visitField | visitMethod )* visitEnd | . public abstract class ClassVisitor { ...... public void visit(int version, int access, String name, String signature, String superName, String[] interfaces); public void visitSource(String source, String debug); public void visitOuterClass(String owner, String name, String desc); public AnnotationVisitor visitAnnotation(String desc, boolean visible); public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String desc, boolean visible); public void visitAttribute(Attribute attr); public void visitInnerClass(String name, String outerName, String innerName, int access); public FieldVisitor visitField(int access, String name, String desc, String signature, Object value); public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions); public void visitEnd(); } . | void visit(int version, int access, String name, String signature, String superName, String[] interfaces) 该方法是当扫描类时第一个调用的方法，主要用于类声明使用。下面是对方法中各个参数的示意：visit( 类版本 , 修饰符 , 类名 , 泛型信息 , 继承的父类 , 实现的接口) | AnnotationVisitor visitAnnotation(String desc, boolean visible) 该方法是当扫描器扫描到类注解声明时进行调用。下面是对方法中各个参数的示意：visitAnnotation(注解类型 , 注解是否可以在 JVM 中可见)。 | FieldVisitor visitField(int access, String name, String desc, String signature, Object value) 该方法是当扫描器扫描到类中字段时进行调用。下面是对方法中各个参数的示意：visitField(修饰符 , 字段名 , 字段类型 , 泛型描述 , 默认值) | MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) 该方法是当扫描器扫描到类的方法时进行调用。下面是对方法中各个参数的示意：visitMethod(修饰符 , 方法名 , 方法签名 , 泛型信息 , 抛出的异常) | void visitEnd() 该方法是当扫描器完成类扫描时才会调用，如果想在类中追加某些方法 | . 2.2 ClassReader 类 . 这个类会将 .class 文件读入到 ClassReader 中的字节数组中，它的 accept 方法接受一个 ClassVisitor 实现类，并按照顺序调用 ClassVisitor 中的方法 . 2.3 ClassWriter 类 . ClassWriter 是一个 ClassVisitor 的子类，是和 ClassReader 对应的类，ClassReader 是将 .class 文件读入到一个字节数组中，ClassWriter 是将修改后的类的字节码内容以字节数组的形式输出。 . 2.4 MethodVisitor &amp; AdviceAdapter . MethodVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Method 时就转入 MethodVisitor 接口处理。 AdviceAdapter 是 MethodVisitor 的子类，使用 AdviceAdapter 可以更方便的修改方法的字节码。 AdviceAdapter 的方法如下所示： . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-f5a428b729962860.png?imageMogr2/auto-orient/strip | imageView2/2/w/1160/format/webp) | . AdviceAdapter.png . 其中比较重要的几个方法如下： . | void visitCode()：表示 ASM 开始扫描这个方法 | void onMethodEnter()：进入这个方法 | void onMethodExit()：即将从这个方法出去 | void onVisitEnd()：表示方法扫码完毕 | . 2.5 FieldVisitor 抽象类 . FieldVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Field 时就转入 FieldVisitor 接口处理。和分析 MethodVisitor 的方法一样，也可以查看源码注释进行学习，这里不再详细介绍 . 2.6 操作流程 . | 需要创建一个 ClassReader 对象，将 .class 文件的内容读入到一个字节数组中 | 然后需要一个 ClassWriter 的对象将操作之后的字节码的字节数组回写 | 需要事件过滤器 ClassVisitor。在调用 ClassVisitor 的某些方法时会产生一个新的 XXXVisitor 对象，当我们需要修改对应的内容时只要实现自己的 XXXVisitor 并返回就可以了 | . 三. 示例 . 3.1 修改类中方法的字节码 . 假如现在我们有一个 HelloWorld 类，如下 . package com.lijiankun24.asmpractice.demo; public class HelloWorld { public void sayHello() { try { Thread.sleep(2 * 1000); } catch (InterruptedException e) { e.printStackTrace(); } } } . 通过 javac HelloWorld.java 和 javap -verbose HelloWorld.class 可以查看到 sayName() 方法的字节码如下所示： . public void sayHello(); descriptor: ()V flags: ACC_PUBLIC Code: stack=2, locals=2, args_size=1 0: ldc2_w #2 // long 2000l 3: invokestatic #4 // Method java/lang/Thread.sleep:(J)V 6: goto 14 9: astore_1 10: aload_1 11: invokevirtual #6 // Method java/lang/InterruptedException.printStackTrace:()V 14: return Exception table: from to target type 0 6 9 Class java/lang/InterruptedException LineNumberTable: line 5: 0 line 8: 6 line 6: 9 line 7: 10 line 9: 14 StackMapTable: number_of_entries = 2 frame_type = 73 /* same_locals_1_stack_item */ stack = [ class java/lang/InterruptedException ] frame_type = 4 /* same */ . 我们通过 ASM 修改 HelloWorld.class 字节码文件，实现统计方法执行时间的功能 . public class CostTime { public static void main(String[] args) { redefinePersonClass(); } private static void redefinePersonClass() { String className = \"com.lijiankun24.asmpractice.demo.HelloWorld\"; try { InputStream inputStream = new FileInputStream(\"/Users/lijiankun/Desktop/HelloWorld.class\"); ClassReader reader = new ClassReader(inputStream); // 1. 创建 ClassReader 读入 .class 文件到内存中 ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS); // 2. 创建 ClassWriter 对象，将操作之后的字节码的字节数组回写 ClassVisitor change = new ChangeVisitor(writer); // 3. 创建自定义的 ClassVisitor 对象 reader.accept(change, ClassReader.EXPAND_FRAMES); // 4. 将 ClassVisitor 对象传入 ClassReader 中 Class clazz = new MyClassLoader().defineClass(className, writer.toByteArray()); Object personObj = clazz.newInstance(); Method nameMethod = clazz.getDeclaredMethod(\"sayHello\", null); nameMethod.invoke(personObj, null); System.out.println(\"Success!\"); byte[] code = writer.toByteArray(); // 获取修改后的 class 文件对应的字节数组 try { FileOutputStream fos = new FileOutputStream(\"/Users/lijiankun/Desktop/HelloWorld2.class\"); // 将二进制流写到本地磁盘上 fos.write(code); fos.close(); } catch (IOException e) { e.printStackTrace(); } } catch (Exception e) { e.printStackTrace(); System.out.println(\"Failure!\"); } } static class ChangeVisitor extends ClassVisitor { ChangeVisitor(ClassVisitor classVisitor) { super(Opcodes.ASM5, classVisitor); } @Override public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) { MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions); if (name.equals(\"&lt;init&gt;\")) { return methodVisitor; } return new ChangeAdapter(Opcodes.ASM4, methodVisitor, access, name, desc); } } static class ChangeAdapter extends AdviceAdapter { private int startTimeId = -1; private String methodName = null; ChangeAdapter(int api, MethodVisitor mv, int access, String name, String desc) { super(api, mv, access, name, desc); methodName = name; } @Override protected void onMethodEnter() { super.onMethodEnter(); startTimeId = newLocal(Type.LONG_TYPE); mv.visitMethodInsn(INVOKESTATIC, \"java/lang/System\", \"currentTimeMillis\", \"()J\", false); mv.visitIntInsn(LSTORE, startTimeId); } @Override protected void onMethodExit(int opcode) { super.onMethodExit(opcode); int durationId = newLocal(Type.LONG_TYPE); mv.visitMethodInsn(INVOKESTATIC, \"java/lang/System\", \"currentTimeMillis\", \"()J\", false); mv.visitVarInsn(LLOAD, startTimeId); mv.visitInsn(LSUB); mv.visitVarInsn(LSTORE, durationId); mv.visitFieldInsn(GETSTATIC, \"java/lang/System\", \"out\", \"Ljava/io/PrintStream;\"); mv.visitTypeInsn(NEW, \"java/lang/StringBuilder\"); mv.visitInsn(DUP); mv.visitMethodInsn(INVOKESPECIAL, \"java/lang/StringBuilder\", \"&lt;init&gt;\", \"()V\", false); mv.visitLdcInsn(\"The cost time of \" + methodName + \" is \"); mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/StringBuilder\", \"append\", \"(Ljava/lang/String;)Ljava/lang/StringBuilder;\", false); mv.visitVarInsn(LLOAD, durationId); mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/StringBuilder\", \"append\", \"(J)Ljava/lang/StringBuilder;\", false); mv.visitMethodInsn(INVOKEVIRTUAL, \"java/lang/StringBuilder\", \"toString\", \"()Ljava/lang/String;\", false); mv.visitMethodInsn(INVOKEVIRTUAL, \"java/io/PrintStream\", \"println\", \"(Ljava/lang/String;)V\", false); } } } . 执行结果如下图所示 . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-32ee7bd0974a4679.png?imageMogr2/auto-orient/strip | imageView2/2/w/1200/format/webp) | . Class.png . 反编译 HelloWorld2.class 文件的内容如下所示 . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-af582100631d7eec.png?imageMogr2/auto-orient/strip | imageView2/2/w/1200/format/webp) | . Class1.png . 3.2 修改类中属性的字节码 . 这一节中我们将展示一下如何使用 Core API 对类中的属性进行操作。 . 假如说，现在有一个 Person.java 类如下所示： . public class Person { public String name; public int sex; } . 我们想为这个类，添加一个 ‘public int age’ 的属性该怎么添加呢？我们会面对两个问题： . | 该调用 ASM 的哪个 API 添加属性呢？ | 在何时写添加属性的代码？ | . 接下来，我们就一一解决上面的两个问题？ . 3.2.1 添加属性的 API . 按照我们分析的上述的 2.6 操作流程叙述，需要以下三个步骤： . | 需要创建一个 ClassReader 对象，将 .class 文件的内容读入到一个字节数组中 | 然后需要一个 ClassWriter 的对象将操作之后的字节码的字节数组回写 | 需要创建一个事件过滤器 ClassVisitor。事件过滤器中的某些方法可以产生一个新的XXXVisitor对象，当我们需要修改对应的内容时只要实现自己的XXXVisitor并返回就可以了 | . 在上面三个步骤中，可以操作的就是 ClassVisitor 了。ClassVisitor 接口提供了和类结构同名的一些方法，这些方法可以对相应的类结构进行操作。 . 在使用 ClassVisitor 添加类属性的时候，只需要添加一句话就可以了： . classVisitor.visitField(Opcodes.ACC_PUBLIC, \"age\", Type.getDescriptor(int.class), null, null); . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-8c703df0b005aae7.png?imageMogr2/auto-orient/strip | imageView2/2/w/1200/format/webp) | . visitField.png . 3.2.2 添加属性的时机 . 我们先暂且在 ClassVisitor 的 visitEnd() 方法中写入上面的代码，如下所示 . public class Transform extends ClassVisitor { public Transform(ClassVisitor cv) { super(cv); } @Override public void visitEnd() { cv.visitField(Opcodes.ACC_PUBLIC, \"age\", Type.getDescriptor(int.class), null, null); } } . 我们写如下的测试类，测试一下 . public class FieldPractice { public static void main(String[] args) { addAgeField(); } private static void addAgeField() { try { InputStream inputStream = new FileInputStream(\"/Users/lijiankun/Desktop/Person.class\"); ClassReader reader = new ClassReader(inputStream); ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS); ClassVisitor visitor = new Transform(writer); reader.accept(visitor, ClassReader.SKIP_DEBUG); byte[] classFile = writer.toByteArray(); MyClassLoader classLoader = new MyClassLoader(); Class clazz = classLoader.defineClass(\"Person\", classFile); Object obj = clazz.newInstance(); System.out.println(clazz.getDeclaredField(\"name\").get(obj)); //----(1) System.out.println(clazz.getDeclaredField(\"age\").get(obj)); //----(2) } catch (Exception e) { e.printStackTrace(); } } } . 其输出入下所示： . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-a718d240e05a2198.png?imageMogr2/auto-orient/strip | imageView2/2/w/1200/format/webp) | . visitFieldResult.png . 那如果我们尝试在 ClassVisitor#visitField() 方法中添加属性可以吗？我们可以修改 Transform 测试一下： . public class Transform extends ClassVisitor { Transform(ClassVisitor classVisitor) { super(Opcodes.ASM5, classVisitor); } @Override public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) { cv.visitField(Opcodes.ACC_PUBLIC, \"age\", Type.getDescriptor(int.class), null, null); return super.visitField(access, name, desc, signature, value); } } . 还是使用上面的测试代码测试一下，会有如下的测试结果 . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-e2e730e41623be28.png?imageMogr2/auto-orient/strip | imageView2/2/w/1200/format/webp) | . visitFieldError.png . 在 Person 类中有重复的属性，为什么会报这个错误呢？ . 分析 ClassVisitor#visitField() 方法可得知，只要访问类中的一个属性，visitField() 方法就会被调用一次，在 Person 类中有两个属性，所以 visitField() 方法就会被调用两次，也就添加了两次 ‘public int age’ 属性，就报了上述的错误，而 visitEnd() 方法只有在最后才会被调用且只调用一次，所以在 visitEnd() 方法中是添加属性的最佳时机 . 3.3 ASMifier . 可能有人会问，我刚开始学，上面例子中那些 ASM 的代码我还不会写，怎么办呢？ASM 官方为我们提供了 ASMifier，可以帮助我们生成这些晦涩难懂的 ASM 代码。 . 比如，我想通过 ASM 实现统计一个方法的执行时间，该怎么做呢？一般会有如下的代码： . package com.lijiankun24.classpractice; public class Demo { public void costTime() { long startTime = System.currentTimeMillis(); // ...... long duration = System.currentTimeMillis() - startTime; System.out.println(\"The cost time of this method is \" + duration + \" ms\"); } } . 那上面这段代码对应的 ASM 代码是什么呢？我们可以通过以下两个步骤，使用 ASMifier 自动生成： . | 通过 javac 编译该 Demo.java 文件生成对应的 Demo.class 文件，如下所示 | . javac Demo.java . | 通过 ASMifier 自动生成对应的 ASM 代码。首先需要在ASM官网 下载 asm-all.jar 库，我下载的是最新的 asm-all-5.2.jar，然后使用如下命令，即可生成 | . java -classpath asm-all-5.2.jar org.objectweb.asm.util.ASMifier Demo.class . 截图如下： . | ![img](https:////upload-images.jianshu.io/upload_images/4179925-0cc8712718f08ea0.png?imageMogr2/auto-orient/strip | imageView2/2/w/1200/format/webp) | . DemoDump.png . 深入字节码 – 玩转 ASM-Bytecode 原 荐 美团热更方案ASM实践 . 43人点赞 . Java 相关 . 作者：lijiankun24 链接：https://www.jianshu.com/p/905be2a9a700 来源：简书 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。 . ",
+    "url": "http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80/ASM/#asm%E5%BA%93%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8",
+    "relUrl": "/docs/%E6%9D%82%E6%8A%80/ASM/#asm库介绍与使用"
+  },"1": {
+    "doc": "ASM",
+    "title": "ASM",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80/ASM/",
+    "relUrl": "/docs/%E6%9D%82%E6%8A%80/ASM/"
+  },"2": {
+    "doc": "Buttons",
+    "title": "Buttons",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/buttons/",
+    "relUrl": "/docs/ui-components/buttons/"
+  },"3": {
+    "doc": "Buttons",
+    "title": "Table of contents",
+    "content": ". | Basic button styles . | Links that look like buttons | Button element | . | Using utilities with buttons . | Button size | Spacing between buttons | . | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/buttons/#table-of-contents",
+    "relUrl": "/docs/ui-components/buttons/#table-of-contents"
+  },"4": {
+    "doc": "Buttons",
+    "title": "Basic button styles",
+    "content": "Links that look like buttons . Link button . Link button Link button Link button . Link button . [Link button](http://example.com/){: .btn } [Link button](http://example.com/){: .btn .btn-purple } [Link button](http://example.com/){: .btn .btn-blue } [Link button](http://example.com/){: .btn .btn-green } [Link button](http://example.com/){: .btn .btn-outline } . Button element . GitHub Flavored Markdown does not support the button element, so you’ll have to use inline HTML for this: . Button element &lt;button type=\"button\" name=\"button\" class=\"btn\"&gt;Button element&lt;/button&gt; . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/buttons/#basic-button-styles",
+    "relUrl": "/docs/ui-components/buttons/#basic-button-styles"
+  },"5": {
+    "doc": "Buttons",
+    "title": "Using utilities with buttons",
+    "content": "Button size . Wrap the button in a container that uses the font-size utility classes to scale buttons: . Big ass button . Tiny ass button . &lt;span class=\"fs-8\"&gt; [Link button](http://example.com/){: .btn } &lt;/span&gt; &lt;span class=\"fs-3\"&gt; [Tiny ass button](http://example.com/){: .btn } &lt;/span&gt; . Spacing between buttons . Use the margin utility classes to add spacing between two buttons in the same block. Button with space Button . Button with more space Button . [Button with space](http://example.com/){: .btn .btn-purple .mr-2 } [Button ](http://example.com/){: .btn .btn-blue } [Button with more space](http://example.com/){: .btn .btn-green .mr-4 } [Button ](http://example.com/){: .btn .btn-blue } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/buttons/#using-utilities-with-buttons",
+    "relUrl": "/docs/ui-components/buttons/#using-utilities-with-buttons"
+  },"6": {
+    "doc": "Code",
+    "title": "Code",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/",
+    "relUrl": "/docs/ui-components/code/"
+  },"7": {
+    "doc": "Code",
+    "title": "Table of contents",
+    "content": ". | Inline code | Syntax highlighted code blocks | Code blocks with rendered examples | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/#table-of-contents",
+    "relUrl": "/docs/ui-components/code/#table-of-contents"
+  },"8": {
+    "doc": "Code",
+    "title": "Inline code",
+    "content": "Code can be rendered inline by wrapping it in single back ticks. Lorem ipsum dolor sit amet, &lt;inline code snippet&gt; adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/#inline-code",
+    "relUrl": "/docs/ui-components/code/#inline-code"
+  },"9": {
+    "doc": "Code",
+    "title": "Heading with &lt;inline code snippet&gt; in it.",
+    "content": "Lorem ipsum dolor sit amet, `&lt;inline code snippet&gt;` adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ## Heading with `&lt;inline code snippet&gt;` in it. ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/#heading-with-inline-code-snippet-in-it",
+    "relUrl": "/docs/ui-components/code/#heading-with-inline-code-snippet-in-it"
+  },"10": {
+    "doc": "Code",
+    "title": "Syntax highlighted code blocks",
+    "content": "Use Jekyll’s built-in syntax highlighting with Rouge for code blocks by using three backticks, followed by the language name: . // Javascript code with syntax highlighting. var fun = function lang(l) { dateformat.i18n = require('./lang/' + l) return true; } . ```js // Javascript code with syntax highlighting. var fun = function lang(l) { dateformat.i18n = require('./lang/' + l) return true; } ``` . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/#syntax-highlighted-code-blocks",
+    "relUrl": "/docs/ui-components/code/#syntax-highlighted-code-blocks"
+  },"11": {
+    "doc": "Code",
+    "title": "Code blocks with rendered examples",
+    "content": "To demonstrate front end code, sometimes it’s useful to show a rendered example of that code. After including the styles from your project that you’ll need to show the rendering, you can use a &lt;div&gt; with the code-example class, followed by the code block syntax. If you want to render your output with Markdown instead of HTML, use the markdown=\"1\" attribute to tell Jekyll that the code you are rendering will be in Markdown format… This is about to get meta… . Link button . [Link button](http://example.com/){: .btn } . &lt;div class=\"code-example\" markdown=\"1\"&gt; [Link button](http://example.com/){: .btn } &lt;/div&gt; ```markdown [Link button](http://example.com/){: .btn } ``` . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/#code-blocks-with-rendered-examples",
+    "relUrl": "/docs/ui-components/code/#code-blocks-with-rendered-examples"
+  },"12": {
+    "doc": "Color",
+    "title": "Color Utilities",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#color-utilities",
+    "relUrl": "/docs/utilities/color/#color-utilities"
+  },"13": {
+    "doc": "Color",
+    "title": "Table of contents",
+    "content": ". | Light Greys | Dark Greys | Purples | Blues | Greens | Yellows | Reds | . All the colors used in Just the Docs have been systematized into a series of variables that have been extended to both font color and background color utility classes. ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#table-of-contents",
+    "relUrl": "/docs/utilities/color/#table-of-contents"
+  },"14": {
+    "doc": "Color",
+    "title": "Light Greys",
+    "content": "| Color value | Font color utility | Background color utility | . | grey-lt-000 | .text-grey-lt-000 | .bg-grey-lt-000 | . | grey-lt-100 | .text-grey-lt-100 | .bg-grey-lt-100 | . | grey-lt-200 | .text-grey-lt-200 | .bg-grey-lt-200 | . | grey-lt-300 | .text-grey-lt-300 | .bg-grey-lt-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#light-greys",
+    "relUrl": "/docs/utilities/color/#light-greys"
+  },"15": {
+    "doc": "Color",
+    "title": "Dark Greys",
+    "content": "| Color value | Font color utility | Background color utility | . | grey-dk-000 | .text-grey-dk-000 | .bg-grey-dk-000 | . | grey-dk-100 | .text-grey-dk-100 | .bg-grey-dk-100 | . | grey-dk-200 | .text-grey-dk-200 | .bg-grey-dk-200 | . | grey-dk-250 | .text-grey-dk-250 | .bg-grey-dk-250 | . | grey-dk-300 | .text-grey-dk-300 | .bg-grey-dk-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#dark-greys",
+    "relUrl": "/docs/utilities/color/#dark-greys"
+  },"16": {
+    "doc": "Color",
+    "title": "Purples",
+    "content": "| Color value | Font color utility | Background color utility | . | purple-000 | .text-purple-000 | .bg-purple-000 | . | purple-100 | .text-purple-100 | .bg-purple-100 | . | purple-200 | .text-purple-200 | .bg-purple-200 | . | purple-300 | .text-purple-300 | .bg-purple-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#purples",
+    "relUrl": "/docs/utilities/color/#purples"
+  },"17": {
+    "doc": "Color",
+    "title": "Blues",
+    "content": "| Color value | Font color utility | Background color utility | . | blue-000 | .text-blue-000 | .bg-blue-000 | . | blue-100 | .text-blue-100 | .bg-blue-100 | . | blue-200 | .text-blue-200 | .bg-blue-200 | . | blue-300 | .text-blue-300 | .bg-blue-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#blues",
+    "relUrl": "/docs/utilities/color/#blues"
+  },"18": {
+    "doc": "Color",
+    "title": "Greens",
+    "content": "| Color value | Font color utility | Background color utility | . | green-000 | .text-green-000 | .bg-green-000 | . | green-100 | .text-green-100 | .bg-green-100 | . | green-200 | .text-green-200 | .bg-green-200 | . | green-300 | .text-green-300 | .bg-green-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#greens",
+    "relUrl": "/docs/utilities/color/#greens"
+  },"19": {
+    "doc": "Color",
+    "title": "Yellows",
+    "content": "| Color value | Font color utility | Background color utility | . | yellow-000 | .text-yellow-000 | .bg-yellow-000 | . | yellow-100 | .text-yellow-100 | .bg-yellow-100 | . | yellow-200 | .text-yellow-200 | .bg-yellow-200 | . | yellow-300 | .text-yellow-300 | .bg-yellow-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#yellows",
+    "relUrl": "/docs/utilities/color/#yellows"
+  },"20": {
+    "doc": "Color",
+    "title": "Reds",
+    "content": "| Color value | Font color utility | Background color utility | . | red-000 | .text-red-000 | .bg-red-000 | . | red-100 | .text-red-100 | .bg-red-100 | . | red-200 | .text-red-200 | .bg-red-200 | . | red-300 | .text-red-300 | .bg-red-300 | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/#reds",
+    "relUrl": "/docs/utilities/color/#reds"
+  },"21": {
+    "doc": "Color",
+    "title": "Color",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/color/",
+    "relUrl": "/docs/utilities/color/"
+  },"22": {
+    "doc": "Configuration",
+    "title": "Configuration",
+    "content": "Just the Docs has some specific configuration parameters that can be defined in your Jekyll site’s _config.yml file. ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/",
+    "relUrl": "/docs/configuration/"
+  },"23": {
+    "doc": "Configuration",
+    "title": "Table of contents",
+    "content": ". | Site logo | Search | Aux links | Heading anchor links | Footer content | Color scheme | Google Analytics | Document collections | . View this site’s _config.yml file as an example. ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#table-of-contents",
+    "relUrl": "/docs/configuration/#table-of-contents"
+  },"24": {
+    "doc": "Configuration",
+    "title": "Site logo",
+    "content": "# Set a path/url to a logo that will be displayed instead of the title logo: \"/assets/images/just-the-docs.png\" . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#site-logo",
+    "relUrl": "/docs/configuration/#site-logo"
+  },"25": {
+    "doc": "Configuration",
+    "title": "Search",
+    "content": "# Enable or disable the site search # Supports true (default) or false search_enabled: true search: # Split pages into sections that can be searched individually # Supports 1 - 6, default: 2 heading_level: 2 # Maximum amount of previews per search result # Default: 3 previews: 3 # Maximum amount of words to display before a matched word in the preview # Default: 5 preview_words_before: 5 # Maximum amount of words to display after a matched word in the preview # Default: 10 preview_words_after: 10 # Set the search token separator # Default: /[\\s\\-/]+/ # Example: enable support for hyphenated search words tokenizer_separator: /[\\s/]+/ # Display the relative url in search results # Supports true (default) or false rel_url: true # Enable or disable the search button that appears in the bottom right corner of every page # Supports true or false (default) button: false . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#search",
+    "relUrl": "/docs/configuration/#search"
+  },"26": {
+    "doc": "Configuration",
+    "title": "Aux links",
+    "content": "# Aux links for the upper right navigation aux_links: \"Just the Docs on GitHub\": - \"//github.com/pmarsceill/just-the-docs\" # Makes Aux links open in a new tab. Default is false aux_links_new_tab: false . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#aux-links",
+    "relUrl": "/docs/configuration/#aux-links"
+  },"27": {
+    "doc": "Configuration",
+    "title": "Heading anchor links",
+    "content": "# Heading anchor links appear on hover over h1-h6 tags in page content # allowing users to deep link to a particular heading on a page. # # Supports true (default) or false heading_anchors: true . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#heading-anchor-links",
+    "relUrl": "/docs/configuration/#heading-anchor-links"
+  },"28": {
+    "doc": "Configuration",
+    "title": "Footer content",
+    "content": "# Footer content # appears at the bottom of every page's main content footer_content: \"Copyright &amp;copy; 2017-2019 Patrick Marsceill. Distributed by an &lt;a href=\\\"https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt\\\"&gt;MIT license.&lt;/a&gt;\" # Footer last edited timestamp last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter last_edit_time_format: \"%b %e %Y at %I:%M %p\" # uses ruby's time format: https://ruby-doc.org/stdlib-2.7.0/libdoc/time/rdoc/Time.html # Footer \"Edit this page on GitHub\" link text gh_edit_link: true # show or hide edit this page link gh_edit_link_text: \"Edit this page on GitHub.\" gh_edit_repository: \"https://github.com/pmarsceill/just-the-docs\" # the github URL for your repo gh_edit_branch: \"master\" # the branch that your docs is served from # gh_edit_source: docs # the source that your files originate from gh_edit_view_mode: \"tree\" # \"tree\" or \"edit\" if you want the user to jump into the editor immediately . | the “page last modified” data will only display if a page has a key called last_modified_date, formatted in some readable date format | last_edit_time_format uses Ruby’s DateTime formatter; see examples and more information at this link. | gh_edit_repository is the URL of the project’s GitHub repository | gh_edit_branch is the branch that the docs site is served from; defaults to master | gh_edit_source is the source directory that your project files are stored in (should be the same as site.source) | gh_edit_view_mode is \"tree\" by default, which brings the user to the github page; switch to \"edit\" to bring the user directly into editing mode | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#footer-content",
+    "relUrl": "/docs/configuration/#footer-content"
+  },"29": {
+    "doc": "Configuration",
+    "title": "Color scheme",
+    "content": "# Color scheme supports \"light\" (default) and \"dark\" color_scheme: dark . Preview dark color scheme . See Customization for more information. ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#color-scheme",
+    "relUrl": "/docs/configuration/#color-scheme"
+  },"30": {
+    "doc": "Configuration",
+    "title": "Google Analytics",
+    "content": "# Google Analytics Tracking (optional) # e.g, UA-1234567-89 ga_tracking: UA-5555555-55 ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true by default) . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#google-analytics",
+    "relUrl": "/docs/configuration/#google-analytics"
+  },"31": {
+    "doc": "Configuration",
+    "title": "Document collections",
+    "content": "By default, the navigation and search include normal pages. Instead, you can also use Jekyll collections which group documents semantically together. For example, put all your documentation files in the _docs folder and create the docs collection: . # Define Jekyll collections collections: # Define a collection named \"docs\", its documents reside in the \"_docs\" directory docs: permalink: \"/:collection/:path/\" output: true just_the_docs: # Define which collections are used in just-the-docs collections: # Reference the \"docs\" collection docs: # Give the collection a name name: Documentation # Exclude the collection from the navigation # Supports true or false (default) nav_exclude: false # Exclude the collection from the search # Supports true or false (default) search_exclude: false . You can reference multiple collections. This creates categories in the navigation with the configured names. collections: docs: permalink: \"/:collection/:path/\" output: true tutorials: permalink: \"/:collection/:path/\" output: true just_the_docs: collections: docs: name: Documentation tutorials: name: Tutorials . ",
+    "url": "http://localhost:4000/just-the-docs/docs/configuration/#document-collections",
+    "relUrl": "/docs/configuration/#document-collections"
+  },"32": {
+    "doc": "Customization",
+    "title": "Customization",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/customization/",
+    "relUrl": "/docs/customization/"
+  },"33": {
+    "doc": "Customization",
+    "title": "Table of contents",
+    "content": ". | Color schemes | Custom schemes . | Define a custom scheme | Use a custom scheme | Switchable custom scheme | . | Override and completely custom styles | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/customization/#table-of-contents",
+    "relUrl": "/docs/customization/#table-of-contents"
+  },"34": {
+    "doc": "Customization",
+    "title": "Color schemes",
+    "content": "New . Just the Docs supports two color schemes: light (default), and dark. To enable a color scheme, set the color_scheme parameter in your site’s _config.yml file: . Example . # Color scheme supports \"light\" (default) and \"dark\" color_scheme: dark . Preview dark color scheme . ",
+    "url": "http://localhost:4000/just-the-docs/docs/customization/#color-schemes",
+    "relUrl": "/docs/customization/#color-schemes"
+  },"35": {
+    "doc": "Customization",
+    "title": "Custom schemes",
+    "content": "Define a custom scheme . You can add custom schemes. If you want to add a scheme named foo (can be any name) just add a file _sass/color_schemes/foo.scss (replace foo by your scheme name) where you override theme variables to change colors, fonts, spacing, etc. Available variables are listed in the _variables.scss file. For example, to change the link color from the purple default to blue, include the following inside your scheme file: . Example . $link-color: $blue-000; . Note: Editing the variables directly in _sass/support/variables.scss is not recommended and can cause other dependencies to fail. Please use scheme files. Use a custom scheme . To use the custom color scheme, only set the color_scheme parameter in your site’s _config.yml file: . color_scheme: foo . Switchable custom scheme . If you want to be able to change the scheme dynamically, for example via javascript, just add a file assets/css/just-the-docs-foo.scss (replace foo by your scheme name) with the following content:` . --- --- {% include css/just-the-docs.scss.liquid color_scheme=\"foo\" %} . This allows you to switch the scheme via the following javascript. jtd.setTheme('foo'); . ",
+    "url": "http://localhost:4000/just-the-docs/docs/customization/#custom-schemes",
+    "relUrl": "/docs/customization/#custom-schemes"
+  },"36": {
+    "doc": "Customization",
+    "title": "Override and completely custom styles",
+    "content": "For styles that aren’t defined as variables, you may want to modify specific CSS classes. Additionally, you may want to add completely custom CSS specific to your content. To do this, put your styles in the file _sass/custom/custom.scss. This will allow for all overrides to be kept in a single file, and for any upstream changes to still be applied. For example, if you’d like to add your own styles for printing a page, you could add the following styles. Example . // Print-only styles. @media print { .side-bar, .page-header { display: none; } .main-content { max-width: auto; margin: 1em;} } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/customization/#override-and-completely-custom-styles",
+    "relUrl": "/docs/customization/#override-and-completely-custom-styles"
+  },"37": {
+    "doc": "Markdown kitchen sink",
+    "title": "Header 1",
+    "content": "This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere. ",
+    "url": "http://localhost:4000/just-the-docs/docs/index-test/#header-1",
+    "relUrl": "/docs/index-test/#header-1"
+  },"38": {
+    "doc": "Markdown kitchen sink",
+    "title": "Header 2",
+    "content": "This is a blockquote following a header. When something is important enough, you do it even if the odds are not in your favor. Header 3 . // Javascript code with syntax highlighting. var fun = function lang(l) { dateformat.i18n = require('./lang/' + l) return true; } . # Ruby code with syntax highlighting GitHubPages::Dependencies.gems.each do |gem, version| s.add_dependency(gem, \"= #{version}\") end . Header 4 with code not transformed . | This is an unordered list following a header. | This is an unordered list following a header. | This is an unordered list following a header. | . Header 5 . | This is an ordered list following a header. | This is an ordered list following a header. | This is an ordered list following a header. | . Header 6 . | head1 | head two | three | . | ok | good swedish fish | nice | . | out of stock | good and plenty | nice | . | ok | good oreos | hmm | . | ok | good zoute drop | yumm | . There’s a horizontal rule below this. Here is an unordered list: . | Item foo | Item bar | Item baz | Item zip | . And an ordered list: . | Item one | Item two | Item three | Item four | . And a nested list: . | level 1 item . | level 2 item | level 2 item . | level 3 item | level 3 item | . | . | level 1 item . | level 2 item | level 2 item | level 2 item | . | level 1 item . | level 2 item | level 2 item | . | level 1 item | . Nesting an ol in ul in an ol . | level 1 item (ul) . | level 2 item (ol) | level 2 item (ol) . | level 3 item (ul) | level 3 item (ul) | . | . | level 1 item (ul) . | level 2 item (ol) | level 2 item (ol) . | level 3 item (ul) | level 3 item (ul) | . | level 4 item (ol) | level 4 item (ol) . | level 3 item (ul) | level 3 item (ul) | . | . | level 1 item (ul) | . And a task list . | Hello, this is a TODO item | Hello, this is another TODO item | Goodbye, this item is done | . Small image . Large image . Definition lists can be used with HTML syntax. Name Godzilla Born 1952 Birthplace Japan Color Green Multiple description terms and values . Term Brief description of Term Longer Term Longer description of Term, possibly more than one line Term First description of Term, possibly more than one line Second description of Term, possibly more than one line . Term1 Term2 Single description of Term1 and Term2, possibly more than one line Term1 Term2 First description of Term1 and Term2, possibly more than one line Second description of Term1 and Term2, possibly more than one line . More code . Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this. The final element. ",
+    "url": "http://localhost:4000/just-the-docs/docs/index-test/#header-2",
+    "relUrl": "/docs/index-test/#header-2"
+  },"39": {
+    "doc": "Markdown kitchen sink",
+    "title": "Markdown kitchen sink",
+    "content": "Text can be bold, italic, or strikethrough. Link to another page. There should be whitespace between paragraphs. There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project. ",
+    "url": "http://localhost:4000/just-the-docs/docs/index-test/",
+    "relUrl": "/docs/index-test/"
+  },"40": {
+    "doc": "Home",
+    "title": "Focus on writing good documentation",
+    "content": "Just the Docs gives your documentation a jumpstart with a responsive Jekyll theme that is easily customizable and hosted on GitHub Pages. Get started now View it on GitHub . ",
+    "url": "http://localhost:4000/just-the-docs/#focus-on-writing-good-documentation",
+    "relUrl": "/#focus-on-writing-good-documentation"
+  },"41": {
+    "doc": "Home",
+    "title": "Getting started",
+    "content": "Dependencies . Just the Docs is built for Jekyll, a static site generator. View the quick start guide for more information. Just the Docs requires no special plugins and can run on GitHub Pages’ standard Jekyll compiler. The Jekyll SEO Tag plugin is included by default (no need to run any special installation) to inject SEO and open graph metadata on docs pages. For information on how to configure SEO and open graph metadata visit the Jekyll SEO Tag usage guide. Quick start: Use as a GitHub Pages remote theme . | Add Just the Docs to your Jekyll site’s _config.yml as a remote theme remote_theme: pmarsceill/just-the-docs . You must have GitHub Pages enabled on your repo, one or more Markdown files, and a _config.yml file. See an example repository . | . Local installation: Use the gem-based theme . | Install the Ruby Gem $ gem install just-the-docs . # .. or add it to your your Jekyll site’s Gemfile gem \"just-the-docs\" . | Add Just the Docs to your Jekyll site’s _config.yml theme: \"just-the-docs\" . | Optional: Initialize search data (creates search-data.json) $ bundle exec just-the-docs rake search:init . | Run you local Jekyll server $ jekyll serve . # .. or if you're using a Gemfile (bundler) $ bundle exec jekyll serve . | Point your web browser to http://localhost:4000 | . If you’re hosting your site on GitHub Pages, set up GitHub Pages and Jekyll locally so that you can more easily work in your development environment. Configure Just the Docs . | See configuration options | . ",
+    "url": "http://localhost:4000/just-the-docs/#getting-started",
+    "relUrl": "/#getting-started"
+  },"42": {
+    "doc": "Home",
+    "title": "About the project",
+    "content": "Just the Docs is © 2017-2020 by Patrick Marsceill. License . Just the Docs is distributed by an MIT license. Contributing . When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change. Read more about becoming a contributor in our GitHub repo. Thank you to the contributors of Just the Docs! . Code of Conduct . Just the Docs is committed to fostering a welcoming community. View our Code of Conduct on our GitHub repository. ",
+    "url": "http://localhost:4000/just-the-docs/#about-the-project",
+    "relUrl": "/#about-the-project"
+  },"43": {
+    "doc": "Home",
+    "title": "Home",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/",
+    "relUrl": "/"
+  },"44": {
+    "doc": "Labels",
+    "title": "Labels",
+    "content": "Use labels as a way to add an additional mark to a section of your docs. Labels come in a few colors. By default, labels will be blue. Default label . Blue label . Stable . New release . Coming soon . Deprecated . Default label {: .label } Blue label {: .label .label-blue } Stable {: .label .label-green } New release {: .label .label-purple } Coming soon {: .label .label-yellow } Deprecated {: .label .label-red } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/labels/",
+    "relUrl": "/docs/ui-components/labels/"
+  },"45": {
+    "doc": "Layout",
+    "title": "Layout Utilities",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/#layout-utilities",
+    "relUrl": "/docs/utilities/layout/#layout-utilities"
+  },"46": {
+    "doc": "Layout",
+    "title": "Table of contents",
+    "content": ". | Spacing | Horizontal Alignment | Vertical Alignment | Display | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/#table-of-contents",
+    "relUrl": "/docs/utilities/layout/#table-of-contents"
+  },"47": {
+    "doc": "Layout",
+    "title": "Spacing",
+    "content": "These spacers are available to use for margins and padding with responsive utility classes. Combine these prefixes with a screen size and spacing scale to use them responsively. | Classname prefix | What it does | . | .m- | margin | . | .mx- | margin-left, margin-right | . | .my- | margin top, margin bottom | . | .mt- | margin-top | . | .mr- | margin-right | . | .mb- | margin-bottom | . | .ml- | margin-left | . | Classname prefix | What it does | . | .p- | padding | . | .px- | padding-left, padding-right | . | .py- | padding top, padding bottom | . | .pt- | padding-top | . | .pr- | padding-right | . | .pb- | padding-bottom | . | .pl- | padding-left | . Spacing values are based on a 1rem = 16px spacing scale, broken down into these units: . | Spacer/suffix | Size in rems | Rem converted to px | . | 1 | 0.25rem | 4px | . | 2 | 0.5rem | 8px | . | 3 | 0.75rem | 12px | . | 4 | 1rem | 16px | . | 5 | 1.5rem | 24px | . | 6 | 2rem | 32px | . | 7 | 2.5rem | 40px | . | 8 | 3rem | 48px | . | auto | auto | auto | . Use mx-auto to horizontally center elements. Examples . In Markdown, use the {: } wrapper to apply custom classes: . This paragraph will have a margin bottom of 1rem/16px at large screens. {: .mb-lg-4 } This paragraph will have 2rem/32px of padding on the right and left at all screen sizes. {: .px-6 } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/#spacing",
+    "relUrl": "/docs/utilities/layout/#spacing"
+  },"48": {
+    "doc": "Layout",
+    "title": "Horizontal Alignment",
+    "content": "| Classname | What it does | . | .float-left | float: left | . | .float-right | float: right | . | .flex-justify-start | justify-content: flex-start | . | .flex-justify-end | justify-content: flex-end | . | .flex-justify-between | justify-content: space-between | . | .flex-justify-around | justify-content: space-around | . Note: any of the flex- classes must be used on a parent element that has d-flex applied to it. ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/#horizontal-alignment",
+    "relUrl": "/docs/utilities/layout/#horizontal-alignment"
+  },"49": {
+    "doc": "Layout",
+    "title": "Vertical Alignment",
+    "content": "| Classname | What it does | . | .v-align-baseline | vertical-align: baseline | . | .v-align-bottom | vertical-align: bottom | . | .v-align-middle | vertical-align: middle | . | .v-align-text-bottom | vertical-align: text-bottom | . | .v-align-text-top | vertical-align: text-top | . | .v-align-top | vertical-align: top | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/#vertical-alignment",
+    "relUrl": "/docs/utilities/layout/#vertical-alignment"
+  },"50": {
+    "doc": "Layout",
+    "title": "Display",
+    "content": "Display classes aid in adapting the layout of the elements on a page: . | Class |   | . | .d-block | display: block | . | .d-flex | display: flex | . | .d-inline | display: inline | . | .d-inline-block | display: inline-block | . | .d-none | display: none | . Use these classes in conjunction with the responsive modifiers. Examples . In Markdown, use the {: } wrapper to apply custom classes: . This button will be hidden until medium screen sizes: [ A button ](#url) {: .d-none .d-md-inline-block } These headings will be `inline-block`: ### heading 3 {: .d-inline-block } ### heading 3 {: .d-inline-block } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/#display",
+    "relUrl": "/docs/utilities/layout/#display"
+  },"51": {
+    "doc": "Layout",
+    "title": "Layout",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/layout/",
+    "relUrl": "/docs/utilities/layout/"
+  },"52": {
+    "doc": "Code with line numbers",
+    "title": "Code snippets with line numbers",
+    "content": "The default settings for HTML compression are incompatible with the HTML produced by Jekyll (4.1.1 or earlier) for line numbers from highlighted code – both when using Kramdown code fences and when using Liquid highlight tags. To avoid non-conforming HTML and unsatisfactory layout, HTML compression can be turned off by using the following configuration option: . compress_html: ignore: envs: all . When using Kramdown code fences, line numbers are turned on globally by the following configuration option: . kramdown: syntax_highlighter_opts: block: line_numbers: true . Line numbers can then be suppressed locally using Liquid tags (without the linenos option) instead of fences: . {% highlight some_language %} Some code {% endhighlight %} . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/line-numbers/#code-snippets-with-line-numbers",
+    "relUrl": "/docs/ui-components/code/line-numbers/#code-snippets-with-line-numbers"
+  },"53": {
+    "doc": "Code with line numbers",
+    "title": "Workarounds",
+    "content": "To use HTML compression together with line numbers, all highlighted code needs to be wrapped using one of the following workarounds. (The variable name some_var can be changed to avoid clashes; it can also be replaced by code – but note that code=code cannot be removed). Code fences (three backticks) . {% capture some_var %} ```some_language Some code ``` {% endcapture %} {% assign some_var = some_var | markdownify %} {% include fix_linenos.html code=some_var %} . Liquid highlighting . {% capture some_var %} {% highlight some_language linenos %} Some code {% endhighlight %} {% endcapture %} {% include fix_linenos.html code=some_var %} . Credit: The original version of the above workaround was suggested by Dmitry Hrabrov at https://github.com/penibelst/jekyll-compress-html/issues/71#issuecomment-188144901. ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/line-numbers/#workarounds",
+    "relUrl": "/docs/ui-components/code/line-numbers/#workarounds"
+  },"54": {
+    "doc": "Code with line numbers",
+    "title": "Examples",
+    "content": "✅ Using code fences + workaround (will only show line numbers if enabled globally in _config.yml): . // Javascript code with syntax highlighting in fences var fun = function lang(l) { dateformat.i18n = require('./lang/' + l) return true; } . ✅ Using liquid highlighting + workaround: . | 1 2 3 4 . | # Ruby code with syntax highlighting and fixed line numbers using Liquid GitHubPages::Dependencies.gems.each do |gem, version| s.add_dependency(gem, \"= #{version}\") end . | . ❌ With the default configuration options, the following example illustrates the incorrect formatting arising from the incompatibility of HTML compression and the non-conforming HTML produced by Jekyll for line numbers: . | 1 2 3 4 . | # Ruby code with syntax highlighting and unfixed line numbers using Liquid GitHubPages::Dependencies.gems.each do |gem, version| s.add_dependency(gem, \"= #{version}\") end . | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/line-numbers/#examples",
+    "relUrl": "/docs/ui-components/code/line-numbers/#examples"
+  },"55": {
+    "doc": "Code with line numbers",
+    "title": "Code with line numbers",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/code/line-numbers/",
+    "relUrl": "/docs/ui-components/code/line-numbers/"
+  },"56": {
+    "doc": "Lists",
+    "title": "Lists",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/lists/",
+    "relUrl": "/docs/ui-components/lists/"
+  },"57": {
+    "doc": "Lists",
+    "title": "Table of contents",
+    "content": ". | Unordered list | Ordered list | Task list | Definition list | . Most lists can be rendered with pure Markdown. ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/lists/#table-of-contents",
+    "relUrl": "/docs/ui-components/lists/#table-of-contents"
+  },"58": {
+    "doc": "Lists",
+    "title": "Unordered list",
+    "content": ". | Item 1 | Item 2 | Item 3 | . or . | Item 1 | Item 2 | Item 3 | . - Item 1 - Item 2 - Item 3 _or_ * Item 1 * Item 2 * Item 3 . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/lists/#unordered-list",
+    "relUrl": "/docs/ui-components/lists/#unordered-list"
+  },"59": {
+    "doc": "Lists",
+    "title": "Ordered list",
+    "content": ". | Item 1 | Item 2 | Item 3 | . 1. Item 1 1. Item 2 1. Item 3 . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/lists/#ordered-list",
+    "relUrl": "/docs/ui-components/lists/#ordered-list"
+  },"60": {
+    "doc": "Lists",
+    "title": "Task list",
+    "content": ". | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . - [ ] hello, this is a todo item - [ ] hello, this is another todo item - [x] goodbye, this item is done . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/lists/#task-list",
+    "relUrl": "/docs/ui-components/lists/#task-list"
+  },"61": {
+    "doc": "Lists",
+    "title": "Definition list",
+    "content": "Definition lists require HTML syntax and aren’t supported with the GitHub Flavored Markdown compiler. Name Godzilla Born 1952 Birthplace Japan Color Green &lt;dl&gt; &lt;dt&gt;Name&lt;/dt&gt; &lt;dd&gt;Godzilla&lt;/dd&gt; &lt;dt&gt;Born&lt;/dt&gt; &lt;dd&gt;1952&lt;/dd&gt; &lt;dt&gt;Birthplace&lt;/dt&gt; &lt;dd&gt;Japan&lt;/dd&gt; &lt;dt&gt;Color&lt;/dt&gt; &lt;dd&gt;Green&lt;/dd&gt; &lt;/dl&gt; . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/lists/#definition-list",
+    "relUrl": "/docs/ui-components/lists/#definition-list"
+  },"62": {
+    "doc": "Navigation Structure",
+    "title": "Navigation Structure",
+    "content": ". | Main navigation | Ordering pages | Excluding pages | Pages with children . | Child pages | Auto-generating Table of Contents | Children with children | . | Auxiliary Links | In-page navigation with Table of Contents . | Collapsible Table of Contents | . | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/",
+    "relUrl": "/docs/navigation-structure/"
+  },"63": {
+    "doc": "Navigation Structure",
+    "title": "Main navigation",
+    "content": "The main navigation for your Just the Docs site is on the left side of the page at large screens and on the top (behind a tap) on small screens. The main navigation can be structured to accommodate a multi-level menu system (pages with children and grandchildren). By default, all pages will appear as top level pages in the main nav unless a parent page is defined (see Pages with Children). ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/#main-navigation",
+    "relUrl": "/docs/navigation-structure/#main-navigation"
+  },"64": {
+    "doc": "Navigation Structure",
+    "title": "Ordering pages",
+    "content": "To specify a page order, you can use the nav_order parameter in your pages’ YAML front matter. Example . --- layout: default title: Customization nav_order: 4 --- . The parameter values determine the order of the top-level pages, and of child pages with the same parent. You can reuse the same parameter values (e.g., integers starting from 1) for the child pages of different parents. The parameter values can be numbers (integers, floats) and/or strings. When you omit nav_order parameters, they default to the titles of the pages, which are ordered alphabetically. Pages with numerical nav_order parameters always come before those with strings or default nav_order parameters. If you want to make the page order independent of the page titles, you can set explicit nav_order parameters on all pages. By default, all Capital letters come before all lowercase letters; you can add nav_sort: case_insensitive in the configuration file to ignore the case. Enclosing strings in quotation marks is optional. Note for users of previous versions: nav_sort: case_insensitive previously affected the ordering of numerical nav_order parameters: e.g., 10 came before 2. Also, all pages with explicit nav_order parameters previously came before all pages with default parameters. Both were potentially confusing, and they have now been eliminated. ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/#ordering-pages",
+    "relUrl": "/docs/navigation-structure/#ordering-pages"
+  },"65": {
+    "doc": "Navigation Structure",
+    "title": "Excluding pages",
+    "content": "For specific pages that you do not wish to include in the main navigation, e.g. a 404 page or a landing page, use the nav_exclude: true parameter in the YAML front matter for that page. Example . --- layout: default title: 404 nav_exclude: true --- . Pages with no title are automatically excluded from the navigation. ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/#excluding-pages",
+    "relUrl": "/docs/navigation-structure/#excluding-pages"
+  },"66": {
+    "doc": "Navigation Structure",
+    "title": "Pages with children",
+    "content": "Sometimes you will want to create a page with many children (a section). First, it is recommended that you keep pages that are related in a directory together… For example, in these docs, we keep all of the written documentation in the ./docs directory and each of the sections in subdirectories like ./docs/ui-components and ./docs/utilities. This gives us an organization like: . +-- .. |-- (Jekyll files) |-- docs |-- ui-components | |-- index.md (parent page) | |-- buttons.md | |-- code.md | |-- labels.md | |-- tables.md | +-- typography.md | |-- utilities | |-- index.md (parent page) | |-- color.md | |-- layout.md | |-- responsive-modifiers.md | +-- typography.md | |-- (other md files, pages with no children) | +-- .. |-- (Jekyll files) +-- .. On the parent pages, add this YAML front matter parameter: . | has_children: true (tells us that this is a parent page) | . Example . --- layout: default title: UI Components nav_order: 2 has_children: true --- . Here we’re setting up the UI Components landing page that is available at /docs/ui-components, which has children and is ordered second in the main nav. Child pages . On child pages, simply set the parent: YAML front matter to whatever the parent’s page title is and set a nav order (this number is now scoped within the section). Example . --- layout: default title: Buttons parent: UI Components nav_order: 2 --- . The Buttons page appears as a child of UI Components and appears second in the UI Components section. Auto-generating Table of Contents . By default, all pages with children will automatically append a Table of Contents which lists the child pages after the parent page’s content. To disable this auto Table of Contents, set has_toc: false in the parent page’s YAML front matter. Example . --- layout: default title: UI Components nav_order: 2 has_children: true has_toc: false --- . Children with children . Child pages can also have children (grandchildren). This is achieved by using a similar pattern on the child and grandchild pages. | Add the has_children attribute to the child | Add the parent and grand_parent attribute to the grandchild | . Example . --- layout: default title: Buttons parent: UI Components nav_order: 2 has_children: true --- . --- layout: default title: Buttons Child Page parent: Buttons grand_parent: UI Components nav_order: 1 --- . This would create the following navigation structure: . +-- .. |-- UI Components |-- .. | |-- Buttons | |-- Button Child Page | |-- .. | +-- .. ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/#pages-with-children",
+    "relUrl": "/docs/navigation-structure/#pages-with-children"
+  },"67": {
+    "doc": "Navigation Structure",
+    "title": "Auxiliary Links",
+    "content": "To add auxiliary links to your site (in the upper right on all pages), add it to the aux_links configuration option in your site’s _config.yml file. Example . # Aux links for the upper right navigation aux_links: \"Just the Docs on GitHub\": - \"//github.com/pmarsceill/just-the-docs\" . ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/#auxiliary-links",
+    "relUrl": "/docs/navigation-structure/#auxiliary-links"
+  },"68": {
+    "doc": "Navigation Structure",
+    "title": "In-page navigation with Table of Contents",
+    "content": "To generate a Table of Contents on your docs pages, you can use the {:toc} method from Kramdown, immediately after an &lt;ol&gt; in Markdown. This will automatically generate an ordered list of anchor links to various sections of the page based on headings and heading levels. There may be occasions where you’re using a heading and you don’t want it to show up in the TOC, so to skip a particular heading use the {: .no_toc } CSS class. Example . # Navigation Structure {: .no_toc } ## {: .no_toc .text-delta } 1. TOC {:toc} . This example skips the page name heading (#) from the TOC, as well as the heading for the Table of Contents itself (##) because it is redundant, followed by the table of contents itself. To get an unordered list, replace 1. TOC above by - TOC. Collapsible Table of Contents . The Table of Contents can be made collapsible using the &lt;details&gt; and &lt;summary&gt; elements , as in the following example. The attribute open (expands the Table of Contents by default) and the styling with {: .text-delta } are optional. &lt;details open markdown=\"block\"&gt; &lt;summary&gt; &lt;/summary&gt; {: .text-delta } 1. TOC {:toc} &lt;/details&gt; . The result is shown at the top of this page ({:toc} can be used only once on each page). ",
+    "url": "http://localhost:4000/just-the-docs/docs/navigation-structure/#in-page-navigation-with-table-of-contents",
+    "relUrl": "/docs/navigation-structure/#in-page-navigation-with-table-of-contents"
+  },"69": {
+    "doc": "Responsive Modifiers",
+    "title": "Responsive modifiers",
+    "content": "Just the Docs spacing works in conjunction with a variety of modifiers that allow you to target specific screen sizes responsively. Use these in conjunction with spacing and display prefix and suffix classes. | Modifier | Screen size | . | (none) | All screens until the next modifier | . | xs | 320px (20rem) and up | . | sm | 500px (31.25rem) and up | . | md | 740px (46.25rem) and up | . | lg | 1120px (70rem) and up | . | xl | 1400px (87.5rem) and up | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/responsive-modifiers/#responsive-modifiers",
+    "relUrl": "/docs/utilities/responsive-modifiers/#responsive-modifiers"
+  },"70": {
+    "doc": "Responsive Modifiers",
+    "title": "Responsive Modifiers",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/responsive-modifiers/",
+    "relUrl": "/docs/utilities/responsive-modifiers/"
+  },"71": {
+    "doc": "Search",
+    "title": "Search",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/search/",
+    "relUrl": "/docs/search/"
+  },"72": {
+    "doc": "Search",
+    "title": "Table of contents",
+    "content": ". | Enable search in configuration . | Search granularity | Search previews | Search tokenizer | Display URL in search results | Display search button | . | Hiding pages from search | Generate search index when used as a gem | . Just the Docs uses lunr.js to add a client-side search interface powered by a JSON index that Jekyll generates. All search results are shown in an auto-complete style interface (there is no search results page). By default, all generated HTML pages are indexed using the following data points: . | Page title | Page content | Page URL | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/search/#table-of-contents",
+    "relUrl": "/docs/search/#table-of-contents"
+  },"73": {
+    "doc": "Search",
+    "title": "Enable search in configuration",
+    "content": "In your site’s _config.yml, enable search: . # Enable or disable the site search # Supports true (default) or false search_enabled: true . Search granularity . Pages are split into sections that can be searched individually. The sections are defined by the headings on the page. Each section is displayed in a separate search result. # Split pages into sections that can be searched individually # Supports 1 - 6, default: 2 search.heading_level: 2 . Search previews . A search result can contain previews that show where the search words are found in the specific section. # Maximum amount of previews per search result # Default: 3 search.previews: 3 # Maximum amount of words to display before a matched word in the preview # Default: 5 search.preview_words_before: 5 # Maximum amount of words to display after a matched word in the preview # Default: 10 search.preview_words_after: 10 . Search tokenizer . The default is for hyphens to separate tokens in search terms: gem-based is equivalent to gem based, matching either word. To allow search for hyphenated words: . # Set the search token separator # Default: /[\\s\\-/]+/ # Example: enable support for hyphenated search words search.tokenizer_separator: /[\\s/]+/ . Display URL in search results . # Display the relative url in search results # Supports true (default) or false search.rel_url: false . Display search button . The search button displays in the bottom right corner of the screen and triggers the search input when clicked. # Enable or disable the search button that appears in the bottom right corner of every page # Supports true or false (default) search.button: true . ",
+    "url": "http://localhost:4000/just-the-docs/docs/search/#enable-search-in-configuration",
+    "relUrl": "/docs/search/#enable-search-in-configuration"
+  },"74": {
+    "doc": "Search",
+    "title": "Hiding pages from search",
+    "content": "Sometimes you might have a page that you don’t want to be indexed for the search nor to show up in search results, e.g, a 404 page. To exclude a page from search, add the search_exclude: true parameter to the page’s YAML front matter: . Example . --- layout: default title: Page not found nav_exclude: true search_exclude: true --- . ",
+    "url": "http://localhost:4000/just-the-docs/docs/search/#hiding-pages-from-search",
+    "relUrl": "/docs/search/#hiding-pages-from-search"
+  },"75": {
+    "doc": "Search",
+    "title": "Generate search index when used as a gem",
+    "content": "If you use Just the Docs as a remote theme, you do not need the following steps. If you use the theme as a gem, you must initialize the search by running this rake command that comes with just-the-docs: . $ bundle exec just-the-docs rake search:init . This command creates the assets/js/zzzz-search-data.json file that Jekyll uses to create your search index. Alternatively, you can create the file manually with this content. ",
+    "url": "http://localhost:4000/just-the-docs/docs/search/#generate-search-index-when-used-as-a-gem",
+    "relUrl": "/docs/search/#generate-search-index-when-used-as-a-gem"
+  },"76": {
+    "doc": "Tables",
+    "title": "Tables",
+    "content": "Tables are responsive by default, allowing wide tables to have a horizontal scroll to access columns outside of the normal viewport. | head1 | head two | three | . | ok | good swedish fish | nice | . | out of stock | good and plenty | nice | . | ok | good oreos | hmm | . | ok | good zoute drop | yumm | . | head1 | head two | three |:-------------|:------------------|:------| ok | good swedish fish | nice | out of stock | good and plenty | nice | ok | good `oreos` | hmm | ok | good `zoute` drop | yumm | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/tables/",
+    "relUrl": "/docs/ui-components/tables/"
+  },"77": {
+    "doc": "Typography",
+    "title": "Typography",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/",
+    "relUrl": "/docs/ui-components/typography/"
+  },"78": {
+    "doc": "Typography",
+    "title": "Table of contents",
+    "content": ". | Font stack | Responsive type scale | Headings | Body text | Inline elements | Typographic Utilities | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#table-of-contents",
+    "relUrl": "/docs/ui-components/typography/#table-of-contents"
+  },"79": {
+    "doc": "Typography",
+    "title": "Font stack",
+    "content": "By default, Just the Docs uses a native system font stack for sans-serif fonts: . system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif . ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz . For monospace type, like code snippets or the &lt;pre&gt; element, Just the Docs uses a native system font stack for monospace fonts: . \"SFMono-Regular\", Menlo, Consolas, Monospace . ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#font-stack",
+    "relUrl": "/docs/ui-components/typography/#font-stack"
+  },"80": {
+    "doc": "Typography",
+    "title": "Responsive type scale",
+    "content": "Just the Docs uses a responsive type scale that shifts depending on the viewport size. | Selector | Small screen size font-size | Large screen size font-size | . | h1, .text-alpha | 32px | 36px | . | h2, .text-beta | 18px | 24px | . | h3, .text-gamma | 16px | 18px | . | h4, .text-delta | 14px | 16px | . | h5, .text-epsilon | 16px | 18px | . | h6, .text-zeta | 18px | 24px | . | body | 14px | 16px | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#responsive-type-scale",
+    "relUrl": "/docs/ui-components/typography/#responsive-type-scale"
+  },"81": {
+    "doc": "Typography",
+    "title": "Headings",
+    "content": "Headings are rendered like this: . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#headings",
+    "relUrl": "/docs/ui-components/typography/#headings"
+  },"82": {
+    "doc": "Typography",
+    "title": "Heading 1",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/",
+    "relUrl": "/docs/ui-components/typography/"
+  },"83": {
+    "doc": "Typography",
+    "title": "Heading 2",
+    "content": "Heading 3 . Heading 4 . Heading 5 . Heading 6 . # Heading 1 ## Heading 2 ### Heading 3 #### Heading 4 ##### Heading 5 ###### Heading 6 . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/",
+    "relUrl": "/docs/ui-components/typography/"
+  },"84": {
+    "doc": "Typography",
+    "title": "Body text",
+    "content": "Default body text is rendered like this: . Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#body-text",
+    "relUrl": "/docs/ui-components/typography/#body-text"
+  },"85": {
+    "doc": "Typography",
+    "title": "Inline elements",
+    "content": "Text can be bold, italic, or strikethrough. Link to another page. Text can be **bold**, _italic_, or ~~strikethrough~~. [Link to another page](another-page). ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#inline-elements",
+    "relUrl": "/docs/ui-components/typography/#inline-elements"
+  },"86": {
+    "doc": "Typography",
+    "title": "Typographic Utilities",
+    "content": "There are a number of specific typographic CSS classes that allow you to override default styling for font size, font weight, line height, and capitalization. View typography utilities . ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components/typography/#typographic-utilities",
+    "relUrl": "/docs/ui-components/typography/#typographic-utilities"
+  },"87": {
+    "doc": "Typography",
+    "title": "Typography Utilities",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/#typography-utilities",
+    "relUrl": "/docs/utilities/typography/#typography-utilities"
+  },"88": {
+    "doc": "Typography",
+    "title": "Table of contents",
+    "content": ". | Font size | Font weight | Line height | Text justification | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/#table-of-contents",
+    "relUrl": "/docs/utilities/typography/#table-of-contents"
+  },"89": {
+    "doc": "Typography",
+    "title": "Font size",
+    "content": "Use the .fs-1 - .fs-10 to set an explicit font-size. | Class | Small screen size font-size | Large screen size font-size | . | .fs-1 | 9px | 10px | . | .fs-2 | 11px | 12px | . | .fs-3 | 12px | 14px | . | .fs-4 | 14px | 16px | . | .fs-5 | 16px | 18px | . | .fs-6 | 18px | 24px | . | .fs-7 | 24px | 32px | . | .fs-8 | 32px | 38px | . | .fs-9 | 38px | 42px | . | .fs-10 | 42px | 48px | . Font size 1 . Font size 2 . Font size 3 . Font size 4 . Font size 5 . Font size 6 . Font size 7 . Font size 8 . Font size 9 . Font size 10 . In Markdown, use the `{: }` wrapper to apply custom classes: Font size 1 {: .fs-1 } Font size 2 {: .fs-2 } Font size 3 {: .fs-3 } Font size 4 {: .fs-4 } Font size 5 {: .fs-5 } Font size 6 {: .fs-6 } Font size 7 {: .fs-7 } Font size 8 {: .fs-8 } Font size 9 {: .fs-9 } Font size 10 {: .fs-10 } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/#font-size",
+    "relUrl": "/docs/utilities/typography/#font-size"
+  },"90": {
+    "doc": "Typography",
+    "title": "Font weight",
+    "content": "Use the .fw-300 - .fw-700 to set an explicit font-size. Font weight 300 . Font weight 400 . Font weight 500 . Font weight 700 . In Markdown, use the `{: }` wrapper to apply custom classes: Font weight 300 {: .fw-300 } Font weight 400 {: .fw-400 } Font weight 500 {: .fw-500 } Font weight 700 {: .fw-700 } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/#font-weight",
+    "relUrl": "/docs/utilities/typography/#font-weight"
+  },"91": {
+    "doc": "Typography",
+    "title": "Line height",
+    "content": "Use the lh- classes to explicitly apply line height to text. | Class | line-height value | Notes | . | .lh-0 | 0 |   | . | .lh-tight | 1.1 | Default for headings | . | .lh-default | 1.4 | Default for body (paragraphs) | . No Line height No Line height . Tight line height Tight line height . Default line height Default line height . In Markdown, use the `{: }` wrapper to apply custom classes: No Line height No Line height {: .lh-0 } Tight line height Tight line height {: .lh-tight } Default line height Default line height {: .fh-default } . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/#line-height",
+    "relUrl": "/docs/utilities/typography/#line-height"
+  },"92": {
+    "doc": "Typography",
+    "title": "Text justification",
+    "content": "By default text is justified left. Use these text- classes to override settings: . | Class | What it does | . | .text-left | text-align: left | . | .text-right | text-align: right | . | .text-center | text-align: center | . ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/#text-justification",
+    "relUrl": "/docs/utilities/typography/#text-justification"
+  },"93": {
+    "doc": "Typography",
+    "title": "Typography",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities/typography/",
+    "relUrl": "/docs/utilities/typography/"
+  },"94": {
+    "doc": "UI Components",
+    "title": "UI Components",
+    "content": "To make it as easy as possible to write documentation in plain Markdown, most UI components are styled using default Markdown elements with few additional CSS classes needed. ",
+    "url": "http://localhost:4000/just-the-docs/docs/ui-components",
+    "relUrl": "/docs/ui-components"
+  },"95": {
+    "doc": "Utilities",
+    "title": "Utilities",
+    "content": "CSS utility classes come in handy when you to want to override default styles to create additional whitespace (margins/padding), correct unexpected shifts in font size or weight, add color, or hide (or show) something at a specific screen size. ",
+    "url": "http://localhost:4000/just-the-docs/docs/utilities",
+    "relUrl": "/docs/utilities"
+  },"96": {
+    "doc": "杂技",
+    "title": "杂技",
+    "content": " ",
+    "url": "http://localhost:4000/just-the-docs/docs/%E6%9D%82%E6%8A%80",
+    "relUrl": "/docs/杂技"
+  }
+}

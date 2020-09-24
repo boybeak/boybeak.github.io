@@ -1,128 +1,72 @@
-# Dark Poole
+<p align="right">
+    <a href="https://badge.fury.io/rb/just-the-docs"><img src="https://badge.fury.io/rb/just-the-docs.svg" alt="Gem version"></a> <a href="https://github.com/pmarsceill/just-the-docs/actions?query=workflow%3A%22Master+branch+CI%22"><img src="https://github.com/pmarsceill/just-the-docs/workflows/Master%20branch%20CI/badge.svg" alt="Build status"></a>
+</p>
+<br><br>
+<p align="center">
+    <h1 align="center">Just the Docs</h1>
+    <p align="center">A modern, highly customizable, and responsive Jekyll theme for documentation with built-in search.<br>Easily hosted on GitHub Pages with few dependencies.</p>
+    <p align="center"><strong><a href="https://pmarsceill.github.io/just-the-docs/">See it in action!</a></strong></p>
+    <br><br><br>
+</p>
 
-![Dark Poole](https://user-images.githubusercontent.com/13270895/89133355-26b3af80-d4e9-11ea-81cd-eacaa9c78320.png)
+![jtd](https://user-images.githubusercontent.com/896475/47384541-89053c80-d6d5-11e8-98dc-dba16e192de9.gif)
 
-Dark Poole is a permanent dark theme of the Poole theme by [@mdo](https://github.com/mdo). I made the theme darker, inspired by [Derek Kedziora's site](https://derekkedziora.com/). Unlike default Poole that utilizes CSS media queries to activate dark mode, the theme will stay dark regardless of the user's preference.
+## Installation
 
-- I added a navbar that is easily customizable. Check out [Development](#development) to see how.
-- I also got rid of the "tagline" in the navbar. I think it looks cleaner without it.
-- Finally, I changed the default font size to 20px. I have 20/20 vision and still thought the original font size was too small.
+Add this line to your Jekyll site's Gemfile:
 
-That's it! I tried to be least intrusive as possible to the Poole code base.
+```ruby
+gem "just-the-docs"
+```
 
-**I noticed that Poole's documentation is slightly outdated and misleading. This documentation will try to address most, if not all, of these issues.**
+And add this line to your Jekyll site's `_config.yml`:
 
----
+```yaml
+theme: just-the-docs
+```
 
-## Contents
+And then execute:
 
-- [Usage](#usage)
-- [Development](#development)
-- [Author](#author)
-- [License](#license)
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install just-the-docs
+
+Alternatively, you can run it inside Docker while developing your site
+
+    $ docker-compose up
 
 ## Usage
 
-### 1. Install dependencies
+[View the documentation](https://pmarsceill.github.io/just-the-docs/) for usage information.
 
-Poole is built on Jekyll and uses its built-in SCSS compiler to generate our CSS. Before getting started, you'll need to install the Jekyll gem and related dependencies:
+## Contributing
 
-```bash
-$ gem install jekyll jekyll-gist jekyll-sitemap jekyll-seo-tag
-```
+Bug reports and pull requests are welcome on GitHub at https://github.com/pmarsceill/just-the-docs. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
-### 2. Install bundler
+### Submitting code changes:
 
-You must have bundler installed. If you already have bundler installed, please skip this step.
+- Open a [Pull Request](https://github.com/pmarsceill/just-the-docs/pulls)
+- Ensure all CI tests pass
+- Await code review
+- Bump the version number in `just-the-docs.gemspec` and `package.json` according to [semantic versioning](https://semver.org/).
 
-```bash
-# Update Rubygems
-$ gem update --system
-# Update bundler
-$ gem install bundler
-```
+### Design and development principles of this theme:
 
-### 3. Running locally
-
-To see your Jekyll site with Poole applied, start a Jekyll server. In Terminal, from `/dark-poole` (or whatever your Jekyll site's root directory is named):
-
-```bash
-$ bundle exec jekyll serve
-```
-
-Open <http://localhost:4000> in your browser, and voilà.
-
-### 4. Serving it up
-
-If you host your code on GitHub, you can use [GitHub Pages](https://pages.github.com) to host your project.
-
-1. Fork this repo and switch to the `gh-pages` branch.
-1. If you're [using a custom domain name](https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages), modify the `CNAME` file to point to your new domain.
-1. If you're not using a custom domain name, **modify the `url` in `_config.yml`** to point to your GitHub Pages URL. Example: for a site hosted at `username.github.io`, use `http://username.github.io`.
-1. If you want to use your repo name as a base url, **set the `url`** to your repo link and **set the `baseurl`** to your repo name in **`_config.yml`**. Example: for site hosted on `https://username.github.io/dark-poole`, set `url` as `https://username.github.io/dark-poole` and `baseurl` as `/dark-poole`.
-1. Done! Head to your GitHub Pages URL or custom domain.
-
-No matter your production or hosting setup, be sure to verify the `baseurl` option file and `CNAME` settings. Not applying this correctly can mean broken styles on your site.
-
-### 5. Pagination for sites with base urls
-
-If you are using a base url for your site, (for example, hosted on `https://username.github.io/dark-poole`) you have to make some changes to get jekyll-pagination to work correctly:
-
-In `_config.yml`, add this line:
-
-```yaml
-paginate_path: "/baseurl/page:num/"
-```
-
-In `archive.md`, add `{{ site.baseurl }}` before `{{ post.url }}`
-
-```html
-<!-- Add "{{ site.baseurl }}" -->
-<li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
-```
-
-In `index.html`, remove the `prepend:`:
-
-```html
-<!-- Remove "prepend:" in "prepend: relative_url" -->
-<a
-  class="pagination-item newer"
-  href="{{ paginator.previous_page_path | relative_url }}"
-  >Newer</a
->
-```
+1. As few dependencies as possible
+2. No build script needed
+3. First class mobile experience
+4. Make the content shine
 
 ## Development
 
-Poole has two branches, but only one is used for active development.
+To set up your environment to develop this theme, run `bundle install`.
 
-- `master` for development. **All pull requests should be to submitted against `master`.**
-- `gh-pages` for hosted demo **Please avoid using this branch.**
+Your theme is set up just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
 
-CSS is handled via Jeykll's built-in Sass compiler. Source Sass files are located in `_sass/`, included into `styles.scss`, and compile to `styles.css`.
-
-### Customize Navbar
-
-You can easily customize the navbar by tweaking the `_config.yml` file. Simply change the title and url of each of the nav elements, or add more. The order will be preserved in the site.
-
-```yaml
-nav:
-  - title: Blog
-    url: /archive
-
-  - title: About
-    url: /about
-```
-
-## Author
-
-**Mark Otto**
-
-- <https://github.com/mdo>
-- <https://twitter.com/mdo>
+When the theme is released, only the files in `_layouts`, `_includes`, and `_sass` tracked with Git will be released.
 
 ## License
 
-Open sourced under the [MIT license](LICENSE.md).
-
-<3
+The theme is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
