@@ -1,6 +1,6 @@
 ---
 layout: default
-title: ASM
+title: ASM tutorial
 parent: 杂技
 ---
 
@@ -26,7 +26,7 @@ ASM 库是一款基于 Java 字节码层面的代码分析和修改工具。ASM 
 
 
 
-![img](https://upload-images.jianshu.io/upload_images/4179925-d4f950ec94a12cde.png?imageMogr2/auto-orient/strip|imageView2/2/w/820/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-d4f950ec94a12cde.webp)
 
 asm_arch.png
 
@@ -89,7 +89,7 @@ MethodVisitor 是一个抽象类，当 ASM 的 ClassReader 读取到 Method 时�
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-f5a428b729962860.png?imageMogr2/auto-orient/strip|imageView2/2/w/1160/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-f5a428b729962860.webp)
 
 AdviceAdapter.png
 
@@ -265,7 +265,7 @@ public class CostTime {
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-32ee7bd0974a4679.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-32ee7bd0974a4679.webp)
 
 Class.png
 
@@ -273,7 +273,7 @@ Class.png
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-af582100631d7eec.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-af582100631d7eec.webp)
 
 Class1.png
 
@@ -317,7 +317,7 @@ public class Person {
 classVisitor.visitField(Opcodes.ACC_PUBLIC, "age", Type.getDescriptor(int.class), null, null);
 ```
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-8c703df0b005aae7.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-8c703df0b005aae7.webp)
 
 visitField.png
 
@@ -380,7 +380,7 @@ public class FieldPractice {
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-a718d240e05a2198.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-a718d240e05a2198.webp)
 
 visitFieldResult.png
 
@@ -407,7 +407,7 @@ public class Transform extends ClassVisitor {
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-e2e730e41623be28.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-e2e730e41623be28.webp)
 
 visitFieldError.png
 
@@ -459,7 +459,7 @@ java -classpath asm-all-5.2.jar org.objectweb.asm.util.ASMifier Demo.class
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/4179925-0cc8712718f08ea0.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img]({{site.baseurl}}/assets/images/4179925-0cc8712718f08ea0.webp)
 
 DemoDump.png
 
