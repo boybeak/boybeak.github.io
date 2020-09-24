@@ -1,4 +1,4 @@
-I"��<h1 id="asm库介绍与使用">ASM库介绍与使用</h1>
+I"��<h1 id="asm库介绍与使用">ASM库介绍与使用</h1>
 
 <blockquote>
   <p><a href="https://www.jianshu.com/p/905be2a9a700">原文</a></p>
@@ -7,7 +7,7 @@
 <p>前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可能会看不懂，所以推荐先看下前面几篇文章。
  这篇文章主要介绍 ASM 库的结构、主要的 API，并且通过两个示例说明如何通过 ASM 修改 .class 文件中的方法和属性。</p>
 
-<p><img src="/just-the-docs/assets/images/ezgif-6-73b502b11e16.jpg" alt="img" /></p>
+<p><img src="/assets/images/ezgif-6-73b502b11e16.jpg" alt="img" /></p>
 
 <p>catalog.png</p>
 
