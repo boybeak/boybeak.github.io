@@ -56,10 +56,10 @@
   --spacer-3: calc(var(--spacer) * 3);
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --body-color: var(--gray-300);
-    --body-bg: var(--gray-800);
+    --body-color: var(--gray-800);
+    --body-bg: var(--gray-300);
 
     --heading-color: #fff;
 
