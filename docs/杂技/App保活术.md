@@ -94,11 +94,11 @@ window.setAttributes(params);
 别忘了在Manifest文件中，为这个activity设置一个透明主题。
 
 ```xml
-<activity
-    			android:name=".OnePixelActivity"
-          android:excludeFromRecents="true"
-          android:taskAffinity="xxxx"
-          android:theme="@style/A_TRANSPRANT_THEME"/>
+<activity android:name=".onepixel.OnePixelActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.github.boybeak.livestock.onepixel"
+            android:theme="@style/OnePixelTheme"
+            />
 ```
 
 > android:excludeFromRecents="true" //不会出现在任务管理器中
