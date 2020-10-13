@@ -36,7 +36,27 @@ cat /sys/module/lowmemorykiller/parameters/minfree
 
 该值表示的是剩余内存大小，优先级为从高到低，比如当内存小于18432*4kb时，杀死对应的优先级的进程。
 
-![进程优先级]({{site.baseurl}}/assets/images/process_priority.jpg)
+![oom_adj]({{site.baseurl}}/assets/images/process_priority.jpg)
+
+```mermaid
+graph TD;
+style 关键优先级 fill:#5befb9
+style 高级优先级 fill:#6998c6
+style 低优先级 fill:#d38a49
+subgraph 关键优先级
+A(前台进程)
+end
+A(前台进程) --> B(可见进程);
+subgraph 高级优先级
+B --> C(服务进程);
+end
+C --> D(后台进程);
+subgraph 低优先级
+D --> E(空进程);
+end
+```
+
+
 
 优先级从高到低依次是，`前台进程`、`可见进程`、`服务进程`、`后台进程`、`空进程`。
 
