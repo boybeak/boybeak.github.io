@@ -53,51 +53,51 @@ public void handleMessage(Message msg) {
 private void handleBindApplication(AppBindData data) {
   ....
   Application app;
-        final StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskWrites();
-        final StrictMode.ThreadPolicy writesAllowedPolicy = StrictMode.getThreadPolicy();
-        try {
-            // If the app is being launched for full backup or restore, bring it up in
-            // a restricted environment with the base application class.
-            app = data.info.makeApplication(data.restrictedBackupMode, null);
-            // Propagate autofill compat state
-            app.setAutofillOptions(data.autofillOptions);
-            // Propagate Content Capture options
-            app.setContentCaptureOptions(data.contentCaptureOptions);
-            mInitialApplication = app;
-            // don't bring up providers in restricted mode; they may depend on the
-            // app's custom Application class
-            if (!data.restrictedBackupMode) {
-                if (!ArrayUtils.isEmpty(data.providers)) {
-                    installContentProviders(app, data.providers);
-                }
-            }
-            // Do this after providers, since instrumentation tests generally start their
-            // test thread at this point, and we don't want that racing.
-            try {
-                mInstrumentation.onCreate(data.instrumentationArgs);
-            }
-            catch (Exception e) {
-                throw new RuntimeException(
-                    "Exception thrown in onCreate() of "
-                    + data.instrumentationName + ": " + e.toString(), e);
-            }
-            try {
-                mInstrumentation.callApplicationOnCreate(app);
-            } catch (Exception e) {
-                if (!mInstrumentation.onException(app, e)) {
-                    throw new RuntimeException(
-                      "Unable to create application " + app.getClass().getName()
-                      + ": " + e.toString(), e);
-                }
-            }
-        } finally {
-            // If the app targets < O-MR1, or doesn't change the thread policy
-            // during startup, clobber the policy to maintain behavior of b/36951662
-            if (data.appInfo.targetSdkVersion < Build.VERSION_CODES.O_MR1
-                    || StrictMode.getThreadPolicy().equals(writesAllowedPolicy)) {
-                StrictMode.setThreadPolicy(savedPolicy);
-            }
-        }
+  final StrictMode.ThreadPolicy savedPolicy = StrictMode.allowThreadDiskWrites();
+  final StrictMode.ThreadPolicy writesAllowedPolicy = StrictMode.getThreadPolicy();
+  try {
+    // If the app is being launched for full backup or restore, bring it up in
+    // a restricted environment with the base application class.
+    app = data.info.makeApplication(data.restrictedBackupMode, null);
+    // Propagate autofill compat state
+    app.setAutofillOptions(data.autofillOptions);
+    // Propagate Content Capture options
+    app.setContentCaptureOptions(data.contentCaptureOptions);
+    mInitialApplication = app;
+    // don't bring up providers in restricted mode; they may depend on the
+    // app's custom Application class
+    if (!data.restrictedBackupMode) {
+      if (!ArrayUtils.isEmpty(data.providers)) {
+        installContentProviders(app, data.providers);
+      }
+    }
+    // Do this after providers, since instrumentation tests generally start their
+    // test thread at this point, and we don't want that racing.
+    try {
+      mInstrumentation.onCreate(data.instrumentationArgs);
+    }
+    catch (Exception e) {
+      throw new RuntimeException(
+        "Exception thrown in onCreate() of "
+        + data.instrumentationName + ": " + e.toString(), e);
+    }
+    try {
+      mInstrumentation.callApplicationOnCreate(app);
+    } catch (Exception e) {
+      if (!mInstrumentation.onException(app, e)) {
+        throw new RuntimeException(
+          "Unable to create application " + app.getClass().getName()
+          + ": " + e.toString(), e);
+      }
+    }
+  } finally {
+    // If the app targets < O-MR1, or doesn't change the thread policy
+    // during startup, clobber the policy to maintain behavior of b/36951662
+    if (data.appInfo.targetSdkVersion < Build.VERSION_CODES.O_MR1
+        || StrictMode.getThreadPolicy().equals(writesAllowedPolicy)) {
+      StrictMode.setThreadPolicy(savedPolicy);
+    }
+  }
   ....
 }
 ```
