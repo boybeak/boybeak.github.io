@@ -1,8 +1,8 @@
 ---
-layout: default
-title: LeakCanary原理分析
-parent: 杂技
+sort: 0
 ---
+
+
 
 # LeakCanary原理分析
 
