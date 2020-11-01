@@ -1,9 +1,3 @@
----
-sort: 1
----
-
-
-
 # Glide源码分析与自我实现(一)——Glide数据加载主流程
 
 阅读前请参考[Glide 源码分析解读-基于最新版Glide 4.9.0](https://zhuanlan.zhihu.com/p/60425157)一文，该文章中，将Glide中各个部分的作用分析的非常好了。
