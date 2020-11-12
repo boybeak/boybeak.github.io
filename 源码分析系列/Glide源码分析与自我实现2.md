@@ -1,3 +1,7 @@
+---
+sort: 2
+---
+
 # Glide源码分析与自我实现(二)——缓存与BitmapPool
 
 > 本文基于Glide 4.11.0

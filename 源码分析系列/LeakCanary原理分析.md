@@ -1,3 +1,7 @@
+---
+sort: 4
+---
+
 # LeakCanary原理分析
 
 ```groovy
