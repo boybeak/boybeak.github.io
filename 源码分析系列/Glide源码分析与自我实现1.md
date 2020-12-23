@@ -2,7 +2,7 @@
 sort: 1
 ---
 
-# Glide源码分析与自我实现(一)——G数据加载主流程
+# Glide源码分析与自我实现(一)——数据加载主流程
 
 > 本文基于Glide 4.11.0
 
@@ -97,7 +97,7 @@ private SupportRequestManagerFragment getSupportRequestManagerFragment(
 
 其实，这里才是真正开始触发发起请求的地方。
 
-###RequestBuilder
+### RequestBuilder
 
 我们把`into(ImageView)`方法作为入口，一路跟踪，可以发现最终的实现是如下方法。
 
@@ -145,7 +145,7 @@ private <Y extends Target<TranscodeType>> Y into(
 
 接下来我们就按照`requestManager.track(target, request)`这段代码继续追踪。来到RequestManager的track方法。
 
-###RequestManager
+### RequestManager
 
 ```java
 synchronized void track(@NonNull Target<?> target, @NonNull Request request) {
@@ -156,7 +156,7 @@ synchronized void track(@NonNull Target<?> target, @NonNull Request request) {
 
 这个方法很简单，只有两个方法。
 
-####TargetTracker
+#### TargetTracker
 
 ```java
 private final Set<Target<?>> targets =
@@ -169,7 +169,7 @@ public void track(@NonNull Target<?> target) {
 
 这里把一个target存放在WeakHashMap中，因为target是与生命周期有关的东西，比如ImageView对应的**ImageViewTarget**，所以这么做是为了防止内存泄漏。
 
-####RequestTracker
+#### RequestTracker
 
 ```java
 /** Starts tracking the given request. */
@@ -201,7 +201,7 @@ public void runRequest(@NonNull Request request) {
 
 我们重点去看SingleRequest的begin方法。
 
-###SingleRequest
+### SingleRequest
 
 ```java
 public void begin() {
