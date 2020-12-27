@@ -26,11 +26,11 @@ C --> |未命中|D{3. 通过<br>DiskCache<br>获取资源} --> |命中|D1[缓存
 D --> |未命中|E["4. 通过数据源(网络、文件等)<br>加载数据"] --> E1[缓存至<br>DiskCache] --> D1;
 ```
 
-##内存缓存
+## 内存缓存
 
 内存缓存主要靠三个部分组成：**ActiveResources**、**MemoryCache**和**BitmapPool**。
 
-###ActiveResources
+### ActiveResources
 
 ActiveResources表示当前正在活动中的资源。ActiveResources通过一个`Map<Key, ResourceWeakReference>`来保存活动中的资源，其中的ResourceWeakReference就是资源数据，在构建这个ResourceWeakReference的时候必须传入一个ReferenceQueue用来检测资源是否被回收。
 
@@ -138,7 +138,7 @@ public void onResourceReleased(Key cacheKey, EngineResource<?> resource) {
 
 在开始MemoryCache和BitmapPool前，需要先了解一下**MemorySizeCalculator**这个类，这个类是用来计算 BitmapPool 、ArrayPool 以及 MemoryCache **大小**的。
 
-###MemoryCache
+### MemoryCache
 
 MemoryCache的具体实现类是LruResourceCache，而实际的逻辑方法，都在其父类LruCache中，以put方法为例。
 
@@ -192,7 +192,7 @@ private void evict() {
 
 
 
-###BitmapPool
+### BitmapPool
 
 这里是专门用来存放被回收的Bitmap的，其中**BitmapDrawableResource**、**BitmapResource**都持有一个**BitmapPool**变量，在执行recycle()方法时候，调用*BitmapPool#put()*方法。我们来看一下这个BitmapPool的默认实现类**LruBitmapPool**的方法实现。
 
@@ -394,7 +394,7 @@ DiskCache的默认实现类是**DiskLruCacheWrapper**，其内部通过**DiskLru
 
 
 
-##总结
+## 总结
 
 到现在，Glide主要部分已经分析的差不多了，实际上这个优秀的框架可挖的地方还有很多，比如通过[APT来实现很好的扩展]({{site.base_url}}/源码分析系列/Glide源码分析与自我实现3.md)，框架中涉及多种涉及模式等。
 
