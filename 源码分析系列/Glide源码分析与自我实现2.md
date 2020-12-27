@@ -190,6 +190,19 @@ private void evict() {
 }
 ```
 
+被**"驱逐"**的值去哪里了呢？我们查看*MemoryCache*类的源码，可以知道是通过*ResourceRemovedListener*回调给了*Engine*，在*Engine*中我们查看*onResourceRemoved*方法。
+
+```java
+@Override
+public void onResourceRemoved(@NonNull final Resource<?> resource) {
+  // Avoid deadlock with RequestManagers when recycling triggers recursive clear() calls.
+  // See b/145519760.
+  resourceRecycler.recycle(resource, /*forceNextFrame=*/ true);
+}
+```
+
+我们可以看到，这里同样是通过resourceRecycler进行了回收。在这里，则是交给resource自己的recycle()方法来处理，比如，*BitmapResource*是交给了*BitmapPool*进行处理。
+
 
 
 ### BitmapPool
