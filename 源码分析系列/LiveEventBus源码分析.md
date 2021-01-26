@@ -4,7 +4,7 @@ sort: 8
 
 # LiveEventBus源码分析
 
-> 不再分析了，理解了LiveData后，不难理解这个框架。而且这个框架有一些脱了裤子放屁的地方。不继续分析了。
+> 不再分析了，理解了LiveData后，不难理解这个框架。
 
 阅读本文前，请先阅读[《Jetpack之LiveData源码分析》]({{site.base_url}}/源码分析系列/LiveEventBus源码分析.md)。因为**LiveEventBus**是基于**LiveData**构建的。
 
