@@ -1,5 +1,5 @@
 ---
-wordssort: 4
+sort: 4
 ---
 
 

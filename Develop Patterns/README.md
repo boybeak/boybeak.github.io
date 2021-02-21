@@ -1,5 +1,5 @@
 ---
-wordssort: 5
+sort: 5
 ---
 
 
