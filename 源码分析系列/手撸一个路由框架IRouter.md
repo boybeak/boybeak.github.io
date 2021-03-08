@@ -236,7 +236,7 @@ public class ASM {
 
 以demo中的v2ex为例，修改后的代码load代码如下：
 
-![LoaderManager](${{base_url}}/assets/images/jd_loader_manager.jpg)
+![LoaderManager]({{base_url}}/assets/images/jd_loader_manager.jpg)
 
 
 
