@@ -6,6 +6,8 @@ sort: 9
 
 # 网络相关知识
 
+[总结自bilibili教程](https://www.bilibili.com/video/BV1mv41117oY?p=8&spm_id_from=pageDriver)
+
 | 4层网络结构 | 协议     |
 | ----------- | -------- |
 | 应用层      | HTTP/FTP |
@@ -184,3 +186,72 @@ Q3: 为什么server返回的数据要分两次传输呢？
 > ```
 >
 > 我们可以看到mtu为1500，也就是说一次转发的最大数据量就是1500个字节，而返回的总数据大小为2781个字节，所以，必须进行拆分，分两次转发。
+
+
+
+## 网络层 - IP协议
+
+
+
+## 链路层 - ARP协议
+
+网络通信中，最终都要找到目标网卡的硬件mac地址才能完成通信过程，通过ARP协议，可以建立一个ip - mac表。
+
+执行`arp -a`查看结果
+
+```shell
+? (169.254.236.18) at de:97:6:84:a1:c3 on en0 [ethernet]
+? (192.168.11.253) at 9c:1c:12:cd:d7:dc on en0 ifscope [ethernet]
+? (192.168.11.254) at 0:1:42:d0:c:a on en0 ifscope [ethernet]
+? (192.168.12.66) at c2:4a:63:15:86:b9 on en0 ifscope [ethernet]
+d? (192.168.12.95) at b8:63:4d:4b:56:1e on en0 ifscope [ethernet]
+? (192.168.12.188) at e4:e:ee:41:e0:ab on en0 ifscope [ethernet]
+? (192.168.14.104) at 80:30:49:db:99:27 on en0 ifscope [ethernet]
+? (192.168.14.231) at da:3b:88:87:b6:ae on en0 ifscope [ethernet]
+? (192.168.15.1) at 7c:50:49:25:2:8 on en0 ifscope [ethernet]
+? (192.168.15.68) at 5c:1c:b9:6:8f:6b on en0 ifscope [ethernet]
+```
+
+执行arp抓包可以使用如下命令，过程与tcp抓包类似。
+
+**A窗口**
+
+```shell
+~$ sudo tcpdump -nn -i en0 port 80 or arp
+```
+
+在B窗口执行`curl www.baidu.com:80`，回到A窗口查看结果。
+
+```shell
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
+# -------------> 开始执行ARP <---------------
+15:16:07.802980 ARP, Announcement 192.168.15.1, length 46
+15:16:09.155030 ARP, Announcement 192.168.15.1, length 46
+# -------------> 结束执行ARP <---------------
+
+# -------------> 接下来就是熟悉的握手分手的过程 <---------------
+15:16:14.918848 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [S], seq 1666577570, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 549936889 ecr 0,sackOK,eol], length 0
+15:16:14.923348 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [S.], seq 4227730582, ack 1666577571, win 8192, options [mss 1452,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0
+15:16:14.923456 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [.], ack 1, win 4096, length 0
+15:16:14.923648 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [P.], seq 1:78, ack 1, win 4096, length 77: HTTP: GET / HTTP/1.1
+15:16:14.927898 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [.], ack 78, win 908, length 0
+15:16:14.929381 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [P.], seq 1:1441, ack 78, win 908, length 1440: HTTP: HTTP/1.1 200 OK
+15:16:14.929388 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [P.], seq 1441:2782, ack 78, win 908, length 1341: HTTP
+15:16:14.929471 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [.], ack 2782, win 4052, length 0
+15:16:14.929836 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [F.], seq 78, ack 2782, win 4096, length 0
+15:16:14.935695 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [.], ack 79, win 908, length 0
+15:16:14.935702 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [F.], seq 2782, ack 79, win 908, length 0
+15:16:14.935803 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [.], ack 2783, win 4096, length 0
+15:16:17.007633 ARP, Announcement 192.168.11.253 (ff:ff:ff:ff:ff:ff), length 46
+15:16:17.007642 ARP, Announcement 192.168.11.253 (ff:ff:ff:ff:ff:ff), length 46
+15:16:17.008046 ARP, Announcement 192.168.11.253 (ff:ff:ff:ff:ff:ff), length 46
+^C
+17 packets captured
+12186 packets received by filter
+0 packets dropped by kernel
+```
+
+
+
+具体还是看开头的课程吧，macOS下很多命令与linux不一样，没办法尽善尽美的实验。
