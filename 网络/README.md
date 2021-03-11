@@ -10,6 +10,8 @@ sort: 9
 
 [tcpdump使用教程](https://www.jianshu.com/p/a57a5b0e58f0)
 
+![net model]({{base_url}}/assets/images/net_model.png)
+
 | 4层网络结构 | 协议     |
 | ----------- | -------- |
 | 应用层      | HTTP/FTP |
@@ -193,6 +195,18 @@ Q3: 为什么server返回的数据要分两次传输呢？
 
 ## 网络层 - IP协议
 
+查看路由表`route -n`结果如下：
+
+```shell
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.115.1   0.0.0.0         UG    100    0        0 ens33
+169.254.0.0     0.0.0.0         255.255.0.0     U     1000   0        0 ens33
+192.168.115.0   0.0.0.0         255.255.255.0   U     100    0        0 ens33
+```
+
+当我们向一个ip发起请求的时候，系统会从这个路由表中挨个匹配，用目的ip与子网掩码Genmask做按位与运算，运算出的结果如果与Destination列相匹配上，则将数据包转发到对应的Gateway下路由器或者主机，路由器或者主机收到数据包如果发现目的ip与自己ip相同，则进行处理，如果不同，则重复刚才的动作，与自己的路由表中Genmask进行按位与运算，再次进行转发，这就是所谓的”**下一跳**“。
+
 
 
 ## 链路层 - ARP协议
@@ -202,16 +216,7 @@ Q3: 为什么server返回的数据要分两次传输呢？
 执行`arp -a`查看结果
 
 ```shell
-? (169.254.236.18) at de:97:6:84:a1:c3 on en0 [ethernet]
-? (192.168.11.253) at 9c:1c:12:cd:d7:dc on en0 ifscope [ethernet]
-? (192.168.11.254) at 0:1:42:d0:c:a on en0 ifscope [ethernet]
-? (192.168.12.66) at c2:4a:63:15:86:b9 on en0 ifscope [ethernet]
-d? (192.168.12.95) at b8:63:4d:4b:56:1e on en0 ifscope [ethernet]
-? (192.168.12.188) at e4:e:ee:41:e0:ab on en0 ifscope [ethernet]
-? (192.168.14.104) at 80:30:49:db:99:27 on en0 ifscope [ethernet]
-? (192.168.14.231) at da:3b:88:87:b6:ae on en0 ifscope [ethernet]
-? (192.168.15.1) at 7c:50:49:25:2:8 on en0 ifscope [ethernet]
-? (192.168.15.68) at 5c:1c:b9:6:8f:6b on en0 ifscope [ethernet]
+_gateway (192.168.115.1) at a6:5e:60:ab:17:64 [ether] on ens33
 ```
 
 执行arp抓包可以使用如下命令，过程与tcp抓包类似。
@@ -222,38 +227,47 @@ d? (192.168.12.95) at b8:63:4d:4b:56:1e on en0 ifscope [ethernet]
 ~$ sudo tcpdump -nn -i en0 port 80 or arp
 ```
 
-在B窗口执行`curl www.baidu.com:80`，回到A窗口查看结果。
+在B窗口执行`arp -d 192.168.115.1 && curl www.baidu.com:80`，回到A窗口查看结果。
 
 ```shell
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on en0, link-type EN10MB (Ethernet), capture size 262144 bytes
-# -------------> 开始执行ARP <---------------
-15:16:07.802980 ARP, Announcement 192.168.15.1, length 46
-15:16:09.155030 ARP, Announcement 192.168.15.1, length 46
-# -------------> 结束执行ARP <---------------
+listening on ens33, link-type EN10MB (Ethernet), capture size 262144 bytes
+# -------------> 开始查找mac地址 <---------------
+02:58:45.634340 ARP, Request who-has 192.168.115.1 tell 192.168.115.2, length 28
+02:58:45.634647 ARP, Reply 192.168.115.1 is-at a6:5e:60:ab:17:64, length 46
+# -------------> 收到别人回复的mac地址 <---------------
 
-# -------------> 接下来就是熟悉的握手分手的过程 <---------------
-15:16:14.918848 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [S], seq 1666577570, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 549936889 ecr 0,sackOK,eol], length 0
-15:16:14.923348 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [S.], seq 4227730582, ack 1666577571, win 8192, options [mss 1452,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0
-15:16:14.923456 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [.], ack 1, win 4096, length 0
-15:16:14.923648 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [P.], seq 1:78, ack 1, win 4096, length 77: HTTP: GET / HTTP/1.1
-15:16:14.927898 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [.], ack 78, win 908, length 0
-15:16:14.929381 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [P.], seq 1:1441, ack 78, win 908, length 1440: HTTP: HTTP/1.1 200 OK
-15:16:14.929388 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [P.], seq 1441:2782, ack 78, win 908, length 1341: HTTP
-15:16:14.929471 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [.], ack 2782, win 4052, length 0
-15:16:14.929836 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [F.], seq 78, ack 2782, win 4096, length 0
-15:16:14.935695 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [.], ack 79, win 908, length 0
-15:16:14.935702 IP 14.215.177.39.80 > 192.168.15.195.57078: Flags [F.], seq 2782, ack 79, win 908, length 0
-15:16:14.935803 IP 192.168.15.195.57078 > 14.215.177.39.80: Flags [.], ack 2783, win 4096, length 0
-15:16:17.007633 ARP, Announcement 192.168.11.253 (ff:ff:ff:ff:ff:ff), length 46
-15:16:17.007642 ARP, Announcement 192.168.11.253 (ff:ff:ff:ff:ff:ff), length 46
-15:16:17.008046 ARP, Announcement 192.168.11.253 (ff:ff:ff:ff:ff:ff), length 46
+# -------------> 接下来是熟悉的握手过程 <---------------
+02:58:45.688502 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [S], seq 4034907629, win 64240, options [mss 1460,sackOK,TS val 171174518 ecr 0,nop,wscale 7], length 0
+02:58:45.705080 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [S.], seq 924436396, ack 4034907630, win 8192, options [mss 1412,sackOK,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,wscale 5], length 0
+02:58:45.705126 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [.], ack 1, win 502, length 0
+02:58:45.705383 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [P.], seq 1:78, ack 1, win 502, length 77: HTTP: GET / HTTP/1.1
+02:58:45.716317 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [.], ack 78, win 908, length 0
+02:58:45.718472 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [.], seq 1:1413, ack 78, win 908, length 1412: HTTP: HTTP/1.1 200 OK
+02:58:45.718498 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [.], ack 1413, win 501, length 0
+02:58:45.719736 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [P.], seq 1413:1441, ack 78, win 908, length 28: HTTP
+02:58:45.719769 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [.], ack 1441, win 501, length 0
+02:58:45.722458 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [P.], seq 1441:2782, ack 78, win 908, length 1341: HTTP
+02:58:45.722511 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [.], ack 2782, win 501, length 0
+02:58:45.723029 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [F.], seq 78, ack 2782, win 501, length 0
+02:58:45.730027 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [P.], seq 1441:2782, ack 78, win 908, length 1341: HTTP
+02:58:45.730309 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [.], ack 2782, win 501, options [nop,nop,sack 1 {1441:2782}], length 0
+02:58:45.733570 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [.], ack 79, win 908, length 0
+02:58:45.733602 IP 14.215.177.39.80 > 192.168.115.2.48330: Flags [F.], seq 2782, ack 79, win 908, length 0
+02:58:45.733652 IP 192.168.115.2.48330 > 14.215.177.39.80: Flags [.], ack 2783, win 501, length 0
 ^C
-17 packets captured
-12186 packets received by filter
+19 packets captured
+19 packets received by filter
 0 packets dropped by kernel
+
 ```
 
 
 
-具体还是看开头的课程吧，macOS下很多命令与linux不一样，没办法尽善尽美的实验。
+## 总结
+
+发起一个网络请求，需要多层联动，从tcp需要三次握手，需要在网络层ip协议不断的**下一跳**到达对方，而下一跳需要通过链路层的arp协议来查询到每一跳的网卡mac地址。
+
+
+
+在Mac上做实验确实比较难，很多命令与Linux不一样，半路又搭建了ubuntu的虚拟机来实验的，中途还换过网络，所以部分细节不要深究。具体还是看开头的课程吧，没办法尽善尽美的实验。
