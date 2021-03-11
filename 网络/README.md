@@ -10,6 +10,26 @@ sort: 9
 
 [tcpdump使用教程](https://www.jianshu.com/p/a57a5b0e58f0)
 
+其他参考文章：
+
+[TCP/IP（一）之开启计算机网络之路](https://cloud.tencent.com/developer/article/1023730)
+
+[TCP/IP（二）物理层详解](https://cloud.tencent.com/developer/article/1023718)
+
+[TCP/IP（三）数据链路层~1](https://cloud.tencent.com/developer/article/1023714)
+
+[TCP/IP（三）数据链路层~2](https://cloud.tencent.com/developer/article/1023712)
+
+[TCP/IP（四）网络层](https://cloud.tencent.com/developer/article/1023707)
+
+[TCP/IP（五）传输层之细说TCP的三次握手和四次挥手](https://cloud.tencent.com/developer/article/1023702)
+
+[TCP/IP（六）应用层（DNS和HTTP协议）](https://cloud.tencent.com/developer/article/1023700)
+
+[TCP/IP（七）之玩转HTTP协议](https://cloud.tencent.com/developer/article/1023773?from=article.detail.1023700)
+
+[TCP/IP（八）之总结TCP/IP四层模型](https://cloud.tencent.com/developer/article/1023759)
+
 ![net model]({{base_url}}/assets/images/net_model.png)
 
 | 4层网络结构 | 协议     |
