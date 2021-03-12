@@ -89,42 +89,42 @@ public class ComponentActivity extends androidx.core.app.ComponentActivity imple
 
 ```kotlin
 public class ReportFragment extends Fragment {
-		static void dispatch(@NonNull Activity activity, @NonNull Lifecycle.Event event) {
-        if (activity instanceof LifecycleRegistryOwner) {
-            ((LifecycleRegistryOwner) activity).getLifecycle().handleLifecycleEvent(event);
-            return;
-        }
+  static void dispatch(@NonNull Activity activity, @NonNull Lifecycle.Event event) {
+    if (activity instanceof LifecycleRegistryOwner) {
+      ((LifecycleRegistryOwner) activity).getLifecycle().handleLifecycleEvent(event);
+      return;
+    }
 
-        if (activity instanceof LifecycleOwner) { // 3
-            Lifecycle lifecycle = ((LifecycleOwner) activity).getLifecycle();
-            if (lifecycle instanceof LifecycleRegistry) {
-                ((LifecycleRegistry) lifecycle).handleLifecycleEvent(event);
-            }
-        }
+    if (activity instanceof LifecycleOwner) { // 3
+      Lifecycle lifecycle = ((LifecycleOwner) activity).getLifecycle();
+      if (lifecycle instanceof LifecycleRegistry) {
+        ((LifecycleRegistry) lifecycle).handleLifecycleEvent(event);
+      }
     }
-  
-		private void dispatchCreate(ActivityInitializationListener listener) {
-        if (listener != null) {
-            listener.onCreate();
-        }
+  }
+
+  private void dispatchCreate(ActivityInitializationListener listener) {
+    if (listener != null) {
+      listener.onCreate();
     }
-  
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        dispatchCreate(mProcessListener);
-        dispatch(Lifecycle.Event.ON_CREATE); // 1
+  }
+
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    dispatchCreate(mProcessListener);
+    dispatch(Lifecycle.Event.ON_CREATE); // 1
+  }
+
+  private void dispatch(@NonNull Lifecycle.Event event) {
+    if (Build.VERSION.SDK_INT < 29) {
+      // Only dispatch events from ReportFragment on API levels prior
+      // to API 29. On API 29+, this is handled by the ActivityLifecycleCallbacks
+      // added in ReportFragment.injectIfNeededIn
+      dispatch(getActivity(), event); // 2
     }
-  
-    private void dispatch(@NonNull Lifecycle.Event event) {
-        if (Build.VERSION.SDK_INT < 29) {
-            // Only dispatch events from ReportFragment on API levels prior
-            // to API 29. On API 29+, this is handled by the ActivityLifecycleCallbacks
-            // added in ReportFragment.injectIfNeededIn
-            dispatch(getActivity(), event); // 2
-        }
-    }
-    
+  }
+
 }
 ```
 
