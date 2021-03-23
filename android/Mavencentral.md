@@ -4,9 +4,9 @@ JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2
 
 我参考的教程来自以下两篇文章：
 
-https://proandroiddev.com/publishing-your-first-android-library-to-mavencentral-be2c51330b88
+[Publishing your first Android library to MavenCentral](https://proandroiddev.com/publishing-your-first-android-library-to-mavencentral-be2c51330b88)
 
-https://xiaozhuanlan.com/topic/6174835029
+[Android库发布到Maven Central全攻略](https://xiaozhuanlan.com/topic/6174835029)
 
 建议英文能力强的直接第一篇，我是在第二篇遇到问题时候，找到了第一篇文章解决了问题，因为第二篇里用的windows环境，我用的mac环境。
 
