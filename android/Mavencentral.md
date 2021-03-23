@@ -1,8 +1,4 @@
----
-sort: 0
----
-
-# Android库发布到MavenCentral教程
+# 发布Android库到MavenCentral教程
 
 JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2022年2月21号以前，连库的解析服务也停止，所以，把以前的库或者未来的新库替换到MavenCentral是当务之急了。
 
