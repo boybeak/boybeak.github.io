@@ -8,6 +8,10 @@ JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2
 
 [Android库发布到Maven Central全攻略](https://xiaozhuanlan.com/topic/6174835029)
 
+Demo项目地址：
+
+[EasyPack](https://github.com/boybeak/EasyPack)
+
 建议英文能力强的直接第一篇，我是在第二篇遇到问题时候，找到了第一篇文章解决了问题，因为第二篇里用的windows环境，我用的mac环境。
 
 
