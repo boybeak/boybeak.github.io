@@ -244,6 +244,6 @@ ossrhPassword=sonatype密码
 
 ![]({{base_url}}/assets/images/mc_build_push.jpg)
 
-上传成功后，打开[Nexus Repository Manager](https://oss.sonatype.org/)，登录你的sonatype账号，在左侧`Staging Repositories`页面找到你的group id，选中，点击上边的close，等待几分钟十几分钟后，等其状态变为closed后，再点击Release，则所有人都用使用你的库了。
+上传成功后，打开[Nexus Repository Manager](https://oss.sonatype.org/)，登录你的sonatype账号，在左侧`Staging Repositories`页面找到你的group id，选中，点击上边的close，等待几分钟十几分钟后刷新状态，等其状态变为closed后，再点击Release，则所有人都用使用你的库了。
 
 ![]({{base_url}}/assets/images/mc_publish.jpg)。
