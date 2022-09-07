@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  
+  <title>Activity启动流程 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="#Activity启动流程
+原文参考：Activity 启动流程分析(Android10)
+graph TD; A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C[通过Intent获取到目标Activity] --&gt; D{目标Activity是否启动} --&gt; |是|E[通过Instrumentation创建Activity] --&gt; F[回调Activity#attach] --&gt; G[回调Activity#onCreate] --&gt; H[准备显示Activity] --&gt; I[Activity#onResume]; D --&gt; |否|J[通过Zygote进程fork一个App进程]:::zygote --&gt; K[创建Application并回调Application#onCreate]:::zygote --&gt; L[启动ActivityThread主线程消息队列]:::zygote --&gt; E; F --&gt; M[创建Window对象并设置Window.Callback接收事件]:::wms; G --&gt; N[Activity#setContentView] --&gt; O[Window#setContentView]:::wms; H --&gt; P[Window#addView]:::wms; classDef wms fill:#aaffff classDef zygote fill:#ffaa99 途中浅蓝色部分为WMS关联部分，橙色部分为目标App未启动情况下的流程。
+Intent 解析到 Activity 调用 startActivity 之后，经过几步辗转最终会调用到 AMS 中，而 AMS 又会调用 ActivityStarter 来启动 Activity。 解析 Intent 的任务将由PackageManagerService#resolveIntent方法来处理。 Intent 匹配规则太负责了，我本意是想学习启动流程，所以就没深入进去看代码，就这样吧。" />
+  <meta name="author" content="" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+
+  
+
+  
+  
+  
+    
+  
+  <link
+    rel="preload"
+    as="image"
+    href="https://boybeak.github.io/theme.png"
+  />
+
+  
+  
+  
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  
+
+  
+  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.101.0" />
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Activity启动流程" />
+<meta property="og:description" content="#Activity启动流程
+原文参考：Activity 启动流程分析(Android10)
+graph TD; A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C[通过Intent获取到目标Activity] --&gt; D{目标Activity是否启动} --&gt; |是|E[通过Instrumentation创建Activity] --&gt; F[回调Activity#attach] --&gt; G[回调Activity#onCreate] --&gt; H[准备显示Activity] --&gt; I[Activity#onResume]; D --&gt; |否|J[通过Zygote进程fork一个App进程]:::zygote --&gt; K[创建Application并回调Application#onCreate]:::zygote --&gt; L[启动ActivityThread主线程消息队列]:::zygote --&gt; E; F --&gt; M[创建Window对象并设置Window.Callback接收事件]:::wms; G --&gt; N[Activity#setContentView] --&gt; O[Window#setContentView]:::wms; H --&gt; P[Window#addView]:::wms; classDef wms fill:#aaffff classDef zygote fill:#ffaa99 途中浅蓝色部分为WMS关联部分，橙色部分为目标App未启动情况下的流程。
+Intent 解析到 Activity 调用 startActivity 之后，经过几步辗转最终会调用到 AMS 中，而 AMS 又会调用 ActivityStarter 来启动 Activity。 解析 Intent 的任务将由PackageManagerService#resolveIntent方法来处理。 Intent 匹配规则太负责了，我本意是想学习启动流程，所以就没深入进去看代码，就这样吧。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://boybeak.github.io/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-03T21:03:05+08:00" />
+<meta property="article:modified_time" content="2022-09-03T21:03:05+08:00" />
+
+
+  
+  <meta itemprop="name" content="Activity启动流程">
+<meta itemprop="description" content="#Activity启动流程
+原文参考：Activity 启动流程分析(Android10)
+graph TD; A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C[通过Intent获取到目标Activity] --&gt; D{目标Activity是否启动} --&gt; |是|E[通过Instrumentation创建Activity] --&gt; F[回调Activity#attach] --&gt; G[回调Activity#onCreate] --&gt; H[准备显示Activity] --&gt; I[Activity#onResume]; D --&gt; |否|J[通过Zygote进程fork一个App进程]:::zygote --&gt; K[创建Application并回调Application#onCreate]:::zygote --&gt; L[启动ActivityThread主线程消息队列]:::zygote --&gt; E; F --&gt; M[创建Window对象并设置Window.Callback接收事件]:::wms; G --&gt; N[Activity#setContentView] --&gt; O[Window#setContentView]:::wms; H --&gt; P[Window#addView]:::wms; classDef wms fill:#aaffff classDef zygote fill:#ffaa99 途中浅蓝色部分为WMS关联部分，橙色部分为目标App未启动情况下的流程。
+Intent 解析到 Activity 调用 startActivity 之后，经过几步辗转最终会调用到 AMS 中，而 AMS 又会调用 ActivityStarter 来启动 Activity。 解析 Intent 的任务将由PackageManagerService#resolveIntent方法来处理。 Intent 匹配规则太负责了，我本意是想学习启动流程，所以就没深入进去看代码，就这样吧。"><meta itemprop="datePublished" content="2022-09-03T21:03:05+08:00" />
+<meta itemprop="dateModified" content="2022-09-03T21:03:05+08:00" />
+<meta itemprop="wordCount" content="67">
+<meta itemprop="keywords" content="untagged," />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Activity启动流程"/>
+<meta name="twitter:description" content="#Activity启动流程
+原文参考：Activity 启动流程分析(Android10)
+graph TD; A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C[通过Intent获取到目标Activity] --&gt; D{目标Activity是否启动} --&gt; |是|E[通过Instrumentation创建Activity] --&gt; F[回调Activity#attach] --&gt; G[回调Activity#onCreate] --&gt; H[准备显示Activity] --&gt; I[Activity#onResume]; D --&gt; |否|J[通过Zygote进程fork一个App进程]:::zygote --&gt; K[创建Application并回调Application#onCreate]:::zygote --&gt; L[启动ActivityThread主线程消息队列]:::zygote --&gt; E; F --&gt; M[创建Window对象并设置Window.Callback接收事件]:::wms; G --&gt; N[Activity#setContentView] --&gt; O[Window#setContentView]:::wms; H --&gt; P[Window#addView]:::wms; classDef wms fill:#aaffff classDef zygote fill:#ffaa99 途中浅蓝色部分为WMS关联部分，橙色部分为目标App未启动情况下的流程。
+Intent 解析到 Activity 调用 startActivity 之后，经过几步辗转最终会调用到 AMS 中，而 AMS 又会调用 ActivityStarter 来启动 Activity。 解析 Intent 的任务将由PackageManagerService#resolveIntent方法来处理。 Intent 匹配规则太负责了，我本意是想学习启动流程，所以就没深入进去看代码，就这样吧。"/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkVal = localStorage.getItem('dark');
+    setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href=" https://twitter.com/YOUR_TWITTER_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/YOUR_GITHUB_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href=" https://instagram.com/YOUR_INSTAGRAM_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href=" https://boybeak.github.io/index.xml "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">Activity启动流程</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Sep 3, 2022</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><p>#Activity启动流程</p>
+<p>原文参考：<a href="https://zhuanlan.zhihu.com/p/150283395">Activity 启动流程分析(Android10)</a></p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
+A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C[通过Intent获取到目标Activity] --&gt; D{目标Activity是否启动} --&gt; |是|E[通过Instrumentation创建Activity] --&gt; F[回调Activity#attach] --&gt; G[回调Activity#onCreate] --&gt; H[准备显示Activity] --&gt; I[Activity#onResume];
+D --&gt; |否|J[通过Zygote进程fork一个App进程]:::zygote --&gt; K[创建Application并回调Application#onCreate]:::zygote --&gt; L[启动ActivityThread主线程消息队列]:::zygote --&gt; E;
+F --&gt; M[创建Window对象并设置Window.Callback接收事件]:::wms;
+G --&gt; N[Activity#setContentView] --&gt; O[Window#setContentView]:::wms;
+H --&gt; P[Window#addView]:::wms;
+classDef wms fill:#aaffff
+classDef zygote fill:#ffaa99
+</code></pre><p>途中浅蓝色部分为WMS关联部分，橙色部分为目标App未启动情况下的流程。</p>
+<h2 id="intent-解析到-activity">Intent 解析到 Activity</h2>
+<p>调用 startActivity 之后，经过几步辗转最终会调用到 <strong>AMS</strong> 中，而 AMS 又会调用 ActivityStarter 来启动 Activity。
+解析 Intent 的任务将由<code>PackageManagerService#resolveIntent</code>方法来处理。
+Intent 匹配规则太负责了，我本意是想学习启动流程，所以就没深入进去看代码，就这样吧。</p>
+</section>
+
+  
+  
+  <footer class="mt-12 flex flex-wrap">
+     
+    <a
+      class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
+      href="https://boybeak.github.io/tags/untagged"
+      >untagged</a
+    >
+    
+  </footer>
+  
+
+  
+  
+  
+  <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
+    
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6irouter/"
+      ><span class="mr-1.5">←</span><span>手撸一个路由框架IRouter</span></a
+    >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
+      href="https://boybeak.github.io/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/"
+      ><span>AMS启动流程</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script>
+  
+</article>
+
+
+    </main>
+
+    <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
+  <div class="mr-auto">
+    &copy; 2022
+    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
+  >️
+  <a class="link" href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>

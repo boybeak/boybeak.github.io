@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  
+  <title>Intent.FLAG_ACTIVITY_***解密 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="Intent.FLAG_ACTIVITY_***解密 最好先看这一篇Launch Mode。
+我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY_SINGLE_TOP四个flag进行讲解。
+FLAG_ACTIVITY_NEW_TASK：
+通过非Activity的Context启动一个Activity时候，要使用此flag，比如：ApplicationContext、Service等； 用于Launcher类应用启动其他应用的时候； 当试图通过这个flag启动一个activity的时候，如果后台已经有一个任务栈中有运行的一个此类activity实例，将不会创建一个新的activity，而是将整个栈置于前台，并保持上次的状态。比如从另一个应用启动这种场景，或者Notification中。 如果你想使用startActivityForResult，则千万不要在启动的intent添加这个flag。因为onActivityResult回调方法，不会在目标activity执行finish后调用，而是在启动目标activity的时候直接调用，并且收r到resultCode = RESULT_CANCELED。 FLAG_ACTIVITY_CLEAR_TOP：
+如果在当前任务栈中已经有了目标类型activity，则再次通过添加了此flag的intent去启动此类型activity，会有两种情况。
+比如有如下图示结构的任务栈:
+graph LR; subgraph Task; D; C; B; A; end; 此时D通过一个添加了FLAG_ACTIVITY_CLEAR_TOP的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：
+graph LR; subgraph Task; B; A; end; 接下来就有两种情况了。
+情况一：intent中没有同时设置FLAG_ACTIVITY_SINGLE_TOP，并且B的launchMode是默认值。
+B会finish掉再re-create一个新的B&rsquo;放在B的位置上。
+情况二：intent中设置了FLAG_ACTIVITY_SINGLE_TOP或者是其他类型的launchMode。
+B不会finish（调用finish方法，onDestroy会被触发）掉，而是直接调用其onNewIntent()方法。
+或许你认为情况二这与launchMode中的singleTop或者singleTask类似，实则不然，其一，singleTop没有清空压在它上边activity的能力；其二，singleTask收到taskAffinity影响。
+与FLAG_ACTIVITY_NEW_TASK配合使用。如果想启动一个任务栈的root位置的activity，也就是栈低activity，同时设置这两个值，它会将整个任务栈放置于前台，并且清空其他activit，适用于从Notification启动Activity。
+FLAG_ACTIVITY_CLEAR_TASK：这个flag很特殊，只能于FLAG_ACTIVITY_NEW_TASK配合使用。要启动的目标activity的任务栈如果已经存在并且不为空，则将所有activity出栈（不会调用finish方法，onDestroy会被触发），然后创建一个目标类型activity作为这个栈的root。
+FLAG_ACTIVITY_SINGLE_TOP：这个flag与launchMode中的singleTop几乎一样，当要启动一个activity时候，如果栈顶就是目标类型activity，则不会创建一个新的activity，而是直接调用栈顶的这个activity的onNewIntent()方法。" />
+  <meta name="author" content="" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+
+  
+
+  
+  
+  
+    
+  
+  <link
+    rel="preload"
+    as="image"
+    href="https://boybeak.github.io/theme.png"
+  />
+
+  
+  
+  
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  
+
+  
+  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.101.0" />
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Intent.FLAG_ACTIVITY_***解密" />
+<meta property="og:description" content="Intent.FLAG_ACTIVITY_***解密 最好先看这一篇Launch Mode。
+我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY_SINGLE_TOP四个flag进行讲解。
+FLAG_ACTIVITY_NEW_TASK：
+通过非Activity的Context启动一个Activity时候，要使用此flag，比如：ApplicationContext、Service等； 用于Launcher类应用启动其他应用的时候； 当试图通过这个flag启动一个activity的时候，如果后台已经有一个任务栈中有运行的一个此类activity实例，将不会创建一个新的activity，而是将整个栈置于前台，并保持上次的状态。比如从另一个应用启动这种场景，或者Notification中。 如果你想使用startActivityForResult，则千万不要在启动的intent添加这个flag。因为onActivityResult回调方法，不会在目标activity执行finish后调用，而是在启动目标activity的时候直接调用，并且收r到resultCode = RESULT_CANCELED。 FLAG_ACTIVITY_CLEAR_TOP：
+如果在当前任务栈中已经有了目标类型activity，则再次通过添加了此flag的intent去启动此类型activity，会有两种情况。
+比如有如下图示结构的任务栈:
+graph LR; subgraph Task; D; C; B; A; end; 此时D通过一个添加了FLAG_ACTIVITY_CLEAR_TOP的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：
+graph LR; subgraph Task; B; A; end; 接下来就有两种情况了。
+情况一：intent中没有同时设置FLAG_ACTIVITY_SINGLE_TOP，并且B的launchMode是默认值。
+B会finish掉再re-create一个新的B&rsquo;放在B的位置上。
+情况二：intent中设置了FLAG_ACTIVITY_SINGLE_TOP或者是其他类型的launchMode。
+B不会finish（调用finish方法，onDestroy会被触发）掉，而是直接调用其onNewIntent()方法。
+或许你认为情况二这与launchMode中的singleTop或者singleTask类似，实则不然，其一，singleTop没有清空压在它上边activity的能力；其二，singleTask收到taskAffinity影响。
+与FLAG_ACTIVITY_NEW_TASK配合使用。如果想启动一个任务栈的root位置的activity，也就是栈低activity，同时设置这两个值，它会将整个任务栈放置于前台，并且清空其他activit，适用于从Notification启动Activity。
+FLAG_ACTIVITY_CLEAR_TASK：这个flag很特殊，只能于FLAG_ACTIVITY_NEW_TASK配合使用。要启动的目标activity的任务栈如果已经存在并且不为空，则将所有activity出栈（不会调用finish方法，onDestroy会被触发），然后创建一个目标类型activity作为这个栈的root。
+FLAG_ACTIVITY_SINGLE_TOP：这个flag与launchMode中的singleTop几乎一样，当要启动一个activity时候，如果栈顶就是目标类型activity，则不会创建一个新的activity，而是直接调用栈顶的这个activity的onNewIntent()方法。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://boybeak.github.io/posts/android/intent.flag_activity_%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-03T21:03:05+08:00" />
+<meta property="article:modified_time" content="2022-09-03T21:03:05+08:00" />
+
+
+  
+  <meta itemprop="name" content="Intent.FLAG_ACTIVITY_***解密">
+<meta itemprop="description" content="Intent.FLAG_ACTIVITY_***解密 最好先看这一篇Launch Mode。
+我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY_SINGLE_TOP四个flag进行讲解。
+FLAG_ACTIVITY_NEW_TASK：
+通过非Activity的Context启动一个Activity时候，要使用此flag，比如：ApplicationContext、Service等； 用于Launcher类应用启动其他应用的时候； 当试图通过这个flag启动一个activity的时候，如果后台已经有一个任务栈中有运行的一个此类activity实例，将不会创建一个新的activity，而是将整个栈置于前台，并保持上次的状态。比如从另一个应用启动这种场景，或者Notification中。 如果你想使用startActivityForResult，则千万不要在启动的intent添加这个flag。因为onActivityResult回调方法，不会在目标activity执行finish后调用，而是在启动目标activity的时候直接调用，并且收r到resultCode = RESULT_CANCELED。 FLAG_ACTIVITY_CLEAR_TOP：
+如果在当前任务栈中已经有了目标类型activity，则再次通过添加了此flag的intent去启动此类型activity，会有两种情况。
+比如有如下图示结构的任务栈:
+graph LR; subgraph Task; D; C; B; A; end; 此时D通过一个添加了FLAG_ACTIVITY_CLEAR_TOP的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：
+graph LR; subgraph Task; B; A; end; 接下来就有两种情况了。
+情况一：intent中没有同时设置FLAG_ACTIVITY_SINGLE_TOP，并且B的launchMode是默认值。
+B会finish掉再re-create一个新的B&rsquo;放在B的位置上。
+情况二：intent中设置了FLAG_ACTIVITY_SINGLE_TOP或者是其他类型的launchMode。
+B不会finish（调用finish方法，onDestroy会被触发）掉，而是直接调用其onNewIntent()方法。
+或许你认为情况二这与launchMode中的singleTop或者singleTask类似，实则不然，其一，singleTop没有清空压在它上边activity的能力；其二，singleTask收到taskAffinity影响。
+与FLAG_ACTIVITY_NEW_TASK配合使用。如果想启动一个任务栈的root位置的activity，也就是栈低activity，同时设置这两个值，它会将整个任务栈放置于前台，并且清空其他activit，适用于从Notification启动Activity。
+FLAG_ACTIVITY_CLEAR_TASK：这个flag很特殊，只能于FLAG_ACTIVITY_NEW_TASK配合使用。要启动的目标activity的任务栈如果已经存在并且不为空，则将所有activity出栈（不会调用finish方法，onDestroy会被触发），然后创建一个目标类型activity作为这个栈的root。
+FLAG_ACTIVITY_SINGLE_TOP：这个flag与launchMode中的singleTop几乎一样，当要启动一个activity时候，如果栈顶就是目标类型activity，则不会创建一个新的activity，而是直接调用栈顶的这个activity的onNewIntent()方法。"><meta itemprop="datePublished" content="2022-09-03T21:03:05+08:00" />
+<meta itemprop="dateModified" content="2022-09-03T21:03:05+08:00" />
+<meta itemprop="wordCount" content="40">
+<meta itemprop="keywords" content="untagged," />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Intent.FLAG_ACTIVITY_***解密"/>
+<meta name="twitter:description" content="Intent.FLAG_ACTIVITY_***解密 最好先看这一篇Launch Mode。
+我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY_SINGLE_TOP四个flag进行讲解。
+FLAG_ACTIVITY_NEW_TASK：
+通过非Activity的Context启动一个Activity时候，要使用此flag，比如：ApplicationContext、Service等； 用于Launcher类应用启动其他应用的时候； 当试图通过这个flag启动一个activity的时候，如果后台已经有一个任务栈中有运行的一个此类activity实例，将不会创建一个新的activity，而是将整个栈置于前台，并保持上次的状态。比如从另一个应用启动这种场景，或者Notification中。 如果你想使用startActivityForResult，则千万不要在启动的intent添加这个flag。因为onActivityResult回调方法，不会在目标activity执行finish后调用，而是在启动目标activity的时候直接调用，并且收r到resultCode = RESULT_CANCELED。 FLAG_ACTIVITY_CLEAR_TOP：
+如果在当前任务栈中已经有了目标类型activity，则再次通过添加了此flag的intent去启动此类型activity，会有两种情况。
+比如有如下图示结构的任务栈:
+graph LR; subgraph Task; D; C; B; A; end; 此时D通过一个添加了FLAG_ACTIVITY_CLEAR_TOP的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：
+graph LR; subgraph Task; B; A; end; 接下来就有两种情况了。
+情况一：intent中没有同时设置FLAG_ACTIVITY_SINGLE_TOP，并且B的launchMode是默认值。
+B会finish掉再re-create一个新的B&rsquo;放在B的位置上。
+情况二：intent中设置了FLAG_ACTIVITY_SINGLE_TOP或者是其他类型的launchMode。
+B不会finish（调用finish方法，onDestroy会被触发）掉，而是直接调用其onNewIntent()方法。
+或许你认为情况二这与launchMode中的singleTop或者singleTask类似，实则不然，其一，singleTop没有清空压在它上边activity的能力；其二，singleTask收到taskAffinity影响。
+与FLAG_ACTIVITY_NEW_TASK配合使用。如果想启动一个任务栈的root位置的activity，也就是栈低activity，同时设置这两个值，它会将整个任务栈放置于前台，并且清空其他activit，适用于从Notification启动Activity。
+FLAG_ACTIVITY_CLEAR_TASK：这个flag很特殊，只能于FLAG_ACTIVITY_NEW_TASK配合使用。要启动的目标activity的任务栈如果已经存在并且不为空，则将所有activity出栈（不会调用finish方法，onDestroy会被触发），然后创建一个目标类型activity作为这个栈的root。
+FLAG_ACTIVITY_SINGLE_TOP：这个flag与launchMode中的singleTop几乎一样，当要启动一个activity时候，如果栈顶就是目标类型activity，则不会创建一个新的activity，而是直接调用栈顶的这个activity的onNewIntent()方法。"/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkVal = localStorage.getItem('dark');
+    setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href=" https://twitter.com/YOUR_TWITTER_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/YOUR_GITHUB_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href=" https://instagram.com/YOUR_INSTAGRAM_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href=" https://boybeak.github.io/index.xml "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">Intent.FLAG_ACTIVITY_***解密</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Sep 3, 2022</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h1 id="intentflag_activity_解密">Intent.FLAG_ACTIVITY_***解密</h1>
+<p>最好先看这一篇<a href="%7B%7B$site.base_url%7D%7D/android/LaunchMode.html">Launch Mode</a>。</p>
+<p>我们将重点针对<strong>FLAG_ACTIVITY_NEW_TASK</strong>、<strong>FLAG_ACTIVITY_CLEAR_TASK</strong>、<strong>FLAG_ACTIVITY_CLEAR_TOP</strong>、<strong>FLAG_ACTIVITY_SINGLE_TOP</strong>四个flag进行讲解。</p>
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_NEW_TASK"><strong>FLAG_ACTIVITY_NEW_TASK</strong></a>：</p>
+<ol>
+<li>通过非Activity的Context启动一个Activity时候，要使用此flag，比如：ApplicationContext、Service等；</li>
+<li>用于Launcher类应用启动其他应用的时候；</li>
+<li>当试图通过这个flag启动一个activity的时候，如果后台已经有一个任务栈中有运行的一个此类activity实例，将不会创建一个新的activity，而是将整个栈置于前台，并保持上次的状态。比如从另一个应用启动这种场景，或者Notification中。</li>
+<li>如果你想使用startActivityForResult，则<strong>千万不要</strong>在启动的intent添加这个flag。因为onActivityResult回调方法，不会在目标activity执行finish后调用，而是在启动目标activity的时候直接调用，并且收r到resultCode = <code>RESULT_CANCELED</code>。</li>
+</ol>
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_CLEAR_TOP"><strong>FLAG_ACTIVITY_CLEAR_TOP</strong></a>：</p>
+<ol>
+<li>
+<p>如果在当前任务栈中已经有了目标类型activity，则再次通过添加了此flag的intent去启动此类型activity，会有两种情况。</p>
+<p>比如有如下图示结构的任务栈:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph LR;
+subgraph Task;
+D;
+C;
+B;
+A;
+end;
+</code></pre><p>此时D通过一个添加了<code>FLAG_ACTIVITY_CLEAR_TOP</code>的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph LR;
+subgraph Task;
+B;
+A;
+end;
+</code></pre><p>接下来就有两种情况了。</p>
+<p>情况一：intent中<strong>没有</strong>同时设置<code>FLAG_ACTIVITY_SINGLE_TOP</code>，并且B的launchMode是默认值。</p>
+<p>B会finish掉再re-create一个新的B&rsquo;放在B的位置上。</p>
+<p>情况二：intent中设置了<code>FLAG_ACTIVITY_SINGLE_TOP</code>或者是其他类型的launchMode。</p>
+<p>B不会finish（调用finish方法，onDestroy会被触发）掉，而是直接调用其onNewIntent()方法。</p>
+<blockquote>
+<p>或许你认为情况二这与launchMode中的singleTop或者singleTask类似，实则不然，其一，singleTop没有清空压在它上边activity的能力；其二，singleTask收到taskAffinity影响。</p>
+</blockquote>
+</li>
+<li>
+<p>与<code>FLAG_ACTIVITY_NEW_TASK</code>配合使用。如果想启动一个任务栈的root位置的activity，也就是栈低activity，同时设置这两个值，它会将整个任务栈放置于前台，并且清空其他activit，适用于从Notification启动Activity。</p>
+</li>
+</ol>
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_CLEAR_TASK"><strong>FLAG_ACTIVITY_CLEAR_TASK</strong></a>：这个flag很特殊，只能于<code>FLAG_ACTIVITY_NEW_TASK</code>配合使用。要启动的目标activity的任务栈如果已经存在并且不为空，则将所有activity出栈（不会调用finish方法，onDestroy会被触发），然后创建一个目标类型activity作为这个栈的root。</p>
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_SINGLE_TOP"><strong>FLAG_ACTIVITY_SINGLE_TOP</strong></a>：这个flag与launchMode中的singleTop几乎一样，当要启动一个activity时候，如果栈顶就是目标类型activity，则不会创建一个新的activity，而是直接调用栈顶的这个activity的onNewIntent()方法。</p>
+</section>
+
+  
+  
+  <footer class="mt-12 flex flex-wrap">
+     
+    <a
+      class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
+      href="https://boybeak.github.io/tags/untagged"
+      >untagged</a
+    >
+    
+  </footer>
+  
+
+  
+  
+  
+  <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
+    
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/android/binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/"
+      ><span class="mr-1.5">←</span><span>Binder机制分析</span></a
+    >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
+      href="https://boybeak.github.io/posts/android/launchmode/"
+      ><span>Launch Mode</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script>
+  
+</article>
+
+
+    </main>
+
+    <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
+  <div class="mr-auto">
+    &copy; 2022
+    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
+  >️
+  <a class="link" href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>

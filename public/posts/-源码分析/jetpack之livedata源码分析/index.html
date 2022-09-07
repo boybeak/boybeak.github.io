@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  
+  <title>Jetpack之LiveData源码分析 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="Jetpack之LiveData源码分析 在阅读这篇文章前，需要先对Lifecycle有所了解。
+Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
+先要引入LiveData：
+implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0&#34; def activity_version = &#34;1.1.0&#34; // Kotlin，引入这个扩展，可以使用by viewModels()方法 implementation &#34;androidx.activity:activity-ktx:$activity_version&#34; 典型的用法如下：
+class MainActivity : AppCompatActivity() { private val vm by viewModels&lt;MainVM&gt;() override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) vm.data.observe(this) { Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show() } vm.start() } } class MainVM : ViewModel() { val data = MutableLiveData&lt;String&gt;() fun start() { data.value = &#34;start&#34; Thread { Thread.sleep(2000) data.postValue(&#34;run after 2000ms&#34;) }.start() } } 从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，observe、setValue和postValue。我们就从这三个方法入手去探究LiveData的工作机制。
+observe方法 // LiveData.java @MainThread public void observe(@NonNull LifecycleOwner owner, @NonNull Observer&lt;?" />
+  <meta name="author" content="" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+
+  
+
+  
+  
+  
+    
+  
+  <link
+    rel="preload"
+    as="image"
+    href="https://boybeak.github.io/theme.png"
+  />
+
+  
+  
+  
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  
+
+  
+  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.101.0" />
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Jetpack之LiveData源码分析" />
+<meta property="og:description" content="Jetpack之LiveData源码分析 在阅读这篇文章前，需要先对Lifecycle有所了解。
+Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
+先要引入LiveData：
+implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0&#34; def activity_version = &#34;1.1.0&#34; // Kotlin，引入这个扩展，可以使用by viewModels()方法 implementation &#34;androidx.activity:activity-ktx:$activity_version&#34; 典型的用法如下：
+class MainActivity : AppCompatActivity() { private val vm by viewModels&lt;MainVM&gt;() override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) vm.data.observe(this) { Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show() } vm.start() } } class MainVM : ViewModel() { val data = MutableLiveData&lt;String&gt;() fun start() { data.value = &#34;start&#34; Thread { Thread.sleep(2000) data.postValue(&#34;run after 2000ms&#34;) }.start() } } 从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，observe、setValue和postValue。我们就从这三个方法入手去探究LiveData的工作机制。
+observe方法 // LiveData.java @MainThread public void observe(@NonNull LifecycleOwner owner, @NonNull Observer&lt;?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blivedata%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-03T21:06:01+08:00" />
+<meta property="article:modified_time" content="2022-09-03T21:06:01+08:00" />
+
+
+  
+  <meta itemprop="name" content="Jetpack之LiveData源码分析">
+<meta itemprop="description" content="Jetpack之LiveData源码分析 在阅读这篇文章前，需要先对Lifecycle有所了解。
+Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
+先要引入LiveData：
+implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0&#34; def activity_version = &#34;1.1.0&#34; // Kotlin，引入这个扩展，可以使用by viewModels()方法 implementation &#34;androidx.activity:activity-ktx:$activity_version&#34; 典型的用法如下：
+class MainActivity : AppCompatActivity() { private val vm by viewModels&lt;MainVM&gt;() override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) vm.data.observe(this) { Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show() } vm.start() } } class MainVM : ViewModel() { val data = MutableLiveData&lt;String&gt;() fun start() { data.value = &#34;start&#34; Thread { Thread.sleep(2000) data.postValue(&#34;run after 2000ms&#34;) }.start() } } 从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，observe、setValue和postValue。我们就从这三个方法入手去探究LiveData的工作机制。
+observe方法 // LiveData.java @MainThread public void observe(@NonNull LifecycleOwner owner, @NonNull Observer&lt;?"><meta itemprop="datePublished" content="2022-09-03T21:06:01+08:00" />
+<meta itemprop="dateModified" content="2022-09-03T21:06:01+08:00" />
+<meta itemprop="wordCount" content="548">
+<meta itemprop="keywords" content="untagged," />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Jetpack之LiveData源码分析"/>
+<meta name="twitter:description" content="Jetpack之LiveData源码分析 在阅读这篇文章前，需要先对Lifecycle有所了解。
+Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
+先要引入LiveData：
+implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0&#34; def activity_version = &#34;1.1.0&#34; // Kotlin，引入这个扩展，可以使用by viewModels()方法 implementation &#34;androidx.activity:activity-ktx:$activity_version&#34; 典型的用法如下：
+class MainActivity : AppCompatActivity() { private val vm by viewModels&lt;MainVM&gt;() override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) vm.data.observe(this) { Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show() } vm.start() } } class MainVM : ViewModel() { val data = MutableLiveData&lt;String&gt;() fun start() { data.value = &#34;start&#34; Thread { Thread.sleep(2000) data.postValue(&#34;run after 2000ms&#34;) }.start() } } 从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，observe、setValue和postValue。我们就从这三个方法入手去探究LiveData的工作机制。
+observe方法 // LiveData.java @MainThread public void observe(@NonNull LifecycleOwner owner, @NonNull Observer&lt;?"/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkVal = localStorage.getItem('dark');
+    setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href=" https://twitter.com/YOUR_TWITTER_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/YOUR_GITHUB_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href=" https://instagram.com/YOUR_INSTAGRAM_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href=" https://boybeak.github.io/index.xml "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">Jetpack之LiveData源码分析</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Sep 3, 2022</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h1 id="jetpack之livedata源码分析">Jetpack之LiveData源码分析</h1>
+<p>在阅读这篇文章前，需要先对<a href="%7B%7Bsite.base_url%7D%7D/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.md"><strong>Lifecycle</strong></a>有所了解。</p>
+<p>Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。</p>
+<p>先要引入LiveData：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>implementation <span style="color:#e6db74">&#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> activity_version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1.1.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Kotlin，引入这个扩展，可以使用by viewModels()方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>implementation <span style="color:#e6db74">&#34;androidx.activity:activity-ktx:$activity_version&#34;</span>
+</span></span></code></pre></div><p>典型的用法如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> vm <span style="color:#66d9ef">by</span> viewModels&lt;MainVM&gt;()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+</span></span><span style="display:flex;"><span>        setContentView(R.layout.activity_main)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        vm.<span style="color:#66d9ef">data</span>.observe(<span style="color:#66d9ef">this</span>) {
+</span></span><span style="display:flex;"><span>            Toast.makeText(<span style="color:#66d9ef">this</span><span style="color:#a6e22e">@MainActivity</span>, <span style="color:#66d9ef">it</span>, Toast.LENGTH_SHORT).show()
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        vm.start()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainVM</span> : ViewModel() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> data = MutableLiveData&lt;String&gt;()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">start</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">data</span>.<span style="color:#66d9ef">value</span> = <span style="color:#e6db74">&#34;start&#34;</span>
+</span></span><span style="display:flex;"><span>        Thread {
+</span></span><span style="display:flex;"><span>            Thread.sleep(<span style="color:#ae81ff">2000</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">data</span>.postValue(<span style="color:#e6db74">&#34;run after 2000ms&#34;</span>)
+</span></span><span style="display:flex;"><span>        }.start()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，<em>observe</em>、<em>setValue</em>和<em>postValue</em>。我们就从这三个方法入手去探究LiveData的工作机制。</p>
+<h2 id="observe方法">observe方法</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// LiveData.java
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@MainThread</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">observe</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LifecycleOwner owner<span style="color:#f92672">,</span> <span style="color:#a6e22e">@NonNull</span> Observer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  assertMainThread<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;observe&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>owner<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getCurrentState</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> DESTROYED<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ignore
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  LifecycleBoundObserver wrapper <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> LifecycleBoundObserver<span style="color:#f92672">(</span>owner<span style="color:#f92672">,</span> observer<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  ObserverWrapper existing <span style="color:#f92672">=</span> mObservers<span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</span><span style="color:#f92672">(</span>observer<span style="color:#f92672">,</span> wrapper<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>existing <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>existing<span style="color:#f92672">.</span><span style="color:#a6e22e">isAttachedTo</span><span style="color:#f92672">(</span>owner<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Cannot add the same observer&#34;</span>
+</span></span><span style="display:flex;"><span>                                       <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; with different lifecycles&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>existing <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  owner<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">().</span><span style="color:#a6e22e">addObserver</span><span style="color:#f92672">(</span>wrapper<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ol>
+<li>只允许在主线程中监听数据变化，并且如果<em>LifecycleOwner</em>已经处于<strong>DESTROYED</strong>状态，则忽略这次监听请求。</li>
+<li>以<em>LifecycleOwner</em>和<em>Observer</em>创建一个<em>LifecycleBoundObserver</em>对象，这个对象继承了<em>ObserverWrapper</em>类，同时实现了<em>LifecycleEventObserver</em>接口，看到这个接口，我们便明白了<em>LiveData</em>能够生命周期安全的监听数据变化的原因了。</li>
+<li>这个<em>LifecycleBoundObserver</em>对象需要存储在一个<em>SafeIterableMap</em>当中去，在存储时候，会通过observer判断是否已经存在一个<em>ObserverWrapper</em>对象existing，如果已经存在则分为两种：a. 如果existing没有attach在owner上，则说明，existing已经attach在另外一个<em>LifecycleOwner</em>上了，这是不允许的，此时需要抛出异常；b. 如果没有attach在另外一个<em>LifecycleOwner</em>上，则说明此时监听的就是当前的owner上，则不需要再次添加监听，直接返回。如果existing不存在，则向owner.getLifecycle()添加监听。</li>
+</ol>
+<h2 id="setvalue和postvalue方法">setValue和postValue方法</h2>
+<p>在子线程中更新数据，需要调用postValue方法，实际上，这个方法就是通过一个MainHandler去post一个<em>Runnable</em>的方式切换到主线程中执行setValue方法。所以，我们重点看setValue方法即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// LiveData.java
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@MainThread</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span>T value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  assertMainThread<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;setValue&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  mVersion<span style="color:#f92672">++;</span>
+</span></span><span style="display:flex;"><span>  mData <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  dispatchingValue<span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这里需要注意到的是<code>mVersion++</code>这句话，<em>LiveData</em>就是通过版本号来记录新的值的。继续看dispatchingValue方法。</p>
+<h3 id="dispatchingvalue">dispatchingValue</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;WeakerAccess&#34;</span><span style="color:#f92672">)</span> <span style="color:#75715e">/* synthetic access */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dispatchingValue</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@Nullable</span> ObserverWrapper initiator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mDispatchingValue<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>				<span style="color:#75715e">// ①
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    mDispatchInvalidated <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  mDispatchingValue <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">do</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    mDispatchInvalidated <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>	<span style="color:#75715e">// ②
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>initiator <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      considerNotify<span style="color:#f92672">(</span>initiator<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      initiator <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Iterator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>Observer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;,</span> ObserverWrapper<span style="color:#f92672">&gt;&gt;</span> iterator <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>           mObservers<span style="color:#f92672">.</span><span style="color:#a6e22e">iteratorWithAdditions</span><span style="color:#f92672">();</span> iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">();</span> <span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        considerNotify<span style="color:#f92672">(</span>iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mDispatchInvalidated<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// ③
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span> <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>mDispatchInvalidated<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  mDispatchingValue <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在这里，涉及到两个方法，1. 第一个dispatchingValue —— 用来分发控制数据更新流程；2. considerNotify具体执行数据更新操作。</p>
+<p>这个方法是双信号量控制分发流程，<strong>mDispatchingValue</strong>和<strong>mDispatchInvalidated</strong>，之所以这样设计，按照我的理解，是考虑到了dispatchingValue方法多线程重入的问题，但是依我看来，这样做没必要，因为这个方法的几处调用，都是在主线程上，不可能出现第一次调用没有执行完，就又被调用一次的可能，也可能是设计者考虑到未来的扩展或者在这个库涉及之初有多线程调用的情况才这样写的，先按照有重入可能来分析。</p>
+<p>我们先要弄清这两个信号量的作用：mDispatchingValue表示是否正在执行分发数据更新的操作，mDispatchInvalidated表示是否中断正在进行的分发，开始新一轮分发。</p>
+<p>这个方法是根据传入的参数，有两个执行流程，一个是执行具体某个ObserverWrapper的数据更新操作，另外一个就是批量更新所有observer的数据操作。我们以setValue触发的dispatchingValue(null)批量更新操作为例进行分析。</p>
+<p>注意我在上段代码中的序号①②③注释，我们分步骤进行分析：</p>
+<blockquote>
+<p>假设，此时我们有两个observer。</p>
+<p>初始状态 <strong>mDispatchingValue = false, mDispatchInvalidated = false</strong></p>
+<p>当<strong>第一次</strong>调用开始后，会顺利通过①处判断，然后进入do - while循环，并且在②处先将mDispatchInvalidated信号量置为false，所以，一般情况下，这个while循环只会执行一次；</p>
+<p>信号量：<strong>mDispatchingValue = true, mDispatchInvalidated = false</strong></p>
+<p>由于initiator参数为null，所以会进入到else分支中的for循环中，这里需要注意的是，每一次for循环结束时候，都判断一次mDispatchInvalidated信号量，也就是注释③处；</p>
+<p>假设我们执行了第一个observer后，dispatchingValue方法进行了<strong>第二次</strong>调用，由于此时mDispatchingValue信号量为true，所以会进入①处if条件判断语句，将mDispatchInvalidated信号量置为true并且直接return了；</p>
+<p>信号量：<strong>mDispatchingValue = true, mDispatchInvalidated = true</strong></p>
+<p>此时，第一次调用的for循环体就会因为mDispatchInvalidated变成了true，而退出for循环，while循环开始判断条件，同样因为mDispatchInvalidated为true，回再次执行while循环，执行新值更新；</p>
+<p>最后退出dispatchingValue方法后，两个信号量都置为false。</p>
+</blockquote>
+<p>这样做的目的，或许是为了及时抛弃旧值通知，开始新值通知。</p>
+<h3 id="considernotify">considerNotify</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">considerNotify</span><span style="color:#f92672">(</span>ObserverWrapper observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>observer<span style="color:#f92672">.</span><span style="color:#a6e22e">mActive</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Check latest state b4 dispatch. Maybe it changed state but we didn&#39;t get the event yet.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// we still first check observer.active to keep it as the entrance for events. So even if
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// the observer moved to an active state, if we&#39;ve not received that event, we better not
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// notify for a more predictable notification order.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>observer<span style="color:#f92672">.</span><span style="color:#a6e22e">shouldBeActive</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    observer<span style="color:#f92672">.</span><span style="color:#a6e22e">activeStateChanged</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>observer<span style="color:#f92672">.</span><span style="color:#a6e22e">mLastVersion</span> <span style="color:#f92672">&gt;=</span> mVersion<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  observer<span style="color:#f92672">.</span><span style="color:#a6e22e">mLastVersion</span> <span style="color:#f92672">=</span> mVersion<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  observer<span style="color:#f92672">.</span><span style="color:#a6e22e">mObserver</span><span style="color:#f92672">.</span><span style="color:#a6e22e">onChanged</span><span style="color:#f92672">((</span>T<span style="color:#f92672">)</span> mData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这个方法是具体执行通知观察者值变化的地方。</p>
+<p>那么LiveData是如何判断新值和旧值的呢？</p>
+<p>在setValue方法中，有一个<code>mVersion++</code>语句，每次设置新值都会触发这个mVersion的自增，然后在considerNotify方法中，去校验observer是否处于active状态以及新值版本号与observer中的版本号，如果observer<strong>应当</strong>处于非active状态而仍然处于active状态(<strong>因为状态可能由于handler机制并没有及时变更</strong>)，则进行状态变更并返回，并且如果<code>observer.mLastVersion &gt;= mVersion</code>，则直接返回，因为此时observer已经更新过此值。<strong>也就是说，只有observer处于active状态且当前mVersion &gt; observer.mVersion的时候，才去通知observer更新值</strong>。</p>
+<p>接下来，着重看一下<em>LifecycleBoundObserver</em>和<em>ObserverWrapper</em>这个两个类。</p>
+<h2 id="lifecycleboundobserver和observerwrapper">LifecycleBoundObserver和ObserverWrapper</h2>
+<p><em>ObserverWrapper</em>是<em>Observer</em>的抽象包装类，代码很简单：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ObserverWrapper</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> Observer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> mObserver<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> mActive<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> mLastVersion <span style="color:#f92672">=</span> START_VERSION<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  ObserverWrapper<span style="color:#f92672">(</span>Observer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    mObserver <span style="color:#f92672">=</span> observer<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">shouldBeActive</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAttachedTo</span><span style="color:#f92672">(</span>LifecycleOwner owner<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">detachObserver</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">activeStateChanged</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> newActive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newActive <span style="color:#f92672">==</span> mActive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// immediately set active state, so we&#39;d never dispatch anything to inactive
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// owner
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    mActive <span style="color:#f92672">=</span> newActive<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> wasInactive <span style="color:#f92672">=</span> LiveData<span style="color:#f92672">.</span><span style="color:#a6e22e">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mActiveCount</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    LiveData<span style="color:#f92672">.</span><span style="color:#a6e22e">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mActiveCount</span> <span style="color:#f92672">+=</span> mActive <span style="color:#f92672">?</span> 1 <span style="color:#f92672">:</span> <span style="color:#f92672">-</span>1<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>wasInactive <span style="color:#f92672">&amp;&amp;</span> mActive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      onActive<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>LiveData<span style="color:#f92672">.</span><span style="color:#a6e22e">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mActiveCount</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>mActive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      onInactive<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mActive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      dispatchingValue<span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在activeStateChanged方法中，先判断是否是状态的改变，如果<code>newActive == mActive</code>说明激活状态未改变，则直接返回；然后判断按照激活的observer数目和mActive状态，来判断LiveData的状态，并调用其空回调函数；最后如果mActive为true，则进行针对这个<em>ObserverWrapper</em>的事件分发。</p>
+<p><em>ObserverWrapper</em>有两个子类，<em>LifecycleBoundObserver</em>和<em>AlwaysActiveObserver</em>，<em>AlwaysActiveObserver</em>是与生命周期无关的observer，需要谨慎使用，在适当的时候，通过removeObserver来删除，我们重点看<em>LifecycleBoundObserver</em>。</p>
+<p><em>LifecycleBoundObserver</em>同时实现了<em>LifecycleEventObserver</em>，这就使得这个类具备了生命周期关联性。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LifecycleBoundObserver</span> <span style="color:#66d9ef">extends</span> ObserverWrapper <span style="color:#66d9ef">implements</span> LifecycleEventObserver <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@NonNull</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> LifecycleOwner mOwner<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  LifecycleBoundObserver<span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LifecycleOwner owner<span style="color:#f92672">,</span> Observer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> T<span style="color:#f92672">&gt;</span> observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span><span style="color:#f92672">(</span>observer<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    mOwner <span style="color:#f92672">=</span> owner<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">shouldBeActive</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mOwner<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getCurrentState</span><span style="color:#f92672">().</span><span style="color:#a6e22e">isAtLeast</span><span style="color:#f92672">(</span>STARTED<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onStateChanged</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LifecycleOwner source<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>                             <span style="color:#a6e22e">@NonNull</span> Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">Event</span> event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>mOwner<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getCurrentState</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> DESTROYED<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      removeObserver<span style="color:#f92672">(</span>mObserver<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    activeStateChanged<span style="color:#f92672">(</span>shouldBeActive<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAttachedTo</span><span style="color:#f92672">(</span>LifecycleOwner owner<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mOwner <span style="color:#f92672">==</span> owner<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">detachObserver</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    mOwner<span style="color:#f92672">.</span><span style="color:#a6e22e">getLifecycle</span><span style="color:#f92672">().</span><span style="color:#a6e22e">removeObserver</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在onStateChanged方法中，当生命周期处于<strong>DESTROYED</strong>状态时候，则删除这个observer。除此以外，当mOwner的生命周期处于<strong>STARTED</strong>之后的状态，则认为<code>shouldBeActive</code>，当生命周期函数onStateChanged被触发时候，将设置是否active。</p>
+<h2 id="总结">总结</h2>
+<p>通过LiveData的这些特性，我们可以实现Activity - Fragment, Fragment - Fragment的通信，另外也可以做应用的事件总线，比如<strong>LiveEventBus</strong>。</p>
+</section>
+
+  
+  
+  <footer class="mt-12 flex flex-wrap">
+     
+    <a
+      class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
+      href="https://boybeak.github.io/tags/untagged"
+      >untagged</a
+    >
+    
+  </footer>
+  
+
+  
+  
+  
+  <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
+    
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
+      ><span class="mr-1.5">←</span><span>Jetpack之Lifecycle源码分析</span></a
+    >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
+      href="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/leakcanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/"
+      ><span>LeakCanary原理分析</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script>
+  
+</article>
+
+
+    </main>
+
+    <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
+  <div class="mr-auto">
+    &copy; 2022
+    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
+  >️
+  <a class="link" href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>

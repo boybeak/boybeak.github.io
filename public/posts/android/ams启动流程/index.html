@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  
+  <title>AMS启动流程 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="AMS启动流程 AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+系统启动流程 graph TD; style A fill:#fff style F fill:#5befb9 Z{{Boot ROM}} --&gt; A([Boot Loader]); A --&gt; B(Kernel); B --&gt; C(&#34;init(pid=1)/C&#43;&#43; Framework Native&#34;); C --&gt; D(Zygote/Android Runtime); D --&gt; E(System Server/Java Framework); E --&gt; F(Apps); 面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。
+Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予Copy-on-Write机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。
+SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。
+如何导致死锁的？
+在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。
+对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。
+Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.zygote.rc]; B --&gt; C[&#34;启动main类型服务 do_class_start()&#34;]; C --&gt; D[&#34;启动zygote服务 start()&#34;]; D --&gt; E[&#34;创建Zygote进程 fork()&#34;]; E --&gt; |execv|F[&#34;app_main.cpp - main()&#34;]; System Server进程启动 graph TD; A[&#34;app_main." />
+  <meta name="author" content="" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+
+  
+
+  
+  
+  
+    
+  
+  <link
+    rel="preload"
+    as="image"
+    href="https://boybeak.github.io/theme.png"
+  />
+
+  
+  
+  
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  
+
+  
+  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.101.0" />
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="AMS启动流程" />
+<meta property="og:description" content="AMS启动流程 AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+系统启动流程 graph TD; style A fill:#fff style F fill:#5befb9 Z{{Boot ROM}} --&gt; A([Boot Loader]); A --&gt; B(Kernel); B --&gt; C(&#34;init(pid=1)/C&#43;&#43; Framework Native&#34;); C --&gt; D(Zygote/Android Runtime); D --&gt; E(System Server/Java Framework); E --&gt; F(Apps); 面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。
+Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予Copy-on-Write机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。
+SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。
+如何导致死锁的？
+在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。
+对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。
+Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.zygote.rc]; B --&gt; C[&#34;启动main类型服务 do_class_start()&#34;]; C --&gt; D[&#34;启动zygote服务 start()&#34;]; D --&gt; E[&#34;创建Zygote进程 fork()&#34;]; E --&gt; |execv|F[&#34;app_main.cpp - main()&#34;]; System Server进程启动 graph TD; A[&#34;app_main." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://boybeak.github.io/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-03T21:03:05+08:00" />
+<meta property="article:modified_time" content="2022-09-03T21:03:05+08:00" />
+
+
+  
+  <meta itemprop="name" content="AMS启动流程">
+<meta itemprop="description" content="AMS启动流程 AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+系统启动流程 graph TD; style A fill:#fff style F fill:#5befb9 Z{{Boot ROM}} --&gt; A([Boot Loader]); A --&gt; B(Kernel); B --&gt; C(&#34;init(pid=1)/C&#43;&#43; Framework Native&#34;); C --&gt; D(Zygote/Android Runtime); D --&gt; E(System Server/Java Framework); E --&gt; F(Apps); 面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。
+Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予Copy-on-Write机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。
+SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。
+如何导致死锁的？
+在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。
+对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。
+Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.zygote.rc]; B --&gt; C[&#34;启动main类型服务 do_class_start()&#34;]; C --&gt; D[&#34;启动zygote服务 start()&#34;]; D --&gt; E[&#34;创建Zygote进程 fork()&#34;]; E --&gt; |execv|F[&#34;app_main.cpp - main()&#34;]; System Server进程启动 graph TD; A[&#34;app_main."><meta itemprop="datePublished" content="2022-09-03T21:03:05+08:00" />
+<meta itemprop="dateModified" content="2022-09-03T21:03:05+08:00" />
+<meta itemprop="wordCount" content="256">
+<meta itemprop="keywords" content="untagged," />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AMS启动流程"/>
+<meta name="twitter:description" content="AMS启动流程 AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+系统启动流程 graph TD; style A fill:#fff style F fill:#5befb9 Z{{Boot ROM}} --&gt; A([Boot Loader]); A --&gt; B(Kernel); B --&gt; C(&#34;init(pid=1)/C&#43;&#43; Framework Native&#34;); C --&gt; D(Zygote/Android Runtime); D --&gt; E(System Server/Java Framework); E --&gt; F(Apps); 面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。
+Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予Copy-on-Write机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。
+SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。
+如何导致死锁的？
+在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。
+对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。
+Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.zygote.rc]; B --&gt; C[&#34;启动main类型服务 do_class_start()&#34;]; C --&gt; D[&#34;启动zygote服务 start()&#34;]; D --&gt; E[&#34;创建Zygote进程 fork()&#34;]; E --&gt; |execv|F[&#34;app_main.cpp - main()&#34;]; System Server进程启动 graph TD; A[&#34;app_main."/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkVal = localStorage.getItem('dark');
+    setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href=" https://twitter.com/YOUR_TWITTER_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/YOUR_GITHUB_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href=" https://instagram.com/YOUR_INSTAGRAM_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href=" https://boybeak.github.io/index.xml "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">AMS启动流程</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Sep 3, 2022</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h1 id="ams启动流程">AMS启动流程</h1>
+<p>AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。</p>
+<h2 id="系统启动流程">系统启动流程</h2>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
+    style A fill:#fff
+    style F fill:#5befb9
+    Z{{Boot ROM}} --&gt; A([Boot Loader]);
+    A --&gt; B(Kernel);
+    B --&gt; C(&#34;init(pid=1)/C++ Framework Native&#34;);
+    C --&gt; D(Zygote/Android Runtime);
+    D --&gt; E(System Server/Java Framework);
+    E --&gt; F(Apps);
+</code></pre><blockquote>
+<p><strong>面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。</strong></p>
+<p><em>Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予<a href="https://zhuanlan.zhihu.com/p/48147304">Copy-on-Write</a>机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。</em></p>
+<p><em>SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。</em></p>
+<p><strong>如何导致死锁的？</strong></p>
+<p>在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。</p>
+<p>对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。</p>
+</blockquote>
+<h2 id="zygote集成启动">Zygote集成启动</h2>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
+    A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.zygote.rc];
+    B --&gt; C[&#34;启动main类型服务 do_class_start()&#34;];
+    C --&gt; D[&#34;启动zygote服务 start()&#34;];
+    D --&gt; E[&#34;创建Zygote进程 fork()&#34;];
+    E --&gt; |execv|F[&#34;app_main.cpp - main()&#34;];
+</code></pre><h2 id="system-server进程启动">System Server进程启动</h2>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
+    A[&#34;app_main.cpp - main()&#34;] --&gt; B[&#34;AndroidRuntime.start()&#34;];
+    B --&gt; C[&#34;startVM()&#34;];
+    C --&gt; D[&#34;startReg()&#34;];
+    D --&gt; E[&#34;ZygoteInit.main()&#34;];
+    E --&gt; F[&#34;registerZygoteSocket()&#34;];
+    F --&gt; G[&#34;preload&#34;];
+    G --&gt; H[&#34;startSystemServer&#34;];
+    H --&gt; I[&#34;runSelectLoop&#34;];
+</code></pre><p><a href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/services/java/com/android/server/SystemServer.java">SystemServer.java</a></p>
+<h2 id="ams启动流程-1">AMS启动流程</h2>
+<p><a href="https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/am/ActivityManagerService.java">ActivityManagerService.java</a></p>
+<p>在SystemServer的<code>startBootstrapServices</code>方法中，开始了AMS的启动。</p>
+<h3 id="ams启动过程中做了哪些事">AMS启动过程中做了哪些事？</h3>
+<p>与<code>adb shell dumpsys</code>相关的一些process服务，比如<code>meminfo</code>、<code>gfxinfo</code>、<code>dbinfo</code>等，具体请参考<code>setSystemProcess</code>方法。</p>
+<h2 id="activity启动流程">Activity启动流程</h2>
+<p>ActivityStactSupervisor</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR;
+A[ActivityStactSupervisor] --&gt; B[mHomeStack];
+A --&gt; C[mFocusedStack];
+subgraph ActivityStack[&#34;ActivityStack&#34;]
+  subgraph TaskRecord
+    AR1[ActivityRecord]
+    AR2[ActivityRecord]
+    AR3[ActivityRecord]
+  end
+  subgraph TaskRecord2
+    AR4[ActivityRecord]
+    AR5[ActivityRecord]
+    AR6[ActivityRecord]
+  end
+end
+B --&gt; ActivityStack;
+C --&gt; ActivityStack;
+</code></pre><p>Activity启动简图</p>
+<blockquote>
+<p>面试题：Zygote为什么不采用Binder机制进行IPC通信。</p>
+<p>Binder机制中存在Binder线程池，是多线程的，如果Zygote采用Binder的话，就存在了上面说的fork多线程死锁问题了。其实严格来说，Binder机制不一定要多线程，所谓的Binder线程只不过是在循环读取Binder驱动消息而已，只注册一个Binder线程也是可以工作的，比如ServiceManager，实际上Zygote尽管没有采用Binder机制，它也不是单线程的，但它在fork前主动停止了其他线程，fork后重新启动了。</p>
+</blockquote>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">graph TD;
+  A([Launcher]) --&gt; B{&#34;SystemServer - AMS&lt;br&gt;(app是否启动)&#34;};
+  B --&gt; |否, 请求创建app进程|C[Zygote];
+  B -.-&gt; |&#34;是, 1. ActivityManager.getService()&#34;|D(App):::app;
+  C --&gt;|fork| D
+  D --&gt;|&#34;2. mgr.attachApplication(mAppThread, startSeq)&#34;| B;
+	classDef app fill:#5befb9
+</code></pre><p>Activity启动细节图</p>
+<p><strong>Launcher到AMS阶段</strong></p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">sequenceDiagram
+	participant A as Launcher
+	participant B as Activity
+	participant C as Instrumentation
+	participant D as IActivityManager
+	participant E as AMS
+	
+	A -&gt;&gt; B: startActivity
+	B --&gt; B: startActivityForResult
+	B -&gt;&gt; C: execStartActivity
+	C -&gt;&gt; D: startActivity
+	D -&gt;&gt; E: startActivity
+</code></pre><p><strong>AMS到ApplicationThread阶段</strong></p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">sequenceDiagram
+	participant A as AMS
+	participant B as ActivityStart
+	participant C as ActivityStackSupervisor
+	participant D as ActivityStack
+	participant E as ApplicationThread
+	A -&gt;&gt; A: startActivityStarter
+	A -&gt;&gt; B: startActivityMyWait
+	B -&gt;&gt; B: startActivityLocked
+	B -&gt;&gt; B: startActivity
+	B -&gt;&gt; B: startActivityUnchecked
+	B -&gt;&gt; C: startSpecificActivityLocked
+</code></pre><p><strong>ApplicationThread到Activity</strong></p>
+</section>
+
+  
+  
+  <footer class="mt-12 flex flex-wrap">
+     
+    <a
+      class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
+      href="https://boybeak.github.io/tags/untagged"
+      >untagged</a
+    >
+    
+  </footer>
+  
+
+  
+  
+  
+  <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
+    
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/"
+      ><span class="mr-1.5">←</span><span>Activity启动流程</span></a
+    >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
+      href="https://boybeak.github.io/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/"
+      ><span>Apk瘦身术</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script>
+  
+</article>
+
+
+    </main>
+
+    <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
+  <div class="mr-auto">
+    &copy; 2022
+    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
+  >️
+  <a class="link" href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>

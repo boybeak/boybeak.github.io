@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #faf6f1"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  
+  <title>Jetpack之Lifecycle源码分析 - My New Hugo Site</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="Jetpack之Lifecycle源码分析 这是一篇解析jetpack库中的Lifecycle库的分析文章。
+def lifecycle_version = &#34;2.2.0&#34; // Lifecycles only (without ViewModel or LiveData) implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&#34; // Annotation processor kapt &#34;androidx.lifecycle:lifecycle-compiler:$lifecycle_version&#34; class MyObserver : LifecycleObserver { @OnLifecycleEvent(Lifecycle.Event.ON_CREATE) fun onCreate() { } @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE) fun onPause() { } } class MainActivity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) lifecycle.addObserver(MyObserver()) } } 这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在MyObserver中声明对应的生命周期函数，然后将这个MyObserver实例添加到MainActivity的lifecycle中去。
+看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到注解处理器，与ARouter类似，Lifecycle的工作流程也分成两部分——编译时和运行时。
+简要的说，在编译时，生成LifecycleObserver的辅助类；在运行时，addObserver方法被调用后，解析出对应observer的辅助类。
+生命周期探知 在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？
+读过Glide源码(附上Glide源码解读)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。
+对外提供生命周期的类，需要实现LifecycleOwner接口。
+public interface LifecycleOwner { /** * Returns the Lifecycle of the provider. * * @return The lifecycle of the provider." />
+  <meta name="author" content="" />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+
+  
+
+  
+  
+  
+    
+  
+  <link
+    rel="preload"
+    as="image"
+    href="https://boybeak.github.io/theme.png"
+  />
+
+  
+  
+  
+  <link rel="preload" as="image" href="https://www.gravatar.com/avatar/6fd8df4abe41f17fd8e2dd7d97b5cc8c?s=160&amp;d=identicon" />
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  
+  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  
+
+  
+  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.101.0" />
+
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Jetpack之Lifecycle源码分析" />
+<meta property="og:description" content="Jetpack之Lifecycle源码分析 这是一篇解析jetpack库中的Lifecycle库的分析文章。
+def lifecycle_version = &#34;2.2.0&#34; // Lifecycles only (without ViewModel or LiveData) implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&#34; // Annotation processor kapt &#34;androidx.lifecycle:lifecycle-compiler:$lifecycle_version&#34; class MyObserver : LifecycleObserver { @OnLifecycleEvent(Lifecycle.Event.ON_CREATE) fun onCreate() { } @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE) fun onPause() { } } class MainActivity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) lifecycle.addObserver(MyObserver()) } } 这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在MyObserver中声明对应的生命周期函数，然后将这个MyObserver实例添加到MainActivity的lifecycle中去。
+看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到注解处理器，与ARouter类似，Lifecycle的工作流程也分成两部分——编译时和运行时。
+简要的说，在编译时，生成LifecycleObserver的辅助类；在运行时，addObserver方法被调用后，解析出对应observer的辅助类。
+生命周期探知 在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？
+读过Glide源码(附上Glide源码解读)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。
+对外提供生命周期的类，需要实现LifecycleOwner接口。
+public interface LifecycleOwner { /** * Returns the Lifecycle of the provider. * * @return The lifecycle of the provider." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-03T21:06:01+08:00" />
+<meta property="article:modified_time" content="2022-09-03T21:06:01+08:00" />
+
+
+  
+  <meta itemprop="name" content="Jetpack之Lifecycle源码分析">
+<meta itemprop="description" content="Jetpack之Lifecycle源码分析 这是一篇解析jetpack库中的Lifecycle库的分析文章。
+def lifecycle_version = &#34;2.2.0&#34; // Lifecycles only (without ViewModel or LiveData) implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&#34; // Annotation processor kapt &#34;androidx.lifecycle:lifecycle-compiler:$lifecycle_version&#34; class MyObserver : LifecycleObserver { @OnLifecycleEvent(Lifecycle.Event.ON_CREATE) fun onCreate() { } @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE) fun onPause() { } } class MainActivity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) lifecycle.addObserver(MyObserver()) } } 这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在MyObserver中声明对应的生命周期函数，然后将这个MyObserver实例添加到MainActivity的lifecycle中去。
+看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到注解处理器，与ARouter类似，Lifecycle的工作流程也分成两部分——编译时和运行时。
+简要的说，在编译时，生成LifecycleObserver的辅助类；在运行时，addObserver方法被调用后，解析出对应observer的辅助类。
+生命周期探知 在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？
+读过Glide源码(附上Glide源码解读)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。
+对外提供生命周期的类，需要实现LifecycleOwner接口。
+public interface LifecycleOwner { /** * Returns the Lifecycle of the provider. * * @return The lifecycle of the provider."><meta itemprop="datePublished" content="2022-09-03T21:06:01+08:00" />
+<meta itemprop="dateModified" content="2022-09-03T21:06:01+08:00" />
+<meta itemprop="wordCount" content="463">
+<meta itemprop="keywords" content="untagged," />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Jetpack之Lifecycle源码分析"/>
+<meta name="twitter:description" content="Jetpack之Lifecycle源码分析 这是一篇解析jetpack库中的Lifecycle库的分析文章。
+def lifecycle_version = &#34;2.2.0&#34; // Lifecycles only (without ViewModel or LiveData) implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&#34; // Annotation processor kapt &#34;androidx.lifecycle:lifecycle-compiler:$lifecycle_version&#34; class MyObserver : LifecycleObserver { @OnLifecycleEvent(Lifecycle.Event.ON_CREATE) fun onCreate() { } @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE) fun onPause() { } } class MainActivity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) lifecycle.addObserver(MyObserver()) } } 这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在MyObserver中声明对应的生命周期函数，然后将这个MyObserver实例添加到MainActivity的lifecycle中去。
+看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到注解处理器，与ARouter类似，Lifecycle的工作流程也分成两部分——编译时和运行时。
+简要的说，在编译时，生成LifecycleObserver的辅助类；在运行时，addObserver方法被调用后，解析出对应observer的辅助类。
+生命周期探知 在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？
+读过Glide源码(附上Glide源码解读)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。
+对外提供生命周期的类，需要实现LifecycleOwner接口。
+public interface LifecycleOwner { /** * Returns the Lifecycle of the provider. * * @return The lifecycle of the provider."/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+      >My New Hugo Site</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#faf6f1"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkVal = localStorage.getItem('dark');
+    setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href=" https://twitter.com/YOUR_TWITTER_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/YOUR_GITHUB_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./instagram.svg)"
+        href=" https://instagram.com/YOUR_INSTAGRAM_ID "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./rss.svg)"
+        href=" https://boybeak.github.io/index.xml "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">Jetpack之Lifecycle源码分析</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Sep 3, 2022</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h1 id="jetpack之lifecycle源码分析">Jetpack之Lifecycle源码分析</h1>
+<p>这是一篇解析jetpack库中的<strong>Lifecycle</strong>库的分析文章。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> lifecycle_version <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;2.2.0&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Lifecycles only (without ViewModel or LiveData)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>implementation <span style="color:#e6db74">&#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Annotation processor
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>kapt <span style="color:#e6db74">&#34;androidx.lifecycle:lifecycle-compiler:$lifecycle_version&#34;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyObserver</span> : LifecycleObserver {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@OnLifecycleEvent</span>(Lifecycle.Event.ON_CREATE)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@OnLifecycleEvent</span>(Lifecycle.Event.ON_PAUSE)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onPause</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MainActivity</span> : AppCompatActivity() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">override</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">onCreate</span>(savedInstanceState: Bundle?) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState)
+</span></span><span style="display:flex;"><span>        setContentView(R.layout.activity_main)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        lifecycle.addObserver(MyObserver())
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在<em>MyObserver</em>中声明对应的生命周期函数，然后将这个<em>MyObserver</em>实例添加到<em>MainActivity</em>的lifecycle中去。</p>
+<p>看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到<strong>注解处理器</strong>，与<a href="https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html"><strong>ARouter</strong></a>类似，Lifecycle的工作流程也分成两部分——<strong>编译时</strong>和<strong>运行时</strong>。</p>
+<p>简要的说，在编译时，生成<strong>LifecycleObserver</strong>的辅助类；在运行时，<em>addObserver</em>方法被调用后，解析出对应observer的辅助类。</p>
+<h2 id="生命周期探知">生命周期探知</h2>
+<p>在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？</p>
+<p>读过Glide源码(附上<a href="https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01.html">Glide源码解读</a>)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。</p>
+<p>对外提供生命周期的类，需要实现LifecycleOwner接口。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">LifecycleOwner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * Returns the Lifecycle of the provider.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @return The lifecycle of the provider.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@NonNull</span>
+</span></span><span style="display:flex;"><span>    Lifecycle getLifecycle();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们以<em>AppCompatActivity</em>为例去查看它是如何实现的这个接口，我们查看其父类中有一个<em>ComponentActivity</em>类(AppCompatActivity -&gt; FragmentActivity -&gt; ComponentActivity)。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ComponentActivity</span> extends androidx.core.app.ComponentActivity implements
+</span></span><span style="display:flex;"><span>        LifecycleOwner,
+</span></span><span style="display:flex;"><span>        ViewModelStoreOwner,
+</span></span><span style="display:flex;"><span>        SavedStateRegistryOwner,
+</span></span><span style="display:flex;"><span>        OnBackPressedDispatcherOwner {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> void onCreate(<span style="color:#a6e22e">@Nullable</span> Bundle savedInstanceState) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">super</span>.onCreate(savedInstanceState);
+</span></span><span style="display:flex;"><span>        mSavedStateRegistryController.performRestore(savedInstanceState);
+</span></span><span style="display:flex;"><span>        ReportFragment.injectIfNeededIn(<span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (mContentLayoutId <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>            setContentView(mContentLayoutId);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意此处，有一个<em>ReportFragment</em>执行了injectIfNeededIn方法，在这个方法中，就是检测是否已经添加了这个<em>ReportFragment</em>，如果没添加则添加一个。继续查看这个<em>ReportFragment</em>的源码，可以在其生命周期函数中，执行了分发生命周期的流程。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReportFragment</span> extends Fragment {
+</span></span><span style="display:flex;"><span>  static void dispatch(<span style="color:#a6e22e">@NonNull</span> Activity activity, <span style="color:#a6e22e">@NonNull</span> Lifecycle.Event event) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (activity instanceof LifecycleRegistryOwner) {
+</span></span><span style="display:flex;"><span>      ((LifecycleRegistryOwner) activity).getLifecycle().handleLifecycleEvent(event);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (activity instanceof LifecycleOwner) { <span style="color:#75715e">// 3
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      Lifecycle lifecycle = ((LifecycleOwner) activity).getLifecycle();
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (lifecycle instanceof LifecycleRegistry) {
+</span></span><span style="display:flex;"><span>        ((LifecycleRegistry) lifecycle).handleLifecycleEvent(event);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> void dispatchCreate(ActivityInitializationListener listener) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (listener <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>      listener.onCreate();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> void onActivityCreated(Bundle savedInstanceState) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">super</span>.onActivityCreated(savedInstanceState);
+</span></span><span style="display:flex;"><span>    dispatchCreate(mProcessListener);
+</span></span><span style="display:flex;"><span>    dispatch(Lifecycle.Event.ON_CREATE); <span style="color:#75715e">// 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">private</span> void dispatch(<span style="color:#a6e22e">@NonNull</span> Lifecycle.Event event) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (Build.VERSION.SDK_INT &lt; <span style="color:#ae81ff">29</span>) {
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// Only dispatch events from ReportFragment on API levels prior
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// to API 29. On API 29+, this is handled by the ActivityLifecycleCallbacks
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// added in ReportFragment.injectIfNeededIn
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      dispatch(getActivity(), event); <span style="color:#75715e">// 2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>看代码中我标注的注释顺序onActivityCreated -&gt; dispatch(Lifecycle.Event) -&gt; dispatch(Activity, Lifecycle.Event)，我们看到最后一个流程中，拿到<em>Lifecycle</em>对象后，判断是否为<em>LifecycleRegistry</em>类，如果是，则调用handleLifecycleEvent方法。这里，<em>ComponentActivity</em>提供的<em>Lifecycle</em>对象就是<em>LifecycleRegistry</em>类。</p>
+<p>经过这样一个流程，我们就将感知生命周期的无UI的<em>ReportFragment</em>与执行事件的<em>LifecycleRegistry</em>进行了连接。这样我们就获得了感知生命周期的能力了。</p>
+<p>那么具体是如何执行到<em>MyObserver</em>对应的生命周期的方法的呢？</p>
+<blockquote>
+<p>或许你看到这里，会觉得很简单，在<em>LifecycleRegistry</em>维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从<em>MyObserver</em>中筛选出带有**@OnLifecycleEvent**注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。</p>
+<p>可是谷歌工程师并没有这么做，因为在执行事件时候，经过这么多反射，效率会很低。那么正确的流程是怎么样的？这就需要我们关注上面提到的两个流程了——<strong>编译时</strong>和<strong>运行时</strong>。</p>
+</blockquote>
+<h2 id="编译时">编译时</h2>
+<p>参考<a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/lifecycle/lifecycle-compiler">Lifecycle-compiler</a>源码。</p>
+<p>通过注解处理器，AS为我们生成了MyObserver的辅助类——<em>MyObserver_LifecycleAdapter</em>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyObserver_LifecycleAdapter</span> <span style="color:#66d9ef">implements</span> GeneratedAdapter <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> MyObserver mReceiver<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  MyObserver_LifecycleAdapter<span style="color:#f92672">(</span>MyObserver receiver<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">mReceiver</span> <span style="color:#f92672">=</span> receiver<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">callMethods</span><span style="color:#f92672">(</span>LifecycleOwner owner<span style="color:#f92672">,</span> Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">Event</span> event<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> onAny<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>      MethodCallsLogger logger<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> hasLogger <span style="color:#f92672">=</span> logger <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>onAny<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>event <span style="color:#f92672">==</span> Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">Event</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ON_CREATE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>hasLogger <span style="color:#f92672">||</span> logger<span style="color:#f92672">.</span><span style="color:#a6e22e">approveCall</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;onCreate&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        mReceiver<span style="color:#f92672">.</span><span style="color:#a6e22e">onCreate</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>event <span style="color:#f92672">==</span> Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">Event</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ON_PAUSE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>hasLogger <span style="color:#f92672">||</span> logger<span style="color:#f92672">.</span><span style="color:#a6e22e">approveCall</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;onPause&#34;</span><span style="color:#f92672">,</span> 1<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        mReceiver<span style="color:#f92672">.</span><span style="color:#a6e22e">onPause</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>我们可以看到，实际的生命周期事件分发是在这里完成的。那么这个辅助类是在哪里被使用到的呢？</p>
+<p>接下来就是<strong>运行时</strong>发挥作用的时候了。</p>
+<h2 id="运行时">运行时</h2>
+<p>运行时的起点，是从<em>addObserver</em>开始的。</p>
+<p>我们查看<em>LifecycleRegistry#addObserver</em>方法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> FastSafeIterableMap<span style="color:#f92672">&lt;</span>LifecycleObserver<span style="color:#f92672">,</span> ObserverWithState<span style="color:#f92672">&gt;</span> mObserverMap <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> FastSafeIterableMap<span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">addObserver</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LifecycleObserver observer<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  State initialState <span style="color:#f92672">=</span> mState <span style="color:#f92672">==</span> DESTROYED <span style="color:#f92672">?</span> DESTROYED <span style="color:#f92672">:</span> INITIALIZED<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  ObserverWithState statefulObserver <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ObserverWithState<span style="color:#f92672">(</span>observer<span style="color:#f92672">,</span> initialState<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  ObserverWithState previous <span style="color:#f92672">=</span> mObserverMap<span style="color:#f92672">.</span><span style="color:#a6e22e">putIfAbsent</span><span style="color:#f92672">(</span>observer<span style="color:#f92672">,</span> statefulObserver<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>我们可以看到，<em>LifecycleRegistry</em>中并不是直接维护observer对象，而是维护<em>ObserverWithState</em>对象。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ObserverWithState</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  State mState<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  LifecycleEventObserver mLifecycleObserver<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  ObserverWithState<span style="color:#f92672">(</span>LifecycleObserver observer<span style="color:#f92672">,</span> State initialState<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    mLifecycleObserver <span style="color:#f92672">=</span> Lifecycling<span style="color:#f92672">.</span><span style="color:#a6e22e">lifecycleEventObserver</span><span style="color:#f92672">(</span>observer<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    mState <span style="color:#f92672">=</span> initialState<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dispatchEvent</span><span style="color:#f92672">(</span>LifecycleOwner owner<span style="color:#f92672">,</span> Event event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    State newState <span style="color:#f92672">=</span> getStateAfter<span style="color:#f92672">(</span>event<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    mState <span style="color:#f92672">=</span> min<span style="color:#f92672">(</span>mState<span style="color:#f92672">,</span> newState<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    mLifecycleObserver<span style="color:#f92672">.</span><span style="color:#a6e22e">onStateChanged</span><span style="color:#f92672">(</span>owner<span style="color:#f92672">,</span> event<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    mState <span style="color:#f92672">=</span> newState<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>在这个类的构造方法中，执行了一个<code>mLifecycleObserver = Lifecycling.lifecycleEventObserver(observer);</code></p>
+<p>在我们的案例中，这个方法返回了一个<em>SingleGeneratedAdapterObserver</em>类，我们查看这个类的代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SingleGeneratedAdapterObserver</span> <span style="color:#66d9ef">implements</span> LifecycleEventObserver <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> GeneratedAdapter mGeneratedAdapter<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    SingleGeneratedAdapterObserver<span style="color:#f92672">(</span>GeneratedAdapter generatedAdapter<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        mGeneratedAdapter <span style="color:#f92672">=</span> generatedAdapter<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onStateChanged</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@NonNull</span> LifecycleOwner source<span style="color:#f92672">,</span> <span style="color:#a6e22e">@NonNull</span> Lifecycle<span style="color:#f92672">.</span><span style="color:#a6e22e">Event</span> event<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        mGeneratedAdapter<span style="color:#f92672">.</span><span style="color:#a6e22e">callMethods</span><span style="color:#f92672">(</span>source<span style="color:#f92672">,</span> event<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        mGeneratedAdapter<span style="color:#f92672">.</span><span style="color:#a6e22e">callMethods</span><span style="color:#f92672">(</span>source<span style="color:#f92672">,</span> event<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>也就是在这里，调用了<em>MyObserver_LifecycleAdapter</em>的<em>callMethods</em>方法。</p>
+<p>那么是如何找到<em>MyObserver_LifecycleAdapter</em>方法的呢？</p>
+<p>在<em>Lifecycling</em>类中，通过observer的类名来找的，我们看到有这样的一个方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> String <span style="color:#a6e22e">getAdapterName</span><span style="color:#f92672">(</span>String className<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> className<span style="color:#f92672">.</span><span style="color:#a6e22e">replace</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;_&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;_LifecycleAdapter&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>这样，整个流程就串起来了。</p>
+<h2 id="总结">总结</h2>
+<p>编译时：生成<em>XXX_LifecycleAdapter</em>类，用来分发不同的生命周期事件。</p>
+<p>运行时：在addObserver时候，通过类名找到这个<em>XXX_LifecycleAdapter</em>类，生成对象在<em>LifecycleRegistry</em>中进行维护；在ReportFragment方法中触发生命周期时候，调用<em>LifecycleRegistry</em>的<em>handleLifecycleEvent</em>方法进行具体的生命周期事件分发。</p>
+<p>总体来看，其整个流程并不复杂，我们可以看到ARouter、Glide的影子，读过其他源码后，理解这个并不难。</p>
+</section>
+
+  
+  
+  <footer class="mt-12 flex flex-wrap">
+     
+    <a
+      class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
+      href="https://boybeak.github.io/tags/untagged"
+      >untagged</a
+    >
+    
+  </footer>
+  
+
+  
+  
+  
+  <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
+    
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/"
+      ><span class="mr-1.5">←</span><span>Glide源码分析与自我实现(二)——数据加载主流程</span></a
+    >
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
+      href="https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blivedata%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"
+      ><span>Jetpack之LiveData源码分析</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+  <div id="disqus_thread"></div>
+  <script>
+    const disqusShortname = 'YOUR_DISQUS_SHORTNAME';
+    const script = document.createElement('script');
+    script.src = 'https://' + disqusShortname + '.disqus.com/embed.js';
+    script.setAttribute('data-timestamp', +new Date());
+    document.head.appendChild(script);
+  </script>
+  
+</article>
+
+
+    </main>
+
+    <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
+  <div class="mr-auto">
+    &copy; 2022
+    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
+  >️
+  <a class="link" href="https://github.com/nanxiaobei/hugo-paper" rel="noopener" target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>
