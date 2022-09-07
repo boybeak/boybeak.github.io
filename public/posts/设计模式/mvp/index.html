@@ -70,7 +70,7 @@ public interface IView { Context getContext(); } public interface IModel { } pub
   
   
   
-  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/public/main.min.css" />
 
   
 
@@ -82,7 +82,7 @@ public interface IView { Context getContext(); } public interface IModel { } pub
   <link
     rel="preload"
     as="image"
-    href="https://boybeak.github.io/theme.png"
+    href="https://boybeak.github.io/public/theme.png"
   />
 
   
@@ -93,18 +93,18 @@ public interface IView { Context getContext(); } public interface IModel { } pub
   
 
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/twitter.svg" />
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/github.svg" />
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/instagram.svg" />
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/rss.svg" />
   
 
   
-  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
-  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+  <link rel="icon" href="https://boybeak.github.io/public/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/public/apple-touch-icon.png" />
 
   
   <meta name="generator" content="Hugo 0.101.0" />
@@ -131,7 +131,7 @@ public interface IUserContact { public interface IUserView { void showUser(User 
 上边只显示了一组与User有关的mvp结构，如果又有其他的mvp结构呢？我们为了能够更好的适应不同场景，会把M、V、P三方进行抽象，如下：
 public interface IView { Context getContext(); } public interface IModel { } public interface IPresenter&lt;V extends IView, M extends IModel&gt; { void attachView(V v); void detachView(); V getView(); } 所以上面的User相关的mvp结构应该改成如下：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvp/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvp/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-09-03T21:03:05+08:00" />
 <meta property="article:modified_time" content="2022-09-03T21:03:05+08:00" />
 
@@ -168,7 +168,7 @@ public interface IView { Context getContext(); } public interface IModel { } pub
   <body class="text-black duration-200 ease-out dark:text-white">
     <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
   <div class="relative z-50 mr-auto flex items-center">
-    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/public"
       >My New Hugo Site</a
     >
     <a
@@ -255,7 +255,7 @@ public interface IView { Context getContext(); } public interface IModel { } pub
       <a
         class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
         style="--url: url(./rss.svg)"
-        href=" https://boybeak.github.io/index.xml "
+        href=" https://boybeak.github.io/public/index.xml "
         target="_blank"
       ></a>
       
@@ -507,7 +507,7 @@ public interface IView { Context getContext(); } public interface IModel { } pub
      
     <a
       class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
-      href="https://boybeak.github.io/tags/untagged"
+      href="https://boybeak.github.io/public/tags/untagged"
       >untagged</a
     >
     
@@ -519,14 +519,14 @@ public interface IView { Context getContext(); } public interface IModel { } pub
   
   <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
     
-    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvc/"
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvc/"
       ><span class="mr-1.5">←</span><span>MVC</span></a
     >
     
     
     <a
       class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
-      href="https://boybeak.github.io/posts/android/mavencentral/"
+      href="https://boybeak.github.io/public/posts/android/mavencentral/"
       ><span>发布Android库到MavenCentral教程</span><span class="ml-1.5">→</span></a
     >
     
@@ -552,7 +552,7 @@ public interface IView { Context getContext(); } public interface IModel { } pub
     <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
   <div class="mr-auto">
     &copy; 2022
-    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+    <a class="link" href="https://boybeak.github.io/public">My New Hugo Site</a>
   </div>
   <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
   >️

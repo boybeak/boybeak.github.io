@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on My New Hugo Site</title>
-    <link>https://boybeak.github.io/posts/</link>
+    <link>https://boybeak.github.io/public/posts/</link>
     <description>Recent content in Posts on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Sep 2022 21:06:01 +0800</lastBuildDate><atom:link href="https://boybeak.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 03 Sep 2022 21:06:01 +0800</lastBuildDate><atom:link href="https://boybeak.github.io/public/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Glide源码分析与自我实现(一)——数据加载主流程</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01/</guid>
       <description>Glide源码分析与自我实现(一)——数据加载主流程 本文基于Glide 4.11.0
 阅读前请参考Glide 源码分析解读-基于最新版Glide 4.9.0一文，该文章中，将Glide中各个部分的作用分析的非常好了。
 Glide几乎是现在做Android图片加载的最佳选择了。如此优秀的一个框架是如何实现的呢？如果让我们自己来实现该怎么做呢？我们就通过自己实现一个低配版Glide的方式，来探究Glide中是如何实现的。
@@ -26,10 +26,10 @@ graph LR; style A fill:#aaffcc style D fill:#ffaa99 A(Glide) --&amp;gt;|&amp;#34
     
     <item>
       <title>Glide源码分析与自我实现(三)——数据加载主流程</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/</guid>
       <description>Glide源码分析与自我实现(三)——APT的使用与GIF的优化 项目Demo地址：GifHelper
 什么是APT？
 APT是Annotation Processing Tool的简称，即编译时注解处理器。它是一个javac的工具，在编译时，通过注解，按照规则自动生成相关代码的工具。
@@ -49,10 +49,10 @@ class GifHolder(v: View) : AbsHolder&amp;lt;GifItem&amp;gt;(v) { ... private val
     
     <item>
       <title>Glide源码分析与自我实现(二)——数据加载主流程</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/</guid>
       <description>Glide源码分析与自我实现(二)——缓存与BitmapPool 本文基于Glide 4.11.0
 参考文章：Glide 源码分析解读-缓存模块-基于最新版Glide 4.9.0
 **注意：**由于版本差异问题，本文有些部分与参考文章有差异。
@@ -69,10 +69,10 @@ ReferenceQueue queue = ...; WeakReference wr = new WeakReference(value, queue); 
     
     <item>
       <title>Jetpack之Lifecycle源码分析</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
       <description>Jetpack之Lifecycle源码分析 这是一篇解析jetpack库中的Lifecycle库的分析文章。
 def lifecycle_version = &amp;#34;2.2.0&amp;#34; // Lifecycles only (without ViewModel or LiveData) implementation &amp;#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&amp;#34; // Annotation processor kapt &amp;#34;androidx.lifecycle:lifecycle-compiler:$lifecycle_version&amp;#34; class MyObserver : LifecycleObserver { @OnLifecycleEvent(Lifecycle.Event.ON_CREATE) fun onCreate() { } @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE) fun onPause() { } } class MainActivity : AppCompatActivity() { override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState) setContentView(R.layout.activity_main) lifecycle.addObserver(MyObserver()) } } 这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在MyObserver中声明对应的生命周期函数，然后将这个MyObserver实例添加到MainActivity的lifecycle中去。
 看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到注解处理器，与ARouter类似，Lifecycle的工作流程也分成两部分——编译时和运行时。
@@ -85,10 +85,10 @@ public interface LifecycleOwner { /** * Returns the Lifecycle of the provider. *
     
     <item>
       <title>Jetpack之LiveData源码分析</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blivedata%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blivedata%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blivedata%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/jetpack%E4%B9%8Blivedata%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
       <description>Jetpack之LiveData源码分析 在阅读这篇文章前，需要先对Lifecycle有所了解。
 Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
 先要引入LiveData：
@@ -99,10 +99,10 @@ observe方法 // LiveData.java @MainThread public void observe(@NonNull Lifecycl
     
     <item>
       <title>LeakCanary原理分析</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/leakcanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/leakcanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/leakcanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/leakcanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</guid>
       <description>LeakCanary原理分析 dependencies { // debugImplementation because LeakCanary should only run in debug builds. debugImplementation &amp;#39;com.squareup.leakcanary:leakcanary-android:2.5&amp;#39; } 只需要这样简单配置，就能接入LeakCanary内存泄漏分析，到底是怎样做到的？
 我们将这个问题分成两个问题：
 如何自动进行初始化的； 如何检测到内存泄漏的。 如何自动进行初始化的 这部分，我们可以分成两部分去理解——自动和初始化。
@@ -113,10 +113,10 @@ public void handleMessage(Message msg) { .... switch (msg.what) { case BIND_APPL
     
     <item>
       <title>LiveEventBus源码分析</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/liveeventbus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/liveeventbus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/liveeventbus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/liveeventbus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
       <description>LiveEventBus源码分析 不再分析了，理解了LiveData后，不难理解这个框架。
 阅读本文前，请先阅读《Jetpack之LiveData源码分析》。因为LiveEventBus是基于LiveData构建的。
 源码地址：LiveEventBus
@@ -130,10 +130,10 @@ private class LiveEvent&amp;lt;T&amp;gt; implements Observable&amp;lt;T&amp;gt; 
     
     <item>
       <title>手撸一个路由框架IRouter</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6irouter/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6irouter/</link>
       <pubDate>Sat, 03 Sep 2022 21:06:01 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6irouter/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6irouter/</guid>
       <description>IRouter——自己手撸一个路由框架 现在最流行的路由框架应该是阿里的ARouter，这几乎是组件化应用的必备了。但是ARouter用起来稍微有一点不爽，不爽在以下两点：
 没有一个规范化的api式的调用方式：项目大了，调用路由的方法分布在项目各处，难以查找； 对startActivityForResult支持不够友好：按照传统方式，在onActivityResult中处理，比较分散。 基于以上问题，闲来无事，手撸一个自己的路由框架IRouter，基本使用方式如下：
 interface IRouterService { @RouteTo(&amp;#34;topic/detail&amp;#34;) fun topicDetail(@Key(&amp;#34;topic&amp;#34;) topic: Topic): Navigator } val iRouter = IRouter.Builder() .isDebug(BuildConfig.DEBUG) .errorActivity(ErrorActivity::class.java) .build() .create(IRouterService::class.java) iRouter.topicDetail(topic).startActivity(this@MainActivity) // OR iRouter.topicDetail(topic).startActivityForResult(this, 100) { requestCode, resultCode, data -&amp;gt; } 具体的配置方式请参考IRouter，本文主要是解析源码。
@@ -147,10 +147,10 @@ public &amp;lt;T&amp;gt; T create(Class&amp;lt;T&amp;gt; tClass) { return (T) Pr
     
     <item>
       <title>Activity启动流程</title>
-      <link>https://boybeak.github.io/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</link>
+      <link>https://boybeak.github.io/public/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</guid>
       <description>#Activity启动流程
 原文参考：Activity 启动流程分析(Android10)
 graph TD; A(启动Activity) --&amp;gt; B[通过Binder调用AMS的startActivity方法] --&amp;gt; C[通过Intent获取到目标Activity] --&amp;gt; D{目标Activity是否启动} --&amp;gt; |是|E[通过Instrumentation创建Activity] --&amp;gt; F[回调Activity#attach] --&amp;gt; G[回调Activity#onCreate] --&amp;gt; H[准备显示Activity] --&amp;gt; I[Activity#onResume]; D --&amp;gt; |否|J[通过Zygote进程fork一个App进程]:::zygote --&amp;gt; K[创建Application并回调Application#onCreate]:::zygote --&amp;gt; L[启动ActivityThread主线程消息队列]:::zygote --&amp;gt; E; F --&amp;gt; M[创建Window对象并设置Window.Callback接收事件]:::wms; G --&amp;gt; N[Activity#setContentView] --&amp;gt; O[Window#setContentView]:::wms; H --&amp;gt; P[Window#addView]:::wms; classDef wms fill:#aaffff classDef zygote fill:#ffaa99 途中浅蓝色部分为WMS关联部分，橙色部分为目标App未启动情况下的流程。
@@ -159,10 +159,10 @@ Intent 解析到 Activity 调用 startActivity 之后，经过几步辗转最终
     
     <item>
       <title>AMS启动流程</title>
-      <link>https://boybeak.github.io/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</link>
+      <link>https://boybeak.github.io/public/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/</guid>
       <description>AMS启动流程 AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
 系统启动流程 graph TD; style A fill:#fff style F fill:#5befb9 Z{{Boot ROM}} --&amp;gt; A([Boot Loader]); A --&amp;gt; B(Kernel); B --&amp;gt; C(&amp;#34;init(pid=1)/C++ Framework Native&amp;#34;); C --&amp;gt; D(Zygote/Android Runtime); D --&amp;gt; E(System Server/Java Framework); E --&amp;gt; F(Apps); 面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。
 Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予Copy-on-Write机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。
@@ -175,10 +175,10 @@ Zygote集成启动 graph TD; A[&amp;#34;init.cpp - main()&amp;#34;] --&amp;gt; B
     
     <item>
       <title>Apk瘦身术</title>
-      <link>https://boybeak.github.io/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/</link>
+      <link>https://boybeak.github.io/public/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/</guid>
       <description>Apk瘦身术 Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
 一、资源文件 1.1 删除无用资源文件 1.1.1 Lint工具 菜单 -&amp;gt; Analyze -&amp;gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除。
 1.1.2 shrinkResources buildTypes { release { // 不显示Log buildConfigField &amp;#34;boolean&amp;#34;, &amp;#34;LOG_DEBUG&amp;#34;, &amp;#34;false&amp;#34; //混淆 minifyEnabled true // 移除无用的resource文件 shrinkResources true proguardFiles getDefaultProguardFile(&amp;#39;proguard-android.txt&amp;#39;), &amp;#39;proguard-rules.pro&amp;#39; signingConfig signingConfigs.release } } 使用shrinkResources的前提是，打开混淆minifyEnabled，建议只在release版本开启，不然会使得编译速度变慢。
@@ -194,10 +194,10 @@ Zygote集成启动 graph TD; A[&amp;#34;init.cpp - main()&amp;#34;] --&amp;gt; B
     
     <item>
       <title>App保活术</title>
-      <link>https://boybeak.github.io/posts/android/app%E4%BF%9D%E6%B4%BB%E6%9C%AF/</link>
+      <link>https://boybeak.github.io/public/posts/android/app%E4%BF%9D%E6%B4%BB%E6%9C%AF/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/app%E4%BF%9D%E6%B4%BB%E6%9C%AF/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/app%E4%BF%9D%E6%B4%BB%E6%9C%AF/</guid>
       <description>App保活术 为什么要保活？
 因为Android的Low memory killer机制，在系统内存不足的情况下，系统开始根据自身的一套进程回收机制结束一些进程，以便腾出内存给需要的进程。
 如何判断内存不足？
@@ -221,10 +221,10 @@ ScreenObserverService.java
     
     <item>
       <title>ARouter源码分析</title>
-      <link>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/arouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
+      <link>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/arouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/arouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <guid>https://boybeak.github.io/public/posts/-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/arouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
       <description>ARouter源码分析 在阅读源码前，请先下载源码：ARouter
 最近阅读ARouter源码，发现这真的是一个非常优秀的框架。激发出兴趣来读一下他的源码，实际上，这个框架的结构非常简单。这个框架可以分为主流程和辅助流程来拆开分析。
 主流程包含编译时和运行时两个部分，其中编译时主要做的是路由路径表的构建，运行时主要做的是路由路径表的加载；
@@ -241,10 +241,10 @@ public class ARouter$$Group$$test implements IRouteGroup { @Override public void
     
     <item>
       <title>ASM库介绍与使用</title>
-      <link>https://boybeak.github.io/posts/android/asm/</link>
+      <link>https://boybeak.github.io/public/posts/android/asm/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/asm/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/asm/</guid>
       <description>ASM库介绍与使用 原文
 前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可能会看不懂，所以推荐先看下前面几篇文章。 这篇文章主要介绍 ASM 库的结构、主要的 API，并且通过两个示例说明如何通过 ASM 修改 .class 文件中的方法和属性。
 catalog.png
@@ -255,10 +255,10 @@ Core：为其他包提供基础的读、写、转化Java字节码和定义的API
     
     <item>
       <title>Binder机制分析</title>
-      <link>https://boybeak.github.io/posts/android/binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/</link>
+      <link>https://boybeak.github.io/public/posts/android/binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/</guid>
       <description>Binder机制分析 参考文章：写给 Android 应用工程师的 Binder 原理剖析
 实验代码：TheBinder
 Binder机制可以说是Android的核心。提到Binder，可能会让你想到，通过bindService与Service进行通信(也可能是跨进程的通信)，实际上，Android中Binder的使用可以说是无处不在的，包括Activity跳转，详情可以参考AMS启动流程。
@@ -275,10 +275,10 @@ IPC方式 性能(内存拷贝次数) 安全性 Binder 1 通过UID/PID来保证 �
     
     <item>
       <title>Intent.FLAG_ACTIVITY_***解密</title>
-      <link>https://boybeak.github.io/posts/android/intent.flag_activity_%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/</link>
+      <link>https://boybeak.github.io/public/posts/android/intent.flag_activity_%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/intent.flag_activity_%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/intent.flag_activity_%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/</guid>
       <description>Intent.FLAG_ACTIVITY_***解密 最好先看这一篇Launch Mode。
 我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY_SINGLE_TOP四个flag进行讲解。
 FLAG_ACTIVITY_NEW_TASK：
@@ -299,10 +299,10 @@ FLAG_ACTIVITY_SINGLE_TOP：这个flag与launchMode中的singleTop几乎一样，
     
     <item>
       <title>Launch Mode</title>
-      <link>https://boybeak.github.io/posts/android/launchmode/</link>
+      <link>https://boybeak.github.io/public/posts/android/launchmode/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/launchmode/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/launchmode/</guid>
       <description>Launch Mode 此文是阅读《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》一文后的总结，视频地址Bilibili、Youtube。
 演示代码：
 在正式讲解launchMode前，先要理解三个概念：ActivityStack, TaskRecord, ActivityRecord。
@@ -314,20 +314,20 @@ adb shell dumpsys activity 结果如下(搜索ACTIVITY MANAGER STARTER (dumpsys 
     
     <item>
       <title>MVC</title>
-      <link>https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvc/</link>
+      <link>https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvc/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvc/</guid>
+      <guid>https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvc/</guid>
       <description>MVC stateDiagram-v2 Model --&amp;gt; View View --&amp;gt; Controller Controller --&amp;gt; Model Model --&amp;gt; Controller Controller --&amp;gt; View View --&amp;gt; Model Android中的MVC实际上非常混乱，Activity实际上本身是controller的角色，但是同时又充当了model和view。如果这样写，项目小的时候还可以，但是当项目越来越大的时候，为了能更好的解耦，为了适配将来的更改，需要引入MVP或者MVVM。
 需要注意的是，一个项目中，并不是只能有一种开发模式，在不同功能模块完全可以用不同模式，甚至可以混用。</description>
     </item>
     
     <item>
       <title>MVP究极进化</title>
-      <link>https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvp/</link>
+      <link>https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvp/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvp/</guid>
+      <guid>https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvp/</guid>
       <description>MVP究极进化 MVP demo
 graph TD; A(View) --&amp;gt; B(Presenter); B --&amp;gt; C(Model); C --&amp;gt; B; B --&amp;gt; A; MVP通过一个在view与model层中间架设一个presenter层，实现view与model的解耦，这样数据的归数据，界面的归界面。
 对于Android而言，Activity就只作为view存在，只需要知道自己要怎么更新UI就好了，不需要知道如何请求数据等操作，而model只管请求数据等操作，他们中间靠一个presenter连接，互相不需要知道对方的存在。
@@ -340,10 +340,10 @@ public interface IView { Context getContext(); } public interface IModel { } pub
     
     <item>
       <title>发布Android库到MavenCentral教程</title>
-      <link>https://boybeak.github.io/posts/android/mavencentral/</link>
+      <link>https://boybeak.github.io/public/posts/android/mavencentral/</link>
       <pubDate>Sat, 03 Sep 2022 21:03:05 +0800</pubDate>
       
-      <guid>https://boybeak.github.io/posts/android/mavencentral/</guid>
+      <guid>https://boybeak.github.io/public/posts/android/mavencentral/</guid>
       <description>发布Android库到MavenCentral教程 JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2022年2月21号以前，连库的解析服务也停止，所以，把以前的库或者未来的新库替换到MavenCentral是当务之急了。
 我参考的教程来自以下两篇文章：
 Publishing your first Android library to MavenCentral
@@ -364,10 +364,10 @@ ext { PUBLISH_ARTIFACT_ID = &amp;#34;你的artifact_id，一般是module的名�
     
     <item>
       <title></title>
-      <link>https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvvm/</link>
+      <link>https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvvm/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://boybeak.github.io/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvvm/</guid>
+      <guid>https://boybeak.github.io/public/posts/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/mvvm/</guid>
       <description>MVVM </description>
     </item>
     

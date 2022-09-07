@@ -70,7 +70,7 @@ Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.
   
   
   
-  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/main.min.css" />
+  <link rel="preload stylesheet" as="style" href="https://boybeak.github.io/public/main.min.css" />
 
   
 
@@ -82,7 +82,7 @@ Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.
   <link
     rel="preload"
     as="image"
-    href="https://boybeak.github.io/theme.png"
+    href="https://boybeak.github.io/public/theme.png"
   />
 
   
@@ -93,18 +93,18 @@ Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.
   
 
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/twitter.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/twitter.svg" />
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/github.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/github.svg" />
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/instagram.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/instagram.svg" />
   
-  <link rel="preload" as="image" href="https://boybeak.github.io/rss.svg" />
+  <link rel="preload" as="image" href="https://boybeak.github.io/public/rss.svg" />
   
 
   
-  <link rel="icon" href="https://boybeak.github.io/favicon.ico" />
-  <link rel="apple-touch-icon" href="https://boybeak.github.io/apple-touch-icon.png" />
+  <link rel="icon" href="https://boybeak.github.io/public/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://boybeak.github.io/public/apple-touch-icon.png" />
 
   
   <meta name="generator" content="Hugo 0.101.0" />
@@ -131,7 +131,7 @@ SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应�
 对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。
 Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.zygote.rc]; B --&gt; C[&#34;启动main类型服务 do_class_start()&#34;]; C --&gt; D[&#34;启动zygote服务 start()&#34;]; D --&gt; E[&#34;创建Zygote进程 fork()&#34;]; E --&gt; |execv|F[&#34;app_main.cpp - main()&#34;]; System Server进程启动 graph TD; A[&#34;app_main." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://boybeak.github.io/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://boybeak.github.io/public/posts/android/ams%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-09-03T21:03:05+08:00" />
 <meta property="article:modified_time" content="2022-09-03T21:03:05+08:00" />
 
@@ -168,7 +168,7 @@ Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.
   <body class="text-black duration-200 ease-out dark:text-white">
     <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
   <div class="relative z-50 mr-auto flex items-center">
-    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/"
+    <a class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold" href="https://boybeak.github.io/public"
       >My New Hugo Site</a
     >
     <a
@@ -255,7 +255,7 @@ Zygote集成启动 graph TD; A[&#34;init.cpp - main()&#34;] --&gt; B[解析init.
       <a
         class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
         style="--url: url(./rss.svg)"
-        href=" https://boybeak.github.io/index.xml "
+        href=" https://boybeak.github.io/public/index.xml "
         target="_blank"
       ></a>
       
@@ -394,7 +394,7 @@ C --&gt; ActivityStack;
      
     <a
       class="mr-1.5 mb-1.5 rounded-lg bg-black/[3%] px-5 py-2 no-underline dark:bg-white/[8%]"
-      href="https://boybeak.github.io/tags/untagged"
+      href="https://boybeak.github.io/public/tags/untagged"
       >untagged</a
     >
     
@@ -406,14 +406,14 @@ C --&gt; ActivityStack;
   
   <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
     
-    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/"
+    <a class="flex w-1/2 items-center p-6 pr-3 no-underline" href="https://boybeak.github.io/public/posts/android/activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/"
       ><span class="mr-1.5">←</span><span>Activity启动流程</span></a
     >
     
     
     <a
       class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
-      href="https://boybeak.github.io/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/"
+      href="https://boybeak.github.io/public/posts/android/apk%E7%98%A6%E8%BA%AB%E6%9C%AF/"
       ><span>Apk瘦身术</span><span class="ml-1.5">→</span></a
     >
     
@@ -439,7 +439,7 @@ C --&gt; ActivityStack;
     <footer class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60">
   <div class="mr-auto">
     &copy; 2022
-    <a class="link" href="https://boybeak.github.io/">My New Hugo Site</a>
+    <a class="link" href="https://boybeak.github.io/public">My New Hugo Site</a>
   </div>
   <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank">Powered by Hugo️️</a
   >️

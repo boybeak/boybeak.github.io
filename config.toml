@@ -1,4 +1,4 @@
-baseURL = 'https://boybeak.github.io/'
+baseURL = 'https://boybeak.github.io/public'
 languageCode = 'en-us'
 title = 'My New Hugo Site'
 theme = "hugo-paper"
