@@ -4,14 +4,12 @@ layout: default
 
 12345
 
-<ul class="posts">
-{% for post in site.tags.question limit: 20 %}
-  <div class="post_info">
+<ul>
+  {% for post in site.posts %}
     <li>
-         <a href="{{ post.url }}">{{ post.title }}</a>
-         <span>({{ post.date | date:"%Y-%m-%d" }})</span>
+      <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+      {{ post.excerpt }}
     </li>
-    </div>
   {% endfor %}
 </ul>
 
