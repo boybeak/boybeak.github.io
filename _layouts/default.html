@@ -20,6 +20,12 @@
         {% if site.logo %}
           <img src="{{site.logo | relative_url}}" alt="Logo" />
         {% endif %}
+          
+        {% if site.pages %}
+          {% for page in site.pages %}
+            <title >{{ page.title }}</title>
+          {% endfor %}
+        {% endif %}
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
 
