@@ -25,6 +25,8 @@
           {% for page in site.pages %}
             <title >{{ page.title }}</title>
           {% endfor %}
+        {% else %}
+          <b>Nothing to show</b>
         {% endif %}
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
