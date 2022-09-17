@@ -22,11 +22,12 @@
         {% endif %}
           
         {% if site.pages %}
+          Has pages
           {% for page in site.pages %}
             <title >{{ page.title }}</title>
           {% endfor %}
         {% else %}
-          <b>Nothing to show</b>
+          Nothing to show
         {% endif %}
 
         <p>{{ site.description | default: site.github.project_tagline }}</p>
