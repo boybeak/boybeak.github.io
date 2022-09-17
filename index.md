@@ -2,8 +2,6 @@
 layout: default
 ---
 
-12345
-
 <ul>
   {% for post in site.posts %}
     <li>
@@ -12,5 +10,3 @@ layout: default
     </li>
   {% endfor %}
 </ul>
-
-67890
