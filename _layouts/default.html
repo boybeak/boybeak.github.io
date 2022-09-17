@@ -22,10 +22,10 @@
           <a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a>
         </h1>
           
-        {% if site.pages %}
-          Has pages
-          {% for page in site.pages %}
-            <title >{{ page.title }}</title>
+        {% if site.posts %}
+          Has post
+          {% for post in site.posts %}
+            <title >{{ post.title }}</title>
           {% endfor %}
         {% else %}
           Nothing to show
