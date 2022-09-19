@@ -7,7 +7,7 @@ layout: default
     <li>
       <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
       {{ post.excerpt }}
-      <b>By</b> {{ post.author }}   <b style="margin-left:32;">Tags:</b> {{ post.tags }}
+      <b>By</b> {{ post.author }}   <b style="margin-left:32px;">Tags:</b> {{ post.tags }}
       <br><br>
     </li>
   {% endfor %}
