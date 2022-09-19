@@ -1,6 +1,7 @@
 ---
 layout: post
 title: LiveEventBus源码分析
+author: boybeak
 category: 源码分析
 tags: Android
 ---
