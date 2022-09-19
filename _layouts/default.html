@@ -28,19 +28,25 @@
         <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
         {% endif %}
 
-        {% if site.github.is_user_page %}
         <p class="view">
+          {% if site.github.is_user_page %}
           <a href="{{ site.github.owner_url }}">
             <img src="assets/img/github.png" width="20" height="20"/>
           </a>
-          <a href="{{ site.github.owner_url }}">
+          {% endif %}
+
+          {% if site.twitter %}
+          <a href="https://twitter.com/{{ site.twitter }}">
             <img src="assets/img/twitter.png" width="20" height="20"/>
           </a>
+          {% endif %}
+
+          {% if site.instagram %}
           <a href="{{ site.github.owner_url }}">
             <img src="assets/img/instagram.png" width="20" height="20"/>
           </a>
+          {% endif %}
         </p>
-        {% endif %}
 
         {% if site.show_downloads %}
         <ul class="downloads">
