@@ -1,6 +1,7 @@
 ---
 layout: post
 title: LaunchMode
+author: boybeak
 category: Android技巧
 tags: Android
 ---
