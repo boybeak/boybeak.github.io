@@ -8,10 +8,10 @@ layout: default
       <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
       {{ post.excerpt }}
       {% if post.author %}
-      <b style="margin-right:16px;">By</b> {{ post.author }}
+      <b>By</b> {{ post.author }}
       {% endif %}
       {% if post.tags %}
-      <b style="margin-right:16px;">Tags:</b> {{ post.tags }}
+      <b style="margin-left:16px;">Tags:</b> {{ post.tags }}
       {% endif %}
       <br><br>
     </li>
