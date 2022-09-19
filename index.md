@@ -7,9 +7,9 @@ layout: default
     <li>
       <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
       {{ post.excerpt }}
-      <img src="/assets/img/tag-outline.png" width="24" height="24"/>
+      <img src="/assets/img/tag-outline.png" width="16" height="16"/>
       {{ post.tags }}
-      <br>
+      <br/>
     </li>
   {% endfor %}
 </ul>
