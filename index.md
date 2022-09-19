@@ -7,6 +7,7 @@ layout: default
     <li>
       <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
       {{ post.excerpt }}
+      {{ post.tags }}
     </li>
   {% endfor %}
 </ul>
