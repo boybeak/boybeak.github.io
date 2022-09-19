@@ -11,7 +11,7 @@ layout: default
       <b>By</b> {{ post.author }}
       {% endif %}
       {% if post.tags %}
-      <b style="margin-left:16px;">Tags:</b> {{ post.tags }}
+      <b style="margin-left:12px;">Tags:</b> {{ post.tags }}
       {% endif %}
       <br><br>
     </li>
