@@ -13,7 +13,7 @@ layout: default
       {% if post.tags %}
       <b style="margin-left:12px;">Tags:</b> {{ post.tags }}
       {% endif %}
-      <br><br>
+      <br><br><br>
     </li>
   {% endfor %}
 </ul>
