@@ -2,7 +2,7 @@
 layout: post
 title: 发布Android库到MavenCentral教程
 author: boybeak
-category: Android技巧
+categories: Android技巧
 tags: Android
 ---
 
