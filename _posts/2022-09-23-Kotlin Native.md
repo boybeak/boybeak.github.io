@@ -6,7 +6,7 @@ categories: Kotlin Native
 tags: Kotlin
 ---
 
-此贴用于记录对Kotlin Native从初识到放弃的过程，因为还不清楚这一平台的开发能力能有多高，不排除用的好，会一直用下去。
+此贴用于记录对Kotlin Native从初识到放弃的过程，因为还不清楚这一平台的开发能力上限多高，不排除用的好，会一直用下去。
 以下Kotlin Native会用KN来代替。
 
 ## 开始
