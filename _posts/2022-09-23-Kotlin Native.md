@@ -20,7 +20,7 @@ IDE会自动生成hello world代码，直接点运行，如果工具栏的运行
 The /usr/bin/xcrun command returned non-zero exit code: 72
 ```
 这时候，你需要打开XCode，执行一系列同意操作后，进入**Preferences** -> **Locations**，选中一个版本。如下：
-![xcode-select](%7B%7B%20base_url%20%7D%7D/assets/images/xcode-select.jpg)
+![xcode-select]({{ base_url }}/assets/images/xcode-select.jpg)
 如果你没有安装完整XCode，可以尝试`xcode select`这个命令，这里具体不做详述。
 经过这个设置后，再次尝试运行，这次终于运行成功。
 ```log
