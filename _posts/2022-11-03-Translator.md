@@ -1,5 +1,5 @@
 ---
-layout: doc
+layout: post
 title: Translator
 author: boybeak
 categories: Translator
