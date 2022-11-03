@@ -6,7 +6,7 @@ categories: Translator
 tags: Translator
 ---
 
-<img src="{{base_url}}/assets/images/translator-logo-512.png" width="64" height="64" /> # Translator ![badge](https://img.shields.io/badge/Translator-0.1-blue)
+<img src="{{base_url}}/assets/images/translator-logo-512.png" width="40" height="40" /> <h1>Translator</h1> ![badge](https://img.shields.io/badge/Translator-0.1-blue)
 
 Translator is a simple translation app based on [Tencent Machine Translation](https://cloud.tencent.com/document/product/551/15611) API. Only macOs version is available at this moment.
 
