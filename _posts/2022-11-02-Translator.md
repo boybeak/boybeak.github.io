@@ -7,7 +7,7 @@ tags: Translator
 ---
 
 <h1>
-    <img style="vertical-align: middle;" src="{{base_url}}/assets/images/translator-logo-512.png" width="36" height="36" />
+    <img style="vertical-align: bottom;" src="{{base_url}}/assets/images/translator-logo-512.png" width="48" height="48" />
     Translator
 </h1>![badge](https://img.shields.io/badge/Translator-0.1-blue)
 
