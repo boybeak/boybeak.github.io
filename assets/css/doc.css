@@ -1,0 +1,16 @@
+:root {
+    --text: #000;
+    --bg: #fff;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #fff;
+        --bg: #0d1117;
+    }
+}
