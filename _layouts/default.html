@@ -50,15 +50,17 @@
 
         {% if site.show_downloads %}
         <ul class="downloads">
-          <li><a href="{{ site.github.zip_url }}">
-            <div style="display: flex; " style="background-color: red;">
-              <img style="margin-right: 8;" src="{{base_url}}/assets/images/translator-logo-512.png" width="28" height="28" />
-              <div>
-                Translator
-                <strong>DMG File</strong>
+          <li>
+            <a href="{{ site.github.zip_url }}">
+              <div style="display: flex; " style="background-color: red;">
+                <img style="margin-right: 8;" src="{{base_url}}/assets/images/translator-logo-512.png" width="28" height="28" />
+                <div>
+                  Translator
+                  <strong>DMG File</strong>
+                </div>
               </div>
-            </div>
-          </a></li>
+            </a>
+          </li>
           <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
         </ul>
         {% endif %}
