@@ -18,8 +18,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-        run: npm install hexo-renderer-pug --save
-        run: npm install hexo-renderer-stylus --save
+      - run: npm install hexo-renderer-pug --save
+      - run: npm install hexo-renderer-stylus --save
 
       - name: Cache NPM dependencies
         uses: actions/cache@v3
