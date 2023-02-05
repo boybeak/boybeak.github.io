@@ -1,8 +1,8 @@
 # Blog config
 keywords: Blog,博客,Hexo
-author: Yourname
-description: A simple and beautiful blog
-defaultTheme: dark-mode # light-mode or dark-mode
+author: boybeak
+description: 不是去哪里，而是去看日出
+defaultTheme: light-mode # light-mode or dark-mode
 
 # icon
 # If the is size is incorrect, please edit /source.css/style.styl
