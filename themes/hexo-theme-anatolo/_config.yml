@@ -58,6 +58,7 @@ rightbtn:
   back: true
   search: true       # 从Icarus抠出来的搜索框，关掉可以稍微提高速度
   avatar: true
+  darkLightToggle: true
 
 
 # Some settings
