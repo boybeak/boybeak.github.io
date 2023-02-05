@@ -6,8 +6,8 @@ defaultTheme: dark-mode # light-mode or dark-mode
 
 # icon
 # If the is size is incorrect, please edit /source.css/style.styl
-favicon: /images/favicon.webp
-avatar: /images/logo.webp
+favicon: /images/favicon-32x32.png
+avatar: /images/apple-touch-icon-300x300.jpg
 logo_dir: /images/logo@2x.webp
 logo_style: width:220px;
 
@@ -55,7 +55,7 @@ menu:
 
 # Navbar rightbtn
 rightbtn:
-  back: true
+  back: false
   search: true       # 从Icarus抠出来的搜索框，关掉可以稍微提高速度
   avatar: true
   darkLightToggle: true
