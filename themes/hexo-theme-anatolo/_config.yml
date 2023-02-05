@@ -8,8 +8,8 @@ defaultTheme: dark-mode # light-mode or dark-mode
 # If the is size is incorrect, please edit /source.css/style.styl
 favicon: /images/favicon-32x32.png
 avatar: /images/logo.jpg
-logo_dir: /images/apple-touch-icon-300x300.jpg
-logo_style: width:220px;
+logo_dir: /images/logo-large.png
+logo_style: width:192px;
 
 copyright:
   show: true
