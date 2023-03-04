@@ -62,7 +62,7 @@ rightbtn:
 
 
 # Some settings
-useSummary: false    # enable it will use summary of your posts in index
+useSummary: true    # enable it will use summary of your posts in index
 
 useTagCloud: false   # use tagcloud instead of tag list
 tocMaxDepth: 6       # if you set 0, toc will close. The maximum is 6.
