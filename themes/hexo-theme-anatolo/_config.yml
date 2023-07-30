@@ -50,8 +50,8 @@ menu:
   Home: /
   Archives: /archives
   Tags: /tags
-  About: /about
-  Links: /links
+  # About: /about
+  # Links: /links
 
 # Navbar rightbtn
 rightbtn:
