@@ -14,3 +14,7 @@ _site
 public/
 .DS_Store
 .DS_Store
+/.idea/boybeak.github.io.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
