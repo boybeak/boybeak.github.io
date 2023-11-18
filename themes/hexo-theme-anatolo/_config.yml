@@ -50,6 +50,7 @@ menu:
   Home: /
   Archives: /archives
   Tags: /tags
+  sitemap: /sitemap.xml || sitemap
   # About: /about
   # Links: /links
 
