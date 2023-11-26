@@ -130,6 +130,9 @@ fun takePhoto(callback: (Bitmap) -> Unit) {
     photoSurface?.attach(previewSurface!!)
 }
 ```
+同样的，扫码功能也类似，不过这里要借助zxing这个二维码解析库，同时做一个RGBA的转换，因为当前方案下，ImageReader只允许PixelFormat.RGBA_8888的颜色编码，好处就是，可以比较容易实现扫码预览大小的自定义，并且在预览范围内的都可以扫到，不会出现以前那种预览区域与扫码感知区域不一致的问题。
+
+既然有Surface就可以连接预览画面，那实际上就可以做到边录像，边扫码，边拍照了，只要你的手机性能足够，更多的使用方式，你可以自由去发散。
 
 ## 总结
 具体的代码可以参考我的[iCamera](https://github.com/boybeak/iCamera)，但是我的代码只是做简单的逻辑演示，并不能保证在所有机型上的兼容性，了解了基本思路后，你可以在此基础上做兼容性处理。
