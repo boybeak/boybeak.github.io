@@ -188,9 +188,6 @@ a:active {
 .sidebar .app-links {
   list-style: none;
   padding: 0;
-  font-size: 12px;
-  font-weight: bold;
-  text-align: center;
 }
 .sidebar .app-links i {
   margin-right: 3px;
@@ -199,6 +196,15 @@ a:active {
   display: inline;
   padding: 0 4px;
   line-height: 0;
+}
+.sidebar .app-links img {
+  width: 48px;
+  height: 48px;
+}
+.sidebar .app-links p {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
 }
 .sidebar .app-links a {
   color: #565654;
