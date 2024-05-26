@@ -48,10 +48,10 @@ weibo:
 my_apps_title: 我的作品
 my_apps:
   - name: JustTodo
-    icon: /images/justtodo-icon-64.png
+    icon: /images/justtodo-icon-256.png
     link: https://github.com/boybeak/JustTodo
   - name: Translator
-    icon: /images/translator-icon-64.png
+    icon: /images/translator-icon-256.png
     link: https://github.com/boybeak/TranslatorDocs
 
 # Nav menu
