@@ -45,6 +45,7 @@ rss:
 facebook:
 weibo:
 
+my_apps_title: 我的作品
 my_apps:
   - name: JustTodo
     icon: /images/justtodo-icon-64.png
