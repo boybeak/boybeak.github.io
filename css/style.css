@@ -188,6 +188,7 @@ a:active {
 .sidebar .app-links {
   list-style: none;
   padding: 0;
+  display: flex;
 }
 .sidebar .app-links i {
   margin-right: 3px;
@@ -208,9 +209,11 @@ a:active {
 }
 .sidebar .app-links a {
   color: #565654;
+  align-items: center;
+  justify-content: center;
 }
 .sidebar .app-links a:hover {
-  color: #f00;
+  color: #4786d6;
 }
 .sidebar-top {
   margin: auto 0;
