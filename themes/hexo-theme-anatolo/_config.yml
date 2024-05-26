@@ -49,6 +49,9 @@ my_apps:
   - name: JustTodo
     icon: /images/justtodo-icon-64.png
     link: https://github.com/boybeak/JustTodo
+  - name: Translator
+    icon: /images/translator-icon-64.png
+    link: https://github.com/boybeak/TranslatorDocs
 
 # Nav menu
 menu:
