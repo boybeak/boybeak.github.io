@@ -1,0 +1,6 @@
+ul.social-links
+    each app in theme.my_apps 
+        li 
+            a(href=app.link) 
+                img(src=app.icon, alt="_")
+                app.name

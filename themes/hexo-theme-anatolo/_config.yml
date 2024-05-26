@@ -45,6 +45,11 @@ rss:
 facebook:
 weibo:
 
+my_apps:
+  - name: JustTodo
+    icon: /images/justtodo-icon-64.png
+    link: https://github.com/boybeak/JustTodo
+
 # Nav menu
 menu:
   Home: /
