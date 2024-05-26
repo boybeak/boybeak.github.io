@@ -199,6 +199,10 @@ a:active {
   padding: 0 4px;
   line-height: 0;
 }
+.sidebar .app-links img {
+  width: 32px;
+  height: 32px;
+}
 .sidebar .app-links a {
   color: #565654;
 }
