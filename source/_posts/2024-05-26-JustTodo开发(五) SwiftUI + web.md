@@ -1,5 +1,5 @@
 ---
-title: MyTodo开发(五) SwiftUI + web
+title: JustTodo开发(五) SwiftUI + web
 date: 2024-05-26 17:41:00
 categories: 独立开发笔记
 tags:
