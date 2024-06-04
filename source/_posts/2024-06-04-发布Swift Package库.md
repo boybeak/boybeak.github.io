@@ -60,5 +60,7 @@ let package = Package(
 补充相关逻辑代码，提交/推送到GitHub，便可以在其他库中使用。不需要特别的发布操作。
 在正式发布前，也可以本地使用，创建一个新项目，在Xcode中，File -> Add Package Denpendencies...，在弹出的管理窗口中，点击**Add Local**按钮，然后选择Tray文件夹，便可以本地使用，同时，你也可以在项目中，直接编辑该库的代码。
 
+提交代码到Github后，你可以把自己的库提交到[Swift Package Index](https://swiftpackageindex.com/)，方便他人查找。进入页面后，点击**Add a package**，进入新页面后，会有一个绿色的**Add Package(s)**按钮，此点击此按钮，会自动跳转到Swift Package Index的Github的issue页面，并会有一个提交模板，输入自己库的Github链接后，提issue，机器人会处理这个issue，并再提一个新的issue，点击链接到新的issue中，点击链接，对你的代码进行code review，注意勾选**viewed**复选框，完成code review后，机器人会自动处理接下来的流程。
+
 ## 四、使用库
 在Xcode中，File -> Add Package Denpendencies...，在弹出的管理窗口中，复制`https://github.com/boybeak/Tray.git`到搜索库，然后就可以添加库了。
