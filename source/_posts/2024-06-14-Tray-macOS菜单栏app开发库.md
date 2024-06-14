@@ -6,7 +6,7 @@ tags:
 - macOS
 ---
 
-最近开发了[JustTodo](https://github.com/boybeak/JustTodo)和[DeskNote](https://github.com/boybeak/DeskNote)两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app [Translator]时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。
+最近开发了[JustTodo](https://github.com/boybeak/JustTodo)和[DeskNote](https://github.com/boybeak/DeskNote)两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app [Translator](https://github.com/boybeak/TranslatorDocs)时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。
 为了解决这一痛点，在总结了[JustTodo](https://github.com/boybeak/JustTodo)和[DeskNote](https://github.com/boybeak/DeskNote)两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库[Tray](https://github.com/boybeak/Tray)，方便以后使用。
 
 ## 一、引入
