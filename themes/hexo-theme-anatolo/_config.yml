@@ -53,6 +53,9 @@ my_apps:
   - name: Translator
     icon: /images/translator-icon-256.png
     link: https://github.com/boybeak/TranslatorDocs
+  - name: DeskNote
+    icon: /images/desknote-icon-256.png
+    link: https://github.com/boybeak/DeskNote
 
 # Nav menu
 menu:
