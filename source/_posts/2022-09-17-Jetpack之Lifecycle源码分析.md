@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
 这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在*MyObserver*中声明对应的生命周期函数，然后将这个*MyObserver*实例添加到*MainActivity*的lifecycle中去。
 
-看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到**注解处理器**，与[**ARouter**](https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html)类似，Lifecycle的工作流程也分成两部分——**编译时**和**运行时**。
+看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到**注解处理器**，与[**ARouter**](https://boybeak.github.io/2020/11/28/2022-09-17-ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)类似，Lifecycle的工作流程也分成两部分——**编译时**和**运行时**。
 
 简要的说，在编译时，生成**LifecycleObserver**的辅助类；在运行时，*addObserver*方法被调用后，解析出对应observer的辅助类。
 
