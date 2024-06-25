@@ -24,7 +24,7 @@
 <p>经过这样一个流程，我们就将感知生命周期的无UI的<em>ReportFragment</em>与执行事件的<em>LifecycleRegistry</em>进行了连接。这样我们就获得了感知生命周期的能力了。</p>
 <p>那么具体是如何执行到<em>MyObserver</em>对应的生命周期的方法的呢？</p>
 <blockquote>
-<p>或许你看到这里，会觉得很简单，在<em>LifecycleRegistry</em>维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从<em>MyObserver</em>中筛选出带有**@OnLifecycleEvent**注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。</p>
+<p>或许你看到这里，会觉得很简单，在<em>LifecycleRegistry</em>维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从<em>MyObserver</em>中筛选出带有 ** @OnLifecycleEvent ** 注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。</p>
 <p>可是谷歌工程师并没有这么做，因为在执行事件时候，经过这么多反射，效率会很低。那么正确的流程是怎么样的？这就需要我们关注上面提到的两个流程了——<strong>编译时</strong>和<strong>运行时</strong>。</p>
 </blockquote>
 <h2 id="编译时"><a href="#编译时" class="headerlink" title="编译时"></a>编译时</h2><p>参考<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/lifecycle/lifecycle-compiler">Lifecycle-compiler</a>源码。</p>
