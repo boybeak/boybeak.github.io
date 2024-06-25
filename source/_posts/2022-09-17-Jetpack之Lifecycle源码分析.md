@@ -137,7 +137,7 @@ public class ReportFragment extends Fragment {
 
 那么具体是如何执行到*MyObserver*对应的生命周期的方法的呢？
 
-> 或许你看到这里，会觉得很简单，在*LifecycleRegistry*维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从*MyObserver*中筛选出带有**@OnLifecycleEvent**注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。
+> 或许你看到这里，会觉得很简单，在*LifecycleRegistry*维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从*MyObserver*中筛选出带有 ** @OnLifecycleEvent ** 注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。
 >
 > 可是谷歌工程师并没有这么做，因为在执行事件时候，经过这么多反射，效率会很低。那么正确的流程是怎么样的？这就需要我们关注上面提到的两个流程了——**编译时**和**运行时**。
 
