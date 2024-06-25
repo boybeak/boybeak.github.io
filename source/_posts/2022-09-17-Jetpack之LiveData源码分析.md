@@ -7,7 +7,7 @@ tags: Android
 ---
 
 
-在阅读这篇文章前，需要先对[** Lifecycle **]({{site.base_url}}/源码分析系列/Jetpack之Lifecycle源码分析.md)有所了解。
+在阅读这篇文章前，需要先对[Lifecycle](https://boybeak.github.io/2021/03/12/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/)有所了解。
 
 Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
 
