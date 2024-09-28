@@ -1,0 +1,21 @@
+<article>
+    <h1>
+        <%= page.title %>
+    </h1>
+    <div>
+        <s-icon style="width: 16px; height: 16px;">
+            <%- read_svg(url_for('assets/ic-date.svg'), true) %>
+        </s-icon>
+        <small>
+            <%= page.date.format('YYYY-MM-DD') %>
+        </small>
+    </div>
+
+    <div class="markdown-body">
+        <%- page.content %>
+    </div>
+
+    <% if (page.categories.length || page.tags.length) { %>
+        <%- include('tag_cat_bar', {categories: page.categories, tags: page.tags}) %>
+    <% } %>
+</article>

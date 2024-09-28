@@ -3,13 +3,14 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: HikingMan
-subtitle: '不是去哪里，而是去看日出'
+title: boybeak
+subtitle: ''
 description: ''
 keywords:
 author: boybeak
 language: en
 timezone: ''
+logo: assets/favicon-32x32.png
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
@@ -43,18 +44,14 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
-highlight:
-  enable: true
-  line_number: true
-  auto_detect: false
-  tab_replace: ''
-  wrap: true
-  hljs: false
+
+syntax_highlighter: prismjs
 prismjs:
-  enable: false
   preprocess: true
-  line_number: true
-  tab_replace: ''
+  line_number: false
+  line_threshold: 0
+  tab_replace: ""
+  hljs: false
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -97,9 +94,59 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: hexo-theme-anatolo
+theme: hexober
+
+hexober:
+  nav:
+    author:
+      name: 'boybeak'
+      avatar: 'https://avatars.githubusercontent.com/u/6696502?v=4'
+      slogan: '不是去哪里，而是去看日出'
+      homepage: 'https://github.com/boybeak'
+      # socials:
+      #   - title: 'Github'
+      #     url: 'https://github.com/boybeak'
+      #     icon: '/assets/ic-github.svg'
+      #   - title: 'X'
+      #     url: 'https://x.com/BeakInAir'
+      #     icon: '/assets/ic-x-twitter.svg'
+      #   - title: 'Email'
+      #     url: 'mailto://boybeak@gmail.com'
+      #     icon: '/assets/ic-mail.svg'
+
+  # menu:
+  #   - title: 'Archive'
+  #     icon: '/assets/ic-archive.svg'
+  #     url: '/archives'
+  #   - title: 'Source Code'
+  #     icon: '/assets/ic-github.svg'
+  #     url: 'https://github.com/hexober/hexober.github.io'
+  #   - title: 'MyBlog'
+  #     icon: '/assets/ic-blog.svg'
+  #     url: 'https://boybeak.github.io/'
+  #   - title: 'About'
+  #     icon: '/assets/ic-about.svg'
+  #     url: '/about'
+      
+  showThemeToggle: false
+  googleAnalytics: G-6JFG91EQ3M
+  googleSiteVerification: Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI
+  bingSiteVerification: FF63C4E8F966AF567DA7288160196C79
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+excerpt:
+  enable: true
+  depth: 1  # 解析多少层的 Markdown 标题
+  length: 150  # 摘要的最大字数
+
+hexo_auto_photos:
+  enable: true
+  max: 9
+
+hexo_auto_date:
+  enable: true
+  strategy: 'ctime'

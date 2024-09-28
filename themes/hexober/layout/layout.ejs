@@ -1,0 +1,43 @@
+<% var hexober = config.hexober; %>
+
+<!DOCTYPE html>
+<html>
+<%- include('head.ejs') %>
+<body>
+  <div id="theme-auto" style="display: none;">
+    <%- read_svg(url_for(theme.themeToggle.auto), true) %>
+  </div>
+  <div id="theme-light" style="display: none;">
+    <%- read_svg(url_for(theme.themeToggle.light), true) %>
+  </div>
+  <div id="theme-dark" style="display: none;">
+    <%- read_svg(url_for(theme.themeToggle.dark), true) %>
+  </div>
+  <s-page id="mainPage" theme="auto">
+    <s-drawer id="mainDrawer">
+      <% if (hexober.nav) { %>
+        <div class="mainDrawerNav" slot="start">
+          <%- include('nav.ejs') %>
+        </div>
+      <% } %>
+      <div class="mainDrawerContent">
+        <%- include('header.ejs') %>
+        <s-scroll-view class="mainScrollView">
+          <div style="flex-grow: 1;">
+            <main class="mainContent">
+              <%- body %>
+            </main>
+            <!-- <s-divider style="padding: 0px; margin: 0px;"></s-divider> -->
+            <%- include('footer.ejs') %>
+          </div>
+        </s-scroll-view>
+      </div>
+      
+    </s-drawer>
+  </s-page>
+  <!-- <script src="<%= url_for('js/prism.js') %>"></script> -->
+</body>
+<script>
+  onPageReady()
+</script>
+</html>

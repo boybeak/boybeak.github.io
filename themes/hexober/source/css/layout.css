@@ -1,0 +1,144 @@
+:root {
+  --borderWidth-thin: max(1px, 0.0625rem);
+  --borderColor-default: #d1d9e0;
+}
+
+
+body {
+  padding: 0px; 
+  margin: 0px;
+}
+
+.mainDrawerNav {
+  display: flex; 
+  flex-direction: column; 
+}
+
+.mainDrawerContent {
+  height: 100vh; 
+  display: flex; 
+  flex-direction: column;
+}
+
+.mainScrollView {
+  flex-grow: 1; 
+  overflow-y: auto;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: calc(100vh - 64px);
+  padding: 24px;
+}
+
+.postItem {
+  padding-bottom: 24px;
+  border-bottom: var(--borderWidth-thin, 1px) solid var(--borderColor-default);
+
+  margin-bottom: 24px;
+}
+
+.postItemExcerpt a {
+  color: inherit;
+}
+
+.galleryItem {
+  border-radius: 8px;
+  background-color: var(--s-color-surface-container);
+  object-fit: cover;
+  object-position: center;
+}
+
+article s-divider {
+  margin-left: 0px; 
+  margin-right: 0px; 
+  margin-top: 16px; 
+  margin-bottom: 16px; 
+  padding: 0px;
+}
+
+.mainFooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--s-color-surface-container);
+  padding: 24px;
+}
+
+article .markdown-body {
+  --color-canvas-default: transparent;
+  background-color: transparent;
+
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  border-top: var(--borderWidth-thin, 1px) solid var(--borderColor-default);
+  border-bottom: var(--borderWidth-thin, 1px) solid var(--borderColor-default);
+
+  margin-top: 16px; 
+  margin-bottom: 16px;
+
+}
+
+.author-container {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 24px;
+}
+.author-avatar {
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+  border: 4px solid var(--s-color-on-background);
+}
+.author-name {
+  margin-top: 16px;
+}
+.author-social-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-top: 16px;
+}
+
+.articleList {
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+}
+
+.articleList ul {
+  flex-grow: 1;
+  list-style-type: none;
+  padding-left: 0; /* 可选：去掉左侧内边距，以完全移除缩进 */
+}
+
+.articleListIndexBar {
+  display: flex;
+  justify-content: space-between; /* 两端对齐 */
+  align-items: center; /* 垂直居中（可选） */
+}
+
+.gallery2-3 {
+  display: grid;
+  grid-template-columns: 128px 128px 128px; /* 3列，宽度分别为 128px, 128px, 128px */
+  gap: 8px 8px; /* 网格之间的间距 */
+}
+
+.gallery4 {
+  display: grid;
+  grid-template-columns: 100px 100px; /* 2列，宽度分别为 100px, 100px */
+  gap: 8px 8px; /* 网格之间的间距 */
+}
+
+.galleryMore {
+  display: grid;
+  grid-template-columns: 100px 100px 100px; /* 2列，宽度分别为 100px, 100px */
+  gap: 8px 8px; /* 网格之间的间距 */
+}
