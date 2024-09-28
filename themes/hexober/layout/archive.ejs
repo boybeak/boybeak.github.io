@@ -1,0 +1,33 @@
+<% var year=0; %>
+<% if (page.tag) { %>
+<h2>
+    <s-icon>
+        <%- read_svg(url_for('assets/ic-tag.svg'), true) %>
+    </s-icon>
+    <%= page.tag %>
+</h2>
+<% } %>
+<% if (page.category) { %>
+<h2>
+    <s-icon>
+        <%- read_svg(url_for('assets/ic-category.svg'), true) %>
+    </s-icon>
+    <%= page.category %>
+</h2>
+<% } %>
+<div class="articleList">
+    <ul>
+        <% site.posts.each((post) => { %>
+            <% var postYear=post.date.year(); %>
+            <% if (postYear !==year) { %>
+                <h2>
+                    <%= postYear %>
+                </h2>
+                <% year=postYear; %>
+            <% } %>
+            <li>
+                <%- include('partials/post_item', { post: post }) %>
+            </li>
+        <% }) %>
+    </ul>
+</div>

@@ -1,0 +1,9 @@
+{
+    "name": "hexober",
+    "version": "0.0.1",
+    "description": "A material design Hexo theme",
+    "main": "index.js",
+    "dependencies": {
+        "hexo-prism-plugin": "^2.3.0"
+    }
+}
