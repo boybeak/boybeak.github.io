@@ -131,6 +131,13 @@ article .markdown-body {
   gap: 8px 8px; /* 网格之间的间距 */
 }
 
+/* 针对手机设备的样式 */
+@media (max-width: 767px) { /* 通常将 max-width 设置为 767px 作为手机的阈值 */
+  .gallery2-3 {
+    grid-template-columns: 30% 30% 30%; /* 每列宽度为屏幕宽度的 30% */
+  }
+}
+
 .gallery4 {
   display: grid;
   grid-template-columns: 100px 100px; /* 2列，宽度分别为 100px, 100px */
