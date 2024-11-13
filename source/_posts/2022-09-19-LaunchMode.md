@@ -4,6 +4,7 @@ title: LaunchMode
 author: boybeak
 category: Android技巧
 tags: Android
+date: 2022-09-19 07:00:00
 ---
 
 此文是阅读[《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》](https://zhuanlan.zhihu.com/p/265946165)一文后的总结，视频地址[Bilibili](https://link.zhihu.com/?target=https%3A//www.bilibili.com/video/BV1CA41177Se/)、[Youtube](https://link.zhihu.com/?target=https%3A//youtu.be/r4T9zkhpmII)。

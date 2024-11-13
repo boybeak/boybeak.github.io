@@ -4,6 +4,7 @@ title: Kotlin Native从初识到放弃
 author: boybeak
 categories: Kotlin Native
 tags: Kotlin
+date: 2022-09-23 00:00:00
 ---
 
 此贴用于记录对Kotlin Native从初识到放弃的过程，因为还不清楚这一平台的开发能力上限多高，不排除用的好，会一直用下去。

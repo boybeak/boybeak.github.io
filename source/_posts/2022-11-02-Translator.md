@@ -4,8 +4,11 @@ title: Translator
 author: boybeak
 categories: Translator
 tags: Translator
+date: 2022-11-02 00:00:00
 ---
 
+A simple translator app for macOS.
+<!-- more -->
 <h1>
     <img style="vertical-align: bottom;" src="/images/translator-logo-512.png" width="48" height="48" />
     Translator
