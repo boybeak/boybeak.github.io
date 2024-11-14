@@ -1,5 +1,4 @@
 ---
-layout: doc
 title: Translator
 author: boybeak
 categories: Translator
