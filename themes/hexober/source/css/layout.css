@@ -131,11 +131,11 @@ article .markdown-body {
   gap: 8px 8px; /* 网格之间的间距 */
 }
 
-/* @media (max-width: 767px) { 
+@media (max-width: 767px) { 
   .gallery2-3 {
     grid-template-columns: 30% 30% 30%; 
   }
-} */
+}
 
 .gallery4 {
   display: grid;
