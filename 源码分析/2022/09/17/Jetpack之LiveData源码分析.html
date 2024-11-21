@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Jetpack之LiveData源码分析</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Jetpack之LiveData源码分析</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>在阅读这篇文章前，需要先对<a href="https://boybeak.github.io/2021/03/12/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Lifecycle</a>有所了解。</p>
+
+<p>Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。</p>
+
+<p>先要引入LiveData：</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s2">"androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"</span>
+
+<span class="kt">def</span> <span class="n">activity_version</span> <span class="o">=</span> <span class="s2">"1.1.0"</span>
+<span class="c1">// Kotlin，引入这个扩展，可以使用by viewModels()方法</span>
+<span class="n">implementation</span> <span class="s2">"androidx.activity:activity-ktx:$activity_version"</span>
+</code></pre></div></div>
+
+<p>典型的用法如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">vm</span> <span class="k">by</span> <span class="n">viewModels</span><span class="p">&lt;</span><span class="nc">MainVM</span><span class="p">&gt;()</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="nf">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+
+        <span class="n">vm</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="nf">observe</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nc">Toast</span><span class="p">.</span><span class="nf">makeText</span><span class="p">(</span><span class="k">this</span><span class="nd">@MainActivity</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="nc">Toast</span><span class="p">.</span><span class="nc">LENGTH_SHORT</span><span class="p">).</span><span class="nf">show</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="n">vm</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MainVM</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kd">val</span> <span class="py">data</span> <span class="p">=</span> <span class="nc">MutableLiveData</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;()</span>
+
+    <span class="k">fun</span> <span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">data</span><span class="p">.</span><span class="n">value</span> <span class="p">=</span> <span class="s">"start"</span>
+        <span class="nc">Thread</span> <span class="p">{</span>
+            <span class="nc">Thread</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">.</span><span class="nf">postValue</span><span class="p">(</span><span class="s">"run after 2000ms"</span><span class="p">)</span>
+        <span class="p">}.</span><span class="nf">start</span><span class="p">()</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，<em>observe</em>、<em>setValue</em>和<em>postValue</em>。我们就从这三个方法入手去探究LiveData的工作机制。</p>
+
+<h2 id="observe方法">observe方法</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// LiveData.java</span>
+
+<span class="nd">@MainThread</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">observe</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">LifecycleOwner</span> <span class="n">owner</span><span class="o">,</span> <span class="nd">@NonNull</span> <span class="nc">Observer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">assertMainThread</span><span class="o">(</span><span class="s">"observe"</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">owner</span><span class="o">.</span><span class="na">getLifecycle</span><span class="o">().</span><span class="na">getCurrentState</span><span class="o">()</span> <span class="o">==</span> <span class="no">DESTROYED</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ignore</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="nc">LifecycleBoundObserver</span> <span class="n">wrapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LifecycleBoundObserver</span><span class="o">(</span><span class="n">owner</span><span class="o">,</span> <span class="n">observer</span><span class="o">);</span>
+  <span class="nc">ObserverWrapper</span> <span class="n">existing</span> <span class="o">=</span> <span class="n">mObservers</span><span class="o">.</span><span class="na">putIfAbsent</span><span class="o">(</span><span class="n">observer</span><span class="o">,</span> <span class="n">wrapper</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">existing</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">existing</span><span class="o">.</span><span class="na">isAttachedTo</span><span class="o">(</span><span class="n">owner</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Cannot add the same observer"</span>
+                                       <span class="o">+</span> <span class="s">" with different lifecycles"</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">existing</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="n">owner</span><span class="o">.</span><span class="na">getLifecycle</span><span class="o">().</span><span class="na">addObserver</span><span class="o">(</span><span class="n">wrapper</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>只允许在主线程中监听数据变化，并且如果<em>LifecycleOwner</em>已经处于<strong>DESTROYED</strong>状态，则忽略这次监听请求。</li>
+  <li>以<em>LifecycleOwner</em>和<em>Observer</em>创建一个<em>LifecycleBoundObserver</em>对象，这个对象继承了<em>ObserverWrapper</em>类，同时实现了<em>LifecycleEventObserver</em>接口，看到这个接口，我们便明白了<em>LiveData</em>能够生命周期安全的监听数据变化的原因了。</li>
+  <li>这个<em>LifecycleBoundObserver</em>对象需要存储在一个<em>SafeIterableMap</em>当中去，在存储时候，会通过observer判断是否已经存在一个<em>ObserverWrapper</em>对象existing，如果已经存在则分为两种：a. 如果existing没有attach在owner上，则说明，existing已经attach在另外一个<em>LifecycleOwner</em>上了，这是不允许的，此时需要抛出异常；b. 如果没有attach在另外一个<em>LifecycleOwner</em>上，则说明此时监听的就是当前的owner上，则不需要再次添加监听，直接返回。如果existing不存在，则向owner.getLifecycle()添加监听。</li>
+</ol>
+
+<h2 id="setvalue和postvalue方法">setValue和postValue方法</h2>
+
+<p>在子线程中更新数据，需要调用postValue方法，实际上，这个方法就是通过一个MainHandler去post一个<em>Runnable</em>的方式切换到主线程中执行setValue方法。所以，我们重点看setValue方法即可。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// LiveData.java</span>
+
+<span class="nd">@MainThread</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="no">T</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">assertMainThread</span><span class="o">(</span><span class="s">"setValue"</span><span class="o">);</span>
+  <span class="n">mVersion</span><span class="o">++;</span>
+  <span class="n">mData</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+  <span class="n">dispatchingValue</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里需要注意到的是<code class="language-plaintext highlighter-rouge">mVersion++</code>这句话，<em>LiveData</em>就是通过版本号来记录新的值的。继续看dispatchingValue方法。</p>
+
+<h3 id="dispatchingvalue">dispatchingValue</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"WeakerAccess"</span><span class="o">)</span> <span class="cm">/* synthetic access */</span>
+<span class="kt">void</span> <span class="nf">dispatchingValue</span><span class="o">(</span><span class="nd">@Nullable</span> <span class="nc">ObserverWrapper</span> <span class="n">initiator</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">mDispatchingValue</span><span class="o">)</span> <span class="o">{</span>				<span class="c1">// ①</span>
+    <span class="n">mDispatchInvalidated</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="n">mDispatchingValue</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="k">do</span> <span class="o">{</span>
+    <span class="n">mDispatchInvalidated</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>	<span class="c1">// ②</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">initiator</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">considerNotify</span><span class="o">(</span><span class="n">initiator</span><span class="o">);</span>
+      <span class="n">initiator</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">Observer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;,</span> <span class="nc">ObserverWrapper</span><span class="o">&gt;&gt;</span> <span class="n">iterator</span> <span class="o">=</span>
+           <span class="n">mObservers</span><span class="o">.</span><span class="na">iteratorWithAdditions</span><span class="o">();</span> <span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="n">considerNotify</span><span class="o">(</span><span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">().</span><span class="na">getValue</span><span class="o">());</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">mDispatchInvalidated</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// ③</span>
+          <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span> <span class="k">while</span> <span class="o">(</span><span class="n">mDispatchInvalidated</span><span class="o">);</span>
+  <span class="n">mDispatchingValue</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在这里，涉及到两个方法，1. 第一个dispatchingValue —— 用来分发控制数据更新流程；2. considerNotify具体执行数据更新操作。</p>
+
+<p>这个方法是双信号量控制分发流程，<strong>mDispatchingValue</strong>和<strong>mDispatchInvalidated</strong>，之所以这样设计，按照我的理解，是考虑到了dispatchingValue方法多线程重入的问题，但是依我看来，这样做没必要，因为这个方法的几处调用，都是在主线程上，不可能出现第一次调用没有执行完，就又被调用一次的可能，也可能是设计者考虑到未来的扩展或者在这个库涉及之初有多线程调用的情况才这样写的，先按照有重入可能来分析。</p>
+
+<p>我们先要弄清这两个信号量的作用：mDispatchingValue表示是否正在执行分发数据更新的操作，mDispatchInvalidated表示是否中断正在进行的分发，开始新一轮分发。</p>
+
+<p>这个方法是根据传入的参数，有两个执行流程，一个是执行具体某个ObserverWrapper的数据更新操作，另外一个就是批量更新所有observer的数据操作。我们以setValue触发的dispatchingValue(null)批量更新操作为例进行分析。</p>
+
+<p>注意我在上段代码中的序号①②③注释，我们分步骤进行分析：</p>
+
+<blockquote>
+  <p>假设，此时我们有两个observer。</p>
+
+  <p>初始状态 <strong>mDispatchingValue = false, mDispatchInvalidated = false</strong></p>
+
+  <p>当<strong>第一次</strong>调用开始后，会顺利通过①处判断，然后进入do - while循环，并且在②处先将mDispatchInvalidated信号量置为false，所以，一般情况下，这个while循环只会执行一次；</p>
+
+  <p>信号量：<strong>mDispatchingValue = true, mDispatchInvalidated = false</strong></p>
+
+  <p>由于initiator参数为null，所以会进入到else分支中的for循环中，这里需要注意的是，每一次for循环结束时候，都判断一次mDispatchInvalidated信号量，也就是注释③处；</p>
+
+  <p>假设我们执行了第一个observer后，dispatchingValue方法进行了<strong>第二次</strong>调用，由于此时mDispatchingValue信号量为true，所以会进入①处if条件判断语句，将mDispatchInvalidated信号量置为true并且直接return了；</p>
+
+  <p>信号量：<strong>mDispatchingValue = true, mDispatchInvalidated = true</strong></p>
+
+  <p>此时，第一次调用的for循环体就会因为mDispatchInvalidated变成了true，而退出for循环，while循环开始判断条件，同样因为mDispatchInvalidated为true，回再次执行while循环，执行新值更新；</p>
+
+  <p>最后退出dispatchingValue方法后，两个信号量都置为false。</p>
+</blockquote>
+
+<p>这样做的目的，或许是为了及时抛弃旧值通知，开始新值通知。</p>
+
+<h3 id="considernotify">considerNotify</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"unchecked"</span><span class="o">)</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">considerNotify</span><span class="o">(</span><span class="nc">ObserverWrapper</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">observer</span><span class="o">.</span><span class="na">mActive</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="c1">// Check latest state b4 dispatch. Maybe it changed state but we didn't get the event yet.</span>
+  <span class="c1">//</span>
+  <span class="c1">// we still first check observer.active to keep it as the entrance for events. So even if</span>
+  <span class="c1">// the observer moved to an active state, if we've not received that event, we better not</span>
+  <span class="c1">// notify for a more predictable notification order.</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">observer</span><span class="o">.</span><span class="na">shouldBeActive</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">observer</span><span class="o">.</span><span class="na">activeStateChanged</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">observer</span><span class="o">.</span><span class="na">mLastVersion</span> <span class="o">&gt;=</span> <span class="n">mVersion</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="n">observer</span><span class="o">.</span><span class="na">mLastVersion</span> <span class="o">=</span> <span class="n">mVersion</span><span class="o">;</span>
+  <span class="n">observer</span><span class="o">.</span><span class="na">mObserver</span><span class="o">.</span><span class="na">onChanged</span><span class="o">((</span><span class="no">T</span><span class="o">)</span> <span class="n">mData</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这个方法是具体执行通知观察者值变化的地方。</p>
+
+<p>那么LiveData是如何判断新值和旧值的呢？</p>
+
+<p>在setValue方法中，有一个<code class="language-plaintext highlighter-rouge">mVersion++</code>语句，每次设置新值都会触发这个mVersion的自增，然后在considerNotify方法中，去校验observer是否处于active状态以及新值版本号与observer中的版本号，如果observer<strong>应当</strong>处于非active状态而仍然处于active状态(<strong>因为状态可能由于handler机制并没有及时变更</strong>)，则进行状态变更并返回，并且如果<code class="language-plaintext highlighter-rouge">observer.mLastVersion &gt;= mVersion</code>，则直接返回，因为此时observer已经更新过此值。<strong>也就是说，只有observer处于active状态且当前mVersion &gt; observer.mVersion的时候，才去通知observer更新值</strong>。</p>
+
+<p>接下来，着重看一下<em>LifecycleBoundObserver</em>和<em>ObserverWrapper</em>这个两个类。</p>
+
+<h2 id="lifecycleboundobserver和observerwrapper">LifecycleBoundObserver和ObserverWrapper</h2>
+
+<p><em>ObserverWrapper</em>是<em>Observer</em>的抽象包装类，代码很简单：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ObserverWrapper</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="nc">Observer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">mObserver</span><span class="o">;</span>
+  <span class="kt">boolean</span> <span class="n">mActive</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">mLastVersion</span> <span class="o">=</span> <span class="no">START_VERSION</span><span class="o">;</span>
+
+  <span class="nc">ObserverWrapper</span><span class="o">(</span><span class="nc">Observer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">mObserver</span> <span class="o">=</span> <span class="n">observer</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">abstract</span> <span class="kt">boolean</span> <span class="nf">shouldBeActive</span><span class="o">();</span>
+
+  <span class="kt">boolean</span> <span class="nf">isAttachedTo</span><span class="o">(</span><span class="nc">LifecycleOwner</span> <span class="n">owner</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">detachObserver</span><span class="o">()</span> <span class="o">{</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">activeStateChanged</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">newActive</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">newActive</span> <span class="o">==</span> <span class="n">mActive</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="c1">// immediately set active state, so we'd never dispatch anything to inactive</span>
+    <span class="c1">// owner</span>
+    <span class="n">mActive</span> <span class="o">=</span> <span class="n">newActive</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="n">wasInactive</span> <span class="o">=</span> <span class="nc">LiveData</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">mActiveCount</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="nc">LiveData</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">mActiveCount</span> <span class="o">+=</span> <span class="n">mActive</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">wasInactive</span> <span class="o">&amp;&amp;</span> <span class="n">mActive</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">onActive</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">LiveData</span><span class="o">.</span><span class="na">this</span><span class="o">.</span><span class="na">mActiveCount</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">mActive</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">onInactive</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">mActive</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">dispatchingValue</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在activeStateChanged方法中，先判断是否是状态的改变，如果<code class="language-plaintext highlighter-rouge">newActive == mActive</code>说明激活状态未改变，则直接返回；然后判断按照激活的observer数目和mActive状态，来判断LiveData的状态，并调用其空回调函数；最后如果mActive为true，则进行针对这个<em>ObserverWrapper</em>的事件分发。</p>
+
+<p><em>ObserverWrapper</em>有两个子类，<em>LifecycleBoundObserver</em>和<em>AlwaysActiveObserver</em>，<em>AlwaysActiveObserver</em>是与生命周期无关的observer，需要谨慎使用，在适当的时候，通过removeObserver来删除，我们重点看<em>LifecycleBoundObserver</em>。</p>
+
+<p><em>LifecycleBoundObserver</em>同时实现了<em>LifecycleEventObserver</em>，这就使得这个类具备了生命周期关联性。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LifecycleBoundObserver</span> <span class="kd">extends</span> <span class="nc">ObserverWrapper</span> <span class="kd">implements</span> <span class="nc">LifecycleEventObserver</span> <span class="o">{</span>
+  <span class="nd">@NonNull</span>
+  <span class="kd">final</span> <span class="nc">LifecycleOwner</span> <span class="n">mOwner</span><span class="o">;</span>
+
+  <span class="nc">LifecycleBoundObserver</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">LifecycleOwner</span> <span class="n">owner</span><span class="o">,</span> <span class="nc">Observer</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="no">T</span><span class="o">&gt;</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">observer</span><span class="o">);</span>
+    <span class="n">mOwner</span> <span class="o">=</span> <span class="n">owner</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kt">boolean</span> <span class="nf">shouldBeActive</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">mOwner</span><span class="o">.</span><span class="na">getLifecycle</span><span class="o">().</span><span class="na">getCurrentState</span><span class="o">().</span><span class="na">isAtLeast</span><span class="o">(</span><span class="no">STARTED</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onStateChanged</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">LifecycleOwner</span> <span class="n">source</span><span class="o">,</span>
+                             <span class="nd">@NonNull</span> <span class="nc">Lifecycle</span><span class="o">.</span><span class="na">Event</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">mOwner</span><span class="o">.</span><span class="na">getLifecycle</span><span class="o">().</span><span class="na">getCurrentState</span><span class="o">()</span> <span class="o">==</span> <span class="no">DESTROYED</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">removeObserver</span><span class="o">(</span><span class="n">mObserver</span><span class="o">);</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">activeStateChanged</span><span class="o">(</span><span class="n">shouldBeActive</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kt">boolean</span> <span class="nf">isAttachedTo</span><span class="o">(</span><span class="nc">LifecycleOwner</span> <span class="n">owner</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">mOwner</span> <span class="o">==</span> <span class="n">owner</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kt">void</span> <span class="nf">detachObserver</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">mOwner</span><span class="o">.</span><span class="na">getLifecycle</span><span class="o">().</span><span class="na">removeObserver</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在onStateChanged方法中，当生命周期处于<strong>DESTROYED</strong>状态时候，则删除这个observer。除此以外，当mOwner的生命周期处于<strong>STARTED</strong>之后的状态，则认为<code class="language-plaintext highlighter-rouge">shouldBeActive</code>，当生命周期函数onStateChanged被触发时候，将设置是否active。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>通过LiveData的这些特性，我们可以实现Activity - Fragment, Fragment - Fragment的通信，另外也可以做应用的事件总线，比如<strong>LiveEventBus</strong>。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

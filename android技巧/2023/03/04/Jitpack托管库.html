@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About</title>
+  <title>Jitpack托管库</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
@@ -221,17 +221,160 @@
         <s-scroll-view>
           <div class="contentWrapper">
             <div class="content">
-              <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Jitpack托管库</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
 
-<p>You can find the source code for Minima at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/minima">minima</a></p>
+    
+    
+    March 04
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>以前只是用过别人托管在Jitpack上的库，自己的库都是托管在MavenCentral上，但是MavenCentral使用起来，相比Jitpack还是有些麻烦。经过简单尝试和学习，了解了Jitpack的使用，做一下简单记录。</p>
 
-<p>You can find the source code for Jekyll at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<p>我第一个托管在Jitpack上的库——<a href="https://github.com/boybeak/J2V8Helper">J2V8Helper</a></p>
+
+<h2 id="step-1-在library-module中使用maven-publish插件">Step 1: 在library module中使用maven-publish插件</h2>
+
+<p>在库目录下的build.gradle文件中，应用maven-publish插件，修改后的build.gradle文件入下：</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'com.android.library'</span>
+    <span class="n">id</span> <span class="s1">'org.jetbrains.kotlin.android'</span>
+    <span class="n">id</span> <span class="s1">'maven-publish'</span>
+<span class="o">}</span>
+<span class="c1">// Other code</span>
+</code></pre></div></div>
+
+<p>然后检查此插件是否引入成功，在AndroidStudio的右侧，Gradle面板中，library module下查看有无<code class="language-plaintext highlighter-rouge">publishing</code>的任务组。</p>
+
+<blockquote>
+  <p>如果找不到，有可能是AndroidStudio配置的问题，在AndroidStudio的设置中，进入<strong>Experimental</strong>选项卡中，找到<strong>Gradle</strong>分组，找到<code class="language-plaintext highlighter-rouge">Only include test tasks in the Gradle task list generated during Gradle Sync</code>，如果勾选了，请不要勾选此选项。</p>
+</blockquote>
+
+<p>在library module下的build.gradle结尾，添加如下代码：</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">afterEvaluate</span> <span class="o">{</span>
+    <span class="n">publishing</span> <span class="o">{</span>
+        <span class="n">publications</span> <span class="o">{</span>
+            <span class="c1">// Creates a Maven publication called "release".</span>
+            <span class="n">release</span><span class="o">(</span><span class="n">MavenPublication</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// Applies the component for the release build variant.</span>
+                <span class="n">from</span> <span class="n">components</span><span class="o">.</span><span class="na">release</span>
+
+                <span class="c1">// You can then customize attributes of the publication as shown below.</span>
+                <span class="n">groupId</span> <span class="o">=</span> <span class="s1">'com.github.xyz'</span>
+                <span class="n">artifactId</span> <span class="o">=</span> <span class="s1">'abc'</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="s1">'0.0.1'</span>
+            <span class="o">}</span>
+            <span class="c1">// Creates a Maven publication called “debug”.</span>
+            <span class="n">debug</span><span class="o">(</span><span class="n">MavenPublication</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// Applies the component for the debug build variant.</span>
+                <span class="n">from</span> <span class="n">components</span><span class="o">.</span><span class="na">debug</span>
+
+                <span class="n">groupId</span> <span class="o">=</span> <span class="s1">'com.github.xyz'</span>
+                <span class="n">artifactId</span> <span class="o">=</span> <span class="s1">'abc'</span>
+                <span class="n">version</span> <span class="o">=</span> <span class="s1">'0.0.1'</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>需要注意的是，此配置，在Jitpack的编译中，并不会生效，Jitpack中你的库的引用，永远都是<code class="language-plaintext highlighter-rouge">com.github.{你github用户名}:{此项目在gitHub上repository的名字}:{创建release的tag名字}</code>。此处配置，只为检查你的maven-publish是否生效。</p>
+</blockquote>
+
+<p>然后执行Gradle任务中的<code class="language-plaintext highlighter-rouge">publishReleasePublicationToMavenLocal</code>，待执行完毕，查看$HOME/.m2/responsitory路径下，有无你的库存在。如果成功，请执行下一步骤。</p>
+
+<h2 id="step-2-将代码push到github并新建release">Step 2: 将代码push到github并新建release</h2>
+
+<p>在你Github对于的repository下，新建一个tag和release。</p>
+
+<h2 id="step-3-在jitpackio搜索你的库并执行打包">Step 3: 在jitpack.io搜索你的库，并执行打包</h2>
+
+<p>打开<a href="https://jitpack.io/">https://jitpack.io/</a></p>
+
+<p><img src="/images/jitpack.png" alt="" /></p>
+
+<p>点击Get it，然后等待编译结束，如果编译失败，会有日志记录，可以查看对应的日志来处理。</p>
+
+<p>需要注意的是，Jitpack默认的java版本为java8，如果你的Gradle版本比较高的话，比如我项目的Gradle版本为7.4.0，需要修改java版本，在项目的根目录下，创建一个jitpack.yml文件，增加配置脚本如下：</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">jdk</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">openjdk11</span>
+</code></pre></div></div>
+
+<p>Gradle版本7.4.0对应最低编译版本为java11，则我修改为openjdk11。</p>
+
+<h2 id="参考文章">参考文章</h2>
+
+<p><a href="https://jitpack.io/docs/ANDROID/#create-your-release"><strong>Publish an Android Library</strong></a></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>**[使用 Maven Publish 插件]([使用 Maven Publish 插件  </td>
+      <td>  Android 开发者  </td>
+      <td>  Android Developers](https://developer.android.com/studio/build/maven-publish-plugin?hl=zh-cn))**</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong><a href="https://docs.gradle.org/current/userguide/publishing_maven.html">Maven Publish Plugin</a></strong></p>
+
+<p><strong><a href="https://www.jianshu.com/p/604d56b46506">Android发布AAR至JitPack.io</a></strong></p>
+
+<p><strong><a href="[Building - JitPack.io](https://jitpack.io/docs/BUILDING/)">Guide to publishing libraries</a></strong></p>
 
 
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
             </div>
             <footer style="max-width: 100%; padding: 24px;">
     Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.

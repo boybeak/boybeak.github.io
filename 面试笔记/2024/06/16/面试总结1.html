@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>面试笔记</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">面试笔记</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    June 16
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>边独立，边面试，两手都要抓，两手都要硬。</p>
+<h3 id="1-给定数组array与一个数字num要求从array中找出两个数其和为num并返回这两个数的下标">1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标</h3>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">findTwoSum</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="nc">IntArray</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">&gt;?</span> <span class="p">{</span>
+    <span class="c1">// 创建一个哈希表来存储数组中的数字及其索引</span>
+    <span class="kd">val</span> <span class="py">map</span> <span class="p">=</span> <span class="n">mutableMapOf</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">&gt;()</span>
+
+    <span class="c1">// 遍历数组</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="n">array</span><span class="p">.</span><span class="n">indices</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">complement</span> <span class="p">=</span> <span class="n">num</span> <span class="p">-</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1">// 检查哈希表中是否存在这个补数</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">map</span><span class="p">.</span><span class="nf">containsKey</span><span class="p">(</span><span class="n">complement</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// 如果存在，返回这个数及其补数的索引</span>
+            <span class="k">return</span> <span class="nc">Pair</span><span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">complement</span><span class="p">]</span><span class="o">!!</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 将当前数字及其索引存入哈希表</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="p">=</span> <span class="n">i</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 如果没有找到符合条件的数对，返回null</span>
+    <span class="k">return</span> <span class="k">null</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><strong>解读：</strong></p>
+<ol>
+  <li>创建一个map，在遍历的过程中，报错所有数字以及其对应的坐标，数字为键，坐标为值；</li>
+  <li>遍历时，计算出num与当前元素的差值，然后试图从map中索引，如果有索引，则命中，如果没有则继续遍历；</li>
+  <li>map的作用，相当于取代了双层遍历法其中的一层遍历；</li>
+</ol>
+
+<h3 id="2-jvm如何判断一个对象可以被回收">2. jvm如何判断一个对象可以被回收？</h3>
+<ol>
+  <li>引用计数法
+优点：实现简单，时间复杂度低；
+缺点：无法解决循环引用问题；</li>
+  <li>可达性分析算法
+通过GC Roots开始标记所有可达的对象；可以被标记的，认为是活的对象，未被标记的，则认为已经不需要，可以被回收；</li>
+</ol>
+
+<h4 id="21-有哪些可以作为gc-root">2.1 有哪些可以作为GC Root?</h4>
+<ul>
+  <li>虚拟机栈（栈帧中的本地变量表）中引用的对象。</li>
+  <li>方法区中的类静态属性引用的对象。</li>
+  <li>方法区中常量引用的对象。</li>
+  <li>本地方法栈中JNI（即Native方法）引用的对象。</li>
+</ul>
+
+<h4 id="22-垃圾回收的过程是怎样的">2.2 垃圾回收的过程是怎样的？</h4>
+<p>有三种策略：</p>
+<ul>
+  <li>标记清除：首先标记所有可达对象，然后清除所有未被标记的对象；</li>
+  <li>复制算法：将存活的对象，从一块内存复制到另外一块内存，然后清空原来的内存；</li>
+  <li>标记-压缩： 首先标记所有可达的对象，然后将所有存活的对象压缩到内存的一端，清除便捷以外的空间；</li>
+</ul>
+
+<h3 id="3-android的handler是如何造成内存泄露的">3. Android的Handler是如何造成内存泄露的？</h3>
+<p>非静态内部类或者匿名内部类，会隐式的持有外部类的对象，如果在Activity中声明一个Handler，而Handler执行延迟任务，在任务结束前，Activity已经被销毁了，则Activiey泄露了；</p>
+
+<p>#### 3.1 如何解决Handler的内存泄露？</p>
+<ol>
+  <li>将<code class="language-plaintext highlighter-rouge">Handler</code>声明为静态内部类，并且使用弱引用持有外部类的引用；</li>
+  <li>在Activity的onDestroy中，使用<code class="language-plaintext highlighter-rouge">Handler</code>的<code class="language-plaintext highlighter-rouge">removeCallbacksAndMessages</code>方法，移除所有未执行的消息和回调；</li>
+</ol>
+
+<p>#### 3.2 有没有非Activity的其他内存泄露的场景？</p>
+<ol>
+  <li>单例持有外部对象；</li>
+  <li>静态持有外部对象；</li>
+  <li>未取消注册监听器或者回调；</li>
+  <li>WebView导致内存泄露；</li>
+  <li>异步任务；
+ 总结来说，就是生命周期长的对象，持有了一个生命周期短的对象的引用；</li>
+</ol>
+
+<p>### 4. 应用启动白屏如何排查？如何解决？</p>
+<ol>
+  <li>在应用入口，比如Application的onCreate、启动Activity的onCreate中，做耗时检查，如果耗时异常，具体检查代码；</li>
+  <li>如果是Activity的onCreate中耗时长，检查是否为布局过于复杂，造成的布局解析耗时长，可以使用异步布局处理；</li>
+  <li>如果为系统机制问题导致，可以配置主题或者使用Splash库来做过渡；</li>
+</ol>
+
+<h3 id="5-线上问题如何排查">5. 线上问题如何排查？</h3>
+<ol>
+  <li>运营种子用户，提前内测，按照用户反馈，复现问题场景；</li>
+  <li>集成bugly等线上日志抓取工具，按照机型、系统等信息，复现问题场景；</li>
+  <li>如果有可能，可以通过热更新修复问题；</li>
+</ol>
+
+<h3 id="6-不同任务类型io密集型计算密集型任务如何分配线程池策略">6. 不同任务类型(IO密集型/计算密集型)任务，如何分配线程池策略？</h3>
+<h4 id="io密集型任务">IO密集型任务</h4>
+<p><strong>特点</strong>
+IO密集型任务主要涉及等待外部资源（如文件系统、网络请求、数据库操作等），因此大部分时间处于等待状态，而非消耗CPU。</p>
+
+<p><strong>策略</strong>
+对于IO密集型任务，可以使用较大的线程池，因为线程在等待IO操作完成时不会消耗大量CPU资源。</p>
+
+<p><strong>线程池配置</strong>
+通常，线程池的大小可以设置为CPU核心数的2倍或更多。一个常见的公式是：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>线程池大小 <span class="o">=</span> CPU核心数 <span class="k">*</span> 2
+或更大，根据实际情况调整。
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IOIntensiveTaskExample</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">N_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ExecutorService</span> <span class="n">ioThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">N_THREADS</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟IO操作</span>
+                <span class="n">performIOOperation</span><span class="o">();</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+
+        <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performIOOperation</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// 模拟IO操作</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">interrupt</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="计算密集型任务">计算密集型任务</h4>
+<p><strong>特点</strong>
+计算密集型任务主要消耗CPU资源，执行过程中几乎不涉及等待时间，因此可以充分利用CPU。</p>
+
+<p><strong>策略</strong>
+对于计算密集型任务，线程池的大小应设置为接近CPU核心数。过多的线程会导致频繁的上下文切换，反而降低性能。</p>
+
+<p><strong>线程池配置</strong>
+通常，线程池的大小可以设置为CPU核心数。一个常见的公式是：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>线程池大小 <span class="o">=</span> CPU核心数
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CPUIntensiveTaskExample</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">N_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ExecutorService</span> <span class="n">cpuThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">N_THREADS</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟计算操作</span>
+                <span class="n">performCPUTask</span><span class="o">();</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+
+        <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performCPUTask</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 模拟计算操作</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p><strong>混合任务</strong>
+在实际应用中，有些任务可能既包含IO操作又包含计算操作。这种情况下，可以考虑使用不同的线程池分别处理不同类型的任务，或者根据任务的主要特征选择适当的线程池配置。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MixedTaskExample</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">IO_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">CPU_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ExecutorService</span> <span class="n">ioThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">IO_THREADS</span><span class="o">);</span>
+        <span class="nc">ExecutorService</span> <span class="n">cpuThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">CPU_THREADS</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟IO操作</span>
+                <span class="n">performIOOperation</span><span class="o">();</span>
+            <span class="o">});</span>
+
+            <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟计算操作</span>
+                <span class="n">performCPUTask</span><span class="o">();</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+
+        <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+        <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performIOOperation</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// 模拟IO操作</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">interrupt</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performCPUTask</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 模拟计算操作</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="总结">总结</h4>
+<p><strong>IO密集型任务</strong>：使用较大的线程池，通常为CPU核心数的2倍或更多，以应对大量的IO等待时间。
+<strong>计算密集型任务</strong>：使用较小的线程池，接近CPU核心数，以充分利用CPU资源，避免过多的线程上下文切换。
+<strong>混合任务</strong>：根据任务的主要特征，分别使用不同的线程池处理IO操作和计算操作。
+通过合理配置线程池，可以有效提高应用程序的性能和资源利用率。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/面试">面试</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/面试笔记">面试笔记</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

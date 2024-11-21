@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About</title>
+  <title>发布Swift Package库</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
@@ -221,17 +221,120 @@
         <s-scroll-view>
           <div class="contentWrapper">
             <div class="content">
-              <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">发布Swift Package库</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
 
-<p>You can find the source code for Minima at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/minima">minima</a></p>
+    
+    
+    June 04
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>最近开发<a href="https://github.com/boybeak/JustTodo">JustTodo</a>时，发觉把处理托盘应用的代码封装起来是很有必要的，这样的话，在以后开发其他应用时，便不需要一而再的写重复代码。以前发布过很多Android平台的类库，但是对于macOS平台的swift库，我还是第一次。</p>
+<blockquote>
+  <p>再次吐槽一下苹果生态下的包管理，挺混乱的，最终我选择使用最新的Swift Package Manager</p>
+</blockquote>
 
-<p>You can find the source code for Jekyll at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<p>该文章中涉及到的所有代码都在<a href="https://github.com/boybeak/Tray">boybeak/Tray</a></p>
 
+<h2 id="一创建github仓库">一、创建Github仓库</h2>
+<p>我们需要先创建一个Github仓库，我的仓库名称为Tray，将其clone到本地。</p>
 
+<h2 id="二在仓库目录下初始化一个swift-package">二、在仓库目录下，初始化一个Swift Package。</h2>
+<p>在Tray仓库目录下，执行以下脚本。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tray % swift package init <span class="nt">--type</span> library
+</code></pre></div></div>
+<p>该命令，会自动按照目录名称，初始化一个Swift Package，其目录如下：</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">Tray</span>
+  <span class="nt">-</span> <span class="nt">Package</span><span class="nc">.swift</span>
+  <span class="nt">-</span> <span class="nc">.gitignore</span>
+  <span class="nt">-</span> <span class="nt">Sources</span><span class="o">/</span>
+    <span class="nt">-</span> <span class="nt">Tray</span><span class="o">/</span><span class="nt">Tray</span><span class="nc">.swift</span>
+  <span class="nt">-</span> <span class="nt">Tests</span><span class="o">/</span>
+    <span class="nt">-</span> <span class="nt">TrayTests</span><span class="o">/</span><span class="nt">TrayTests</span><span class="nc">.swift</span>
+</code></pre></div></div>
+<p>其中，Package.swift为库的索引入口，当Xcode在按照Github链接查找库时，会以查到此文件为准则。其内容如下：</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// swift-tools-version: 5.10</span>
+<span class="c1">// The swift-tools-version declares the minimum version of Swift required to build this package.</span>
+
+<span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, making them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"Tray"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package, defining a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package and products from dependencies.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"TrayTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Tray"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="三发布库">三、发布库</h2>
+<p>补充相关逻辑代码，提交/推送到GitHub，便可以在其他库中使用。不需要特别的发布操作。
+在正式发布前，也可以本地使用，创建一个新项目，在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，点击<strong>Add Local</strong>按钮，然后选择Tray文件夹，便可以本地使用，同时，你也可以在项目中，直接编辑该库的代码。</p>
+
+<p>提交代码到Github后，你可以把自己的库提交到<a href="https://swiftpackageindex.com/">Swift Package Index</a>，方便他人查找。进入页面后，点击<strong>Add a package</strong>，进入新页面后，会有一个绿色的<strong>Add Package(s)</strong>按钮，此点击此按钮，会自动跳转到Swift Package Index的Github的issue页面，并会有一个提交模板，输入自己库的Github链接后，提issue，机器人会处理这个issue，并再提一个新的issue，点击链接到新的issue中，点击链接，对你的代码进行code review，注意勾选<strong>viewed</strong>复选框，完成code review后，机器人会自动处理接下来的流程。</p>
+
+<h2 id="四使用库">四、使用库</h2>
+<p>在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，复制<code class="language-plaintext highlighter-rouge">https://github.com/boybeak/Tray.git</code>到搜索库，然后就可以添加库了。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/macos">macOS</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/独立开发笔记">独立开发笔记</a>
+    
+    
+  </p>
+</article>
             </div>
             <footer style="max-width: 100%; padding: 24px;">
     Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.

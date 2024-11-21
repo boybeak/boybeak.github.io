@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About</title>
+  <title>Intent.FLAG_ACTIVITY_***解密</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
@@ -221,17 +221,125 @@
         <s-scroll-view>
           <div class="contentWrapper">
             <div class="content">
-              <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Intent.FLAG_ACTIVITY_***解密</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
 
-<p>You can find the source code for Minima at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/minima">minima</a></p>
+    
+    
+    September 19
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>最好先看这一篇<a href="/android/LaunchMode.html">Launch Mode</a>。</p>
 
-<p>You can find the source code for Jekyll at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<p>我们将重点针对<strong>FLAG_ACTIVITY_NEW_TASK</strong>、<strong>FLAG_ACTIVITY_CLEAR_TASK</strong>、<strong>FLAG_ACTIVITY_CLEAR_TOP</strong>、<strong>FLAG_ACTIVITY_SINGLE_TOP</strong>四个flag进行讲解。</p>
 
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_NEW_TASK"><strong>FLAG_ACTIVITY_NEW_TASK</strong></a>：</p>
 
+<ol>
+  <li>通过非Activity的Context启动一个Activity时候，要使用此flag，比如：ApplicationContext、Service等；</li>
+  <li>用于Launcher类应用启动其他应用的时候；</li>
+  <li>当试图通过这个flag启动一个activity的时候，如果后台已经有一个任务栈中有运行的一个此类activity实例，将不会创建一个新的activity，而是将整个栈置于前台，并保持上次的状态。比如从另一个应用启动这种场景，或者Notification中。</li>
+  <li>如果你想使用startActivityForResult，则<strong>千万不要</strong>在启动的intent添加这个flag。因为onActivityResult回调方法，不会在目标activity执行finish后调用，而是在启动目标activity的时候直接调用，并且收r到resultCode = <code class="language-plaintext highlighter-rouge">RESULT_CANCELED</code>。</li>
+</ol>
+
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_CLEAR_TOP"><strong>FLAG_ACTIVITY_CLEAR_TOP</strong></a>：</p>
+
+<ol>
+  <li>
+    <p>如果在当前任务栈中已经有了目标类型activity，则再次通过添加了此flag的intent去启动此类型activity，会有两种情况。</p>
+
+    <p>比如有如下图示结构的任务栈:</p>
+  </li>
+</ol>
+
+<pre><code class="language-mermaid">graph LR;
+subgraph Task;
+D;
+C;
+B;
+A;
+end;
+</code></pre>
+
+<p>此时D通过一个添加了<code class="language-plaintext highlighter-rouge">FLAG_ACTIVITY_CLEAR_TOP</code>的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：</p>
+
+<pre><code class="language-mermaid">graph LR;
+subgraph Task;
+B;
+A;
+end;
+</code></pre>
+
+<p>接下来就有两种情况了。</p>
+
+<p>情况一：intent中<strong>没有</strong>同时设置<code class="language-plaintext highlighter-rouge">FLAG_ACTIVITY_SINGLE_TOP</code>，并且B的launchMode是默认值。</p>
+
+<p>B会finish掉再re-create一个新的B’放在B的位置上。</p>
+
+<p>情况二：intent中设置了<code class="language-plaintext highlighter-rouge">FLAG_ACTIVITY_SINGLE_TOP</code>或者是其他类型的launchMode。</p>
+
+<p>B不会finish（调用finish方法，onDestroy会被触发）掉，而是直接调用其onNewIntent()方法。</p>
+
+<blockquote>
+  <p>或许你认为情况二这与launchMode中的singleTop或者singleTask类似，实则不然，其一，singleTop没有清空压在它上边activity的能力；其二，singleTask收到taskAffinity影响。</p>
+</blockquote>
+
+<ol>
+  <li>与<code class="language-plaintext highlighter-rouge">FLAG_ACTIVITY_NEW_TASK</code>配合使用。如果想启动一个任务栈的root位置的activity，也就是栈低activity，同时设置这两个值，它会将整个任务栈放置于前台，并且清空其他activit，适用于从Notification启动Activity。</li>
+</ol>
+
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_CLEAR_TASK"><strong>FLAG_ACTIVITY_CLEAR_TASK</strong></a>：这个flag很特殊，只能于<code class="language-plaintext highlighter-rouge">FLAG_ACTIVITY_NEW_TASK</code>配合使用。要启动的目标activity的任务栈如果已经存在并且不为空，则将所有activity出栈（不会调用finish方法，onDestroy会被触发），然后创建一个目标类型activity作为这个栈的root。</p>
+
+<p><a href="https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_SINGLE_TOP"><strong>FLAG_ACTIVITY_SINGLE_TOP</strong></a>：这个flag与launchMode中的singleTop几乎一样，当要启动一个activity时候，如果栈顶就是目标类型activity，则不会创建一个新的activity，而是直接调用栈顶的这个activity的onNewIntent()方法。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
             </div>
             <footer style="max-width: 100%; padding: 24px;">
     Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.

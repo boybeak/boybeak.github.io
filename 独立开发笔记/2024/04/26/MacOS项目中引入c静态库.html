@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About</title>
+  <title>macOS项目中引入c静态库</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
@@ -221,17 +221,157 @@
         <s-scroll-view>
           <div class="contentWrapper">
             <div class="content">
-              <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">macOS项目中引入c静态库</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
 
-<p>You can find the source code for Minima at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/minima">minima</a></p>
+    
+    
+    April 26
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>最近在写一款多平台的文件传输工具，Android平台已经写的差不多了，现在正在写macOS端，为了多端共享同一套底层协议代码，通讯协议部分，使用了c语言开发，对于Android通过jni调用c的相关代码，我已经驾轻就熟了，但是在macOS项目里，添加静态库并成功调试，我还是有一些懵逼。好在通过ChatGPT的各种帮助，还是跌跌撞撞的调通了。为了防止遗忘，记录一下过程。</p>
 
-<p>You can find the source code for Jekyll at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<p>相关的c/swift代码，均以示例项目作为演示，目的是说明过程。</p>
 
+<h2 id="一c语言库">一、C语言库</h2>
 
+<p>c库的相关代码结构如下：</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">demo</span>
+<span class="err">├──</span> <span class="nt">bc</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="nt">bc</span><span class="nc">.h</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="nt">bc</span><span class="nc">.c</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="nt">build</span><span class="o">/</span><span class="nt">libbc</span><span class="nc">.a</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="nt">CMakeLists</span><span class="nc">.txt</span>
+<span class="err">├──</span> <span class="nt">main</span><span class="nc">.c</span>
+<span class="err">│──</span> <span class="nt">CMakeLists</span><span class="nc">.txt</span>
+
+</code></pre></div></div>
+<p>根目录的main.c与CMakeLists.txt不重要，重要的是bc文件夹下。
+bc.h为头文件，bc.c为代码文件，其内容比较简单，定义了一个名为getNumber的函数，函数返回值为42，build为编译生成文件夹，主要是为了生成libbc.a，bc目录下的CMakeLists.txt内容如下：</p>
+<pre><code class="language-txt">cmake_minimum_required(VERSION 3.5)
+project(bc VERSION 0.0.1)
+
+# 添加库
+add_library(
+    bc STATIC 
+    bc.c bc.h
+)
+
+# 将库的目录添加到include路径
+target_include_directories(bc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+</code></pre>
+<p>这里主要关注<code class="language-plaintext highlighter-rouge">add_library</code>这个指令中的，<code class="language-plaintext highlighter-rouge">STATIC</code>关键字，有这个关键字，在编译时，才会被编译成静态库。
+在bc目录下，执行相关的指令，生成静态库文件。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>build
+<span class="nb">cd </span>build
+cmake ..
+make
+</code></pre></div></div>
+<p>执行完相关指令以后，在build目录下，会多一个libbc.a文件。</p>
+
+<h2 id="二macos-swiftui项目">二、macOS swiftUI项目</h2>
+<p>macOS的演示项目名称为TestA，其基本目录结构如下：</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">TestA</span>
+<span class="err">├──</span> <span class="nt">TestA</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="nt">main</span><span class="nc">.swift</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="nt">TestA-Bridging-Header</span><span class="nc">.h</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="o">...</span>
+<span class="err">├──</span> <span class="nt">TestA</span><span class="nc">.xcodeproj</span>
+<span class="o">|</span><span class="err">──</span> <span class="nt">include</span><span class="o">/</span><span class="nt">bc</span><span class="nc">.h</span>
+<span class="err">└──</span> <span class="nt">libbc</span><span class="nc">.a</span>
+</code></pre></div></div>
+<p>TestA为项目根目录，其内部的TestA为同名Target目录。在根目录下，你可以看到一个libbc.a文件，实际上这个文件本身并不存在于该路径下，而是在上一段中提到的build目录下，当然，你也可以把文件本身拷贝到该目录下。</p>
+
+<h3 id="21-添加libbca">2.1 添加libbc.a</h3>
+<p>在根目录上，右键-&gt;Add Files to “TestA”，然后选择libbc.a，这样libbc.a就会显示在根目录下了。
+左键点击项目根目录，弹出配置选项卡，点击<strong>Build Settings</strong>选项卡，在Filter中，输入”Other Linker Flags”，找到该配置项，然后增加配置值<code class="language-plaintext highlighter-rouge">-lbc</code>（这里的“bc”应该是你的库文件名去掉前缀“lib”和后缀“.a”，因为我的库名称叫bc，生成的文件上libbc.a，所以值为-lbc，如果你的库名称为xyz，则应该配置为-lxyz），这里需要注意，该配置项下有Debug和Release两个，都要配置，下同。</p>
+
+<h3 id="22-引入头文件">2.2 引入头文件</h3>
+<p>在根目录下，创建include目录，将头文件bc.h拷贝进来。然后在刚才的<strong>Build Settings</strong>选项卡中，搜索”Header Search Paths”，并设置值为<code class="language-plaintext highlighter-rouge">$(SRCROOT)/include</code>，注意，如果include下有子目录，同样需要添加到该配置中。添加了该配置后，在接下来的TestA-Bridging-Header.h中，才能引入相关头文件。</p>
+
+<h3 id="23-testa-bridging-headerh">2.3 TestA-Bridging-Header.h</h3>
+<p>注意，是TestA-Bridging-Header.h，不是TestA-Bridge-Header.h。因为是桥接文件，所以好几次，我都想当然的认为是<code class="language-plaintext highlighter-rouge">Bridge</code>了，导致很多次配置都失败了。
+文件内容如下：</p>
+<pre><code class="language-h">#ifndef TestA_Bridging_Header_h
+#define TestA_Bridging_Header_h
+
+#include "bc.h"
+
+#endif
+</code></pre>
+<p>在此文件中，可以使用bc.h文件了。</p>
+
+<p>此时，在Swfit代码中还不能使用TestA-Bridge-Header.h中引入头文件的相关函数，需要设置Objective-C Bridging Header，同样在<strong>Build Settings</strong>中搜索”Objective-C Bridging Header”，设置值为<code class="language-plaintext highlighter-rouge">TestA/TestA-Bridging-Header.h</code>。</p>
+
+<h2 id="三运行">三、运行</h2>
+<p>在Swift代码的UI配置文件中，使用c语言中的<code class="language-plaintext highlighter-rouge">getNumber</code>方法。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">VStack</span> <span class="p">{</span>
+            <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"globe"</span><span class="p">)</span>
+                <span class="o">.</span><span class="nf">imageScale</span><span class="p">(</span><span class="o">.</span><span class="n">large</span><span class="p">)</span>
+                <span class="o">.</span><span class="nf">foregroundStyle</span><span class="p">(</span><span class="o">.</span><span class="n">tint</span><span class="p">)</span>
+            <span class="kt">Text</span><span class="p">(</span><span class="s">"Hello, world!</span><span class="se">\(</span><span class="nf">getNumber</span><span class="p">()</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="o">.</span><span class="nf">padding</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>将该数字显示在Text中，效果如下：
+<img src="/assets/images/getNumber.png" alt="getNumber" /></p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/macos">macOS</a>
+    
+    <a href="/tag/静态库">静态库</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/独立开发笔记">独立开发笔记</a>
+    
+    
+  </p>
+</article>
             </div>
             <footer style="max-width: 100%; padding: 24px;">
     Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ARouter源码分析</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">ARouter源码分析</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>在阅读源码前，请先下载源码：<a href="https://github.com/alibaba/ARouter">ARouter</a></p>
+
+<p>最近阅读ARouter源码，发现这真的是一个非常优秀的框架。激发出兴趣来读一下他的源码，实际上，这个框架的结构非常简单。这个框架可以分为<strong>主流程</strong>和<strong>辅助流程</strong>来拆开分析。</p>
+
+<p>主流程包含<strong>编译时</strong>和<strong>运行时</strong>两个部分，其中编译时主要做的是路由路径表的构建，运行时主要做的是路由路径表的加载；</p>
+
+<p>辅助流程主要就是做<strong>启动优化</strong>。</p>
+
+<h2 id="主流程">主流程</h2>
+
+<h3 id="1-编译时">1. 编译时</h3>
+
+<p>这部分主要涉及到的是路由路径表的构建，其实现原理是<strong>APT</strong>，即<strong>注解处理器</strong>。</p>
+
+<p>使用ARouter时候，需要在目标类上，通过<strong>@Route</strong>注解进行标记，注解处理器处理的就是这个注解。打开源码路径下的<em>arouter-compiler</em>这个module，找到<strong>RouteProcessor</strong>，这个类就是用来处理<strong>@Route</strong>注解的类。这里需要了解的知识，除了APT，还有java-poet，请自行了解这些。</p>
+
+<p>Processor类的入口方法是<em>process</em>方法，这个方法返回true，则这个处理器已经完成了自己的任务，不会被重复调用。其他比较重要的方法有<em>getSupportedSourceVersion</em>，<em>getSupportedAnnotationTypes</em>等。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Set</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">Element</span><span class="o">&gt;</span> <span class="n">routeElements</span> <span class="o">=</span> <span class="n">roundEnv</span><span class="o">.</span><span class="na">getElementsAnnotatedWith</span><span class="o">(</span><span class="nc">Route</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>通过这个方法，获取所有被<strong>@Route</strong>标记的元素。</p>
+
+<p>获取到<em>routeElements</em>后，在<em>parseRoutes</em>方法进行处理。我们以最常用的Activity为例，进行分析。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rootMap</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>	<span class="c1">//用来分类存储标记元素</span>
+
+<span class="c1">// 用来检测元素是否为对应的类型，通过Types.isSubtype()方法来检测。</span>
+<span class="nc">TypeMirror</span> <span class="n">type_Activity</span> <span class="o">=</span> <span class="n">elementUtils</span><span class="o">.</span><span class="na">getTypeElement</span><span class="o">(</span><span class="no">ACTIVITY</span><span class="o">).</span><span class="na">asType</span><span class="o">();</span>
+<span class="nc">TypeMirror</span> <span class="n">type_Service</span> <span class="o">=</span> <span class="n">elementUtils</span><span class="o">.</span><span class="na">getTypeElement</span><span class="o">(</span><span class="no">SERVICE</span><span class="o">).</span><span class="na">asType</span><span class="o">();</span>
+<span class="nc">TypeMirror</span> <span class="n">fragmentTm</span> <span class="o">=</span> <span class="n">elementUtils</span><span class="o">.</span><span class="na">getTypeElement</span><span class="o">(</span><span class="no">FRAGMENT</span><span class="o">).</span><span class="na">asType</span><span class="o">();</span>
+<span class="nc">TypeMirror</span> <span class="n">fragmentTmV4</span> <span class="o">=</span> <span class="n">elementUtils</span><span class="o">.</span><span class="na">getTypeElement</span><span class="o">(</span><span class="nc">Consts</span><span class="o">.</span><span class="na">FRAGMENT_V4</span><span class="o">).</span><span class="na">asType</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>最后将分类号的元素信息，存储在成员变量groupMap中去。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">RouteMeta</span><span class="o">&gt;&gt;</span> <span class="n">groupMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+</code></pre></div></div>
+
+<p>然后再通过这个groupMap，借助java-poet，来生成真实的类。如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ARouter</span><span class="err">$</span><span class="n">$Group</span><span class="err">$</span><span class="n">$test</span> <span class="kd">implements</span> <span class="nc">IRouteGroup</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loadInto</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">&gt;</span> <span class="n">atlas</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">atlas</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/test/activity1"</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="nc">RouteType</span><span class="o">.</span><span class="na">ACTIVITY</span><span class="o">,</span> <span class="nc">Test1Activity</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"/test/activity1"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;(),</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">));</span>
+    <span class="n">atlas</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/test/activity2"</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="nc">RouteType</span><span class="o">.</span><span class="na">ACTIVITY</span><span class="o">,</span> <span class="nc">Test2Activity</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"/test/activity2"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;(),</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">));</span>
+    <span class="n">atlas</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/test/activity3"</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="nc">RouteType</span><span class="o">.</span><span class="na">ACTIVITY</span><span class="o">,</span> <span class="nc">Test3Activity</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"/test/activity3"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;(),</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">));</span>
+    <span class="n">atlas</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/test/activity4"</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="nc">RouteType</span><span class="o">.</span><span class="na">ACTIVITY</span><span class="o">,</span> <span class="nc">Test4Activity</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"/test/activity4"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">));</span>
+    <span class="n">atlas</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/test/fragment"</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="nc">RouteType</span><span class="o">.</span><span class="na">FRAGMENT</span><span class="o">,</span> <span class="nc">BlankFragment</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"/test/fragment"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;(),</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">));</span>
+    <span class="n">atlas</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"/test/webview"</span><span class="o">,</span> <span class="nc">RouteMeta</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="nc">RouteType</span><span class="o">.</span><span class="na">ACTIVITY</span><span class="o">,</span> <span class="nc">TestWebview</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"/test/webview"</span><span class="o">,</span> <span class="s">"test"</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2147483648</span><span class="o">));</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="2-运行时">2. 运行时</h3>
+
+<p>这部分主要做的是，在<em>ARouter.init()</em>时候，将上过程生成的路径表加载到内存中。</p>
+
+<blockquote>
+  <p>如果你以官方demo程序验证这一步，需要将app/build.gradle中的<code class="language-plaintext highlighter-rouge">apply plugin: 'com.alibaba.arouter'</code>这一行代码注释掉。</p>
+</blockquote>
+
+<p>我们以<em>ARouter.init</em>方法为入口，实际上最终实现init流程的是LogisticsCenter类的<em>init</em>方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">,</span> <span class="nc">ThreadPoolExecutor</span> <span class="n">tpe</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">HandlerException</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">registerByPlugin</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">//这是在辅助流程需要去讲的</span>
+  	<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Load router map by arouter-auto-register plugin."</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">routerMap</span><span class="o">;</span>
+
+    <span class="c1">// It will rebuild router map every times when debuggable.</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">ARouter</span><span class="o">.</span><span class="na">debuggable</span><span class="o">()</span> <span class="o">||</span> <span class="nc">PackageUtils</span><span class="o">.</span><span class="na">isNewVersion</span><span class="o">(</span><span class="n">context</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Run with debug mode or new install, rebuild router map."</span><span class="o">);</span>
+      <span class="c1">// These class was generated by arouter-compiler.</span>
+      <span class="n">routerMap</span> <span class="o">=</span> <span class="nc">ClassUtils</span><span class="o">.</span><span class="na">getFileNameByPackageName</span><span class="o">(</span><span class="n">mContext</span><span class="o">,</span> <span class="no">ROUTE_ROOT_PAKCAGE</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">routerMap</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">getSharedPreferences</span><span class="o">(</span><span class="no">AROUTER_SP_CACHE_KEY</span><span class="o">,</span> <span class="nc">Context</span><span class="o">.</span><span class="na">MODE_PRIVATE</span><span class="o">).</span><span class="na">edit</span><span class="o">().</span><span class="na">putStringSet</span><span class="o">(</span><span class="no">AROUTER_SP_KEY_MAP</span><span class="o">,</span> <span class="n">routerMap</span><span class="o">).</span><span class="na">apply</span><span class="o">();</span>
+      <span class="o">}</span>
+
+      <span class="nc">PackageUtils</span><span class="o">.</span><span class="na">updateVersion</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>    <span class="c1">// Save new version name when router map update finishes.</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Load router map from cache."</span><span class="o">);</span>
+      <span class="n">routerMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;(</span><span class="n">context</span><span class="o">.</span><span class="na">getSharedPreferences</span><span class="o">(</span><span class="no">AROUTER_SP_CACHE_KEY</span><span class="o">,</span> <span class="nc">Context</span><span class="o">.</span><span class="na">MODE_PRIVATE</span><span class="o">).</span><span class="na">getStringSet</span><span class="o">(</span><span class="no">AROUTER_SP_KEY_MAP</span><span class="o">,</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;()));</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里需要着重看的是这一句：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">routerMap</span> <span class="o">=</span> <span class="nc">ClassUtils</span><span class="o">.</span><span class="na">getFileNameByPackageName</span><span class="o">(</span><span class="n">mContext</span><span class="o">,</span> <span class="no">ROUTE_ROOT_PAKCAGE</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>我们查看这个方法:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getFileNameByPackageName</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">packageName</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">PackageManager</span><span class="o">.</span><span class="na">NameNotFoundException</span><span class="o">,</span> <span class="nc">IOException</span><span class="o">,</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">classNames</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
+
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">paths</span> <span class="o">=</span> <span class="n">getSourcePaths</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+  <span class="kd">final</span> <span class="nc">CountDownLatch</span> <span class="n">parserCtl</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CountDownLatch</span><span class="o">(</span><span class="n">paths</span><span class="o">.</span><span class="na">size</span><span class="o">());</span>
+
+  <span class="k">for</span> <span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">path</span> <span class="o">:</span> <span class="n">paths</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Log</span><span class="o">.</span><span class="na">v</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"getFileNameByPackageName path="</span> <span class="o">+</span> <span class="n">path</span><span class="o">);</span>
+    <span class="nc">DefaultPoolExecutor</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">DexFile</span> <span class="n">dexfile</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">path</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="no">EXTRACTED_SUFFIX</span><span class="o">))</span> <span class="o">{</span>
+            <span class="c1">//NOT use new DexFile(path), because it will throw "permission error in /data/dalvik-cache"</span>
+            <span class="n">dexfile</span> <span class="o">=</span> <span class="nc">DexFile</span><span class="o">.</span><span class="na">loadDex</span><span class="o">(</span><span class="n">path</span><span class="o">,</span> <span class="n">path</span> <span class="o">+</span> <span class="s">".tmp"</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">dexfile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DexFile</span><span class="o">(</span><span class="n">path</span><span class="o">);</span>
+          <span class="o">}</span>
+
+          <span class="nc">Enumeration</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">dexEntries</span> <span class="o">=</span> <span class="n">dexfile</span><span class="o">.</span><span class="na">entries</span><span class="o">();</span>
+          <span class="k">while</span> <span class="o">(</span><span class="n">dexEntries</span><span class="o">.</span><span class="na">hasMoreElements</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">String</span> <span class="n">className</span> <span class="o">=</span> <span class="n">dexEntries</span><span class="o">.</span><span class="na">nextElement</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">packageName</span><span class="o">))</span> <span class="o">{</span>
+              <span class="nc">Log</span><span class="o">.</span><span class="na">v</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"find CLASS NAME "</span> <span class="o">+</span> <span class="n">className</span><span class="o">);</span>
+              <span class="n">classNames</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">className</span><span class="o">);</span>
+            <span class="o">}</span>
+          <span class="o">}</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Throwable</span> <span class="n">ignore</span><span class="o">)</span> <span class="o">{</span>
+          <span class="nc">Log</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="s">"ARouter"</span><span class="o">,</span> <span class="s">"Scan map file in dex files made error."</span><span class="o">,</span> <span class="n">ignore</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+          <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">dexfile</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+              <span class="n">dexfile</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Throwable</span> <span class="n">ignore</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">}</span>
+          <span class="o">}</span>
+
+          <span class="n">parserCtl</span><span class="o">.</span><span class="na">countDown</span><span class="o">();</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+
+  <span class="n">parserCtl</span><span class="o">.</span><span class="na">await</span><span class="o">();</span>
+
+  <span class="nc">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="nc">Consts</span><span class="o">.</span><span class="na">TAG</span><span class="o">,</span> <span class="s">"Filter "</span> <span class="o">+</span> <span class="n">classNames</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">+</span> <span class="s">" classes by packageName &lt;"</span> <span class="o">+</span> <span class="n">packageName</span> <span class="o">+</span> <span class="s">"&gt;"</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">classNames</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>注意其中的<em>getSourcePaths</em>方法，这是从代码目录，来获取所有代码目录，然后在</p>
+
+<p><em>getFileNameByPackageName</em>找出以<code class="language-plaintext highlighter-rouge">com.alibaba.android.arouter.routes</code>为开头包名的类，这些就是我们在步骤1中生成的辅助类。</p>
+
+<p>这个方法结束后，回到<em>LogisticsCenter#init</em>方法，接下来要做的就是，把加载到的辅助类，通过反射生成对象，再调用其<em>loadTo</em>方法，将路由路径表加载到Warehouse类中去，方便以后的查询。</p>
+
+<h2 id="辅助流程">辅助流程</h2>
+
+<p>在以上的流程中，有一个严重的问题，那就是执行<em>ARouter#init</em>方法的时间过长，以源码的demo为例，在InstantRun的情况下，OnePlus5T需要100多毫秒才能初始化完，这对于程序启动优化来说，是一个不可忽视的时间了。那么如何解决这个问题呢？</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MainActivity: init cost 134
+</code></pre></div></div>
+
+<p>这就是在上一步中，要求你注释掉的代码起作用了，将<code class="language-plaintext highlighter-rouge">apply plugin: 'com.alibaba.arouter'</code>解除注释，让其发挥作用。</p>
+
+<p>这里需要关注的module是<code class="language-plaintext highlighter-rouge">arouter-gradle-plugin</code>。</p>
+
+<p>先来看一下，使用了<code class="language-plaintext highlighter-rouge">apply plugin: 'com.alibaba.arouter'</code>的神奇效果。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MainActivity: init cost 19
+</code></pre></div></div>
+
+<p>通过优化，让<em>ARouter#init</em>消耗时间直接降低了一个数量级，那么<code class="language-plaintext highlighter-rouge">arouter-gradle-plugin</code>是怎么做到的呢？</p>
+
+<p>这需要你先了解一下<a href="/android/ASM.md">ASM</a>。简单来说，这是一种字节码编程技术，通过修改编译后的字节码的方式，来对原始逻辑增强。</p>
+
+<p>我们再来看<em>ARouter#init</em>的最终实现类和方法<em>LogisticsCenter#init</em>：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">,</span> <span class="nc">ThreadPoolExecutor</span> <span class="n">tpe</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">HandlerException</span> <span class="o">{</span>
+  <span class="o">....</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="kt">long</span> <span class="n">startInit</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+    <span class="c1">//billy.qi modified at 2017-12-06</span>
+    <span class="c1">//load by plugin first</span>
+    <span class="n">loadRouterMap</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">registerByPlugin</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Load router map by arouter-auto-register plugin."</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="o">....</span>
+    <span class="o">}</span>
+    <span class="o">.....</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">HandlerException</span><span class="o">(</span><span class="no">TAG</span> <span class="o">+</span> <span class="s">"ARouter init logistics center exception! ["</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">()</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，当<code class="language-plaintext highlighter-rouge">registerByPlugin</code>为true的时候，则只是打印了一句日志，我们再看loadRouterMap()这个方法：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">loadRouterMap</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">registerByPlugin</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="c1">//auto generate register code by gradle plugin: arouter-auto-register</span>
+  <span class="c1">// looks like below:</span>
+  <span class="c1">// registerRouteRoot(new ARouter..Root..modulejava());</span>
+  <span class="c1">// registerRouteRoot(new ARouter..Root..modulekotlin());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里的逻辑非常简单，到底在哪里去加载的路由路径表呢？我们看这个方法的注释，发现，这个方法是被<code class="language-plaintext highlighter-rouge">arouter-auto-register</code>自动生成的。</p>
+
+<p>我们打开<code class="language-plaintext highlighter-rouge">arouter-gradle-plugin/resources/META-INF/gradle-plugins</code>这个目录，可以看到，有一个<em>com.alibaba.arouter.properties</em>文件，查看其内容：</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">implementation-class</span><span class="p">=</span><span class="s">com.alibaba.android.arouter.register.launch.PluginLaunch</span>
+</code></pre></div></div>
+
+<p>这个<em>PluginLaunch</em>便是此gradle plugin的入口类。查看此类：</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PluginLaunch</span> <span class="kd">implements</span> <span class="n">Plugin</span><span class="o">&lt;</span><span class="n">Project</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">Project</span> <span class="n">project</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">isApp</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">plugins</span><span class="o">.</span><span class="na">hasPlugin</span><span class="o">(</span><span class="n">AppPlugin</span><span class="o">)</span>
+    <span class="c1">//only application module needs this plugin to generate register code</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">isApp</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">Logger</span><span class="o">.</span><span class="na">make</span><span class="o">(</span><span class="n">project</span><span class="o">)</span>
+
+      <span class="n">Logger</span><span class="o">.</span><span class="na">i</span><span class="o">(</span><span class="s1">'Project enable arouter-register plugin'</span><span class="o">)</span>
+
+      <span class="kt">def</span> <span class="n">android</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="na">extensions</span><span class="o">.</span><span class="na">getByType</span><span class="o">(</span><span class="n">AppExtension</span><span class="o">)</span>
+      <span class="kt">def</span> <span class="n">transformImpl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RegisterTransform</span><span class="o">(</span><span class="n">project</span><span class="o">)</span>
+
+      <span class="c1">//init arouter-auto-register settings</span>
+      <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ScanSetting</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;(</span><span class="mi">3</span><span class="o">)</span>
+      <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ScanSetting</span><span class="o">(</span><span class="s1">'IRouteRoot'</span><span class="o">))</span>
+      <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ScanSetting</span><span class="o">(</span><span class="s1">'IInterceptorGroup'</span><span class="o">))</span>
+      <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">ScanSetting</span><span class="o">(</span><span class="s1">'IProviderGroup'</span><span class="o">))</span>
+      <span class="n">RegisterTransform</span><span class="o">.</span><span class="na">registerList</span> <span class="o">=</span> <span class="n">list</span>
+      <span class="c1">//register this plugin</span>
+      <span class="n">android</span><span class="o">.</span><span class="na">registerTransform</span><span class="o">(</span><span class="n">transformImpl</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们查看其代码，可以发现，这里一共做了三件事：</p>
+
+<ol>
+  <li>判断是否为app module，如果不是，则不做任何事，在app module下做2和3两步；</li>
+  <li>生成了一个RegisterTransform，并为其静态变量registerList赋值，<strong>注意此处赋值的registerList中包含的三个对象</strong>；</li>
+  <li>注册此RegisterTransform。</li>
+</ol>
+
+<p>接下来，就轮到<em>RegisterTransform</em>来执行了。</p>
+
+<p>Transform类，简单来说，就是可以在编译时，扫描所有的jar和class，包括引用类库中的。在扫描过程中，就可以借助<strong>ASM</strong>技术对目标类进行更改。</p>
+
+<p>我们看其入口方法<em>transform</em>：</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kt">void</span> <span class="nf">transform</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">TransformInput</span><span class="o">&gt;</span> <span class="n">inputs</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">TransformInput</span><span class="o">&gt;</span> <span class="n">referencedInputs</span><span class="o">,</span> <span class="n">TransformOutputProvider</span> <span class="n">outputProvider</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">isIncremental</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">TransformException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+  <span class="n">inputs</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">TransformInput</span> <span class="n">input</span> <span class="o">-&gt;</span>
+    <span class="c1">// scan all jars</span>
+    <span class="n">input</span><span class="o">.</span><span class="na">jarInputs</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">JarInput</span> <span class="n">jarInput</span> <span class="o">-&gt;</span>
+      <span class="o">...</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">ScanUtil</span><span class="o">.</span><span class="na">shouldProcessPreDexJar</span><span class="o">(</span><span class="n">src</span><span class="o">.</span><span class="na">absolutePath</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">ScanUtil</span><span class="o">.</span><span class="na">scanJar</span><span class="o">(</span><span class="n">src</span><span class="o">,</span> <span class="n">dest</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="o">...</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="n">input</span><span class="o">.</span><span class="na">directoryInputs</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">DirectoryInput</span> <span class="n">directoryInput</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>
+    <span class="n">directoryInput</span><span class="o">.</span><span class="na">file</span><span class="o">.</span><span class="na">eachFileRecurse</span> <span class="o">{</span> <span class="n">File</span> <span class="n">file</span> <span class="o">-&gt;</span>
+      <span class="o">...</span>
+      <span class="k">if</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">isFile</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">ScanUtil</span><span class="o">.</span><span class="na">shouldProcessClass</span><span class="o">(</span><span class="n">path</span><span class="o">)){</span>
+        <span class="n">ScanUtil</span><span class="o">.</span><span class="na">scanClass</span><span class="o">(</span><span class="n">file</span><span class="o">)</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>省去了一些细节，只保留了主线逻辑，我们可以看到，其扫描到的jar和class都经过了ScanUtils的方法来处理，我们继续跟踪下去，会发现，<em>scanJar</em>也是循环调用的<em>scanClass</em>，这样我们直接看<em>scanClass</em>方法：</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="kt">void</span> <span class="nf">scanClass</span><span class="o">(</span><span class="n">InputStream</span> <span class="n">inputStream</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">ClassReader</span> <span class="n">cr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassReader</span><span class="o">(</span><span class="n">inputStream</span><span class="o">)</span>
+  <span class="n">ClassWriter</span> <span class="n">cw</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassWriter</span><span class="o">(</span><span class="n">cr</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="n">ScanClassVisitor</span> <span class="n">cv</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ScanClassVisitor</span><span class="o">(</span><span class="n">Opcodes</span><span class="o">.</span><span class="na">ASM5</span><span class="o">,</span> <span class="n">cw</span><span class="o">)</span>
+  <span class="n">cr</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">cv</span><span class="o">,</span> <span class="n">ClassReader</span><span class="o">.</span><span class="na">EXPAND_FRAMES</span><span class="o">)</span>
+  <span class="n">inputStream</span><span class="o">.</span><span class="na">close</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="kd">static</span> <span class="kd">class</span> <span class="nc">ScanClassVisitor</span> <span class="kd">extends</span> <span class="n">ClassVisitor</span> <span class="o">{</span>
+
+  <span class="n">ScanClassVisitor</span><span class="o">(</span><span class="kt">int</span> <span class="n">api</span><span class="o">,</span> <span class="n">ClassVisitor</span> <span class="n">cv</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">api</span><span class="o">,</span> <span class="n">cv</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="kt">int</span> <span class="n">version</span><span class="o">,</span> <span class="kt">int</span> <span class="n">access</span><span class="o">,</span> <span class="n">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">String</span> <span class="n">signature</span><span class="o">,</span>
+             <span class="n">String</span> <span class="n">superName</span><span class="o">,</span> <span class="n">String</span><span class="o">[]</span> <span class="n">interfaces</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="n">version</span><span class="o">,</span> <span class="n">access</span><span class="o">,</span> <span class="n">name</span><span class="o">,</span> <span class="n">signature</span><span class="o">,</span> <span class="n">superName</span><span class="o">,</span> <span class="n">interfaces</span><span class="o">)</span>
+    <span class="n">RegisterTransform</span><span class="o">.</span><span class="na">registerList</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">ext</span> <span class="o">-&gt;</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">ext</span><span class="o">.</span><span class="na">interfaceName</span> <span class="o">&amp;&amp;</span> <span class="n">interfaces</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">interfaces</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">itName</span> <span class="o">-&gt;</span>
+          <span class="k">if</span> <span class="o">(</span><span class="n">itName</span> <span class="o">==</span> <span class="n">ext</span><span class="o">.</span><span class="na">interfaceName</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">//fix repeated inject init code when Multi-channel packaging</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">ext</span><span class="o">.</span><span class="na">classList</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
+              <span class="n">ext</span><span class="o">.</span><span class="na">classList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">name</span><span class="o">)</span>
+            <span class="o">}</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里就又涉及到了ASM的知识，ScanClassVisitor是访问某个类的内部结构。</p>
+
+<blockquote>
+  <p>version：类的版本；</p>
+
+  <p>access：表示类的访问权限，public，private，protected等；</p>
+
+  <p>name：类的名字；</p>
+
+  <p>signature：有无泛型；</p>
+
+  <p>superName：其父类；</p>
+
+  <p>interfaces：其实现的接口；</p>
+</blockquote>
+
+<p>在<em>ScanClassVisitor</em>中，并没有对类做修改，只是从遍历过的类中，把我们关心的类挑出来。那么，我们关心哪些类呢？</p>
+
+<p>在<em>PluginLaunch</em>类中，我们注册了三个<em>ScanSettings</em>类，分别是<strong>IRouteRoot</strong>、<strong>IInterceptorGroup</strong>和<strong>IProviderGroup</strong>，也就是说，我们把实现了这三个接口的类，挑出来，加入到各自对应的ScanSettings类中记录起来。这三个接口是不是很熟悉？就是通过APT生成的用来记录路由路径表的类。</p>
+
+<p>等收集好了这些记录的路径表信息后，就可以对<em>LogisticsCenter</em>通过ASM进行修改了。我们接着看<em>RegisterTransform#transform</em>方法中剩下的逻辑。</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="o">(</span><span class="n">fileContainsInitClass</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">registerList</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span> <span class="n">ext</span> <span class="o">-&gt;</span>
+    <span class="n">Logger</span><span class="o">.</span><span class="na">i</span><span class="o">(</span><span class="s1">'Insert register code to file '</span> <span class="o">+</span> <span class="n">fileContainsInitClass</span><span class="o">.</span><span class="na">absolutePath</span><span class="o">)</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">ext</span><span class="o">.</span><span class="na">classList</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">Logger</span><span class="o">.</span><span class="na">e</span><span class="o">(</span><span class="s2">"No class implements found for interface:"</span> <span class="o">+</span> <span class="n">ext</span><span class="o">.</span><span class="na">interfaceName</span><span class="o">)</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">ext</span><span class="o">.</span><span class="na">classList</span><span class="o">.</span><span class="na">each</span> <span class="o">{</span>
+        <span class="n">Logger</span><span class="o">.</span><span class="na">i</span><span class="o">(</span><span class="n">it</span><span class="o">)</span>
+      <span class="o">}</span>
+      <span class="n">RegisterCodeGenerator</span><span class="o">.</span><span class="na">insertInitCodeTo</span><span class="o">(</span><span class="n">ext</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>注意此处的insertInitCodeTo方法，这就是ASM修改的入口了。这里不对修改过程进行详细解释了。我们直接对比看<em>LogisticsCenter</em>修改前后关键代码的对比。</p>
+
+<p>在<em>app/build</em>目录下，找到生成的apk文件，通过AndroidStudio来查看其中的class，找到关键<em>LogisticsCenter</em>关键方法<em>loadRouterMap</em>。</p>
+
+<blockquote>
+  <p>具体过程如下：</p>
+
+  <p>app/build/outputs/apk/debug/app-debug.apk -&gt; classes.dex(双击) -&gt; 找到<em>LogisticsCenter#loadRouterMap</em>方法 -&gt; 右键: show Bytecode。</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 不使用apply plugin: 'com.alibaba.arouter'</span>
+<span class="o">.</span><span class="na">method</span> <span class="kd">private</span> <span class="kd">static</span> <span class="nf">loadRouterMap</span><span class="o">()</span><span class="no">V</span>
+    <span class="o">.</span><span class="na">registers</span> <span class="mi">1</span>
+
+    <span class="o">.</span><span class="na">line</span> <span class="mi">64</span>
+    <span class="kd">const</span><span class="o">/</span><span class="mi">4</span> <span class="n">v0</span><span class="o">,</span> <span class="mh">0x0</span>
+
+    <span class="n">sput</span><span class="o">-</span><span class="kt">boolean</span> <span class="n">v0</span><span class="o">,</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="nl">registerByPlugin:</span><span class="no">Z</span>
+
+    <span class="o">.</span><span class="na">line</span> <span class="mi">69</span>
+    <span class="k">return</span><span class="o">-</span><span class="kt">void</span>
+<span class="o">.</span><span class="na">end</span> <span class="n">method</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 使用apply plugin: 'com.alibaba.arouter'</span>
+<span class="o">.</span><span class="na">method</span> <span class="kd">private</span> <span class="kd">static</span> <span class="nf">loadRouterMap</span><span class="o">()</span><span class="no">V</span>
+    <span class="o">.</span><span class="na">registers</span> <span class="mi">1</span>
+
+    <span class="o">.</span><span class="na">line</span> <span class="mi">64</span>
+    <span class="kd">const</span><span class="o">/</span><span class="mi">4</span> <span class="n">v0</span><span class="o">,</span> <span class="mh">0x0</span>
+
+    <span class="n">sput</span><span class="o">-</span><span class="kt">boolean</span> <span class="n">v0</span><span class="o">,</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="nl">registerByPlugin:</span><span class="no">Z</span>
+
+    <span class="o">.</span><span class="na">line</span> <span class="mi">69</span>
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Root$$modulejava"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Root$$modulekotlin"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Root$$arouterapi"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Root$$app"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Interceptors$$modulejava"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Interceptors$$app"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Providers$$modulejava"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Providers$$modulekotlin"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Providers$$arouterapi"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="kd">const</span><span class="o">-</span><span class="n">string</span> <span class="n">v0</span><span class="o">,</span> <span class="s">"com.alibaba.android.arouter.routes.ARouter$$Providers$$app"</span>
+
+    <span class="n">invoke</span><span class="o">-</span><span class="kd">static</span> <span class="o">{</span><span class="n">v0</span><span class="o">},</span> <span class="nc">Lcom</span><span class="o">/</span><span class="n">alibaba</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">arouter</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="nc">LogisticsCenter</span><span class="o">;-&gt;</span><span class="n">register</span><span class="o">(</span><span class="nc">Ljava</span><span class="o">/</span><span class="n">lang</span><span class="o">/</span><span class="nc">String</span><span class="o">;)</span><span class="no">V</span>
+
+    <span class="k">return</span><span class="o">-</span><span class="kt">void</span>
+<span class="o">.</span><span class="na">end</span> <span class="n">method</span>
+</code></pre></div></div>
+
+<p>对比发现，使用<code class="language-plaintext highlighter-rouge">apply plugin: 'com.alibaba.arouter'</code>后，这个方法增加了很多代码，基本上就是在加载路由路径表。使用这个gradle插件的基本思想就是，将查找路由路径表的过程，从<strong>运行时</strong>提前到了<strong>编译时</strong>，这算是一种AOT(Ahead of time)思想。</p>
+
+<p>将最耗时的查找过程提前，也就解决了ARouter初始化时间过长的问题。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>相机录像新姿势-OpenGL共享上下文+MediaCodec</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">相机录像新姿势-OpenGL共享上下文+MediaCodec</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    November 20
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <h2 id="一前言">一、前言</h2>
+<p>承接上一文章<a href="https://boybeak.github.io/2023/11/12/2023-11-12-Camera%E6%97%A0%E5%8F%98%E5%BD%A2%E4%BB%BB%E6%84%8F%E5%B0%BA%E5%AF%B8%E9%A2%84%E8%A7%88/">Camera无变形任意尺寸预览</a>，我们已经实现了无形变的任意尺寸的相机画面预览。接下来要完成相机的相关录像、拍照、扫码等功能，最重要也是最难的就是录像部分。</p>
+
+<p>最终示例代码可以参考我的Github: <a href="https://github.com/boybeak/iCamera">iCamera</a>。</p>
+
+<h2 id="二技术要求">二、技术要求</h2>
+<p>我们要实现的录像功能技术要求如下：</p>
+<ol>
+  <li>所见即所得，预览画面什么样，最终结果就是什么样，不能经过二次裁剪与变换；</li>
+  <li>允许过程中，切换摄像头而不中断录制；</li>
+  <li>效率尽可能高，不许按下停止键后，有长时间的等待最终结果的过程；</li>
+  <li>不要引入额外的库；</li>
+</ol>
+
+<h2 id="三基本思路">三、基本思路</h2>
+<p>在讲解基本思路以前，我们先看一下共享OpenGL上下文，能够达到怎样的效果。
+<a href="https://github.com/boybeak/iCamera/assets/6696502/94bec530-4e54-4c41-9ce2-638b163fff60">share_preview</a>
+查看视频，最上方是相机的预览画面，下方左侧为通过共享OpenGL上下文获得的共享画面，也就是说，我们可以把相机画面，共享给另外一个Surface，既然有了这个思路，那么通过共享画面进行录像，也就可以了。
+那么基本思路如下：</p>
+<ol>
+  <li>实现相机的OpenGL预览，保留相关上下文实例；</li>
+  <li>创建并配置MediaCodec，通过createInputSurface，创建共享画面；</li>
+  <li>以预览的OpenGL上下文与MediaCodec的surface，创建另外一个共享的OpenGL环境；</li>
+  <li>MediaCodec开始编码录制；</li>
+</ol>
+
+<h2 id="四具体实现">四、具体实现</h2>
+<h3 id="41-实现opengl画面预览">4.1 实现OpenGL画面预览</h3>
+<p>这里我们通过已经封装好的PreviewSurface实现。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">open</span><span class="p">(</span><span class="n">id</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">surfaceView</span><span class="p">:</span> <span class="nc">SurfaceView</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="p">==</span> <span class="n">cameraId</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">camera</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">close</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="n">previewSurface</span> <span class="p">=</span> <span class="nc">PreviewSurface</span><span class="p">(</span><span class="n">surfaceView</span><span class="p">.</span><span class="n">holder</span><span class="p">.</span><span class="n">surface</span><span class="p">)</span>
+    <span class="n">previewSurfaceView</span> <span class="p">=</span> <span class="n">surfaceView</span>
+    <span class="n">previewSurface</span><span class="o">?.</span><span class="nf">start</span> <span class="p">{</span> <span class="n">surfaceTexture</span> <span class="p">-&gt;</span>
+        <span class="n">previewSurfaceTexture</span> <span class="p">=</span> <span class="n">surfaceTexture</span>
+
+        <span class="kd">val</span> <span class="py">previewSize</span> <span class="p">=</span> <span class="nf">openCameraOnly</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">surfaceTexture</span><span class="p">)</span>
+        <span class="k">when</span><span class="p">(</span><span class="n">display</span><span class="p">.</span><span class="n">rotation</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nc">Surface</span><span class="p">.</span><span class="nc">ROTATION_0</span><span class="p">,</span> <span class="nc">Surface</span><span class="p">.</span><span class="nc">ROTATION_180</span> <span class="p">-&gt;</span> <span class="n">previewSurface</span><span class="o">?.</span><span class="nf">setInputSize</span><span class="p">(</span><span class="n">previewSize</span><span class="p">.</span><span class="n">height</span><span class="p">,</span> <span class="n">previewSize</span><span class="p">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="nc">Surface</span><span class="p">.</span><span class="nc">ROTATION_90</span><span class="p">,</span> <span class="nc">Surface</span><span class="p">.</span><span class="nc">ROTATION_270</span> <span class="p">-&gt;</span> <span class="n">previewSurface</span><span class="o">?.</span><span class="nf">setInputSize</span><span class="p">(</span><span class="n">previewSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">previewSize</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><code class="language-plaintext highlighter-rouge">previewSurface</code>可以提供<code class="language-plaintext highlighter-rouge">SurfaceTexture</code>进行预览，同时也保存了OpenGL上下文。</p>
+
+<h3 id="42-mediacodec创建surface">4.2 MediaCodec创建Surface</h3>
+<p>我们的视频编码是通过<code class="language-plaintext highlighter-rouge">MediaCodec</code>实现的，之所以不直接用<code class="language-plaintext highlighter-rouge">MediaRecorder</code>实现，是因为<code class="language-plaintext highlighter-rouge">MediaRecorder</code>不支持录制期间翻转摄像头。</p>
+
+<p>一个简单的MediaCodec实现如下：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">videoCodec</span> <span class="p">=</span> <span class="nc">MediaCodec</span><span class="p">.</span><span class="nf">createEncoderByType</span><span class="p">(</span><span class="nc">MIME_TYPE</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">codecInfo</span> <span class="p">=</span> <span class="n">videoCodec</span><span class="o">!!</span><span class="p">.</span><span class="n">codecInfo</span>
+<span class="kd">val</span> <span class="py">capabilities</span> <span class="p">=</span> <span class="n">codecInfo</span><span class="p">.</span><span class="nf">getCapabilitiesForType</span><span class="p">(</span><span class="nc">MIME_TYPE</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">mediaFormat</span> <span class="p">=</span> <span class="n">onConfig</span><span class="p">.</span><span class="nf">onConfig</span><span class="p">(</span><span class="n">capabilities</span><span class="p">.</span><span class="n">videoCapabilities</span><span class="p">).</span><span class="nf">toMediaFormat</span><span class="p">(</span>
+    <span class="nc">MIME_TYPE</span>
+<span class="p">)</span>
+<span class="n">videoCodec</span><span class="o">?.</span><span class="nf">configure</span><span class="p">(</span><span class="n">mediaFormat</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="nc">MediaCodec</span><span class="p">.</span><span class="nc">CONFIGURE_FLAG_ENCODE</span><span class="p">)</span>
+
+<span class="kd">val</span> <span class="py">inputSurface</span> <span class="p">=</span> <span class="n">videoCodec</span><span class="o">?.</span><span class="nf">createInputSurface</span><span class="p">()</span><span class="o">!!</span>
+</code></pre></div></div>
+<p>这样，我们就获得了一个用于共享的surface。</p>
+
+<h3 id="43-创建共享opengl环境">4.3 创建共享OpenGL环境</h3>
+<p>以前两步中获得到OpenGL上下文与共享surface，创建一个新的共享OpenGL环境，这里我们已经封装成了<code class="language-plaintext highlighter-rouge">SharedSurface</code>，只要直接调用其attach方法即可直接共享预览Surface的画面。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">avEncoder</span> <span class="p">=</span> <span class="nc">AVEncoder</span><span class="p">()</span>
+<span class="k">private</span> <span class="kd">var</span> <span class="py">recordSurface</span><span class="p">:</span> <span class="nc">SharedSurface</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">timeSynchronizer</span> <span class="p">=</span> <span class="kd">object</span> <span class="err">: </span><span class="nc">TimeSynchronizer</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">startAt</span> <span class="p">=</span> <span class="mi">0L</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">reset</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">startAt</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="nf">currentTimeMillis</span><span class="p">()</span> <span class="p">*</span> <span class="mi">1000</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getTimestamp</span><span class="p">():</span> <span class="nc">Long</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">System</span><span class="p">.</span><span class="nf">currentTimeMillis</span><span class="p">()</span> <span class="p">*</span> <span class="mi">1000</span> <span class="p">-</span> <span class="n">startAt</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">startRecord</span><span class="p">(</span><span class="n">output</span><span class="p">:</span> <span class="nc">File</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nf">isRecording</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="n">avEncoder</span><span class="p">.</span><span class="nf">prepare</span><span class="p">(</span><span class="nc">SimpleAudioConfigAdapter</span><span class="p">(),</span> <span class="nc">SimpleVideoConfigAdapter</span><span class="p">(</span><span class="nc">Size</span><span class="p">(</span><span class="n">previewSurfaceView</span><span class="o">!!</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">previewSurfaceView</span><span class="o">!!</span><span class="p">.</span><span class="n">height</span><span class="p">)),</span> <span class="n">timeSynchronizer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">avEncoder</span><span class="p">.</span><span class="nf">start</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="p">{</span> <span class="n">inputSurface</span> <span class="p">-&gt;</span>
+            <span class="n">recordSurface</span> <span class="p">=</span> <span class="nc">SharedSurface</span><span class="p">(</span><span class="n">inputSurface</span><span class="p">)</span>
+            <span class="n">recordSurface</span><span class="o">?.</span><span class="nf">attach</span><span class="p">(</span><span class="n">previewSurface</span><span class="o">!!</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>上述代码中，<code class="language-plaintext highlighter-rouge">AVEncoder</code>为一个同时录制画面与声音的逻辑集合类，当开始录像时，会提供一个inputSurface对象，利用此对象，创建SharedSurface，就可以直接利用预览画面的共享纹理进行绘制，这些会绘制到共享surface上，MediaCodec会直接对画面进行编码。</p>
+
+<p>当然，这里会有很多MediaCodec相关的问题，这里的兼容性也是非常头疼的，需要处理高通/海思/联发科处理器的编码器的大量兼容性问题，但是这不是本文的重点。</p>
+
+<h3 id="44-编码录制">4.4 编码录制</h3>
+<p>这部分请直接参考代码吧</p>
+
+<h2 id="五思路发散">五、思路发散</h2>
+<p>我们从录制上，可以看出，实际上连接预览与录制的，就是一个surface，只要有了surface，那我们就可以做很多操作了。比如拍照和扫码。</p>
+
+<p>当然，我们可以通过直接调用相机实例的接口进行拍照，只不过需要拍照后再做裁剪等操作，这里耗时不高。</p>
+
+<p>说一下拍照的逻辑，就是利用<code class="language-plaintext highlighter-rouge">ImageReader</code>，这种方式，就与Camera2的api差异不大了，简单代码实现如下：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">var</span> <span class="py">photoSurface</span><span class="p">:</span> <span class="nc">SharedSurface</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">photoHandler</span> <span class="p">=</span> <span class="o">..</span><span class="p">.</span>
+<span class="k">fun</span> <span class="nf">takePhoto</span><span class="p">(</span><span class="n">callback</span><span class="p">:</span> <span class="p">(</span><span class="nc">Bitmap</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">imageReader</span> <span class="p">=</span> <span class="nc">ImageReader</span><span class="p">.</span><span class="nf">newInstance</span><span class="p">(</span><span class="n">previewSurfaceView</span><span class="o">!!</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">previewSurfaceView</span><span class="o">!!</span><span class="p">.</span><span class="n">height</span><span class="p">,</span> <span class="nc">PixelFormat</span><span class="p">.</span><span class="nc">RGBA_8888</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">photoSurface</span> <span class="p">=</span> <span class="nc">SharedSurface</span><span class="p">(</span><span class="n">imageReader</span><span class="p">.</span><span class="n">surface</span><span class="p">)</span>
+    <span class="n">imageReader</span><span class="p">.</span><span class="nf">setOnImageAvailableListener</span><span class="p">({</span>
+        <span class="kd">val</span> <span class="py">image</span> <span class="p">=</span> <span class="n">imageReader</span><span class="p">.</span><span class="nf">acquireNextImage</span><span class="p">()</span>
+        <span class="c1">// convert image to bitmap</span>
+        <span class="n">callback</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+    <span class="p">},</span> <span class="n">photoHandler</span><span class="p">)</span>
+    <span class="n">photoSurface</span><span class="o">?.</span><span class="nf">attach</span><span class="p">(</span><span class="n">previewSurface</span><span class="o">!!</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>同样的，扫码功能也类似，不过这里要借助zxing这个二维码解析库，同时做一个RGBA的转换，因为当前方案下，ImageReader只允许PixelFormat.RGBA_8888的颜色编码，好处就是，可以比较容易实现扫码预览大小的自定义，并且在预览范围内的都可以扫到，不会出现以前那种预览区域与扫码感知区域不一致的问题。</p>
+
+<p>既然有Surface就可以连接预览画面，那实际上就可以做到边录像，边扫码，边拍照了，只要你的手机性能足够，更多的使用方式，你可以自由去发散。</p>
+
+<h2 id="总结">总结</h2>
+<p>具体的代码可以参考我的<a href="https://github.com/boybeak/iCamera">iCamera</a>，但是我的代码只是做简单的逻辑演示，并不能保证在所有机型上的兼容性，了解了基本思路后，你可以在此基础上做兼容性处理。</p>
+
+<p>实际上我个人在生产环境的代码，做的兼容性处理要多得多。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <a href="/tag/camera">Camera</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

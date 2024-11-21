@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Jetpack之Lifecycle源码分析</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Jetpack之Lifecycle源码分析</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>这是一篇解析jetpack库中的<strong>Lifecycle</strong>库的分析文章。</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">def</span> <span class="n">lifecycle_version</span> <span class="o">=</span> <span class="s2">"2.2.0"</span>
+<span class="c1">// Lifecycles only (without ViewModel or LiveData)</span>
+<span class="n">implementation</span> <span class="s2">"androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"</span>
+<span class="c1">// Annotation processor</span>
+<span class="n">kapt</span> <span class="s2">"androidx.lifecycle:lifecycle-compiler:$lifecycle_version"</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyObserver</span> <span class="p">:</span> <span class="nc">LifecycleObserver</span> <span class="p">{</span>
+    <span class="nd">@OnLifecycleEvent</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">Event</span><span class="p">.</span><span class="nc">ON_CREATE</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+
+    <span class="nd">@OnLifecycleEvent</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">Event</span><span class="p">.</span><span class="nc">ON_PAUSE</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">onPause</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="nf">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+
+        <span class="n">lifecycle</span><span class="p">.</span><span class="nf">addObserver</span><span class="p">(</span><span class="nc">MyObserver</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在<em>MyObserver</em>中声明对应的生命周期函数，然后将这个<em>MyObserver</em>实例添加到<em>MainActivity</em>的lifecycle中去。</p>
+
+<p>看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到<strong>注解处理器</strong>，与<a href="https://boybeak.github.io/2020/11/28/2022-09-17-ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><strong>ARouter</strong></a>类似，Lifecycle的工作流程也分成两部分——<strong>编译时</strong>和<strong>运行时</strong>。</p>
+
+<p>简要的说，在编译时，生成<strong>LifecycleObserver</strong>的辅助类；在运行时，<em>addObserver</em>方法被调用后，解析出对应observer的辅助类。</p>
+
+<h2 id="生命周期探知">生命周期探知</h2>
+
+<p>在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？</p>
+
+<p>读过Glide源码(附上<a href="https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01.html">Glide源码解读</a>)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。</p>
+
+<p>对外提供生命周期的类，需要实现LifecycleOwner接口。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kd">interface</span> <span class="nc">LifecycleOwner</span> <span class="p">{</span>
+    <span class="cm">/**
+     * Returns the Lifecycle of the provider.
+     *
+     * @return The lifecycle of the provider.
+     */</span>
+    <span class="nd">@NonNull</span>
+    <span class="nc">Lifecycle</span> <span class="nf">getLifecycle</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们以<em>AppCompatActivity</em>为例去查看它是如何实现的这个接口，我们查看其父类中有一个<em>ComponentActivity</em>类(AppCompatActivity -&gt; FragmentActivity -&gt; ComponentActivity)。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kd">class</span> <span class="nc">ComponentActivity</span> <span class="n">extends</span> <span class="n">androidx</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">app</span><span class="p">.</span><span class="nc">ComponentActivity</span> <span class="n">implements</span>
+        <span class="nc">LifecycleOwner</span><span class="p">,</span>
+        <span class="nc">ViewModelStoreOwner</span><span class="p">,</span>
+        <span class="nc">SavedStateRegistryOwner</span><span class="p">,</span>
+        <span class="nc">OnBackPressedDispatcherOwner</span> <span class="p">{</span>
+        <span class="nd">@Override</span>
+    <span class="k">protected</span> <span class="n">void</span> <span class="nf">onCreate</span><span class="p">(</span><span class="nd">@Nullable</span> <span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span>
+        <span class="n">mSavedStateRegistryController</span><span class="p">.</span><span class="nf">performRestore</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span>
+        <span class="nc">ReportFragment</span><span class="p">.</span><span class="nf">injectIfNeededIn</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">mContentLayoutId</span> <span class="p">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">setContentView</span><span class="p">(</span><span class="n">mContentLayoutId</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>注意此处，有一个<em>ReportFragment</em>执行了injectIfNeededIn方法，在这个方法中，就是检测是否已经添加了这个<em>ReportFragment</em>，如果没添加则添加一个。继续查看这个<em>ReportFragment</em>的源码，可以在其生命周期函数中，执行了分发生命周期的流程。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kd">class</span> <span class="nc">ReportFragment</span> <span class="n">extends</span> <span class="nc">Fragment</span> <span class="p">{</span>
+  <span class="n">static</span> <span class="n">void</span> <span class="nf">dispatch</span><span class="p">(</span><span class="nd">@NonNull</span> <span class="nc">Activity</span> <span class="n">activity</span><span class="p">,</span> <span class="nd">@NonNull</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">Event</span> <span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">activity</span> <span class="n">instanceof</span> <span class="nc">LifecycleRegistryOwner</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">((</span><span class="nc">LifecycleRegistryOwner</span><span class="p">)</span> <span class="n">activity</span><span class="p">).</span><span class="nf">getLifecycle</span><span class="p">().</span><span class="nf">handleLifecycleEvent</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">activity</span> <span class="n">instanceof</span> <span class="nc">LifecycleOwner</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 3</span>
+      <span class="nc">Lifecycle</span> <span class="n">lifecycle</span> <span class="p">=</span> <span class="p">((</span><span class="nc">LifecycleOwner</span><span class="p">)</span> <span class="n">activity</span><span class="p">).</span><span class="nf">getLifecycle</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">lifecycle</span> <span class="n">instanceof</span> <span class="nc">LifecycleRegistry</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">((</span><span class="nc">LifecycleRegistry</span><span class="p">)</span> <span class="n">lifecycle</span><span class="p">).</span><span class="nf">handleLifecycleEvent</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">private</span> <span class="n">void</span> <span class="nf">dispatchCreate</span><span class="p">(</span><span class="nc">ActivityInitializationListener</span> <span class="n">listener</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">listener</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">listener</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="k">public</span> <span class="n">void</span> <span class="nf">onActivityCreated</span><span class="p">(</span><span class="nc">Bundle</span> <span class="n">savedInstanceState</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">.</span><span class="nf">onActivityCreated</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span>
+    <span class="nf">dispatchCreate</span><span class="p">(</span><span class="n">mProcessListener</span><span class="p">);</span>
+    <span class="nf">dispatch</span><span class="p">(</span><span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">Event</span><span class="p">.</span><span class="nc">ON_CREATE</span><span class="p">);</span> <span class="c1">// 1</span>
+  <span class="p">}</span>
+
+  <span class="k">private</span> <span class="n">void</span> <span class="nf">dispatch</span><span class="p">(</span><span class="nd">@NonNull</span> <span class="nc">Lifecycle</span><span class="p">.</span><span class="nc">Event</span> <span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nc">Build</span><span class="p">.</span><span class="nc">VERSION</span><span class="p">.</span><span class="nc">SDK_INT</span> <span class="p">&lt;</span> <span class="mi">29</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Only dispatch events from ReportFragment on API levels prior</span>
+      <span class="c1">// to API 29. On API 29+, this is handled by the ActivityLifecycleCallbacks</span>
+      <span class="c1">// added in ReportFragment.injectIfNeededIn</span>
+      <span class="nf">dispatch</span><span class="p">(</span><span class="nf">getActivity</span><span class="p">(),</span> <span class="n">event</span><span class="p">);</span> <span class="c1">// 2</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>看代码中我标注的注释顺序onActivityCreated -&gt; dispatch(Lifecycle.Event) -&gt; dispatch(Activity, Lifecycle.Event)，我们看到最后一个流程中，拿到<em>Lifecycle</em>对象后，判断是否为<em>LifecycleRegistry</em>类，如果是，则调用handleLifecycleEvent方法。这里，<em>ComponentActivity</em>提供的<em>Lifecycle</em>对象就是<em>LifecycleRegistry</em>类。</p>
+
+<p>经过这样一个流程，我们就将感知生命周期的无UI的<em>ReportFragment</em>与执行事件的<em>LifecycleRegistry</em>进行了连接。这样我们就获得了感知生命周期的能力了。</p>
+
+<p>那么具体是如何执行到<em>MyObserver</em>对应的生命周期的方法的呢？</p>
+
+<blockquote>
+  <p>或许你看到这里，会觉得很简单，在<em>LifecycleRegistry</em>维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从<em>MyObserver</em>中筛选出带有 ** @OnLifecycleEvent ** 注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。</p>
+
+  <p>可是谷歌工程师并没有这么做，因为在执行事件时候，经过这么多反射，效率会很低。那么正确的流程是怎么样的？这就需要我们关注上面提到的两个流程了——<strong>编译时</strong>和<strong>运行时</strong>。</p>
+</blockquote>
+
+<h2 id="编译时">编译时</h2>
+
+<p>参考<a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/lifecycle/lifecycle-compiler">Lifecycle-compiler</a>源码。</p>
+
+<p>通过注解处理器，AS为我们生成了MyObserver的辅助类——<em>MyObserver_LifecycleAdapter</em>。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyObserver_LifecycleAdapter</span> <span class="kd">implements</span> <span class="nc">GeneratedAdapter</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="nc">MyObserver</span> <span class="n">mReceiver</span><span class="o">;</span>
+
+  <span class="n">MyObserver_LifecycleAdapter</span><span class="o">(</span><span class="nc">MyObserver</span> <span class="n">receiver</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">mReceiver</span> <span class="o">=</span> <span class="n">receiver</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">callMethods</span><span class="o">(</span><span class="nc">LifecycleOwner</span> <span class="n">owner</span><span class="o">,</span> <span class="nc">Lifecycle</span><span class="o">.</span><span class="na">Event</span> <span class="n">event</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">onAny</span><span class="o">,</span>
+      <span class="nc">MethodCallsLogger</span> <span class="n">logger</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="n">hasLogger</span> <span class="o">=</span> <span class="n">logger</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">onAny</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">event</span> <span class="o">==</span> <span class="nc">Lifecycle</span><span class="o">.</span><span class="na">Event</span><span class="o">.</span><span class="na">ON_CREATE</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">hasLogger</span> <span class="o">||</span> <span class="n">logger</span><span class="o">.</span><span class="na">approveCall</span><span class="o">(</span><span class="s">"onCreate"</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">mReceiver</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+      <span class="o">}</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">event</span> <span class="o">==</span> <span class="nc">Lifecycle</span><span class="o">.</span><span class="na">Event</span><span class="o">.</span><span class="na">ON_PAUSE</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">hasLogger</span> <span class="o">||</span> <span class="n">logger</span><span class="o">.</span><span class="na">approveCall</span><span class="o">(</span><span class="s">"onPause"</span><span class="o">,</span> <span class="mi">1</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">mReceiver</span><span class="o">.</span><span class="na">onPause</span><span class="o">();</span>
+      <span class="o">}</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，实际的生命周期事件分发是在这里完成的。那么这个辅助类是在哪里被使用到的呢？</p>
+
+<p>接下来就是<strong>运行时</strong>发挥作用的时候了。</p>
+
+<h2 id="运行时">运行时</h2>
+
+<p>运行时的起点，是从<em>addObserver</em>开始的。</p>
+
+<p>我们查看<em>LifecycleRegistry#addObserver</em>方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">FastSafeIterableMap</span><span class="o">&lt;</span><span class="nc">LifecycleObserver</span><span class="o">,</span> <span class="nc">ObserverWithState</span><span class="o">&gt;</span> <span class="n">mObserverMap</span> <span class="o">=</span>
+            <span class="k">new</span> <span class="nc">FastSafeIterableMap</span><span class="o">&lt;&gt;();</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">LifecycleObserver</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">State</span> <span class="n">initialState</span> <span class="o">=</span> <span class="n">mState</span> <span class="o">==</span> <span class="no">DESTROYED</span> <span class="o">?</span> <span class="no">DESTROYED</span> <span class="o">:</span> <span class="no">INITIALIZED</span><span class="o">;</span>
+  <span class="nc">ObserverWithState</span> <span class="n">statefulObserver</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObserverWithState</span><span class="o">(</span><span class="n">observer</span><span class="o">,</span> <span class="n">initialState</span><span class="o">);</span>
+  <span class="nc">ObserverWithState</span> <span class="n">previous</span> <span class="o">=</span> <span class="n">mObserverMap</span><span class="o">.</span><span class="na">putIfAbsent</span><span class="o">(</span><span class="n">observer</span><span class="o">,</span> <span class="n">statefulObserver</span><span class="o">);</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，<em>LifecycleRegistry</em>中并不是直接维护observer对象，而是维护<em>ObserverWithState</em>对象。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">static</span> <span class="kd">class</span> <span class="nc">ObserverWithState</span> <span class="o">{</span>
+  <span class="nc">State</span> <span class="n">mState</span><span class="o">;</span>
+  <span class="nc">LifecycleEventObserver</span> <span class="n">mLifecycleObserver</span><span class="o">;</span>
+
+  <span class="nc">ObserverWithState</span><span class="o">(</span><span class="nc">LifecycleObserver</span> <span class="n">observer</span><span class="o">,</span> <span class="nc">State</span> <span class="n">initialState</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">mLifecycleObserver</span> <span class="o">=</span> <span class="nc">Lifecycling</span><span class="o">.</span><span class="na">lifecycleEventObserver</span><span class="o">(</span><span class="n">observer</span><span class="o">);</span>
+    <span class="n">mState</span> <span class="o">=</span> <span class="n">initialState</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kt">void</span> <span class="nf">dispatchEvent</span><span class="o">(</span><span class="nc">LifecycleOwner</span> <span class="n">owner</span><span class="o">,</span> <span class="nc">Event</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">State</span> <span class="n">newState</span> <span class="o">=</span> <span class="n">getStateAfter</span><span class="o">(</span><span class="n">event</span><span class="o">);</span>
+    <span class="n">mState</span> <span class="o">=</span> <span class="n">min</span><span class="o">(</span><span class="n">mState</span><span class="o">,</span> <span class="n">newState</span><span class="o">);</span>
+    <span class="n">mLifecycleObserver</span><span class="o">.</span><span class="na">onStateChanged</span><span class="o">(</span><span class="n">owner</span><span class="o">,</span> <span class="n">event</span><span class="o">);</span>
+    <span class="n">mState</span> <span class="o">=</span> <span class="n">newState</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在这个类的构造方法中，执行了一个<code class="language-plaintext highlighter-rouge">mLifecycleObserver = Lifecycling.lifecycleEventObserver(observer);</code></p>
+
+<p>在我们的案例中，这个方法返回了一个<em>SingleGeneratedAdapterObserver</em>类，我们查看这个类的代码。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SingleGeneratedAdapterObserver</span> <span class="kd">implements</span> <span class="nc">LifecycleEventObserver</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">GeneratedAdapter</span> <span class="n">mGeneratedAdapter</span><span class="o">;</span>
+
+    <span class="nc">SingleGeneratedAdapterObserver</span><span class="o">(</span><span class="nc">GeneratedAdapter</span> <span class="n">generatedAdapter</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">mGeneratedAdapter</span> <span class="o">=</span> <span class="n">generatedAdapter</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onStateChanged</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">LifecycleOwner</span> <span class="n">source</span><span class="o">,</span> <span class="nd">@NonNull</span> <span class="nc">Lifecycle</span><span class="o">.</span><span class="na">Event</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">mGeneratedAdapter</span><span class="o">.</span><span class="na">callMethods</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="n">event</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="n">mGeneratedAdapter</span><span class="o">.</span><span class="na">callMethods</span><span class="o">(</span><span class="n">source</span><span class="o">,</span> <span class="n">event</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>也就是在这里，调用了<em>MyObserver_LifecycleAdapter</em>的<em>callMethods</em>方法。</p>
+
+<p>那么是如何找到<em>MyObserver_LifecycleAdapter</em>方法的呢？</p>
+
+<p>在<em>Lifecycling</em>类中，通过observer的类名来找的，我们看到有这样的一个方法：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">getAdapterName</span><span class="o">(</span><span class="nc">String</span> <span class="n">className</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">className</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="s">"."</span><span class="o">,</span> <span class="s">"_"</span><span class="o">)</span> <span class="o">+</span> <span class="s">"_LifecycleAdapter"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这样，整个流程就串起来了。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>编译时：生成<em>XXX_LifecycleAdapter</em>类，用来分发不同的生命周期事件。</p>
+
+<p>运行时：在addObserver时候，通过类名找到这个<em>XXX_LifecycleAdapter</em>类，生成对象在<em>LifecycleRegistry</em>中进行维护；在ReportFragment方法中触发生命周期时候，调用<em>LifecycleRegistry</em>的<em>handleLifecycleEvent</em>方法进行具体的生命周期事件分发。</p>
+
+<p>总体来看，其整个流程并不复杂，我们可以看到ARouter、Glide的影子，读过其他源码后，理解这个并不难。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>LeakCanary原理分析</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">LeakCanary原理分析</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+  <span class="c1">// debugImplementation because LeakCanary should only run in debug builds.</span>
+  <span class="n">debugImplementation</span> <span class="s1">'com.squareup.leakcanary:leakcanary-android:2.5'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>只需要这样简单配置，就能接入LeakCanary内存泄漏分析，到底是怎样做到的？</p>
+
+<p>我们将这个问题分成两个问题：</p>
+
+<ol>
+  <li>如何<strong>自动</strong>进行初始化的；</li>
+  <li>如何检测到内存泄漏的。</li>
+</ol>
+
+<h2 id="如何自动进行初始化的">如何自动进行初始化的</h2>
+
+<p>这部分，我们可以分成两部分去理解——<strong>自动</strong>和<strong>初始化</strong>。</p>
+
+<h3 id="自动">自动</h3>
+
+<p>这一切还要从<code class="language-plaintext highlighter-rouge">ActivityThread</code>说起。<code class="language-plaintext highlighter-rouge">ActivityThread</code>中，执行了一些应用启动的初始化工作，在<code class="language-plaintext highlighter-rouge">ActivityThread</code>源码中，我们可以看到其内部类<code class="language-plaintext highlighter-rouge">class H extends Handler</code>的<code class="language-plaintext highlighter-rouge">handleMessage</code>方法中，有很多与应用相关的一些基本操作，比如<strong>BIND_APPLICATION</strong>, <strong>EXIT_APPLICATION</strong>, <strong>CREATE_SERVICE</strong>, <strong>BIND_SERVICE</strong>等，其中需要我们关注的是<strong>BIND_APPLICATION</strong>。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleMessage</span><span class="o">(</span><span class="nc">Message</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">....</span>
+            <span class="k">switch</span> <span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">what</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">case</span> <span class="nl">BIND_APPLICATION:</span>
+                    <span class="nc">Trace</span><span class="o">.</span><span class="na">traceBegin</span><span class="o">(</span><span class="nc">Trace</span><span class="o">.</span><span class="na">TRACE_TAG_ACTIVITY_MANAGER</span><span class="o">,</span> <span class="s">"bindApplication"</span><span class="o">);</span>
+                    <span class="nc">AppBindData</span> <span class="n">data</span> <span class="o">=</span> <span class="o">(</span><span class="nc">AppBindData</span><span class="o">)</span><span class="n">msg</span><span class="o">.</span><span class="na">obj</span><span class="o">;</span>
+                    <span class="n">handleBindApplication</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+                    <span class="nc">Trace</span><span class="o">.</span><span class="na">traceEnd</span><span class="o">(</span><span class="nc">Trace</span><span class="o">.</span><span class="na">TRACE_TAG_ACTIVITY_MANAGER</span><span class="o">);</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">....</span>
+            <span class="o">}</span>
+  <span class="o">....</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，其中调用了<code class="language-plaintext highlighter-rouge">handleBindApplication</code>方法。进入这个方法查看。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@UnsupportedAppUsage</span>
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">handleBindApplication</span><span class="o">(</span><span class="nc">AppBindData</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">....</span>
+  <span class="nc">Application</span> <span class="n">app</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="nc">StrictMode</span><span class="o">.</span><span class="na">ThreadPolicy</span> <span class="n">savedPolicy</span> <span class="o">=</span> <span class="nc">StrictMode</span><span class="o">.</span><span class="na">allowThreadDiskWrites</span><span class="o">();</span>
+  <span class="kd">final</span> <span class="nc">StrictMode</span><span class="o">.</span><span class="na">ThreadPolicy</span> <span class="n">writesAllowedPolicy</span> <span class="o">=</span> <span class="nc">StrictMode</span><span class="o">.</span><span class="na">getThreadPolicy</span><span class="o">();</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="c1">// If the app is being launched for full backup or restore, bring it up in</span>
+    <span class="c1">// a restricted environment with the base application class.</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="na">info</span><span class="o">.</span><span class="na">makeApplication</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">restrictedBackupMode</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="c1">// Propagate autofill compat state</span>
+    <span class="n">app</span><span class="o">.</span><span class="na">setAutofillOptions</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">autofillOptions</span><span class="o">);</span>
+    <span class="c1">// Propagate Content Capture options</span>
+    <span class="n">app</span><span class="o">.</span><span class="na">setContentCaptureOptions</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">contentCaptureOptions</span><span class="o">);</span>
+    <span class="n">mInitialApplication</span> <span class="o">=</span> <span class="n">app</span><span class="o">;</span>
+    <span class="c1">// don't bring up providers in restricted mode; they may depend on the</span>
+    <span class="c1">// app's custom Application class</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">data</span><span class="o">.</span><span class="na">restrictedBackupMode</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="nc">ArrayUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">providers</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">installContentProviders</span><span class="o">(</span><span class="n">app</span><span class="o">,</span> <span class="n">data</span><span class="o">.</span><span class="na">providers</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="c1">// Do this after providers, since instrumentation tests generally start their</span>
+    <span class="c1">// test thread at this point, and we don't want that racing.</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">mInstrumentation</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">instrumentationArgs</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span>
+        <span class="s">"Exception thrown in onCreate() of "</span>
+        <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="na">instrumentationName</span> <span class="o">+</span> <span class="s">": "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">mInstrumentation</span><span class="o">.</span><span class="na">callApplicationOnCreate</span><span class="o">(</span><span class="n">app</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(!</span><span class="n">mInstrumentation</span><span class="o">.</span><span class="na">onException</span><span class="o">(</span><span class="n">app</span><span class="o">,</span> <span class="n">e</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span>
+          <span class="s">"Unable to create application "</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span>
+          <span class="o">+</span> <span class="s">": "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span> <span class="n">e</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+    <span class="c1">// If the app targets &lt; O-MR1, or doesn't change the thread policy</span>
+    <span class="c1">// during startup, clobber the policy to maintain behavior of b/36951662</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">data</span><span class="o">.</span><span class="na">appInfo</span><span class="o">.</span><span class="na">targetSdkVersion</span> <span class="o">&lt;</span> <span class="nc">Build</span><span class="o">.</span><span class="na">VERSION_CODES</span><span class="o">.</span><span class="na">O_MR1</span>
+        <span class="o">||</span> <span class="nc">StrictMode</span><span class="o">.</span><span class="na">getThreadPolicy</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">writesAllowedPolicy</span><span class="o">))</span> <span class="o">{</span>
+      <span class="nc">StrictMode</span><span class="o">.</span><span class="na">setThreadPolicy</span><span class="o">(</span><span class="n">savedPolicy</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="o">....</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从这个方法中，我们可以找到这样一段代码，需要重点关注的是，<code class="language-plaintext highlighter-rouge">ContentProvider</code>的初始化是先于<code class="language-plaintext highlighter-rouge">Application.onCreate</code>的，且是被<code class="language-plaintext highlighter-rouge">ActivityThread</code><strong>自动</strong>执行的。</p>
+
+<p>接下来再看LeakCanary源码。找到<a href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher-android/src/main/java/leakcanary/internal/AppWatcherInstaller.kt"><strong>AppWatcherInstaller.kt</strong></a>这个类。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Content providers are loaded before the application class is created. [AppWatcherInstaller] is
+ * used to install [leakcanary.AppWatcher] on application start.
+ */</span>
+<span class="k">internal</span> <span class="k">sealed</span> <span class="kd">class</span> <span class="nc">AppWatcherInstaller</span> <span class="p">:</span> <span class="nc">ContentProvider</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="cm">/**
+   * [MainProcess] automatically sets up the LeakCanary code that runs in the main app process.
+   */</span>
+  <span class="k">internal</span> <span class="kd">class</span> <span class="nc">MainProcess</span> <span class="p">:</span> <span class="nc">AppWatcherInstaller</span><span class="p">()</span>
+
+  <span class="cm">/**
+   * When using the `leakcanary-android-process` artifact instead of `leakcanary-android`,
+   * [LeakCanaryProcess] automatically sets up the LeakCanary code
+   */</span>
+  <span class="k">internal</span> <span class="kd">class</span> <span class="nc">LeakCanaryProcess</span> <span class="p">:</span> <span class="nc">AppWatcherInstaller</span><span class="p">()</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">():</span> <span class="nc">Boolean</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">application</span> <span class="p">=</span> <span class="n">context</span><span class="o">!!</span><span class="p">.</span><span class="n">applicationContext</span> <span class="k">as</span> <span class="nc">Application</span>
+    <span class="nc">AppWatcher</span><span class="p">.</span><span class="nf">manualInstall</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">true</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">query</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">:</span> <span class="nc">Uri</span><span class="p">,</span>
+    <span class="n">strings</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;?,</span>
+    <span class="n">s</span><span class="p">:</span> <span class="nc">String</span><span class="p">?,</span>
+    <span class="n">strings1</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;?,</span>
+    <span class="n">s1</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span>
+  <span class="p">):</span> <span class="nc">Cursor</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">null</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">getType</span><span class="p">(</span><span class="n">uri</span><span class="p">:</span> <span class="nc">Uri</span><span class="p">):</span> <span class="nc">String</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">null</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">insert</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">:</span> <span class="nc">Uri</span><span class="p">,</span>
+    <span class="n">contentValues</span><span class="p">:</span> <span class="nc">ContentValues</span><span class="p">?</span>
+  <span class="p">):</span> <span class="nc">Uri</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">null</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">delete</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">:</span> <span class="nc">Uri</span><span class="p">,</span>
+    <span class="n">s</span><span class="p">:</span> <span class="nc">String</span><span class="p">?,</span>
+    <span class="n">strings</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;?</span>
+  <span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">update</span><span class="p">(</span>
+    <span class="n">uri</span><span class="p">:</span> <span class="nc">Uri</span><span class="p">,</span>
+    <span class="n">contentValues</span><span class="p">:</span> <span class="nc">ContentValues</span><span class="p">?,</span>
+    <span class="n">s</span><span class="p">:</span> <span class="nc">String</span><span class="p">?,</span>
+    <span class="n">strings</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;?</span>
+  <span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，这个类是一个<code class="language-plaintext highlighter-rouge">ContentProvider</code>的子类，其query, insert等方法根本没有实际作用，有实际作用的只有<code class="language-plaintext highlighter-rouge">onCreate</code>方法，在这个方法中，执行了<code class="language-plaintext highlighter-rouge">AppWatcher</code>的install工作。</p>
+
+<p>这里我们就可以看出来，LeakCanary就是利用<code class="language-plaintext highlighter-rouge">ContentProvider</code>的<code class="language-plaintext highlighter-rouge">onCreate</code>方法自动执行的特性，来自动“安装”这个类库的。</p>
+
+<h3 id="初始化">初始化</h3>
+
+<p>通过追踪<code class="language-plaintext highlighter-rouge">AppWatcher.manualInstall(application)</code>这句代码，我们可以追踪到<a href="https://github.com/square/leakcanary/blob/main/leakcanary-android-core/src/main/java/leakcanary/internal/InternalLeakCanary.kt"><strong>InternalLeakCanary.kt</strong></a>的<code class="language-plaintext highlighter-rouge">install</code>方法，如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">install</span><span class="p">(</span><span class="n">application</span><span class="p">:</span> <span class="nc">Application</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">checkMainThread</span><span class="p">()</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">::</span><span class="n">application</span><span class="p">.</span><span class="n">isInitialized</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span>
+  <span class="p">}</span>
+  <span class="nc">InternalAppWatcher</span><span class="p">.</span><span class="n">application</span> <span class="p">=</span> <span class="n">application</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">isDebuggableBuild</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">SharkLog</span><span class="p">.</span><span class="n">logger</span> <span class="p">=</span> <span class="nc">DefaultCanaryLog</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="kd">val</span> <span class="py">configProvider</span> <span class="p">=</span> <span class="p">{</span> <span class="nc">AppWatcher</span><span class="p">.</span><span class="n">config</span> <span class="p">}</span>
+  <span class="nc">ActivityDestroyWatcher</span><span class="p">.</span><span class="nf">install</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">objectWatcher</span><span class="p">,</span> <span class="n">configProvider</span><span class="p">)</span>
+  <span class="nc">FragmentDestroyWatcher</span><span class="p">.</span><span class="nf">install</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="n">objectWatcher</span><span class="p">,</span> <span class="n">configProvider</span><span class="p">)</span>
+  <span class="nf">onAppWatcherInstalled</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，先后执行了<code class="language-plaintext highlighter-rouge">ActivityDestroyWatcher.install</code>,<code class="language-plaintext highlighter-rouge">FragmentDestroyWatcher.install</code>和<code class="language-plaintext highlighter-rouge">onAppWatcherInstalled(application)</code>方法。</p>
+
+<p>其中在<code class="language-plaintext highlighter-rouge">onAppWatcherInstalled</code>创建了LeakCanary图标的快捷方式，用于方便查看内存泄漏的路径信息。最终实现的具体过程可以查看<a href="https://github.com/square/leakcanary/blob/main/leakcanary-android-core/src/main/java/leakcanary/internal/InternalLeakCanary.kt"><strong>InternalLeakCanary.kt</strong></a>的<code class="language-plaintext highlighter-rouge">addDynamicShortcut</code>方法。</p>
+
+<p>其他的两段代码——<code class="language-plaintext highlighter-rouge">ActivityDestroyWatcher.install</code>和<code class="language-plaintext highlighter-rouge">FragmentDestroyWatcher.install</code>，分别对应着两个类——<code class="language-plaintext highlighter-rouge">ActivityDestroyWatcher</code>和<code class="language-plaintext highlighter-rouge">FragmentDestroyWatcher</code>。这两个类相对来说比较简单，主要工作就是执行了<code class="language-plaintext highlighter-rouge">application.registerActivityLifecycleCallbacks</code>这段代码，目的是为了监听每个Activity的onDestroy事件。这也是判断该Activity是否泄漏的开端。</p>
+
+<p>以<code class="language-plaintext highlighter-rouge">ActivityDestroyWatcher</code>为例，其ActivityLifecycleCallback中代码如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">lifecycleCallbacks</span> <span class="p">=</span>
+    <span class="kd">object</span> <span class="err">: </span><span class="nc">Application</span><span class="p">.</span><span class="nc">ActivityLifecycleCallbacks</span> <span class="k">by</span> <span class="nf">noOpDelegate</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">override</span> <span class="k">fun</span> <span class="nf">onActivityDestroyed</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nf">configProvider</span><span class="p">().</span><span class="n">watchActivities</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">objectWatcher</span><span class="p">.</span><span class="nf">watch</span><span class="p">(</span>
+              <span class="n">activity</span><span class="p">,</span> <span class="s">"${activity::class.java.name} received Activity#onDestroy() callback"</span>
+          <span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，这其中，最终是<code class="language-plaintext highlighter-rouge">objectWatcher</code>来进行内存泄漏监控的。</p>
+
+<h2 id="如何检测到内存泄漏的">如何检测到内存泄漏的</h2>
+
+<p>这里涉及到两个关键的类：<strong><a href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher/src/main/java/leakcanary/ObjectWatcher.kt"><code class="language-plaintext highlighter-rouge">ObjectWatcher</code></a></strong>和<strong><a href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher/src/main/java/leakcanary/KeyedWeakReference.kt"><code class="language-plaintext highlighter-rouge">KeyedWeakReference</code></a></strong>。</p>
+
+<p><code class="language-plaintext highlighter-rouge">KeyedWeakReference</code>是<code class="language-plaintext highlighter-rouge">WeakReference</code>的子类，添加了额外的属性，代码十分简单，如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">KeyedWeakReference</span><span class="p">(</span>
+  <span class="n">referent</span><span class="p">:</span> <span class="nc">Any</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">key</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">description</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span>
+  <span class="kd">val</span> <span class="py">watchUptimeMillis</span><span class="p">:</span> <span class="nc">Long</span><span class="p">,</span>
+  <span class="n">referenceQueue</span><span class="p">:</span> <span class="nc">ReferenceQueue</span><span class="p">&lt;</span><span class="nc">Any</span><span class="p">&gt;</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">WeakReference</span><span class="p">&lt;</span><span class="nc">Any</span><span class="p">&gt;(</span>
+    <span class="n">referent</span><span class="p">,</span> <span class="n">referenceQueue</span>
+<span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/**
+   * Time at which the associated object ([referent]) was considered retained, or -1 if it hasn't
+   * been yet.
+   */</span>
+  <span class="nd">@Volatile</span>
+  <span class="kd">var</span> <span class="py">retainedUptimeMillis</span> <span class="p">=</span> <span class="p">-</span><span class="mi">1L</span>
+
+  <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+    <span class="nd">@Volatile</span>
+    <span class="nd">@JvmStatic</span> <span class="kd">var</span> <span class="py">heapDumpUptimeMillis</span> <span class="p">=</span> <span class="mi">0L</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>接下来我们看<code class="language-plaintext highlighter-rouge">ObjectWatcher</code>中的<code class="language-plaintext highlighter-rouge">watchObject</code>方法。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="cm">/**
+   * Watches the provided [watchedObject].
+   *
+   * @param description Describes why the object is watched.
+   */</span>
+  <span class="nd">@Synchronized</span> <span class="k">fun</span> <span class="nf">watch</span><span class="p">(</span>
+    <span class="n">watchedObject</span><span class="p">:</span> <span class="nc">Any</span><span class="p">,</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nc">String</span>
+  <span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="nf">isEnabled</span><span class="p">())</span> <span class="p">{</span>
+      <span class="k">return</span>
+    <span class="p">}</span>
+    <span class="nf">removeWeaklyReachableObjects</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">key</span> <span class="p">=</span> <span class="nc">UUID</span><span class="p">.</span><span class="nf">randomUUID</span><span class="p">()</span>
+        <span class="p">.</span><span class="nf">toString</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">watchUptimeMillis</span> <span class="p">=</span> <span class="n">clock</span><span class="p">.</span><span class="nf">uptimeMillis</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">reference</span> <span class="p">=</span>
+      <span class="nc">KeyedWeakReference</span><span class="p">(</span><span class="n">watchedObject</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">watchUptimeMillis</span><span class="p">,</span> <span class="n">queue</span><span class="p">)</span>
+    <span class="nc">SharkLog</span><span class="p">.</span><span class="nf">d</span> <span class="p">{</span>
+      <span class="s">"Watching "</span> <span class="p">+</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">watchedObject</span> <span class="k">is</span> <span class="nc">Class</span><span class="p">&lt;</span><span class="err">*</span><span class="p">&gt;)</span> <span class="n">watchedObject</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span> <span class="k">else</span> <span class="s">"instance of ${watchedObject.javaClass.name}"</span><span class="p">)</span> <span class="p">+</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">description</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">())</span> <span class="s">" ($description)"</span> <span class="k">else</span> <span class="s">""</span><span class="p">)</span> <span class="p">+</span>
+          <span class="s">" with key $key"</span>
+    <span class="p">}</span>
+
+    <span class="n">watchedObjects</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="p">=</span> <span class="n">reference</span>
+    <span class="n">checkRetainedExecutor</span><span class="p">.</span><span class="nf">execute</span> <span class="p">{</span>
+      <span class="nf">moveToRetained</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>这里分为三步：</p>
+
+<ol>
+  <li>执行<code class="language-plaintext highlighter-rouge">removeWeaklyReachableObjects()</code>方法，这个方法之后讲到；</li>
+  <li>生成一个<code class="language-plaintext highlighter-rouge">KeyedWeakReference</code>对象，并将这个对象添加到<code class="language-plaintext highlighter-rouge">watchedObjects</code>去；</li>
+  <li>定时执行<code class="language-plaintext highlighter-rouge">moveToRetained</code>方法。</li>
+</ol>
+
+<ul>
+  <li>
+    <p>我们先看第二步，生成<code class="language-plaintext highlighter-rouge">KeyedWeakReference</code>对象时候，传入了一个一个<code class="language-plaintext highlighter-rouge">ReferenceQueue</code>对象，这是检测对象是否被回收的关键。假如一个对象O，被弱引用WR持有的时候，同时这个弱引用WR在构造时候传入了一个<code class="language-plaintext highlighter-rouge">ReferenceQueue</code>对象Q，则这个对象O被回收时候，WR将会被添加到Q中去，这样，通过检测Q中有没有值，便可以知道O有没有被回收掉。这也就是第一步做的事。</p>
+  </li>
+  <li>
+    <p>接下来我们查看<code class="language-plaintext highlighter-rouge">removeWeaklyReachableObjects</code>方法中做了什么。</p>
+  </li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">fun</span> <span class="nf">removeWeaklyReachableObjects</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// WeakReferences are enqueued as soon as the object to which they point to becomes weakly</span>
+  <span class="c1">// reachable. This is before finalization or garbage collection has actually happened.</span>
+  <span class="kd">var</span> <span class="py">ref</span><span class="p">:</span> <span class="nc">KeyedWeakReference</span><span class="p">?</span>
+  <span class="k">do</span> <span class="p">{</span>
+    <span class="n">ref</span> <span class="p">=</span> <span class="n">queue</span><span class="p">.</span><span class="nf">poll</span><span class="p">()</span> <span class="k">as</span> <span class="nc">KeyedWeakReference</span><span class="p">?</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ref</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">watchedObjects</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">ref</span><span class="p">.</span><span class="n">key</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">ref</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在这个方法中，从queue中取值，取出来ref，则说明被ref修饰的对象已经被回收了，则将这个弱引用ref从<code class="language-plaintext highlighter-rouge">watchedObjects</code>清除掉。</p>
+
+<ul>
+  <li>接下来到了第三步，这一步实际上是一个定时5秒(LeakCanary默认)去将watchedObjects中残留的引用，移入到<code class="language-plaintext highlighter-rouge">retainedObjects</code>中去。我们来看其中代码：</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Synchronized</span> <span class="k">private</span> <span class="k">fun</span> <span class="nf">moveToRetained</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">removeWeaklyReachableObjects</span><span class="p">()</span>
+  <span class="kd">val</span> <span class="py">retainedRef</span> <span class="p">=</span> <span class="n">watchedObjects</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">retainedRef</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">retainedRef</span><span class="p">.</span><span class="n">retainedUptimeMillis</span> <span class="p">=</span> <span class="n">clock</span><span class="p">.</span><span class="nf">uptimeMillis</span><span class="p">()</span>
+    <span class="n">onObjectRetainedListeners</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="nf">onObjectRetained</span><span class="p">()</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>执行这个任务的Executor实际实现在<a href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher-android/src/main/java/leakcanary/internal/InternalAppWatcher.kt"><strong>InternalAppWatcher.kt</strong></a>中，代码如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">checkRetainedExecutor</span> <span class="p">=</span> <span class="nc">Executor</span> <span class="p">{</span>
+  <span class="n">mainHandler</span><span class="p">.</span><span class="nf">postDelayed</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="nc">AppWatcher</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">watchDurationMillis</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>我们发现，在<code class="language-plaintext highlighter-rouge">moveToRetained</code>中，还是先执行了<code class="language-plaintext highlighter-rouge">removeWeaklyReachableObjects</code>这一方法。目的是再次清除已经被回收的对象。如果经过这一步，仍然有引用留在watchedObjects中，则可以认为，这些对象泄漏了。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+   * Returns the objects that are currently considered retained. Useful for logging purposes.
+   * Be careful with those objects and release them ASAP as you may creating longer lived leaks
+   * then the one that are already there.
+   */</span>
+<span class="kd">val</span> <span class="py">retainedObjects</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Any</span><span class="p">&gt;</span>
+<span class="nd">@Synchronized</span> <span class="k">get</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nf">removeWeaklyReachableObjects</span><span class="p">()</span>
+  <span class="kd">val</span> <span class="py">instances</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">&lt;</span><span class="nc">Any</span><span class="p">&gt;()</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">weakReference</span> <span class="k">in</span> <span class="n">watchedObjects</span><span class="p">.</span><span class="n">values</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">weakReference</span><span class="p">.</span><span class="n">retainedUptimeMillis</span> <span class="p">!=</span> <span class="p">-</span><span class="mi">1L</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">val</span> <span class="py">instance</span> <span class="p">=</span> <span class="n">weakReference</span><span class="p">.</span><span class="k">get</span><span class="p">()</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">instance</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">instances</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">instances</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="总结">总结</h2>
+
+<p>不要在发行版本中使用LeakCanary，因为一系列初始化动作，可能会导致应用启动较慢。如果要用，请使用LeakCanary-Object-Watcher，或者直接使用Buggly这样的成熟框架。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

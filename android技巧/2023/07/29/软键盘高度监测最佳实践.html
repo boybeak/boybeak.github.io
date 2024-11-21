@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>软键盘高度监测最佳实践</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">软键盘高度监测最佳实践</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    July 29
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>最近终于总结出最佳的软键盘高度监测方案了，特此分享出来。
+源码在此：<a href="https://gist.github.com/boybeak/62ab557ace8a9763f12803b82f274df5">KeyboardObserver.kt</a></p>
+
+<h2 id="视觉效果">视觉效果</h2>
+
+<p>当开启showDebug时候，可以看到这样的可视化的键盘高度监测。
+<img src="/assets/images/keyboard-height.gif" alt="showcase" /></p>
+
+<h2 id="源码分析">源码分析</h2>
+
+<p>简单来说，这里说通过两个PopupWindow来实现的键盘高度测量。一个用于测量<strong>当前屏幕状态可绘制区域的最大高度</strong>，一个用于跟随键盘移动，进而通过高度差，算出键盘的高度。我们这里将前者称为RulerPopWin, 后者称为CursorPopWin。他们的代码分别如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// RulerPopWin</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">rulerPopWin</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nf">makeRulerPopWin</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">makeRulerPopWin</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">)</span> <span class="p">=</span> <span class="nc">PopupWindow</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+    <span class="n">contentView</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">showDebug</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">TextView</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="n">background</span> <span class="p">=</span> <span class="nc">GradientDrawable</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nf">setStroke</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">LTGRAY</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">gravity</span> <span class="p">=</span> <span class="nc">Gravity</span><span class="p">.</span><span class="nc">BOTTOM</span> <span class="n">or</span> <span class="nc">Gravity</span><span class="p">.</span><span class="nc">CENTER_HORIZONTAL</span>
+            <span class="nf">setTextColor</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="nc">RED</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+       <span class="nc">View</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nf">setBackgroundDrawable</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
+    <span class="n">width</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">showDebug</span><span class="p">)</span> <span class="mi">80</span><span class="p">.</span><span class="n">dp</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">height</span> <span class="p">=</span> <span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">MATCH_PARENT</span>
+    <span class="n">elevation</span> <span class="p">=</span> <span class="mf">0F</span>
+
+    <span class="n">isFocusable</span> <span class="p">=</span> <span class="k">false</span>
+    <span class="n">isTouchable</span> <span class="p">=</span> <span class="k">false</span>
+    <span class="n">isOutsideTouchable</span> <span class="p">=</span> <span class="k">false</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// CursorPopWin</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">cursorPopWin</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nf">makeCursorPopWin</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">makeCursorPopWin</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">)</span> <span class="p">=</span> <span class="nc">PopupWindow</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+    <span class="n">contentView</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">showDebug</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">FrameLayout</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="nf">addView</span><span class="p">(</span>
+                <span class="nc">View</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+                    <span class="n">background</span> <span class="p">=</span> <span class="nc">ColorDrawable</span><span class="p">(</span><span class="nc">Color</span><span class="p">.</span><span class="nc">RED</span><span class="p">)</span>
+                <span class="p">},</span>
+                <span class="nc">FrameLayout</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">(</span>
+                    <span class="nc">FrameLayout</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">MATCH_PARENT</span><span class="p">,</span>
+                    <span class="mi">1</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span>
+                    <span class="nc">Gravity</span><span class="p">.</span><span class="nc">BOTTOM</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nc">View</span><span class="p">(</span><span class="n">activity</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nf">setBackgroundDrawable</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
+
+    <span class="n">width</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">showDebug</span><span class="p">)</span> <span class="mi">80</span><span class="p">.</span><span class="n">dp</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">height</span> <span class="p">=</span> <span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">MATCH_PARENT</span>
+    <span class="n">elevation</span> <span class="p">=</span> <span class="mf">0F</span>
+
+    <span class="n">softInputMode</span> <span class="p">=</span> <span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">SOFT_INPUT_ADJUST_RESIZE</span>
+    <span class="n">inputMethodMode</span> <span class="p">=</span> <span class="nc">PopupWindow</span><span class="p">.</span><span class="nc">INPUT_METHOD_NEEDED</span>
+
+    <span class="n">isFocusable</span> <span class="p">=</span> <span class="k">false</span>
+    <span class="n">isTouchable</span> <span class="p">=</span> <span class="k">false</span>
+    <span class="n">isOutsideTouchable</span> <span class="p">=</span> <span class="k">false</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这两个PopupWindow，除了contentView不同以外，还有两个属性不同，cursorPopWin多了两个属性</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">softInputMode</span> <span class="p">=</span> <span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">SOFT_INPUT_ADJUST_RESIZE</span>
+<span class="n">inputMethodMode</span> <span class="p">=</span> <span class="nc">PopupWindow</span><span class="p">.</span><span class="nc">INPUT_METHOD_NEEDED</span>
+</code></pre></div></div>
+
+<p>这两个属性，使得cursorPopWin高度会随着软键盘的弹出而变化。</p>
+
+<p>当开启监听时，为<strong>cursorPopWin.contentView</strong>设置一个OnLayoutChangeListener，用于监听其布局变化。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">watch</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="n">cursorPopWin</span><span class="p">.</span><span class="n">isShowing</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cursorPopWin</span><span class="p">.</span><span class="nf">showAtLocation</span><span class="p">(</span><span class="n">decorView</span><span class="p">,</span> <span class="nc">Gravity</span><span class="p">.</span><span class="nc">BOTTOM</span> <span class="n">or</span> <span class="nc">Gravity</span><span class="p">.</span><span class="nc">END</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">cursorPopWin</span><span class="p">.</span><span class="n">contentView</span><span class="p">.</span><span class="nf">addOnLayoutChangeListener</span><span class="p">(</span><span class="n">cursorLayoutChangeListener</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">cursorLayoutChangeListener</span> <span class="p">=</span> <span class="nc">OnLayoutChangeListener</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="p">-&gt;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rulerPopWin</span><span class="p">.</span><span class="n">isShowing</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">rulerPopWin</span><span class="p">.</span><span class="nf">dismiss</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="n">rulerPopWin</span><span class="p">.</span><span class="nf">showAtLocation</span><span class="p">(</span><span class="n">decorView</span><span class="p">,</span> <span class="nc">Gravity</span><span class="p">.</span><span class="nc">BOTTOM</span> <span class="n">or</span> <span class="nc">Gravity</span><span class="p">.</span><span class="nc">END</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rulerPopWin</span><span class="p">.</span><span class="n">contentView</span><span class="p">.</span><span class="nf">addOnLayoutChangeListener</span><span class="p">(</span><span class="n">rulerLayoutChangeListener</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在cursorLayoutChangeListener中，监听到cursotPopWin的变化后，再显示rulerPopWin。为什么要这么做呢？</p>
+
+<blockquote>
+  <p>因为在实践中，软键盘的变化，触发了onLayoutChange方法，如果是在这之前就把rulerPopWin显示出来，在某些机型或者系统版本中，也会出现rulerPopWin跟随键盘改变尺寸的情况。所以要将rulerPopWin显示在键盘弹出之后。</p>
+</blockquote>
+
+<p>真实的键盘高度监听，实际上说在rulerLayoutChangeListener中。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">rulerLayoutChangeListener</span> <span class="p">=</span> <span class="kd">object</span> <span class="err">: </span><span class="nc">OnLayoutChangeListener</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onLayoutChange</span><span class="p">(</span>
+        <span class="n">v</span><span class="p">:</span> <span class="nc">View</span><span class="p">?,</span>
+        <span class="n">left</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">top</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">right</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">bottom</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">oldLeft</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">oldTop</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">oldRight</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">oldBottom</span><span class="p">:</span> <span class="nc">Int</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="n">rulerPopWin</span><span class="p">.</span><span class="n">contentView</span><span class="p">.</span><span class="nf">removeOnLayoutChangeListener</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+        <span class="n">rulerPopWin</span><span class="p">.</span><span class="n">contentView</span><span class="p">.</span><span class="nf">getGlobalVisibleRect</span><span class="p">(</span><span class="n">rulerRect</span><span class="p">)</span>
+        <span class="n">cursorPopWin</span><span class="p">.</span><span class="n">contentView</span><span class="p">.</span><span class="nf">getGlobalVisibleRect</span><span class="p">(</span><span class="n">cursorRect</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="py">keyboardHeight</span> <span class="p">=</span> <span class="n">rulerRect</span><span class="p">.</span><span class="n">bottom</span> <span class="p">-</span> <span class="n">cursorRect</span><span class="p">.</span><span class="n">bottom</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">callbacks</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="kd">val</span> <span class="py">cbs</span> <span class="p">=</span> <span class="nc">ArrayList</span><span class="p">&lt;</span><span class="nc">Callback</span><span class="p">&gt;(</span><span class="n">callbacks</span><span class="p">)</span>
+            <span class="n">cbs</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+                <span class="n">it</span><span class="p">.</span><span class="nf">onKeyboardHeightChanged</span><span class="p">(</span><span class="n">keyboardHeight</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">cbs</span><span class="p">.</span><span class="nf">clear</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">showDebug</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">(</span><span class="n">v</span> <span class="k">as</span> <span class="nc">TextView</span><span class="p">).</span><span class="nf">run</span> <span class="p">{</span>
+
+                <span class="n">text</span> <span class="p">=</span> <span class="s">"$keyboardHeight"</span>
+                <span class="nf">setPadding</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nf">max</span><span class="p">(</span><span class="n">keyboardHeight</span> <span class="p">-</span> <span class="k">this</span><span class="p">.</span><span class="n">lineHeight</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>OK，这就是全部关键逻辑了。</p>
+
+<h2 id="qa">Q&amp;A</h2>
+
+<ol>
+  <li>
+    <p>为什么要通过rulerPopWin来获取高度，用其他获取屏幕高度的方法不好吗？</p>
+
+    <blockquote>
+      <p>不可以，这里rulerPopWin，实际上是测量<strong>当前状态下</strong>，键盘收起时的最底部。这个状态受到很多其他方面的影响，比如横竖屏切换、底部导航条的显示或者隐藏。如果通过直接获取屏幕高度的方式，并不能与状态严格对其。尤其说底部导航条的各种显示模式，导致键盘收起的0线也是变化的。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>为什么不只用一个cursorPopWin的软键盘弹起前后进行差值计算高度呢？</p>
+
+    <blockquote>
+      <p>这样做在实践中也是不可行的。同样跟问题1中的场景类似，由于底部导航条各种显示模式的影响，导致软键盘0线是不确定的，而软键盘的弹起与收回，可能对应着不同的导航条显示模式，也就对应着不同的0线，这样计算出来的软键盘高度，很容易把导航条的高度也算进去。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>由问题2想到，把导航条的高度减掉不就是键盘的高度了吗？</p>
+
+    <blockquote>
+      <p>这样做理论上可行，但是实践上问题会很多。首先，你要针对不同的导航条模式做不同策略；其次，不同系统的导航条的高度不同，包括说传统3键导航条还是全面屏手势；再次，目前获取导航条高度，并没有一个完美的方案，有些系统下获取到的高度，跟实际高度是不相符的。</p>
+    </blockquote>
+  </li>
+</ol>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

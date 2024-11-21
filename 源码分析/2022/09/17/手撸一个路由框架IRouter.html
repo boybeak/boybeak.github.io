@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>IRouter——自己手撸一个路由框架</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">IRouter——自己手撸一个路由框架</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>现在最流行的路由框架应该是阿里的ARouter，这几乎是组件化应用的必备了。但是ARouter用起来稍微有一点不爽，不爽在以下两点：</p>
+
+<ol>
+  <li>没有一个规范化的api式的调用方式：项目大了，调用路由的方法分布在项目各处，难以查找；</li>
+  <li>对startActivityForResult支持不够友好：按照传统方式，在onActivityResult中处理，比较分散。</li>
+</ol>
+
+<p>基于以上问题，闲来无事，手撸一个自己的路由框架<a href="https://github.com/boybeak/Routerfit">IRouter</a>，基本使用方式如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">IRouterService</span> <span class="p">{</span>
+    <span class="nd">@RouteTo</span><span class="p">(</span><span class="s">"topic/detail"</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">topicDetail</span><span class="p">(</span><span class="nd">@Key</span><span class="p">(</span><span class="s">"topic"</span><span class="p">)</span> <span class="n">topic</span><span class="p">:</span> <span class="nc">Topic</span><span class="p">):</span> <span class="nc">Navigator</span>
+<span class="p">}</span>
+
+<span class="kd">val</span> <span class="py">iRouter</span> <span class="p">=</span> <span class="nc">IRouter</span><span class="p">.</span><span class="nc">Builder</span><span class="p">()</span>
+    <span class="p">.</span><span class="nf">isDebug</span><span class="p">(</span><span class="nc">BuildConfig</span><span class="p">.</span><span class="nc">DEBUG</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">errorActivity</span><span class="p">(</span><span class="nc">ErrorActivity</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">build</span><span class="p">()</span>
+    <span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="nc">IRouterService</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+
+<span class="n">iRouter</span><span class="p">.</span><span class="nf">topicDetail</span><span class="p">(</span><span class="n">topic</span><span class="p">).</span><span class="nf">startActivity</span><span class="p">(</span><span class="k">this</span><span class="nd">@MainActivity</span><span class="p">)</span>
+
+<span class="c1">// OR</span>
+
+<span class="n">iRouter</span><span class="p">.</span><span class="nf">topicDetail</span><span class="p">(</span><span class="n">topic</span><span class="p">).</span><span class="nf">startActivityForResult</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span> <span class="n">requestCode</span><span class="p">,</span> <span class="n">resultCode</span><span class="p">,</span> <span class="n">data</span> <span class="p">-&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>具体的配置方式请参考<a href="https://github.com/boybeak/Routerfit">IRouter</a>，本文主要是解析源码。</p>
+
+<p>如此调用方式，很像是Retrofit的方式，打开一个activity就像请求一个api一样。从这里可以体现出解决了上述的两个痛点：</p>
+
+<ol>
+  <li>类似API的调用方式，集中管理路由路径；</li>
+  <li>startActivityForResult中添加回调，哪里调用，就在哪里处理结果，结构紧凑。</li>
+</ol>
+
+<p>下面进入源码解析。</p>
+
+<p>与<a href="https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html">ARouter源码分析</a>这篇文章一样，我们分析时候要按照时态去分析这个框架在<strong>运行时</strong>和<strong>编译时</strong>做的事情。</p>
+
+<h2 id="运行时">运行时</h2>
+
+<p>其实从上述调用的方式，有过热门开源框架源码阅读经验的，都能猜出个大概。</p>
+
+<p>先从<strong>IRouter</strong>这个类创建<em>IRouterService</em>实例说起。使用过Retrofit的同学都知道，创建一个接口类，通过注解标注方法，不用提供具体的实现流程，就能完成网络请求。其实这并不难，这是通过动态代理实现的。我们来看IRouter.create的代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">create</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">tClass</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="no">T</span><span class="o">)</span> <span class="nc">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">tClass</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">Class</span><span class="o">[]{</span><span class="n">tClass</span><span class="o">},</span>
+    <span class="k">new</span> <span class="nf">InvocationHandler</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="nc">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="nf">parseMethod</span><span class="o">(</span><span class="n">method</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>通过动态代理，我们创建了一个<em>IRouterService</em>的实现类，这个类在调用相关方法的时候，比如<em>topicDetail</em>这个方法，都会经由<em>InvocationHandler</em>的<em>invoke</em>方法来代理完成。</p>
+
+<p>接下来，从invoke中调用了parseMethod方法，这个方法比较简单，主要是用于解析方法注解和参数注解，取出其中的值，比如跳转路径path和参数的key - value键值对，<strong>通过path查询出相对应的Activity的class</strong>，这些值最终汇总起来，返回一个Navigator对象，这个就是真正要执行跳转的地方。</p>
+
+<p>上面提到<em>通过path查询出Activity对应的class</em>，既然要查询，肯定要事先存储后才能被查询到。这就涉及到<strong>编译时</strong>做的工作了。</p>
+
+<h2 id="编译时">编译时</h2>
+
+<h3 id="一apt部分">一、APT部分</h3>
+
+<p>其实读过其他一些开源框架的人对这部分一定不会陌生。</p>
+
+<p>这部分工作与ARouter类似，就是通过<strong>@RoutePath</strong>注解标记目标Activity，然后再通过注解处理器来获取到path - activity.class的对应关系，将这个对应关系，生成成一个类，我们查看一个生成的类的示例如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.github.boybeak.irouter.loader</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.github.boybeak.irouter.core.BaseLoader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.Override</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.String</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">V2ex</span><span class="n">$Topic$Loader</span> <span class="kd">extends</span> <span class="nc">BaseLoader</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getHeader</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="s">"topic"</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">loadIntoMap</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">load</span><span class="o">(</span><span class="s">"detail"</span><span class="o">,</span> <span class="n">com</span><span class="o">.</span><span class="na">v2ex</span><span class="o">.</span><span class="na">activity</span><span class="o">.</span><span class="na">TopicActivity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这些所有生成的类在一个包名<code class="language-plaintext highlighter-rouge">com.github.boybeak.irouter.loader</code>底下，这很重要，因为我们要在接下来的过程，通过这个包名去筛选生成的loader类。</p>
+
+<p>理解这部分，需要对APT(注解处理器)和java poet比较了解。</p>
+
+<h3 id="二asm部分">二、ASM部分</h3>
+
+<p>不太了解ASM的，可以通过这篇文章<a href="https://boybeak.github.io/android/ASM.html">ASM库介绍与使用</a>来了解，简单来说，ASM就是一款修改class文件的工具。能用来动态生成class文件，也可以修改已经存在的class文件。</p>
+
+<p>有这样的利器，我们能做的事就太多了。</p>
+
+<p>这部分，其实我就是参考了ARouter的做法，改成了自己的一些逻辑。</p>
+
+<p>接下来我们要编写的是一个gradle plugin，我们主要是利用其中的<strong>Transform</strong>工具，官方解释在<a href="https://developer.android.com/reference/tools/gradle-api/7.0/com/android/build/api/transform/Transform">这里</a>，其作用就是在编译时，会挨个遍历我们的源码、类库、jar包等。附上一个教程<a href="https://juejin.cn/post/6844903891138674696">Gradle 学习之 Android 插件的 Transform API</a>。</p>
+
+<p>Path - activity.class的对应关系是通过<strong>LoaderManager</strong>来查询的，我们看一下这个类的代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">LoaderManager</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">LoaderManager</span> <span class="n">sManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LoaderManager</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="nc">LoaderManager</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">sManager</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">DelegateLoader</span><span class="o">&gt;</span> <span class="n">loadersMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">isInitialized</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">LoaderManager</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">init</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isInitialized</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">load</span><span class="o">();</span>
+        <span class="n">isInitialized</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">load</span><span class="o">()</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">loadInto</span><span class="o">(</span><span class="nc">BaseLoader</span> <span class="n">loader</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">header</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="na">getHeader</span><span class="o">();</span>
+        <span class="n">obtainLoader</span><span class="o">(</span><span class="n">header</span><span class="o">).</span><span class="na">mergeOtherLoaders</span><span class="o">(</span><span class="n">loader</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">DelegateLoader</span> <span class="nf">obtainLoader</span><span class="o">(</span><span class="nc">String</span> <span class="n">header</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">DelegateLoader</span> <span class="n">delegateLoader</span> <span class="o">=</span> <span class="n">loadersMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">header</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">delegateLoader</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">delegateLoader</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DelegateLoader</span><span class="o">(</span><span class="n">header</span><span class="o">);</span>
+            <span class="n">loadersMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">header</span><span class="o">,</span> <span class="n">delegateLoader</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">delegateLoader</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">get</span><span class="o">(</span><span class="nc">String</span> <span class="n">path</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">segments</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">"/"</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">header</span> <span class="o">=</span> <span class="n">segments</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">segments</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
+        <span class="k">return</span> <span class="n">loadersMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">header</span><span class="o">).</span><span class="na">getTargetClass</span><span class="o">(</span><span class="n">tail</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们需要注意其中的一个方法——<code class="language-plaintext highlighter-rouge">load</code>，我们看到，这个类在构建方法里调用了init方法，init里又调用了load方法，但是这个load方法却是留白的。这样调用有什么用呢？</p>
+
+<p>其实这个留白方法是我们为ASM留的一个修改的入口。</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">'i-router-register'</span>
+</code></pre></div></div>
+
+<p>在app.gradle中，使用这个插件，我们的transform就能顺利运行起来发挥作用了。</p>
+
+<p>我们需要查看一下RegisterTransform的代码了：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegisterTransform</span> <span class="kd">extends</span> <span class="nc">Transform</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">transform</span><span class="o">(</span><span class="nc">TransformInvocation</span> <span class="n">transformInvocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">TransformException</span><span class="o">,</span> <span class="nc">InterruptedException</span><span class="o">,</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="n">transformInvocation</span><span class="o">);</span>
+
+    <span class="n">scanner</span><span class="o">.</span><span class="na">scan</span><span class="o">(</span><span class="n">transformInvocation</span><span class="o">,</span> <span class="o">(</span><span class="n">loaderManagerJar</span><span class="o">,</span> <span class="n">loaderManagerEntryName</span><span class="o">,</span> <span class="n">loaders</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+      <span class="nc">Asm</span><span class="o">.</span><span class="na">getInstance</span><span class="o">().</span><span class="na">generateCode</span><span class="o">(</span><span class="n">loaderManagerJar</span><span class="o">,</span> <span class="n">loaderManagerEntryName</span><span class="o">,</span> <span class="n">loaders</span><span class="o">);</span>
+    <span class="o">});</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里使用了Scanner来扫描TransformInvocation类，Scanner是我们自定义的类，主要作用就是通过包名和类名，查找我们的loader类和LoaderManager所在的jar包。我们查看其scan方法：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="o">(</span><span class="nc">TransformInput</span> <span class="n">input</span> <span class="o">:</span> <span class="n">transformInvocation</span><span class="o">.</span><span class="na">getInputs</span><span class="o">())</span> <span class="o">{</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">JarInput</span> <span class="n">jarInput</span> <span class="o">:</span> <span class="n">input</span><span class="o">.</span><span class="na">getJarInputs</span><span class="o">())</span> <span class="o">{</span>
+    <span class="c1">// 这里处理第三方类库，引用的module和jar文件</span>
+  <span class="o">}</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">DirectoryInput</span> <span class="n">directoryInput</span> <span class="o">:</span> <span class="n">input</span><span class="o">.</span><span class="na">getDirectoryInputs</span><span class="o">())</span> <span class="o">{</span>
+    <span class="c1">// 这里处理应用了这个plugin的module的相关class文件</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="n">onScanFinish</span><span class="o">.</span><span class="na">onScanFinish</span><span class="o">(</span><span class="n">loaderManagerJar</span><span class="o">,</span> <span class="n">loaderManagerEntryName</span><span class="o">,</span> <span class="n">loaderClzList</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>通过回调，我们将查找到的loader类和LoaderManager所在jar返回给transform，并交由我们的asm工具来处理。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ASM</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">HackMethodVisitor</span> <span class="kd">extends</span> <span class="nc">MethodVisitor</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">loaders</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">HackMethodVisitor</span><span class="o">(</span><span class="kt">int</span> <span class="n">api</span><span class="o">,</span> <span class="nc">MethodVisitor</span> <span class="n">methodVisitor</span><span class="o">,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">loaders</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kd">super</span><span class="o">(</span><span class="n">api</span><span class="o">,</span> <span class="n">methodVisitor</span><span class="o">);</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">loaders</span> <span class="o">=</span> <span class="n">loaders</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visitInsn</span><span class="o">(</span><span class="kt">int</span> <span class="n">opcode</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">for</span> <span class="o">(</span><span class="nc">String</span> <span class="n">loader</span> <span class="o">:</span> <span class="n">loaders</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">visitVarInsn</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">ALOAD</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">visitTypeInsn</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">NEW</span><span class="o">,</span> <span class="n">loader</span><span class="o">);</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">visitInsn</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">DUP</span><span class="o">);</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">visitMethodInsn</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">INVOKESPECIAL</span><span class="o">,</span> <span class="n">loader</span><span class="o">,</span> <span class="s">"&lt;init&gt;"</span><span class="o">,</span> <span class="s">"()V"</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+        <span class="n">mv</span><span class="o">.</span><span class="na">visitMethodInsn</span><span class="o">(</span><span class="nc">Opcodes</span><span class="o">.</span><span class="na">INVOKESPECIAL</span><span class="o">,</span> <span class="s">"com/github/boybeak/irouter/core/LoaderManager"</span><span class="o">,</span> <span class="s">"loadInto"</span><span class="o">,</span> <span class="s">"(Lcom/github/boybeak/irouter/core/BaseLoader;)V"</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+      <span class="o">}</span>
+
+      <span class="kd">super</span><span class="o">.</span><span class="na">visitInsn</span><span class="o">(</span><span class="n">opcode</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>主要的修改逻辑就在HackMethodVisitor这个类中，注意其中的visitInsn方法，这就是ASM真正发挥作用的地方，这里的逻辑就是为loadInto方法添加加载loader的代码。</p>
+
+<p>以demo中的v2ex为例，修改后的代码load代码如下：</p>
+
+<p><img src="/images/jd_loader_manager.jpg" alt="LoaderManager" /></p>
+
+<h2 id="最后一点细节">最后一点细节</h2>
+
+<p>到目前为止，主要的流程已经结束了，接下来是一些细节部分。</p>
+
+<ul>
+  <li>LoaderManager在加载loader的时候，会针对path做归并，比如同为app/main和app/user被归并为一组，这样在使用的时候，可以按组做实际载入。</li>
+  <li>用于跳转的Navigator是有缓存的，用来减少查询次数，因为path - activity.class的对应关系并不是动态变化的，如果缓存中有已经用过的，则清空其intent的参数部分重复利用即可。</li>
+  <li>对于startActivityForResult的集中调用，可以参考我的另外一个开源项目——<a href="https://github.com/boybeak/Starter">Starter</a>中的SAFR项目。这里在FragmentActivity中，通过一个fragment去代理了startActivityForResult的过程，从而拦截了回调结果；类似的，在非FragmentActivity中，通过了一个全透明的代理了此过程，这里学习了<strong>Glide</strong>通过一个fragment来探测生命周期的方式。</li>
+</ul>
+
+<h2 id="总结">总结</h2>
+
+<p>通过这样一个自己动手的过程，我们熟悉了的编写APT和gradle plugin的过程，学会了ASM的基本用法。</p>
+
+<p>在这个项目中，学习了很多其他优秀开源项目的经验，比如：</p>
+
+<ul>
+  <li>主流程是参考了ARouter，但是去掉了应用启动时候，从codeDir找到apk来解析路由路径的过程；</li>
+  <li>集中的api式调用，参考了Retrofit的动态代理；</li>
+  <li>通过Fragment拦截startActivityForResult的结果，参考了Glide向宿主activity添加无UI的Fragment的方式。</li>
+</ul>
+
+<p>因此，多读源码可以开拓思维，当自己想开发自己的工具框架时候，就可以信手拈来。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

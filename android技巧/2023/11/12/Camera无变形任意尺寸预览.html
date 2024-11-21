@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Camera无变形任意尺寸预览</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Camera无变形任意尺寸预览</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    November 12
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>在以往做Camera应用开发时，遇到一个问题，就是相机的预览如何做到在任意尺寸完全无变形的画面预览与视频录制。做过相机应用开发的朋友都知道，相机的预览尺寸并不是可以随意设置的，而是需要在<strong>支持的预览尺寸</strong>中选择一个，你的预览的view大小必须与选择的尺寸相匹配，才能保证画面不变形，但是这在实际开发中是无法应对各种各样的需求的，而且每个手机，支持的预览尺寸并不是完全一致的，而视频的大小往往是需要做到一致的，不然录制出来的视频，在其他手机上播放，就需要做大量的UI适配工作，也没有平台的统一性。</p>
+
+<p>最初让我有这样的想法，是想做方形的视频，如最初Ins一样，那已经是7年前了，但是当时技术有限，并没有探索出最佳的方案，当时最多可以先录制再通过ffmpeg进行裁剪，这样效率太低了，用户是不能接受的，而且预览画面需要做遮罩，录制做不到所见即所得。</p>
+
+<p>经过其他工作的积累，在OpenGL与Surface搭配工作这方便，点了新的技能点。终于探索出最佳的技术方案。</p>
+
+<p>最终示例代码可以参考我的Github: <a href="https://github.com/boybeak/iCamera">iCamera</a>。</p>
+
+<h2 id="一技术背景">一、技术背景</h2>
+<p>在阅读接下来的内容前，你最好有以下技术储备：</p>
+<ol>
+  <li>Camera1相关API的使用经验；</li>
+  <li>对Android的surface有一定了解；</li>
+  <li>对OpenGL最好有所了解；</li>
+</ol>
+
+<p>当然，如果没有以上相关的知识储备，也不妨碍定性的理解整体流程。</p>
+
+<h2 id="二基本思路">二、基本思路</h2>
+<p>在一般的Camera应用开发时，通常需要有一个预览画面的控件，一般时SurfaceView或者TextureView，然后把Surface或者SurfaceTexture设置给Camera进行预览。</p>
+
+<p>而在我们的方案中，这个过程，要增加一些步骤。具体的步骤如下：</p>
+<ol>
+  <li>从SurfaceView或者TextureView获得Surface对象，比如<code class="language-plaintext highlighter-rouge">holder.surface</code>或者<code class="language-plaintext highlighter-rouge">Surface(surfaceTexture)</code>；</li>
+  <li>由此Surface对象，我们创建EGL环境，并重新创建一个<code class="language-plaintext highlighter-rouge">SurfaceTexture</code>对象，这个新的<code class="language-plaintext highlighter-rouge">SurfaceTexture</code>对象，最后需要设置给Camera进行预览；</li>
+  <li>监听步骤2中创建的<code class="language-plaintext highlighter-rouge">SurfaceTexture</code>对象的帧数据，通过OpenGL对画面<strong>消除形变</strong>并进行渲染。</li>
+</ol>
+
+<p>以上就是基本思路，是不是还是一头雾水？没关系，下面进行具体实现的讲解。</p>
+
+<h2 id="三具体实现">三、具体实现</h2>
+<p>在上述的步骤中，第1步很简单，这里不再进行赘述，直接从步骤2开始。</p>
+
+<h3 id="31-通过surface创建egl环境">3.1 通过Surface创建EGL环境</h3>
+<p>一般代码示例如下：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">display</span><span class="p">:</span> <span class="nc">EGLDisplay</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">EGL14</span><span class="p">.</span><span class="nf">eglGetDisplay</span><span class="p">(</span><span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_DEFAULT_DISPLAY</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">private</span> <span class="kd">var</span> <span class="py">eglSurface</span><span class="p">:</span> <span class="nc">EGLSurface</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="kd">var</span> <span class="py">eglContext</span><span class="p">:</span> <span class="nc">EGLContext</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+    <span class="k">private</span> <span class="k">set</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">createEGL</span><span class="p">(</span><span class="n">surface</span><span class="p">:</span> <span class="nc">Surface</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">version</span> <span class="p">=</span> <span class="nc">IntArray</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nc">EGL14</span><span class="p">.</span><span class="nf">eglInitialize</span><span class="p">(</span><span class="n">display</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">version</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="kd">val</span> <span class="py">attributes</span> <span class="p">=</span> <span class="nf">intArrayOf</span><span class="p">(</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_RED_SIZE</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_GREEN_SIZE</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_BLUE_SIZE</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_ALPHA_SIZE</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_RENDERABLE_TYPE</span><span class="p">,</span> <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_OPENGL_ES2_BIT</span><span class="p">,</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_NONE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>      <span class="c1">// placeholder for recordable [@-3]</span>
+        <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_NONE</span>
+    <span class="p">)</span>
+
+    <span class="kd">val</span> <span class="py">configs</span> <span class="p">=</span> <span class="n">arrayOfNulls</span><span class="p">&lt;</span><span class="nc">EGLConfig</span><span class="p">&gt;(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">numConfigs</span> <span class="p">=</span> <span class="nc">IntArray</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nc">EGL14</span><span class="p">.</span><span class="nf">eglChooseConfig</span><span class="p">(</span><span class="n">display</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">configs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">configs</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">numConfigs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="kd">val</span> <span class="py">config</span> <span class="p">=</span> <span class="n">configs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">eglSurface</span> <span class="p">=</span> <span class="nc">EGL14</span><span class="p">.</span><span class="nf">eglCreateWindowSurface</span><span class="p">(</span>
+        <span class="n">display</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="nf">intArrayOf</span><span class="p">(</span>
+            <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_NONE</span>
+        <span class="p">),</span> <span class="mi">0</span>
+    <span class="p">)</span>
+
+    <span class="n">eglContext</span> <span class="p">=</span> <span class="nc">EGL14</span><span class="p">.</span><span class="nf">eglCreateContext</span><span class="p">(</span>
+        <span class="n">display</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">sharedContext</span> <span class="o">?:</span> <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_NO_CONTEXT</span><span class="p">,</span> <span class="nf">intArrayOf</span><span class="p">(</span>
+            <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_CONTEXT_CLIENT_VERSION</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nc">EGL14</span><span class="p">.</span><span class="nc">EGL_NONE</span>
+        <span class="p">),</span> <span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="nc">EGL14</span><span class="p">.</span><span class="nf">eglMakeCurrent</span><span class="p">(</span><span class="n">display</span><span class="p">,</span> <span class="n">eglSurface</span><span class="p">,</span> <span class="n">eglSurface</span><span class="p">,</span> <span class="n">eglContext</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>这里需要注意的是，这个方法调用需要在一个独立的线程中，最后一句代码是与当前线程绑定，相关的OpenGL的操作，只能在对应的线程中进行。
+有了这个OpenGL环境以后，就可以创建对应的<code class="language-plaintext highlighter-rouge">SurfaceTexture</code>了，简单的代码如下：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">textureIds</span> <span class="p">=</span> <span class="nc">IntArray</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nc">GLES20</span><span class="p">.</span><span class="nf">glGenTextures</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">textureIds</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="kd">val</span> <span class="py">texture</span> <span class="p">=</span> <span class="nc">SurfaceTexture</span><span class="p">(</span><span class="n">textureIds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+<p>同样的，这里的代码也要运行在之前的创建EGL环境相同的线程之下，之后便可以将这里创建的<code class="language-plaintext highlighter-rouge">texture</code>设置给camera对象用于预览。</p>
+
+<h3 id="32-监听预览-消除形变-绘制画面">3.2 监听预览-消除形变-绘制画面</h3>
+<p>给上一步中创建的<code class="language-plaintext highlighter-rouge">texture</code>设置一个画面监听。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">matrix</span> <span class="p">=</span> <span class="nc">FloatArray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">texture</span><span class="p">.</span><span class="nf">setOnFrameAvailableListener</span> <span class="p">{</span>
+    <span class="nf">queue</span> <span class="p">{</span>
+        <span class="n">texture</span><span class="p">.</span><span class="nf">updateTexImage</span><span class="p">()</span>
+        <span class="n">texture</span><span class="p">.</span><span class="nf">getTransformMatrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+        <span class="nf">drawFrame</span><span class="p">(</span><span class="n">textureIds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">matrix</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">fun</span> <span class="nf">drawFrame</span><span class="p">(</span><span class="n">textureId</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">matrix</span><span class="p">:</span> <span class="nc">FloatArray</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ....</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>简单解释一下这里代码：</p>
+<ol>
+  <li>先创建一个浮点数组，用于接收预览画面的坐标数据，用于OpenGL绘制画面使用；</li>
+  <li>然后设置画面监听，这里在相机开启预览后会触发一次；</li>
+  <li>在画面监听回调中，切换到EGL线程中，调用<code class="language-plaintext highlighter-rouge">updateTexImage</code>，只有这样，画面监听回调才会持续的被执行；</li>
+  <li>最后调用<code class="language-plaintext highlighter-rouge">getTransformMatrix</code>获取画面坐标数据，为之后的画面绘制做准备。</li>
+</ol>
+
+<p>接下来，便是执行画面的绘制，在画面绘制关键的一步就是消除形变，这里需要先获得camera对象的预览尺寸，从支持的预览尺寸中，挑选最佳匹配尺寸以及消除方形问题的相关代码，这里不再赘述，只提供消除形变的关键代码。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">inputSize</span><span class="p">:</span> <span class="nc">Size</span> <span class="c1">// 相机输出的预览画面尺寸，因为要作为绘制的输入，所以称为inputSize，注意消除屏幕方向旋转的问题</span>
+<span class="kd">val</span> <span class="py">outputSize</span><span class="p">:</span> <span class="nc">Size</span> <span class="c1">// 输出画面的尺寸</span>
+<span class="kd">val</span> <span class="py">viewport</span><span class="p">:</span> <span class="nc">Rect</span> <span class="c1">// 计算出预览画面要消除形变，需要做的位置与尺寸变更</span>
+
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">calculateBestViewPort</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">inputSize</span><span class="p">.</span><span class="n">isEmpty</span> <span class="p">||</span> <span class="n">outputSize</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">scale</span> <span class="p">=</span> <span class="nf">max</span><span class="p">(</span><span class="n">outputSize</span><span class="p">.</span><span class="n">width</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span> <span class="p">/</span> <span class="n">inputSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">outputSize</span><span class="p">.</span><span class="n">height</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span> <span class="p">/</span> <span class="n">inputSize</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">srcWidth</span> <span class="p">=</span> <span class="p">(</span><span class="n">inputSize</span><span class="p">.</span><span class="n">width</span> <span class="p">*</span> <span class="n">scale</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">srcHeight</span> <span class="p">=</span> <span class="p">(</span><span class="n">inputSize</span><span class="p">.</span><span class="n">height</span> <span class="p">*</span> <span class="n">scale</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+
+    <span class="kd">val</span> <span class="py">left</span> <span class="p">=</span> <span class="p">(</span><span class="n">outputSize</span><span class="p">.</span><span class="n">width</span> <span class="p">-</span> <span class="n">srcWidth</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+    <span class="kd">val</span> <span class="py">top</span> <span class="p">=</span> <span class="p">(</span><span class="n">outputSize</span><span class="p">.</span><span class="n">height</span> <span class="p">-</span> <span class="n">srcHeight</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+    <span class="n">viewport</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span> <span class="p">+</span> <span class="n">srcWidth</span><span class="p">,</span> <span class="n">top</span> <span class="p">+</span> <span class="n">srcHeight</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>在绘制画面前，执行OpenGL的<code class="language-plaintext highlighter-rouge">glViewport</code>方法，就可以消除形变了。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">drawFrame</span><span class="p">(</span><span class="n">textureId</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">texMatrix</span><span class="p">:</span> <span class="nc">FloatArray</span><span class="p">?)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="n">viewport</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">GLES20</span><span class="p">.</span><span class="nf">glViewport</span><span class="p">(</span><span class="n">viewport</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">viewport</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">viewport</span><span class="p">.</span><span class="nf">width</span><span class="p">(),</span> <span class="n">viewport</span><span class="p">.</span><span class="nf">height</span><span class="p">())</span>
+    <span class="p">}</span>
+    <span class="c1">// 绘制画面代码有大量的OpenGL操作，具体不再赘述</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="四总结">四、总结</h2>
+<p>到这里，主要的消除形变预览相机画面的主要逻辑流程，就基本结束了，重点是梳理思路，在具体的实践中，还是有很多细碎的问题的，就比如相机预览尺寸的选取与方向设置问题。</p>
+
+<p>另外，为这里只是为了说明逻辑，临时写了代码逻辑部分，实际项目中，我直接使用了<a href="https://github.com/google/grafika">Grafika</a>项目中的egl包下代码，这个项目给了我很多灵感，真心推荐给各位看一下这个项目中的代码。</p>
+
+<p>也许同样做过消除形变的朋友，会认为为什么不直接使用<code class="language-plaintext highlighter-rouge">TextureView</code>，然后通过<code class="language-plaintext highlighter-rouge">setTransform</code>的方式消除形变呢？</p>
+
+<p>实际上，如果只是为了消除预览的形变，这样做是没有问题的，也是非常便捷的，但是做相机应用的开发，难免会有拍照、录像、帧数据回调(主要是扫码)相关的功能性逻辑，在这类逻辑中，通过这种方式，就无法做到<strong>可见即所得</strong>式的效果了，就比如拍照，你必须在拍照后，对图片做一次按照预览框尺寸<code class="language-plaintext highlighter-rouge">crop</code>的操作了，如果只是拍照还比较简单，如果是录像的话，没有录像期间切换摄像头的需求，使用<code class="language-plaintext highlighter-rouge">MediaRecorder</code>或许可以，我没有试过，但是有这样的需求，<code class="language-plaintext highlighter-rouge">MediaRecorder</code>就无法满足需求了，面对这样的需求，我之前是通过获取帧数据，然后用libYuv缩放、剪裁反转旋转帧数据等操作，最后喂给<code class="language-plaintext highlighter-rouge">MediaCodec</code>的方式，我当前的这个方案，是可以通过共享OpenGL上下文的方式，实现<strong>所见即所得</strong>的录像，不需要繁琐的操作帧数据了，减少了额外库的引入。</p>
+
+<p>对于上述录像相关的逻辑，我将用新的文章来阐述。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <a href="/tag/camera">Camera</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

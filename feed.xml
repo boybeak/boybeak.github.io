@@ -1,13 +1,704 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-11-21T11:22:20+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Hello</title><link href="/jekyll/update/2024/11/21/Hello.html" rel="alternate" type="text/html" title="Hello" /><published>2024-11-21T10:43:46+00:00</published><updated>2024-11-21T10:43:46+00:00</updated><id>/jekyll/update/2024/11/21/Hello</id><content type="html" xml:base="/jekyll/update/2024/11/21/Hello.html"><![CDATA[]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="/jekyll/update/2024/11/21/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2024-11-21T10:43:46+00:00</published><updated>2024-11-21T10:43:46+00:00</updated><id>/jekyll/update/2024/11/21/welcome-to-jekyll</id><content type="html" xml:base="/jekyll/update/2024/11/21/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-11-21T11:58:29+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>boybeak</name></author><entry><title type="html">写了一个Hexo主题与插件</title><link href="/2024/09/22/%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAHexo%E4%B8%BB%E9%A2%98%E4%B8%8E%E6%8F%92%E4%BB%B6.html" rel="alternate" type="text/html" title="写了一个Hexo主题与插件" /><published>2024-09-22T17:41:32+00:00</published><updated>2024-09-22T17:41:32+00:00</updated><id>/2024/09/22/%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAHexo%E4%B8%BB%E9%A2%98%E4%B8%8E%E6%8F%92%E4%BB%B6</id><content type="html" xml:base="/2024/09/22/%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAHexo%E4%B8%BB%E9%A2%98%E4%B8%8E%E6%8F%92%E4%BB%B6.html"><![CDATA[<p>最近写了一个Hexo的主题，同时为了配合主题<a href="https://github.com/hexober/hexober.github.io">Hexober</a>，写了一个插件<a href="https://github.com/boybeak/hexo-auto-photos">hexo-auto-photos</a>。</p>
 
-<p>To add new posts, simply add a file in the <code class="language-plaintext highlighter-rouge">_posts</code> directory that follows the convention <code class="language-plaintext highlighter-rouge">YYYY-MM-DD-name-of-post.ext</code> and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+<h2 id="hexober">Hexober</h2>
+<p><a href="https://github.com/hexober/hexober.github.io">Hexober</a>是一个基于<a href="https://soberjs.com/">soberJS</a>的Material Design风格的Hexo主题。本博客即将切换到该主题下。</p>
 
-<p>Jekyll also offers powerful support for code snippets:</p>
+<h2 id="hexo-auto-photos">hexo-auto-photos</h2>
+<p><a href="https://github.com/boybeak/hexo-auto-photos">hexo-auto-photos</a>是一个自动从文章内容中，提取出photos字段的库，该库可配合<a href="https://github.com/hexober/hexober.github.io">Hexober</a>或者其它支持文章列表展示图片的主题使用。当使用该库以后，如果用户没有指定文章的photos字段，将会自动从文章中找到图片部分，并填充到文章的photos字段中。</p>]]></content><author><name>boybeak</name></author><category term="Hexo" /><summary type="html"><![CDATA[最近写了一个Hexo的主题，同时为了配合主题Hexober，写了一个插件hexo-auto-photos。]]></summary></entry><entry><title type="html">面试笔记</title><link href="/%E9%9D%A2%E8%AF%95%E7%AC%94%E8%AE%B0/2024/06/16/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%931.html" rel="alternate" type="text/html" title="面试笔记" /><published>2024-06-16T17:03:00+00:00</published><updated>2024-06-16T17:03:00+00:00</updated><id>/%E9%9D%A2%E8%AF%95%E7%AC%94%E8%AE%B0/2024/06/16/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%931</id><content type="html" xml:base="/%E9%9D%A2%E8%AF%95%E7%AC%94%E8%AE%B0/2024/06/16/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%931.html"><![CDATA[<p>边独立，边面试，两手都要抓，两手都要硬。</p>
+<h3 id="1-给定数组array与一个数字num要求从array中找出两个数其和为num并返回这两个数的下标">1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标</h3>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">findTwoSum</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="nc">IntArray</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">&gt;?</span> <span class="p">{</span>
+    <span class="c1">// 创建一个哈希表来存储数组中的数字及其索引</span>
+    <span class="kd">val</span> <span class="py">map</span> <span class="p">=</span> <span class="n">mutableMapOf</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">&gt;()</span>
 
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
-<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+    <span class="c1">// 遍历数组</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="n">array</span><span class="p">.</span><span class="n">indices</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">complement</span> <span class="p">=</span> <span class="n">num</span> <span class="p">-</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry></feed>
+        <span class="c1">// 检查哈希表中是否存在这个补数</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">map</span><span class="p">.</span><span class="nf">containsKey</span><span class="p">(</span><span class="n">complement</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// 如果存在，返回这个数及其补数的索引</span>
+            <span class="k">return</span> <span class="nc">Pair</span><span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">complement</span><span class="p">]</span><span class="o">!!</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 将当前数字及其索引存入哈希表</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="p">=</span> <span class="n">i</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 如果没有找到符合条件的数对，返回null</span>
+    <span class="k">return</span> <span class="k">null</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><strong>解读：</strong></p>
+<ol>
+  <li>创建一个map，在遍历的过程中，报错所有数字以及其对应的坐标，数字为键，坐标为值；</li>
+  <li>遍历时，计算出num与当前元素的差值，然后试图从map中索引，如果有索引，则命中，如果没有则继续遍历；</li>
+  <li>map的作用，相当于取代了双层遍历法其中的一层遍历；</li>
+</ol>
+
+<h3 id="2-jvm如何判断一个对象可以被回收">2. jvm如何判断一个对象可以被回收？</h3>
+<ol>
+  <li>引用计数法
+优点：实现简单，时间复杂度低；
+缺点：无法解决循环引用问题；</li>
+  <li>可达性分析算法
+通过GC Roots开始标记所有可达的对象；可以被标记的，认为是活的对象，未被标记的，则认为已经不需要，可以被回收；</li>
+</ol>
+
+<h4 id="21-有哪些可以作为gc-root">2.1 有哪些可以作为GC Root?</h4>
+<ul>
+  <li>虚拟机栈（栈帧中的本地变量表）中引用的对象。</li>
+  <li>方法区中的类静态属性引用的对象。</li>
+  <li>方法区中常量引用的对象。</li>
+  <li>本地方法栈中JNI（即Native方法）引用的对象。</li>
+</ul>
+
+<h4 id="22-垃圾回收的过程是怎样的">2.2 垃圾回收的过程是怎样的？</h4>
+<p>有三种策略：</p>
+<ul>
+  <li>标记清除：首先标记所有可达对象，然后清除所有未被标记的对象；</li>
+  <li>复制算法：将存活的对象，从一块内存复制到另外一块内存，然后清空原来的内存；</li>
+  <li>标记-压缩： 首先标记所有可达的对象，然后将所有存活的对象压缩到内存的一端，清除便捷以外的空间；</li>
+</ul>
+
+<h3 id="3-android的handler是如何造成内存泄露的">3. Android的Handler是如何造成内存泄露的？</h3>
+<p>非静态内部类或者匿名内部类，会隐式的持有外部类的对象，如果在Activity中声明一个Handler，而Handler执行延迟任务，在任务结束前，Activity已经被销毁了，则Activiey泄露了；</p>
+
+<p>#### 3.1 如何解决Handler的内存泄露？</p>
+<ol>
+  <li>将<code class="language-plaintext highlighter-rouge">Handler</code>声明为静态内部类，并且使用弱引用持有外部类的引用；</li>
+  <li>在Activity的onDestroy中，使用<code class="language-plaintext highlighter-rouge">Handler</code>的<code class="language-plaintext highlighter-rouge">removeCallbacksAndMessages</code>方法，移除所有未执行的消息和回调；</li>
+</ol>
+
+<p>#### 3.2 有没有非Activity的其他内存泄露的场景？</p>
+<ol>
+  <li>单例持有外部对象；</li>
+  <li>静态持有外部对象；</li>
+  <li>未取消注册监听器或者回调；</li>
+  <li>WebView导致内存泄露；</li>
+  <li>异步任务；
+ 总结来说，就是生命周期长的对象，持有了一个生命周期短的对象的引用；</li>
+</ol>
+
+<p>### 4. 应用启动白屏如何排查？如何解决？</p>
+<ol>
+  <li>在应用入口，比如Application的onCreate、启动Activity的onCreate中，做耗时检查，如果耗时异常，具体检查代码；</li>
+  <li>如果是Activity的onCreate中耗时长，检查是否为布局过于复杂，造成的布局解析耗时长，可以使用异步布局处理；</li>
+  <li>如果为系统机制问题导致，可以配置主题或者使用Splash库来做过渡；</li>
+</ol>
+
+<h3 id="5-线上问题如何排查">5. 线上问题如何排查？</h3>
+<ol>
+  <li>运营种子用户，提前内测，按照用户反馈，复现问题场景；</li>
+  <li>集成bugly等线上日志抓取工具，按照机型、系统等信息，复现问题场景；</li>
+  <li>如果有可能，可以通过热更新修复问题；</li>
+</ol>
+
+<h3 id="6-不同任务类型io密集型计算密集型任务如何分配线程池策略">6. 不同任务类型(IO密集型/计算密集型)任务，如何分配线程池策略？</h3>
+<h4 id="io密集型任务">IO密集型任务</h4>
+<p><strong>特点</strong>
+IO密集型任务主要涉及等待外部资源（如文件系统、网络请求、数据库操作等），因此大部分时间处于等待状态，而非消耗CPU。</p>
+
+<p><strong>策略</strong>
+对于IO密集型任务，可以使用较大的线程池，因为线程在等待IO操作完成时不会消耗大量CPU资源。</p>
+
+<p><strong>线程池配置</strong>
+通常，线程池的大小可以设置为CPU核心数的2倍或更多。一个常见的公式是：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>线程池大小 <span class="o">=</span> CPU核心数 <span class="k">*</span> 2
+或更大，根据实际情况调整。
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IOIntensiveTaskExample</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">N_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ExecutorService</span> <span class="n">ioThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">N_THREADS</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟IO操作</span>
+                <span class="n">performIOOperation</span><span class="o">();</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+
+        <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performIOOperation</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// 模拟IO操作</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">interrupt</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="计算密集型任务">计算密集型任务</h4>
+<p><strong>特点</strong>
+计算密集型任务主要消耗CPU资源，执行过程中几乎不涉及等待时间，因此可以充分利用CPU。</p>
+
+<p><strong>策略</strong>
+对于计算密集型任务，线程池的大小应设置为接近CPU核心数。过多的线程会导致频繁的上下文切换，反而降低性能。</p>
+
+<p><strong>线程池配置</strong>
+通常，线程池的大小可以设置为CPU核心数。一个常见的公式是：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>线程池大小 <span class="o">=</span> CPU核心数
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CPUIntensiveTaskExample</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">N_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ExecutorService</span> <span class="n">cpuThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">N_THREADS</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟计算操作</span>
+                <span class="n">performCPUTask</span><span class="o">();</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+
+        <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performCPUTask</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 模拟计算操作</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p><strong>混合任务</strong>
+在实际应用中，有些任务可能既包含IO操作又包含计算操作。这种情况下，可以考虑使用不同的线程池分别处理不同类型的任务，或者根据任务的主要特征选择适当的线程池配置。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MixedTaskExample</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">IO_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">CPU_THREADS</span> <span class="o">=</span> <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">();</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ExecutorService</span> <span class="n">ioThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">IO_THREADS</span><span class="o">);</span>
+        <span class="nc">ExecutorService</span> <span class="n">cpuThreadPool</span> <span class="o">=</span> <span class="nc">Executors</span><span class="o">.</span><span class="na">newFixedThreadPool</span><span class="o">(</span><span class="no">CPU_THREADS</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟IO操作</span>
+                <span class="n">performIOOperation</span><span class="o">();</span>
+            <span class="o">});</span>
+
+            <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">submit</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="c1">// 模拟计算操作</span>
+                <span class="n">performCPUTask</span><span class="o">();</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+
+        <span class="n">ioThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+        <span class="n">cpuThreadPool</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performIOOperation</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="c1">// 模拟IO操作</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">interrupt</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">performCPUTask</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">// 模拟计算操作</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h4 id="总结">总结</h4>
+<p><strong>IO密集型任务</strong>：使用较大的线程池，通常为CPU核心数的2倍或更多，以应对大量的IO等待时间。
+<strong>计算密集型任务</strong>：使用较小的线程池，接近CPU核心数，以充分利用CPU资源，避免过多的线程上下文切换。
+<strong>混合任务</strong>：根据任务的主要特征，分别使用不同的线程池处理IO操作和计算操作。
+通过合理配置线程池，可以有效提高应用程序的性能和资源利用率。</p>]]></content><author><name>boybeak</name></author><category term="面试笔记" /><category term="面试" /><summary type="html"><![CDATA[边独立，边面试，两手都要抓，两手都要硬。 1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标 ```kotlin fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? { // 创建一个哈希表来存储数组中的数字及其索引 val map = mutableMapOf&lt;Int, Int&gt;()]]></summary></entry><entry><title type="html">Tray - macOS菜单栏app开发库</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/14/Tray-macOS%E8%8F%9C%E5%8D%95%E6%A0%8Fapp%E5%BC%80%E5%8F%91%E5%BA%93.html" rel="alternate" type="text/html" title="Tray - macOS菜单栏app开发库" /><published>2024-06-14T15:15:00+00:00</published><updated>2024-06-14T15:15:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/14/Tray-macOS%E8%8F%9C%E5%8D%95%E6%A0%8Fapp%E5%BC%80%E5%8F%91%E5%BA%93</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/14/Tray-macOS%E8%8F%9C%E5%8D%95%E6%A0%8Fapp%E5%BC%80%E5%8F%91%E5%BA%93.html"><![CDATA[<p>最近开发了<a href="https://github.com/boybeak/JustTodo">JustTodo</a>和<a href="https://github.com/boybeak/DeskNote">DeskNote</a>两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app <a href="https://github.com/boybeak/TranslatorDocs">Translator</a>时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。
+为了解决这一痛点，在总结了<a href="https://github.com/boybeak/JustTodo">JustTodo</a>和<a href="https://github.com/boybeak/DeskNote">DeskNote</a>两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库<a href="https://github.com/boybeak/Tray">Tray</a>，方便以后使用。</p>
+
+<h2 id="一引入">一、引入</h2>
+<p>在macOS项目中，点击<strong>File</strong> -&gt; <strong>Add Package Dependencies …</strong>，在包管理窗口的搜索框中，复制粘贴<code class="language-plaintext highlighter-rouge">https://github.com/boybeak/Tray.git</code>，待检索到库信息，点击<strong>Add Package</strong>按钮。</p>
+
+<h2 id="二使用">二、使用</h2>
+<p>以SwiftUI应用为例，在代码入口处，声明一个<code class="language-plaintext highlighter-rouge">AppDelegate</code>.</p>
+
+<h3 id="21-初始化">2.1 初始化</h3>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">DeskNoteApp</span><span class="p">:</span> <span class="kt">App</span> <span class="p">{</span>
+
+    <span class="kd">@NSApplicationDelegateAdaptor</span><span class="p">(</span><span class="kt">AppDelegate</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="k">var</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">AppDelegate</span>
+
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">Scene</span> <span class="p">{</span>
+        <span class="kt">Settings</span> <span class="p">{}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>这里body中的<code class="language-plaintext highlighter-rouge">Settings {}</code>代码，是为了隐藏启动时的主窗口。</p>
+</blockquote>
+
+<p>然后创建AppDelegate类。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">AppDelegate</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSApplicationDelegate</span> <span class="p">{</span>
+
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">tray</span><span class="p">:</span> <span class="kt">Tray</span><span class="o">!</span>
+    
+    <span class="kd">func</span> <span class="nf">applicationDidFinishLaunching</span><span class="p">(</span><span class="n">_</span> <span class="nv">notification</span><span class="p">:</span> <span class="kt">Notification</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="n">tray</span> <span class="o">=</span> <span class="kt">Tray</span><span class="o">.</span><span class="nf">install</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"TrayIcon"</span><span class="p">)</span> <span class="p">{</span> <span class="n">tray</span> <span class="k">in</span> 
+            <span class="k">self</span><span class="o">.</span><span class="nf">configTray</span><span class="p">(</span><span class="nv">tray</span><span class="p">:</span> <span class="n">tray</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>引入相关的类Tray并声明我们的托盘管理对象<code class="language-plaintext highlighter-rouge">var tray: Tray</code>，并在<code class="language-plaintext highlighter-rouge">applicationDidFinishLaunching</code>中为改对象赋值，传入资源文件名称，或者使用<code class="language-plaintext highlighter-rouge">SF Symbols</code>也可以，只是参数名要改为systemSymbolName，如果有更多要求，也可以直接以icon为参数名，传入一个NSImage对象。
+然后在闭包中配置tray.</p>
+
+<h3 id="22-配置托盘信息">2.2 配置托盘信息</h3>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">func</span> <span class="nf">configTray</span><span class="p">(</span><span class="nv">tray</span><span class="p">:</span> <span class="kt">Tray</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 配置左键弹出view</span>
+    <span class="n">tray</span><span class="o">.</span><span class="nf">setView</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="kt">ContentView</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>这里设置的是一个SwiftUI的View，你也可以设置NSView或者NSViewController，除了界面参数，还有其他三个可选参数：</p>
+<ol>
+  <li>behavior: NSPopover的behavior，默认值为.transient，即点击窗口以外区域隐藏弹出界面；</li>
+  <li>level: NSPopover的窗口层级，默认为.floating；</li>
+  <li>size: NSPopover的大小，默认为nil，即使用View自己配置的大小；</li>
+</ol>
+
+<p>在JustTodo应用中，其效果如下图：
+<img src="/assets/images/just-todo.gif" alt="" /></p>
+
+<p>到这里，主要的配置就完成了，如果你不想弹出一个NSPopover，你也可以接管托盘图标的左键事件。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tray</span><span class="o">.</span><span class="n">setOnLeftClick</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>返回true，表示事件完全处理，会阻止默认行为。默认行为就是弹出NSPopover，前提是设置了view。比如在DeskNote中，我接管了此事件，改为弹出笔记的编辑页面。
+<img src="/assets/images/dest-note.gif" alt="" />
+当然，同样你也可以为右键增加事件。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tray</span><span class="o">.</span><span class="n">setOnRightClick</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>返回true，表示事件完成处理，阻止默认行为。默认行为是弹出菜单，前提是设置了菜单，正如下边代码。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">menu</span> <span class="o">=</span> <span class="kt">NSMenu</span><span class="p">()</span>
+        
+<span class="k">let</span> <span class="nv">newNoteMenuItem</span> <span class="o">=</span> <span class="kt">NSMenuItem</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"Menu_item_new_note"</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">""</span><span class="p">),</span> <span class="nv">action</span><span class="p">:</span> <span class="kd">#selector(</span><span class="nf">onNewNoteAction</span><span class="kd">)</span><span class="p">,</span> <span class="nv">keyEquivalent</span><span class="p">:</span> <span class="s">""</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">quitMenuItem</span> <span class="o">=</span> <span class="kt">NSMenuItem</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="s">"Menu_item_quit"</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">""</span><span class="p">),</span> <span class="nv">action</span><span class="p">:</span> <span class="kd">#selector(</span><span class="nf">onQuitAction</span><span class="kd">)</span><span class="p">,</span> <span class="nv">keyEquivalent</span><span class="p">:</span> <span class="s">""</span><span class="p">)</span>
+
+<span class="n">menu</span><span class="o">.</span><span class="nf">addItem</span><span class="p">(</span><span class="n">newNoteMenuItem</span><span class="p">)</span>
+<span class="n">menu</span><span class="o">.</span><span class="nf">addItem</span><span class="p">(</span><span class="n">quitMenuItem</span><span class="p">)</span>
+
+<span class="n">tray</span><span class="o">.</span><span class="nf">setMenu</span><span class="p">(</span><span class="nv">menu</span><span class="p">:</span> <span class="n">menu</span><span class="p">)</span>
+</code></pre></div></div>
+<p>效果如下：
+<img src="/assets/images/dest-note-right.gif" alt="" /></p>
+
+<p>这就是一些基本的使用和配置步骤。接下来是一些相关的小建议。</p>
+
+<h2 id="三建议">三、建议</h2>
+<h3 id="31-托盘图标尺寸">3.1 托盘图标尺寸</h3>
+<p>1x: 18<em>18
+2x: 36</em>36
+3x: 54*54</p>
+
+<h3 id="32-隐藏docker栏中应用的图标">3.2 隐藏Docker栏中应用的图标</h3>
+<p>在Info.plist中，增加一个配置项: <strong>Application is agent(UIElement)</strong> - <strong>YES</strong>.</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><summary type="html"><![CDATA[最近开发了JustTodo和DeskNote两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app Translator时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。 为了解决这一痛点，在总结了JustTodo和DeskNote两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库Tray，方便以后使用。]]></summary></entry><entry><title type="html">发布Swift Package库</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift-Package%E5%BA%93.html" rel="alternate" type="text/html" title="发布Swift Package库" /><published>2024-06-04T22:19:00+00:00</published><updated>2024-06-04T22:19:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift%20Package%E5%BA%93</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift-Package%E5%BA%93.html"><![CDATA[<p>最近开发<a href="https://github.com/boybeak/JustTodo">JustTodo</a>时，发觉把处理托盘应用的代码封装起来是很有必要的，这样的话，在以后开发其他应用时，便不需要一而再的写重复代码。以前发布过很多Android平台的类库，但是对于macOS平台的swift库，我还是第一次。</p>
+<blockquote>
+  <p>再次吐槽一下苹果生态下的包管理，挺混乱的，最终我选择使用最新的Swift Package Manager</p>
+</blockquote>
+
+<p>该文章中涉及到的所有代码都在<a href="https://github.com/boybeak/Tray">boybeak/Tray</a></p>
+
+<h2 id="一创建github仓库">一、创建Github仓库</h2>
+<p>我们需要先创建一个Github仓库，我的仓库名称为Tray，将其clone到本地。</p>
+
+<h2 id="二在仓库目录下初始化一个swift-package">二、在仓库目录下，初始化一个Swift Package。</h2>
+<p>在Tray仓库目录下，执行以下脚本。</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tray % swift package init <span class="nt">--type</span> library
+</code></pre></div></div>
+<p>该命令，会自动按照目录名称，初始化一个Swift Package，其目录如下：</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">Tray</span>
+  <span class="nt">-</span> <span class="nt">Package</span><span class="nc">.swift</span>
+  <span class="nt">-</span> <span class="nc">.gitignore</span>
+  <span class="nt">-</span> <span class="nt">Sources</span><span class="o">/</span>
+    <span class="nt">-</span> <span class="nt">Tray</span><span class="o">/</span><span class="nt">Tray</span><span class="nc">.swift</span>
+  <span class="nt">-</span> <span class="nt">Tests</span><span class="o">/</span>
+    <span class="nt">-</span> <span class="nt">TrayTests</span><span class="o">/</span><span class="nt">TrayTests</span><span class="nc">.swift</span>
+</code></pre></div></div>
+<p>其中，Package.swift为库的索引入口，当Xcode在按照Github链接查找库时，会以查到此文件为准则。其内容如下：</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// swift-tools-version: 5.10</span>
+<span class="c1">// The swift-tools-version declares the minimum version of Swift required to build this package.</span>
+
+<span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">,</span>
+    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Products define the executables and libraries a package produces, making them visible to other packages.</span>
+        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">,</span>
+            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"Tray"</span><span class="p">]),</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="c1">// Targets are the basic building blocks of a package, defining a module or a test suite.</span>
+        <span class="c1">// Targets can depend on other targets in this package and products from dependencies.</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">),</span>
+        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
+            <span class="nv">name</span><span class="p">:</span> <span class="s">"TrayTests"</span><span class="p">,</span>
+            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Tray"</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="三发布库">三、发布库</h2>
+<p>补充相关逻辑代码，提交/推送到GitHub，便可以在其他库中使用。不需要特别的发布操作。
+在正式发布前，也可以本地使用，创建一个新项目，在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，点击<strong>Add Local</strong>按钮，然后选择Tray文件夹，便可以本地使用，同时，你也可以在项目中，直接编辑该库的代码。</p>
+
+<p>提交代码到Github后，你可以把自己的库提交到<a href="https://swiftpackageindex.com/">Swift Package Index</a>，方便他人查找。进入页面后，点击<strong>Add a package</strong>，进入新页面后，会有一个绿色的<strong>Add Package(s)</strong>按钮，此点击此按钮，会自动跳转到Swift Package Index的Github的issue页面，并会有一个提交模板，输入自己库的Github链接后，提issue，机器人会处理这个issue，并再提一个新的issue，点击链接到新的issue中，点击链接，对你的代码进行code review，注意勾选<strong>viewed</strong>复选框，完成code review后，机器人会自动处理接下来的流程。</p>
+
+<h2 id="四使用库">四、使用库</h2>
+<p>在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，复制<code class="language-plaintext highlighter-rouge">https://github.com/boybeak/Tray.git</code>到搜索库，然后就可以添加库了。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><summary type="html"><![CDATA[最近开发JustTodo时，发觉把处理托盘应用的代码封装起来是很有必要的，这样的话，在以后开发其他应用时，便不需要一而再的写重复代码。以前发布过很多Android平台的类库，但是对于macOS平台的swift库，我还是第一次。 再次吐槽一下苹果生态下的包管理，挺混乱的，最终我选择使用最新的Swift Package Manager]]></summary></entry><entry><title type="html">JustTodo开发(五) SwiftUI + web</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/26/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%94)-SwiftUI-+-web.html" rel="alternate" type="text/html" title="JustTodo开发(五) SwiftUI + web" /><published>2024-05-26T17:41:00+00:00</published><updated>2024-05-26T17:41:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/26/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%94)%20SwiftUI%20+%20web</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/26/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%94)-SwiftUI-+-web.html"><![CDATA[<p>初版完成以后，发现了一个问题，就是web中的输入框不接受复制/粘贴的快捷键(cmd+c, cmd+v)，触发快捷键时，会弹“咚”一声系统音，暂时在AppKit下没能解决这个问题，搜了很多资料，比如这里-<a href="https://stackoverflow.com/questions/49637675/cut-copy-paste-keyboard-shortcuts-not-working-in-nspopover">Cut/copy/paste keyboard shortcuts not working in NSPopover</a>，想要支持这两个快捷键还是很不容易的，其实包括cmd+x, cmd+a也都不支持，但是我想到之前写的同样是托盘应用<a href="https://github.com/boybeak/TranslatorDocs">Translator</a>，这个就支持这些快捷键，让我突然想到，是不是可以在SwiftUI下，封装一个WKWebView，然后再加载web内容呢？</p>
+
+<p>经过简单验证，封装一个WebView，然后先价值一个最简单的输入框的测试页面，发现这些快捷键是完全工作正常的，所以现在代码已经切换到SwiftUI+web了。</p>
+
+<p><img src="/assets/images/just-todo.gif" alt="demo" />
+接下来的一个功能就是增加tab上的图标显示。</p>
+
+<p><strong>源码地址</strong>: <a href="https://github.com/boybeak/JustTodo">JustTodo</a>
+<strong>下载地址</strong>: <a href="https://github.com/boybeak/JustTodo/releases">JustTodo-Releases</a></p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[初版完成以后，发现了一个问题，就是web中的输入框不接受复制/粘贴的快捷键(cmd+c, cmd+v)，触发快捷键时，会弹“咚”一声系统音，暂时在AppKit下没能解决这个问题，搜了很多资料，比如这里-Cut/copy/paste keyboard shortcuts not working in NSPopover，想要支持这两个快捷键还是很不容易的，其实包括cmd+x, cmd+a也都不支持，但是我想到之前写的同样是托盘应用Translator，这个就支持这些快捷键，让我突然想到，是不是可以在SwiftUI下，封装一个WKWebView，然后再加载web内容呢？]]></summary></entry><entry><title type="html">JustTodo开发(四) 初版完成</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/23/JustTodo%E5%BC%80%E5%8F%91(%E5%9B%9B)-%E5%88%9D%E7%89%88%E5%AE%8C%E6%88%90.html" rel="alternate" type="text/html" title="JustTodo开发(四) 初版完成" /><published>2024-05-23T21:53:00+00:00</published><updated>2024-05-23T21:53:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/23/JustTodo%E5%BC%80%E5%8F%91(%E5%9B%9B)%20%E5%88%9D%E7%89%88%E5%AE%8C%E6%88%90</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/23/JustTodo%E5%BC%80%E5%8F%91(%E5%9B%9B)-%E5%88%9D%E7%89%88%E5%AE%8C%E6%88%90.html"><![CDATA[<p>初版已经完成，从切换到SoberJS，基本上只用了一周，便写出来了，如果是使用macOS的原生开发方案，可能现在还困在各种不兼容中。
+<img src="/assets/images/just-todo.gif" alt="demo" /></p>
+
+<h2 id="基本功能">基本功能</h2>
+<ol>
+  <li>创建/删除 Tab；</li>
+  <li>创建/标记/删除 Todo笔记；</li>
+  <li>右键菜单，关于/退出；</li>
+</ol>
+
+<p><strong>源码地址</strong>: <a href="https://github.com/boybeak/JustTodo">JustTodo</a>
+<strong>下载地址</strong>: <a href="https://github.com/boybeak/JustTodo/releases">JustTodo-Releases</a></p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[初版已经完成，从切换到SoberJS，基本上只用了一周，便写出来了，如果是使用macOS的原生开发方案，可能现在还困在各种不兼容中。]]></summary></entry><entry><title type="html">JustTodo开发(三) 更换技术路线，跑步前进</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/17/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%89)-%E6%9B%B4%E6%8D%A2%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF-%E8%B7%91%E6%AD%A5%E5%89%8D%E8%BF%9B.html" rel="alternate" type="text/html" title="JustTodo开发(三) 更换技术路线，跑步前进" /><published>2024-05-17T23:28:00+00:00</published><updated>2024-05-17T23:28:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/17/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%89)%20%E6%9B%B4%E6%8D%A2%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%EF%BC%8C%E8%B7%91%E6%AD%A5%E5%89%8D%E8%BF%9B</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/17/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%89)-%E6%9B%B4%E6%8D%A2%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF-%E8%B7%91%E6%AD%A5%E5%89%8D%E8%BF%9B.html"><![CDATA[<p>在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。</p>
+
+<p>经过一番查找，终于找到了一个Material Design风格的Web UI框架<a href="https://soberjs.com/">SoberJS</a>，作为一个android开发者，对这一套UI相对来说很熟悉了，用起来也驾轻就熟。</p>
+
+<p>经过两天的开发时间，效果图如下：
+<img src="/assets/images/sober_my_todo.png" alt="" />
+这样既实现了最初的顶部导航设想，又能加快开发速度。</p>
+
+<p>再次吐槽苹果的原生开发在macOS上真的好吃力。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。]]></summary></entry><entry><title type="html">JustTodo开发(二) 界面初始化</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html" rel="alternate" type="text/html" title="JustTodo开发(二) 界面初始化" /><published>2024-05-12T17:18:00+00:00</published><updated>2024-05-12T17:18:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)%20%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html"><![CDATA[<h2 id="一界面布局">一、界面布局</h2>
+<p>一个简单的界面布局描述如下：</p>
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------------</span>
+<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span> <span class="err">1</span> <span class="o">|</span>      <span class="err">2</span>        <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
+<span class="o">|</span>   <span class="o">|</span><span class="nt">---------------</span><span class="o">|</span>
+<span class="o">|</span>   <span class="o">|</span>      <span class="err">3</span>        <span class="o">|</span>
+<span class="nt">---------------------</span>
+</code></pre></div></div>
+<p>简单分为3个区域：</p>
+<ol>
+  <li>导航 - 用于做Todo Item的分类导航，是一个列表；</li>
+  <li>内容 - 展示当前分类下的Todo Items；</li>
+  <li>输入 - 在当前分类下创建新的Todo。</li>
+</ol>
+
+<blockquote>
+  <p>这实际上是一个妥协方案，我的理想方案是简单的上中下三部分，上部分上导航，类似于chrome浏览器顶部页面管理那种，但是macOS对于列表横向滑动的滚轮支持实在是太差了，没有找到成熟的方式实现，妥协成当前这样了</p>
+</blockquote>
+
+<h2 id="二页面构建">二、页面构建</h2>
+<p><a href="">上一章</a>中，我们有一个用于展示界面的ViewController类，这次要在其中填充上述的布局内容。
+代码可参考<a href="https://github.com/boybeak/MyTodo">MyTodo</a>，最终实现效果如下：
+<img src="/assets/images/my_todo_ui_init.png" alt="my_todo_ui_init" /></p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[一、界面布局 一个简单的界面布局描述如下： --------------------- | | | | | | | | | | 1 | 2 | | | | | | | | |---------------| | | 3 | --------------------- 简单分为3个区域： 导航 - 用于做Todo Item的分类导航，是一个列表； 内容 - 展示当前分类下的Todo Items； 输入 - 在当前分类下创建新的Todo。]]></summary></entry><entry><title type="html">JustTodo开发(一) 项目初始化</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/11/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%80)-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96.html" rel="alternate" type="text/html" title="JustTodo开发(一) 项目初始化" /><published>2024-05-11T18:33:00+00:00</published><updated>2024-05-11T18:33:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/11/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%80)%20%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/11/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%80)-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96.html"><![CDATA[<p>正如很多开发者一样，进入一个新平台开发连带学习，通常都会开发一个极简的应用，很多人都会开发Todo类应用，这类应用一般来说比较简单容易上手。我也打算开发一个，一来是练手，二来是写一个自己用的极简Todo类应用。
+目前市面上的Todo类应用，一般来说，都比较复杂，太多我不需要的功能了，而且还有一些增值付费，对于我来说，根本没有那么多的复杂需求，只需要一个随手打开和关闭的记录而已，放在托盘上就非常的方便。
+所以，需求如下：</p>
+<ol>
+  <li>macOS托盘应用，随手打开和关闭；</li>
+  <li>带有分页标签，以便标记不同类型的todo；</li>
+  <li>最好有利用iCloud的数据云同步，方便未来与其他平台同步数据；</li>
+</ol>
+
+<p>基于以上需求，做一个技术选型：</p>
+<ol>
+  <li>由于SwiftUI在macOS上表现实在是不敢恭维，所以选用传统的AppKit进行开发；</li>
+  <li>基于个人写Android应用的习惯，更倾向于使用代码或者XML的方式构建界面，所以在使用AppKit时，不使用Storyboard或者XIB的方式构建界面。</li>
+</ol>
+
+<h2 id="一创建项目">一、创建项目</h2>
+<p>打开Xcode，创建一个新的macOS项目，语言选择swift，Interface暂时选storyboard，先创建项目，在稍后删除相关的storyboard文件和配置。</p>
+
+<h2 id="二项目配置">二、项目配置</h2>
+
+<h3 id="21-删除mainstoryboard">2.1 删除Main.storyboard</h3>
+<p>首先，删除自动创建的storyboard文件Main.storyboard，此时再构建项目会出现错误，先不用着急，接下来进行修改。</p>
+
+<h3 id="22-替换应用程序入口">2.2 替换应用程序入口</h3>
+<p>其次，在target目录下，创建一个main.swift文件，然后把AppDelegate.swift中的<code class="language-plaintext highlighter-rouge">@main</code>注解删除掉，main.swift文件内容如下：</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">import</span> <span class="kt">Cocoa</span>
+
+<span class="kd">class</span> <span class="kt">MyApplication</span><span class="p">:</span> <span class="kt">NSApplication</span> <span class="p">{}</span>
+
+<span class="k">let</span> <span class="nv">app</span> <span class="o">=</span> <span class="kt">MyApplication</span><span class="o">.</span><span class="n">shared</span>
+<span class="k">let</span> <span class="nv">delegate</span> <span class="o">=</span> <span class="kt">AppDelegate</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">delegate</span>
+<span class="n">app</span><span class="o">.</span><span class="nf">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="23-创建托盘应用的基本框架">2.3 创建托盘应用的基本框架</h3>
+<p>在AppDelegate.swift文件中，添加相关代码以实现点击托盘图标，主窗口的显示/隐藏。
+创建一个Tray类，用于管理托盘图标的创建和窗口的弹出。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">Tray</span> <span class="p">{</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">POPOVER_SIZE</span> <span class="o">=</span> <span class="kt">NSSize</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mi">400</span><span class="p">)</span>
+    
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">iconName</span><span class="p">:</span> <span class="kt">String</span>
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">statusItem</span><span class="p">:</span> <span class="kt">NSStatusItem</span><span class="o">!</span>
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">popover</span><span class="p">:</span> <span class="kt">NSPopover</span><span class="o">!</span>
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">NSViewController</span>
+    
+    <span class="nf">init</span><span class="p">(</span><span class="nv">iconName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">NSViewController</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">iconName</span> <span class="o">=</span> <span class="n">iconName</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">viewController</span> <span class="o">=</span> <span class="n">viewController</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">install</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">statusItem</span> <span class="o">=</span> <span class="kt">NSStatusBar</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="nf">statusItem</span><span class="p">(</span><span class="nv">withLength</span><span class="p">:</span> <span class="kt">NSStatusItem</span><span class="o">.</span><span class="n">variableLength</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">trayBtn</span><span class="p">:</span> <span class="kt">NSStatusBarButton</span> <span class="o">=</span> <span class="n">statusItem</span><span class="o">.</span><span class="n">button</span> <span class="p">{</span>
+            <span class="n">trayBtn</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="kt">NSImage</span><span class="p">(</span><span class="nv">systemSymbolName</span><span class="p">:</span> <span class="n">iconName</span><span class="p">,</span> <span class="nv">accessibilityDescription</span><span class="p">:</span> <span class="kc">nil</span><span class="p">)</span>
+            
+            <span class="n">trayBtn</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="k">self</span><span class="p">;</span>
+            <span class="n">trayBtn</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="kd">#selector(</span><span class="nf">togglePopover(_:)</span><span class="kd">)</span>
+        <span class="p">}</span>
+        
+        <span class="n">viewController</span><span class="o">.</span><span class="nf">loadViewIfNeeded</span><span class="p">()</span>
+        <span class="n">viewController</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="kt">NSRect</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">width</span><span class="p">:</span> <span class="kt">Tray</span><span class="o">.</span><span class="kt">POPOVER_SIZE</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="kt">Tray</span><span class="o">.</span><span class="kt">POPOVER_SIZE</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        
+        <span class="n">popover</span> <span class="o">=</span> <span class="kt">NSPopover</span><span class="p">()</span>
+        <span class="n">popover</span><span class="o">.</span><span class="n">contentViewController</span> <span class="o">=</span> <span class="n">viewController</span>
+        
+    <span class="p">}</span>
+    
+    <span class="kd">@objc</span> <span class="kd">private</span> <span class="kd">func</span> <span class="nf">togglePopover</span><span class="p">(</span><span class="n">_</span> <span class="nv">sender</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">popover</span><span class="o">.</span><span class="n">isShown</span> <span class="p">{</span>
+            <span class="nf">closePopover</span><span class="p">(</span><span class="nv">sender</span><span class="p">:</span> <span class="n">sender</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">showPopover</span><span class="p">(</span><span class="nv">sender</span><span class="p">:</span> <span class="n">sender</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">private</span> <span class="kd">func</span> <span class="nf">showPopover</span><span class="p">(</span><span class="nv">sender</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">button</span> <span class="o">=</span> <span class="n">statusItem</span><span class="o">.</span><span class="n">button</span> <span class="p">{</span>
+            <span class="n">popover</span><span class="o">.</span><span class="nf">show</span><span class="p">(</span><span class="nv">relativeTo</span><span class="p">:</span> <span class="n">button</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="nv">of</span><span class="p">:</span> <span class="n">button</span><span class="p">,</span> <span class="nv">preferredEdge</span><span class="p">:</span> <span class="kt">NSRectEdge</span><span class="o">.</span><span class="n">minY</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">private</span> <span class="kd">func</span> <span class="nf">closePopover</span><span class="p">(</span><span class="nv">sender</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="n">popover</span><span class="o">.</span><span class="nf">performClose</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+<span class="p">}</span>
+</code></pre></div></div>
+<p>此类中，接收两个构造参数，一个是图标名称，对应着资源名称或者是SF Symbols图标名称，另外一个参数就是ViewController的具体实现。
+在AppDelegate中的<code class="language-plaintext highlighter-rouge">applicationDidFinishLaunching</code>方法中，执行<code class="language-plaintext highlighter-rouge">Tray.install()</code>，就添加了一个系统图标。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">AppDelegate</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSApplicationDelegate</span> <span class="p">{</span>
+    
+    <span class="kd">private</span> <span class="k">let</span> <span class="nv">tray</span> <span class="o">=</span> <span class="kt">Tray</span><span class="p">(</span><span class="nv">iconName</span><span class="p">:</span> <span class="s">"text.badge.checkmark"</span><span class="p">,</span> <span class="nv">viewController</span><span class="p">:</span> <span class="kt">ViewController</span><span class="p">())</span>
+    
+    <span class="kd">func</span> <span class="nf">applicationDidFinishLaunching</span><span class="p">(</span><span class="n">_</span> <span class="nv">aNotification</span><span class="p">:</span> <span class="kt">Notification</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tray</span><span class="o">.</span><span class="nf">install</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+<span class="p">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>此处需要注意的是，必须要声明一个Tray的成员变量，如果不声明成员变量，则系统图标不会添加成功。</p>
+</blockquote>
+
+<p>现在在ViewController中，显示一个Hello World。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">NSViewController</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+
+        <span class="k">let</span> <span class="nv">text</span> <span class="o">=</span> <span class="kt">NSTextView</span><span class="p">()</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">translatesAutoresizingMaskIntoConstraints</span> <span class="o">=</span> <span class="kc">false</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="o">.</span><span class="n">center</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="s">"Hello World"</span>
+        
+        <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="nf">addSubview</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        
+        <span class="kt">NSLayoutConstraint</span><span class="o">.</span><span class="nf">activate</span><span class="p">([</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">leadingAnchor</span><span class="o">.</span><span class="nf">constraint</span><span class="p">(</span><span class="nv">equalTo</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">leadingAnchor</span><span class="p">),</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">trailingAnchor</span><span class="o">.</span><span class="nf">constraint</span><span class="p">(</span><span class="nv">equalTo</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">trailingAnchor</span><span class="p">),</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">topAnchor</span><span class="o">.</span><span class="nf">constraint</span><span class="p">(</span><span class="nv">equalTo</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">topAnchor</span><span class="p">),</span>
+            <span class="n">text</span><span class="o">.</span><span class="n">bottomAnchor</span><span class="o">.</span><span class="nf">constraint</span><span class="p">(</span><span class="nv">equalTo</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">bottomAnchor</span><span class="p">)</span>
+        <span class="p">])</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>注意此处的<code class="language-plaintext highlighter-rouge">text.translatesAutoresizingMaskIntoConstraints = false</code>，这里如果不设置的话，弹出窗口是不会填满整个父布局的。
+translatesAutoresizingMaskIntoConstraints 是一个布尔属性，用于指示是否启用自动布局中的自动转换。</p>
+
+<p>在 iOS 和 macOS 开发中，通常使用自动布局来管理界面的布局。自动布局系统使用约束（constraints）来描述视图之间的关系和布局规则。当你通过 Interface Builder 或代码创建视图时，默认情况下，视图的 translatesAutoresizingMaskIntoConstraints 属性是设置为 true 的。这意味着视图会根据其 frame 和 autoresizingMask 属性自动转换为相应的约束。</p>
+
+<p>但是，在使用自动布局时，通常推荐将 translatesAutoresizingMaskIntoConstraints 设置为 false。这样做的原因是，如果你手动创建约束来布局视图，那么这些约束将会和自动转换的约束发生冲突，导致布局问题。通过将 translatesAutoresizingMaskIntoConstraints 设置为 false，你可以明确地告诉系统不要自动转换视图的 autoresizingMask 为约束，从而避免这种冲突。</p>
+
+<p>最终的效果如下：
+<img src="/assets/images/tray_app_hello_world.png" alt="tray_app_hello_world" /></p>
+
+<p>另外，若要应用图标不显示在Docker栏上，需要在Info.plist上设置 <strong>Application is agent (UIEelement)</strong> 为YES。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[正如很多开发者一样，进入一个新平台开发连带学习，通常都会开发一个极简的应用，很多人都会开发Todo类应用，这类应用一般来说比较简单容易上手。我也打算开发一个，一来是练手，二来是写一个自己用的极简Todo类应用。 目前市面上的Todo类应用，一般来说，都比较复杂，太多我不需要的功能了，而且还有一些增值付费，对于我来说，根本没有那么多的复杂需求，只需要一个随手打开和关闭的记录而已，放在托盘上就非常的方便。 所以，需求如下： macOS托盘应用，随手打开和关闭； 带有分页标签，以便标记不同类型的todo； 最好有利用iCloud的数据云同步，方便未来与其他平台同步数据；]]></summary></entry><entry><title type="html">MacOS SwiftUI托盘应用开发</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html" rel="alternate" type="text/html" title="MacOS SwiftUI托盘应用开发" /><published>2024-05-08T23:29:00+00:00</published><updated>2024-05-08T23:29:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS%20SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html"><![CDATA[<p>最近想利用闲暇时间，做一些托盘工具类app的开发，主要是方便自己在Mac上的部分操作。在遇到各种问题后，总结了一下实现托盘SwiftUI应用的两种方式。</p>
+<blockquote>
+  <p>小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。</p>
+</blockquote>
+
+<h2 id="方案一nsapplicationdelegateadaptor">方案一：NSApplicationDelegateAdaptor</h2>
+<p>这种方式，应该是从Objective-C时代承袭过来的，我没有做过Objective-C的应用，这只是我的猜测。
+新建一个项目，通常会生成一个<code class="language-plaintext highlighter-rouge">XXXApp.swift</code>的文件，文件的内容如下：</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">XXXApp</span><span class="p">:</span> <span class="kt">App</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">Scene</span> <span class="p">{</span>
+        <span class="kt">WindowGroup</span> <span class="p">{</span>
+            <span class="kt">ContentView</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>我们要添加一行代码，变成如下这样：</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">ByteCatApp</span><span class="p">:</span> <span class="kt">App</span> <span class="p">{</span>
+    <span class="kd">@NSApplicationDelegateAdaptor</span><span class="p">(</span><span class="kt">AppDelegate</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="k">var</span> <span class="nv">appDelegate</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">Scene</span> <span class="p">{</span>
+        <span class="kt">WindowGroup</span> <span class="p">{</span>
+            <span class="kt">ContentView</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>加入了<code class="language-plaintext highlighter-rouge">@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate</code>这一行，现在开始写<code class="language-plaintext highlighter-rouge">AppDelegate</code>的代码。</p>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="kt">AppDelegate</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSApplicationDelegate</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">statusItem</span><span class="p">:</span> <span class="kt">NSStatusItem</span><span class="o">!</span>
+    <span class="k">var</span> <span class="nv">popover</span><span class="p">:</span> <span class="kt">NSPopover</span><span class="o">!</span>
+    
+    <span class="k">override</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+    <span class="kd">func</span> <span class="nf">applicationDidFinishLaunching</span><span class="p">(</span><span class="n">_</span> <span class="nv">notification</span><span class="p">:</span> <span class="kt">Notification</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">setupStatusBarItem</span><span class="p">()</span>
+        <span class="nf">setupPopover</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">setupStatusBarItem</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">statusItem</span> <span class="o">=</span> <span class="kt">NSStatusBar</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="nf">statusItem</span><span class="p">(</span><span class="nv">withLength</span><span class="p">:</span> <span class="kt">NSStatusItem</span><span class="o">.</span><span class="n">squareLength</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">button</span> <span class="o">=</span> <span class="n">statusItem</span><span class="o">.</span><span class="n">button</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="nv">imageSize</span> <span class="o">=</span> <span class="kt">NSSize</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mi">22</span><span class="p">)</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="kt">NSImage</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"TrayIcon"</span><span class="p">)</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">image</span><span class="p">?</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">imageSize</span>
+            <span class="n">button</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="kd">#selector(</span><span class="nf">togglePopover(_:)</span><span class="kd">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">setupPopover</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">popover</span> <span class="o">=</span> <span class="kt">NSPopover</span><span class="p">()</span>
+        <span class="n">popover</span><span class="o">.</span><span class="n">behavior</span> <span class="o">=</span> <span class="o">.</span><span class="n">transient</span>
+        <span class="n">popover</span><span class="o">.</span><span class="n">contentViewController</span> <span class="o">=</span> <span class="kt">PopoverViewController</span><span class="p">()</span><span class="o">.</span><span class="nf">makeNSViewController</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="kd">@objc</span> <span class="kd">func</span> <span class="nf">togglePopover</span><span class="p">(</span><span class="n">_</span> <span class="nv">sender</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">popover</span><span class="o">.</span><span class="n">isShown</span> <span class="p">{</span>
+            <span class="nf">closePopover</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">showPopover</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">showPopover</span><span class="p">(</span><span class="n">_</span> <span class="nv">sender</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">button</span> <span class="o">=</span> <span class="n">statusItem</span><span class="o">.</span><span class="n">button</span> <span class="p">{</span>
+            <span class="n">popover</span><span class="o">.</span><span class="nf">show</span><span class="p">(</span><span class="nv">relativeTo</span><span class="p">:</span> <span class="n">button</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="nv">of</span><span class="p">:</span> <span class="n">button</span><span class="p">,</span> <span class="nv">preferredEdge</span><span class="p">:</span> <span class="kt">NSRectEdge</span><span class="o">.</span><span class="n">minY</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">closePopover</span><span class="p">(</span><span class="n">_</span> <span class="nv">sender</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="n">popover</span><span class="o">.</span><span class="nf">performClose</span><span class="p">(</span><span class="n">sender</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">PopoverViewController</span><span class="p">:</span> <span class="kt">NSViewControllerRepresentable</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">makeNSViewController</span><span class="p">(</span><span class="nv">context</span><span class="p">:</span> <span class="kt">Context</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NSViewController</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">makeNSViewController</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">makeNSViewController</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">NSViewController</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">viewController</span> <span class="o">=</span> <span class="kt">NSViewController</span><span class="p">()</span>
+        <span class="n">viewController</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="kt">NSHostingView</span><span class="p">(</span><span class="nv">rootView</span><span class="p">:</span> <span class="kt">ContentView</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">viewController</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">updateNSViewController</span><span class="p">(</span><span class="n">_</span> <span class="nv">nsViewController</span><span class="p">:</span> <span class="kt">NSViewController</span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt">Context</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Update code if needed</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="方案二menubarextra">方案二：MenuBarExtra</h2>
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">@main</span>
+<span class="kd">struct</span> <span class="kt">XXXApp</span><span class="p">:</span> <span class="kt">App</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">Scene</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">MenuBarExtra</span> <span class="p">{</span>
+            <span class="kt">ContentView</span><span class="p">()</span>
+        <span class="p">}</span> <span class="nv">label</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"tray.2.fill"</span><span class="p">)</span>
+        <span class="p">}</span><span class="o">.</span><span class="nf">menuBarExtraStyle</span><span class="p">(</span><span class="o">.</span><span class="n">window</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>这个方案就是这么简单，几行代码就搞定，缺点是，弹出的窗口位置不可调整，也不会有一个三角形指向托盘图标的位置，而且窗口位置一直与托盘图标左对齐。</p>
+
+<h2 id="问题">问题</h2>
+
+<h3 id="list导致ui异常">List导致UI异常</h3>
+<p>方案一，当弹出窗口UI中包含了List组件，会使得弹出的窗口显示异常。
+正常情况是这样的：
+<img src="/assets/images/normal_popover.png" alt="images/normal_popover.png" />
+异常的情况如下：
+<img src="/assets/images/unnormal_popover.png" alt="images/unnormal_popover.png" />
+代码的差别，只是把其中的红色布局换成了List组件而已，顶端的三角指向消失了，而且窗口整体上移了。</p>
+
+<h3 id="menubarextra的显示不同">MenuBarExtra的显示不同</h3>
+<p>使用方案二，窗口弹出是这样的：
+<img src="/assets/images/menu_bar_extra.png" alt="images/menu_bar_extra.png" />
+同样没有顶部三角指向，固定与托盘图标左对齐。</p>
+
+<h3 id="横向滑动列表不支持鼠标滚轮">横向滑动列表不支持鼠标滚轮</h3>
+<p>这并不是某个方案中的问题，而是二者都有的问题，这个应该是SwiftUI的相关组件没有适配macOS所致，这个并没有找到解决办法，似乎苹果也不想解决，毕竟大多数做桌面端app的，都是使用Electron方案，使用原生开发，而且只开发托盘应用的实在是少数。</p>
+
+<h2 id="一点小改进">一点小改进</h2>
+<p>如果你想让托盘应用启动后，只有在托盘中有图标，而在dock栏中没有图标，则需要在Info.plist中，设置一个属性<strong>Application is agent(UIElement)</strong>为YES。</p>
+
+<h2 id="总结">总结</h2>
+<p>swiftUI真的不适合在macOS端开发稍微复杂一点的应用，之前开发过一个翻译的应用，只能说勉强够用而已，前提是足够简单。
+对于托盘应用这个极小的领域来说，尤其不能使用，electron不支持自定义UI的弹出窗口，只支持菜单，而swiftUI支持的情况更糟糕，可能只有原始的Objective-C方案可行了，原始人方案。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><summary type="html"><![CDATA[最近想利用闲暇时间，做一些托盘工具类app的开发，主要是方便自己在Mac上的部分操作。在遇到各种问题后，总结了一下实现托盘SwiftUI应用的两种方式。 小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。]]></summary></entry></feed>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Glide源码分析与自我实现(一)——数据加载主流程</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Glide源码分析与自我实现(一)——数据加载主流程</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <blockquote>
+  <p>本文基于Glide 4.11.0</p>
+</blockquote>
+
+<p>阅读前请参考<a href="https://zhuanlan.zhihu.com/p/60425157">Glide 源码分析解读-基于最新版Glide 4.9.0</a>一文，该文章中，将Glide中各个部分的作用分析的非常好了。</p>
+
+<p>Glide几乎是现在做Android图片加载的最佳选择了。如此优秀的一个框架是如何实现的呢？如果让我们自己来实现该怎么做呢？我们就通过自己实现一个低配版Glide的方式，来探究Glide中是如何实现的。</p>
+
+<p>我们就称我们自己低配版Glide为<strong>Slide</strong>。那么Slide要实现哪些功能呢？简单来说，就是<strong>获取图片</strong>+<strong>界面显示</strong>。我们通过先构架大体框架，再分步丰富其中细节的方式，来构建Slide的整体结构。</p>
+
+<pre><code class="language-mermaid">flowchart LR;
+A[获取图片] --&gt; C[Slide] --&gt; B[界面显示];
+</code></pre>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Glide</span><span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">xxx</span><span class="o">).</span><span class="na">load</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">into</span><span class="o">(</span><span class="n">iv</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>这是Glide一个典型的最为简单的调用过程。那么在这个过程中发生了哪些事情呢？</p>
+
+<p>我们可以通过这个链式调用的返回值发现，有如下过程：</p>
+
+<pre><code class="language-mermaid">graph LR;
+style A fill:#aaffcc
+style D fill:#ffaa99
+A(Glide) --&gt;|"with(xxx)"| B(RequestManager) --&gt;|"load(xxx)"| C(RequestBuilder) --&gt;|"into(iv)"| D(Target);
+</code></pre>
+
+<h2 id="glidewithxxx发生了什么事">Glide.with(xxx)发生了什么事？</h2>
+
+<p>阅读源码发现，<code class="language-plaintext highlighter-rouge">Glide.with(xxx)</code>的最终实现类是<em>RequestManagerRetriever.java</em>类。继续跟踪，我们在这个类中，看到这样一个方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@NonNull</span>
+<span class="kd">private</span> <span class="nc">RequestManager</span> <span class="nf">supportFragmentGet</span><span class="o">(</span>
+  <span class="nd">@NonNull</span> <span class="nc">Context</span> <span class="n">context</span><span class="o">,</span>
+  <span class="nd">@NonNull</span> <span class="nc">FragmentManager</span> <span class="n">fm</span><span class="o">,</span>
+  <span class="nd">@Nullable</span> <span class="nc">Fragment</span> <span class="n">parentHint</span><span class="o">,</span>
+  <span class="kt">boolean</span> <span class="n">isParentVisible</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">SupportRequestManagerFragment</span> <span class="n">current</span> <span class="o">=</span> <span class="n">getSupportRequestManagerFragment</span><span class="o">(</span><span class="n">fm</span><span class="o">,</span> <span class="n">parentHint</span><span class="o">);</span>
+  <span class="nc">RequestManager</span> <span class="n">requestManager</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="na">getRequestManager</span><span class="o">();</span>
+
+  <span class="o">.....</span>
+
+    <span class="k">return</span> <span class="n">requestManager</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>重点关注这个getSupportRequestManagerFragment方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//getSupportRequestManagerFragment</span>
+<span class="nd">@NonNull</span>
+<span class="kd">private</span> <span class="nc">SupportRequestManagerFragment</span> <span class="nf">getSupportRequestManagerFragment</span><span class="o">(</span>
+  <span class="nd">@NonNull</span> <span class="kd">final</span> <span class="nc">FragmentManager</span> <span class="n">fm</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="nc">Fragment</span> <span class="n">parentHint</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">SupportRequestManagerFragment</span> <span class="n">current</span> <span class="o">=</span>
+    <span class="o">(</span><span class="nc">SupportRequestManagerFragment</span><span class="o">)</span> <span class="n">fm</span><span class="o">.</span><span class="na">findFragmentByTag</span><span class="o">(</span><span class="no">FRAGMENT_TAG</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">current</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">pendingSupportRequestManagerFragments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">fm</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">current</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">current</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SupportRequestManagerFragment</span><span class="o">();</span>
+      <span class="n">current</span><span class="o">.</span><span class="na">setParentFragmentHint</span><span class="o">(</span><span class="n">parentHint</span><span class="o">);</span>
+      <span class="n">pendingSupportRequestManagerFragments</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">fm</span><span class="o">,</span> <span class="n">current</span><span class="o">);</span>
+      <span class="n">fm</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">current</span><span class="o">,</span> <span class="no">FRAGMENT_TAG</span><span class="o">).</span><span class="na">commitAllowingStateLoss</span><span class="o">();</span>
+      <span class="n">handler</span><span class="o">.</span><span class="na">obtainMessage</span><span class="o">(</span><span class="no">ID_REMOVE_SUPPORT_FRAGMENT_MANAGER</span><span class="o">,</span> <span class="n">fm</span><span class="o">).</span><span class="na">sendToTarget</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">current</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>其实，这里是一个Glide检测到界面生命周期的关键了。<strong>Glide就是通过像当前Activity添加一个一个无UI的Fragment来探测生命周期的</strong>。</p>
+
+<blockquote>
+  <p><strong>注意：</strong>在执行了添加fragment的语句<code class="language-plaintext highlighter-rouge">fm.beginTransaction().add(current, FRAGMENT_TAG).commitAllowingStateLoss()</code>后，又马上通过handler发送了一个一个message，这里需要熟悉Handler机制才能理解，简单来说，就是添加fragment操作，实际上也是通过handler执行的，这是一个异步的过程，如何检测到fragment已经添加完成了呢？就是在<code class="language-plaintext highlighter-rouge">commitAllowingStateLoss</code>后，马上去发送一条指定的消息，利用handler处理message的顺序性，来获知fragment已经添加完成。</p>
+</blockquote>
+
+<p>经过添加<em>SupportRequestManagerFragment</em>后，我们获得了探测当前界面生命周期的能力。</p>
+
+<p>继续阅读<code class="language-plaintext highlighter-rouge">supportFragmentGet</code>方法代码，<strong>RequestManager</strong>是从<strong>SupportRequestManagerFragment</strong>拿到的，如果拿到的是空，则创建一个，设置到该fragment当中去。</p>
+
+<h2 id="requestmanagerloadxxx发生了什么">RequestManager.load(xxx)发生了什么？</h2>
+
+<p>我们以<code class="language-plaintext highlighter-rouge">load(url)</code>为例，来探究这部分代码。</p>
+
+<p>这个方法，返回的是<em>RequestBuilder</em>这个类，看名字就知道，这是一个构建者模式中的Builder类，主要是在添加各种配置项，比如RequestOptions、RequestListener等。</p>
+
+<h2 id="requestbuilderintoiv发生了什么">RequestBuilder.into(iv)发生了什么？</h2>
+
+<p>其实，这里才是真正开始触发发起请求的地方。</p>
+
+<h3 id="requestbuilder">RequestBuilder</h3>
+
+<p>我们把<code class="language-plaintext highlighter-rouge">into(ImageView)</code>方法作为入口，一路跟踪，可以发现最终的实现是如下方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="o">&lt;</span><span class="no">Y</span> <span class="kd">extends</span> <span class="nc">Target</span><span class="o">&lt;</span><span class="nc">TranscodeType</span><span class="o">&gt;&gt;</span> <span class="no">Y</span> <span class="nf">into</span><span class="o">(</span>
+  <span class="nd">@NonNull</span> <span class="no">Y</span> <span class="n">target</span><span class="o">,</span>
+  <span class="nd">@Nullable</span> <span class="nc">RequestListener</span><span class="o">&lt;</span><span class="nc">TranscodeType</span><span class="o">&gt;</span> <span class="n">targetListener</span><span class="o">,</span>
+  <span class="nc">BaseRequestOptions</span><span class="o">&lt;?&gt;</span> <span class="n">options</span><span class="o">,</span>
+  <span class="nc">Executor</span> <span class="n">callbackExecutor</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">isModelSet</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"You must call #load() before calling #into()"</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="nc">Request</span> <span class="n">request</span> <span class="o">=</span> <span class="n">buildRequest</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">targetListener</span><span class="o">,</span> <span class="n">options</span><span class="o">,</span> <span class="n">callbackExecutor</span><span class="o">);</span>
+
+  <span class="nc">Request</span> <span class="n">previous</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="na">getRequest</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">isEquivalentTo</span><span class="o">(</span><span class="n">previous</span><span class="o">)</span>
+      <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isSkipMemoryCacheWithCompletePreviousRequest</span><span class="o">(</span><span class="n">options</span><span class="o">,</span> <span class="n">previous</span><span class="o">))</span> <span class="o">{</span>
+    <span class="c1">// If the request is completed, beginning again will ensure the result is re-delivered,</span>
+    <span class="c1">// triggering RequestListeners and Targets. If the request is failed, beginning again will</span>
+    <span class="c1">// restart the request, giving it another chance to complete. If the request is already</span>
+    <span class="c1">// running, we can let it continue running without interruption.</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="nc">Preconditions</span><span class="o">.</span><span class="na">checkNotNull</span><span class="o">(</span><span class="n">previous</span><span class="o">).</span><span class="na">isRunning</span><span class="o">())</span> <span class="o">{</span>
+      <span class="c1">// Use the previous request rather than the new one to allow for optimizations like skipping</span>
+      <span class="c1">// setting placeholders, tracking and un-tracking Targets, and obtaining View dimensions</span>
+      <span class="c1">// that are done in the individual Request.</span>
+      <span class="n">previous</span><span class="o">.</span><span class="na">begin</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="n">requestManager</span><span class="o">.</span><span class="na">clear</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+  <span class="n">target</span><span class="o">.</span><span class="na">setRequest</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+  <span class="n">requestManager</span><span class="o">.</span><span class="na">track</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="n">request</span><span class="o">);</span>
+
+  <span class="k">return</span> <span class="n">target</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这个方法主要是做了以下事情：</p>
+
+<ol>
+  <li>是否已经有一个request在处理相同的请求，如果有，则判断是否正在运行，没有正在运行则开始运行；</li>
+  <li>如果没有一个request在处理此请求，则对target做一些清理操作，与之前的请求解绑，为当前target设置新的请求，然后requestManager开始追踪这个请求。</li>
+</ol>
+
+<p>接下来我们就按照<code class="language-plaintext highlighter-rouge">requestManager.track(target, request)</code>这段代码继续追踪。来到RequestManager的track方法。</p>
+
+<h3 id="requestmanager">RequestManager</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">track</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">Target</span><span class="o">&lt;?&gt;</span> <span class="n">target</span><span class="o">,</span> <span class="nd">@NonNull</span> <span class="nc">Request</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">targetTracker</span><span class="o">.</span><span class="na">track</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+  <span class="n">requestTracker</span><span class="o">.</span><span class="na">runRequest</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这个方法很简单，只有两个方法。</p>
+
+<h4 id="targettracker">TargetTracker</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kd">final</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Target</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">targets</span> <span class="o">=</span>
+      <span class="nc">Collections</span><span class="o">.</span><span class="na">newSetFromMap</span><span class="o">(</span><span class="k">new</span> <span class="nc">WeakHashMap</span><span class="o">&lt;</span><span class="nc">Target</span><span class="o">&lt;?&gt;,</span> <span class="nc">Boolean</span><span class="o">&gt;());</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">track</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">Target</span><span class="o">&lt;?&gt;</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">targets</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">target</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里把一个target存放在WeakHashMap中，因为target是与生命周期有关的东西，比如ImageView对应的<strong>ImageViewTarget</strong>，所以这么做是为了防止内存泄漏。</p>
+
+<h4 id="requesttracker">RequestTracker</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/** Starts tracking the given request. */</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">runRequest</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="nc">Request</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">requests</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">isPaused</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">begin</span><span class="o">();</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">Log</span><span class="o">.</span><span class="na">isLoggable</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="nc">Log</span><span class="o">.</span><span class="na">VERBOSE</span><span class="o">))</span> <span class="o">{</span>
+      <span class="nc">Log</span><span class="o">.</span><span class="na">v</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="s">"Paused, delaying request"</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">pendingRequests</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里是将暂停的request加入到pendingRequests中去，如果不是暂停的request，则调用其begin方法。</p>
+
+<p>我们查看<em>Request</em>类的子类，可以看到下图。</p>
+
+<p><img src="/assets/images/request_implementions.jpg" alt="request_implementions" /></p>
+
+<p>可以看到一共有4个类实现了<em>Request</em>类，其中<em>FakeRequest</em>类是用于测试的，不去考虑。其他三个类的作用如下：</p>
+
+<ol>
+  <li><strong>ThumbnailRequestCoordinator:</strong> 用来加载thumbnail；</li>
+  <li><strong>ErrorRequestCoordinator:</strong> 用来加载错误时候，展示错误状态；</li>
+  <li><strong>SingleRequest:</strong> 这才是用来加载目标图片的request。</li>
+</ol>
+
+<p>我们重点去看SingleRequest的begin方法。</p>
+
+<h3 id="singlerequest">SingleRequest</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">begin</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">synchronized</span> <span class="o">(</span><span class="n">requestLock</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">assertNotCallingCallbacks</span><span class="o">();</span>
+    <span class="n">stateVerifier</span><span class="o">.</span><span class="na">throwIfRecycled</span><span class="o">();</span>
+    <span class="n">startTime</span> <span class="o">=</span> <span class="nc">LogTime</span><span class="o">.</span><span class="na">getLogTime</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">model</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="nc">Util</span><span class="o">.</span><span class="na">isValidDimensions</span><span class="o">(</span><span class="n">overrideWidth</span><span class="o">,</span> <span class="n">overrideHeight</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="n">overrideWidth</span><span class="o">;</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">overrideHeight</span><span class="o">;</span>
+      <span class="o">}</span>
+      <span class="c1">// Only log at more verbose log levels if the user has set a fallback drawable, because</span>
+      <span class="c1">// fallback Drawables indicate the user expects null models occasionally.</span>
+      <span class="kt">int</span> <span class="n">logLevel</span> <span class="o">=</span> <span class="n">getFallbackDrawable</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="nc">Log</span><span class="o">.</span><span class="na">WARN</span> <span class="o">:</span> <span class="nc">Log</span><span class="o">.</span><span class="na">DEBUG</span><span class="o">;</span>
+      <span class="n">onLoadFailed</span><span class="o">(</span><span class="k">new</span> <span class="nc">GlideException</span><span class="o">(</span><span class="s">"Received null model"</span><span class="o">),</span> <span class="n">logLevel</span><span class="o">);</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">==</span> <span class="nc">Status</span><span class="o">.</span><span class="na">RUNNING</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Cannot restart a running request"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="c1">// If we're restarted after we're complete (usually via something like a notifyDataSetChanged</span>
+    <span class="c1">// that starts an identical request into the same Target or View), we can simply use the</span>
+    <span class="c1">// resource and size we retrieved the last time around and skip obtaining a new size, starting</span>
+    <span class="c1">// a new load etc. This does mean that users who want to restart a load because they expect</span>
+    <span class="c1">// that the view size has changed will need to explicitly clear the View or Target before</span>
+    <span class="c1">// starting the new load.</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">status</span> <span class="o">==</span> <span class="nc">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">onResourceReady</span><span class="o">(</span>
+        <span class="n">resource</span><span class="o">,</span> <span class="nc">DataSource</span><span class="o">.</span><span class="na">MEMORY_CACHE</span><span class="o">,</span> <span class="cm">/* isLoadedFromAlternateCacheKey= */</span> <span class="kc">false</span><span class="o">);</span>
+      <span class="k">return</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">// Restarts for requests that are neither complete nor running can be treated as new requests</span>
+    <span class="c1">// and can run again from the beginning.</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="nc">Status</span><span class="o">.</span><span class="na">WAITING_FOR_SIZE</span><span class="o">;</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">Util</span><span class="o">.</span><span class="na">isValidDimensions</span><span class="o">(</span><span class="n">overrideWidth</span><span class="o">,</span> <span class="n">overrideHeight</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">onSizeReady</span><span class="o">(</span><span class="n">overrideWidth</span><span class="o">,</span> <span class="n">overrideHeight</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">target</span><span class="o">.</span><span class="na">getSize</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">((</span><span class="n">status</span> <span class="o">==</span> <span class="nc">Status</span><span class="o">.</span><span class="na">RUNNING</span> <span class="o">||</span> <span class="n">status</span> <span class="o">==</span> <span class="nc">Status</span><span class="o">.</span><span class="na">WAITING_FOR_SIZE</span><span class="o">)</span>
+        <span class="o">&amp;&amp;</span> <span class="n">canNotifyStatusChanged</span><span class="o">())</span> <span class="o">{</span>
+      <span class="n">target</span><span class="o">.</span><span class="na">onLoadStarted</span><span class="o">(</span><span class="n">getPlaceholderDrawable</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="no">IS_VERBOSE_LOGGABLE</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logV</span><span class="o">(</span><span class="s">"finished run method in "</span> <span class="o">+</span> <span class="nc">LogTime</span><span class="o">.</span><span class="na">getElapsedMillis</span><span class="o">(</span><span class="n">startTime</span><span class="o">));</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>代码虽长，但是结构简单。主要做了以下事情：</p>
+
+<ol>
+  <li>检查model是否是空，model就是要加载的数据来源，比如url、resourceId、File等；</li>
+  <li>判断request状态，不能重新开始一个正在运行的请求；</li>
+  <li>判断request状态，如果是已经完成的请求，则说明资源已经存在，直接调用<code class="language-plaintext highlighter-rouge">onResourceReady</code>方法并返回；</li>
+  <li>接下来就来到判断target尺寸的过程了，如果target尺寸已经确定，比如view尺寸measure结束后，则调用<code class="language-plaintext highlighter-rouge">onSizeReady</code>方法，<strong>注意：实际的网络请求就在这个onSizeReady方法中，因为只有target的尺寸确定了，才能进行请求并处理图片；</strong></li>
+  <li>如果尺寸未确定，则调用<code class="language-plaintext highlighter-rouge">target.getSize</code>方法去监听尺寸事件，具体可以参考<code class="language-plaintext highlighter-rouge">ViewTarget#getSize</code>方法，这是一个通过onPreDrawListener来监听尺寸的；</li>
+  <li>接下来回调<code class="language-plaintext highlighter-rouge">onLoadStarted</code>方法，并且显示加载过程状态。</li>
+</ol>
+
+<p>我们着重看网络请求那个分支，也就是<code class="language-plaintext highlighter-rouge">onSizeReady</code>方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSizeReady</span><span class="o">(</span><span class="kt">int</span> <span class="n">width</span><span class="o">,</span> <span class="kt">int</span> <span class="n">height</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">......</span>
+	<span class="n">loadStatus</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="na">load</span><span class="o">(</span>
+    <span class="n">glideContext</span><span class="o">,</span>
+    <span class="n">model</span><span class="o">,</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getSignature</span><span class="o">(),</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">width</span><span class="o">,</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">height</span><span class="o">,</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getResourceClass</span><span class="o">(),</span>
+    <span class="n">transcodeClass</span><span class="o">,</span>
+    <span class="n">priority</span><span class="o">,</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getDiskCacheStrategy</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getTransformations</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">isTransformationRequired</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">isScaleOnlyOrNoTransform</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getOptions</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">isMemoryCacheable</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getUseUnlimitedSourceGeneratorsPool</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getUseAnimationPool</span><span class="o">(),</span>
+    <span class="n">requestOptions</span><span class="o">.</span><span class="na">getOnlyRetrieveFromCache</span><span class="o">(),</span>
+    <span class="k">this</span><span class="o">,</span>
+    <span class="n">callbackExecutor</span>
+  <span class="o">);</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>关键代码来了！这个<code class="language-plaintext highlighter-rouge">engine</code>就是Glide的核心。这个engine是在Glide初始化时候生成的一个实例。</p>
+
+<h3 id="engine">Engine</h3>
+
+<p>Engine不只是用于加载图片，而是一个任务执行核心引擎，它要执行的不只是请求远程图片的任务，包括解码任务等，它执行的实际上是一个个的job。</p>
+
+<p>跟踪上一阶段中的<code class="language-plaintext highlighter-rouge">engine.load</code>方法，来到是这个方法的关键部分——调用<code class="language-plaintext highlighter-rouge">waitForExistingOrStartNewJob</code>。</p>
+
+<p>在这个方法中，主要做了以下事情：</p>
+
+<pre><code class="language-mermaid">graph TD;
+A --&gt; |有|B[为此job添加新的回调];
+A --&gt; |无|C[添加并执行一个EngineJob];
+</code></pre>
+
+<h4 id="enginejobstartdecodejob">EngineJob.start(decodeJob)</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="nc">DecodeJob</span><span class="o">&lt;</span><span class="no">R</span><span class="o">&gt;</span> <span class="n">decodeJob</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">decodeJob</span> <span class="o">=</span> <span class="n">decodeJob</span><span class="o">;</span>
+  <span class="nc">GlideExecutor</span> <span class="n">executor</span> <span class="o">=</span>
+    <span class="n">decodeJob</span><span class="o">.</span><span class="na">willDecodeFromCache</span><span class="o">()</span> <span class="o">?</span> <span class="n">diskCacheExecutor</span> <span class="o">:</span> <span class="n">getActiveSourceExecutor</span><span class="o">();</span>
+  <span class="n">executor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">decodeJob</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里执行的是decodeJob。</p>
+
+<blockquote>
+  <p>这里需要着重关注一点，就是<code class="language-plaintext highlighter-rouge">executor.execute(decodeJob)</code>的时候，就已经通过<em>GlideExecutor</em>的sourceExecutor.Builder创建了一个<strong>ThreadPoolExecutor</strong>，也就是在这里实现线程池异步执行任务。<strong>ThreadPoolExecutor</strong>并不是Glide提供的实现，而是在java.util.concurrent包下。</p>
+</blockquote>
+
+<h4 id="decodejob">DecodeJob</h4>
+
+<p>DecodeJob是一个<em>Runnable</em>类，所以，我们查看其run方法。</p>
+
+<p>接下来的调用路径参考下图。</p>
+
+<pre><code class="language-mermaid">graph TD;
+subgraph DecodeJob;
+A(run) --&gt; B[runWrapped] --&gt; C[runGenerators] --&gt; D[getNextGenerator];
+end;
+subgraph SourceGenerator
+D --&gt; E[startNext] --&gt; F[startNextLoad];
+end;
+subgraph HttpUrlFetcher
+F --&gt; G[loadData] --&gt; H[loadDataWithRedirects];
+end;
+</code></pre>
+
+<p>经过这么长的调用链，我们终于来到了网络请求的部分，我们可以看到Glide原生使用的<em>HttpURLConnection</em>进行网络请求的。<strong>获取到InputStream后，在SourceGenerator中的cacheData方法进行缓存处理。</strong></p>
+
+<h4 id="获取到数据后的处理">获取到数据后的处理</h4>
+
+<p>通过<code class="language-plaintext highlighter-rouge">DataFetcherGenerator.FetcherReadyCallback</code>可以探知到数据获取成功或者失败，如果获取成功，则在<code class="language-plaintext highlighter-rouge">DecodeJob#onDataFetcherReady</code>中处理。关键代码如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDataFetcherReady</span><span class="o">(</span>
+      <span class="nc">Key</span> <span class="n">sourceKey</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">data</span><span class="o">,</span> <span class="nc">DataFetcher</span><span class="o">&lt;?&gt;</span> <span class="n">fetcher</span><span class="o">,</span> <span class="nc">DataSource</span> <span class="n">dataSource</span><span class="o">,</span> <span class="nc">Key</span> <span class="n">attemptedKey</span><span class="o">)</span> <span class="o">{</span>
+  <span class="o">.....</span>
+  <span class="k">if</span> <span class="o">(</span><span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">()</span> <span class="o">!=</span> <span class="n">currentThread</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">runReason</span> <span class="o">=</span> <span class="nc">RunReason</span><span class="o">.</span><span class="na">DECODE_DATA</span><span class="o">;</span>
+    <span class="n">callback</span><span class="o">.</span><span class="na">reschedule</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="o">.....</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>更改任务状态，重新执行此任务，则重新执行到<code class="language-plaintext highlighter-rouge">getNextGenerator</code>方法，此时则会返回<strong>DataCacheGenerator</strong>来处理从Disk缓存加载的任务。</p>
+
+<h2 id="获取图片">获取图片</h2>
+
+<p>首先，图片来源有哪些？</p>
+
+<ol>
+  <li>资源图片：drawable, assets, raw, mipmap这些程序中自带的图片；</li>
+  <li>本地图片：本地存储设备上的图片；</li>
+  <li>远端图片：我们服务器或者来自第三方服务器的图片，通过URL来获取。这就需要<strong>异步网络请求</strong>，请求结束以后，要<strong>缓存</strong>图片，避免重复请求远端图片，造成时间、网络的浪费。</li>
+</ol>
+
+<pre><code class="language-mermaid">graph LR;
+A[Slide];
+B([1. 资源图片]) --&gt; A;
+C([2. 本地图片]) --&gt; A;
+E{缓存是否存在} --&gt; |是,交给Slide|A;
+E --&gt; |否,网络请求|D([3. 远端图片]);
+D -.-&gt; |获取到图片并缓存|E;
+
+</code></pre>
+
+<p>那么接下来，要丰富的细节，就来到了<strong>网络请求</strong>和<strong>缓存</strong>了。</p>
+
+<h3 id="网络请求">网络请求</h3>
+
+<h3 id="缓存">缓存</h3>
+
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

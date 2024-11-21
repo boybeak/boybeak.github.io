@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>J2V8深度绑定机制分享</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">J2V8深度绑定机制分享</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    August 12
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <h2 id="一问题背景">一、问题背景</h2>
+
+<p>在小游戏开发中，常见的一种操作就是设置绘制属性，比如lineWidth、fillStyle这种，这在WebView方案中，因为全跑在JS环境中，没有任何问题。但是在J2V8方案中，因为绘制逻辑在JS层，绘制实现在Java层，这就导致JS层的属性设置，无法传达到Java层。</p>
+
+<p>本文项目地址：<a href="https://github.com/boybeak/v8x">v8x</a></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="dl">'</span><span class="s1">2d</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// 这里的ctx是Java层返回的V8Object对象</span>
+<span class="nx">ctx</span><span class="p">.</span><span class="nx">lineWidth</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>上述代码中，<code class="language-plaintext highlighter-rouge">ctx.lineWidth = 10;</code>修改后，在Java层是无法感知的。</p>
+
+<h3 id="11-以往方案">1.1 以往方案</h3>
+
+<p>以往方案中，是通过JS层，为ctx对象做代理，拦截到属性变化，再通过调用J2V8的绑定方法，告知Java层，某个属性变化的了。</p>
+
+<p>这样做，有以下几个缺点：</p>
+
+<ol>
+  <li>
+    <p>有这种需求的类可能很多，每一个都要JS层做相应的适配，这会增加工作量和调试沟通成本；</p>
+  </li>
+  <li>
+    <p>并不是所有属性的变化都是Java层关心的；</p>
+  </li>
+  <li>
+    <p>JS层并不知道Java层的属性与类的关系，容易错乱，导致通知了属性变化，却不知道是哪个对象的属性变化了；</p>
+  </li>
+  <li>
+    <p>后期Java层类做了变动，需要JS层做相应修改，一旦遗漏，就会产生bug；</p>
+  </li>
+</ol>
+
+<p>基于解决以上问题的目的，开发出新的方案——J2V8Binding。</p>
+
+<h2 id="二j2v8binding">二、J2V8Binding</h2>
+
+<p>J2V8Binding的目标是，将JS层属性的变更感知，全部控制在Java层内，无需JS层参与额外代码。</p>
+
+<h3 id="21-基本原理">2.1 基本原理</h3>
+
+<p>与旧方案类似的，我们仍然需要一个JS层的代理，而与旧方案不同的，新方案的代理是由Java层“生成”。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">CREATE_PROXY_JS</span> <span class="p">=</span> <span class="s">"""
+function v8CreateProxy(obj) {
+    return new Proxy(obj, {
+        set: function(target, key, value) {
+            // 在此拦截需要的值变化，并发送给Java层
+        }
+    })
+}
+"""</span>
+<span class="c1">// ... 初始化V8时 ...</span>
+<span class="n">v8</span><span class="p">.</span><span class="nf">executeScript</span><span class="p">(</span><span class="nc">CREATE_PROXY_JS</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这里我们声明一段JS代码，这里用于创建JS层的代理对象。在初始化V8时，将此段JS代码注入到V8环境中，当我们需要一个JS层代理对象时，就可以执行此JS函数<code class="language-plaintext highlighter-rouge">v8CreateProxy</code>创建一个JS层的代理对象。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">fun</span> <span class="nf">createJSProxy</span><span class="p">(</span><span class="n">v8obj</span><span class="p">:</span> <span class="nc">V8Object</span><span class="p">):</span> <span class="nc">V8Object</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">v8</span><span class="p">.</span><span class="nf">executeObjectFunction</span><span class="p">(</span><span class="s">"v8CreateProxy"</span><span class="p">,</span> <span class="nc">V8Array</span><span class="p">(</span><span class="n">v8</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span> <span class="nf">push</span><span class="p">(</span><span class="n">v8obj</span><span class="p">)</span> <span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>###</p>
+
+<h3 id="22-封装">2.2 封装</h3>
+
+<p>对以上基本逻辑进行封装，有关键类<strong>V8Binding</strong>、<strong>V8Manager</strong>、<strong>V8Field</strong>和<strong>V8Method</strong>。</p>
+
+<h4 id="221-v8binding">2.2.1 V8Binding</h4>
+
+<p>一个需要绑定的类，需要实现<strong>V8Binding</strong>接口。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">V8Binding</span> <span class="p">{</span>
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">TAG</span> <span class="p">=</span> <span class="s">"V8Binding"</span>
+    <span class="p">}</span>
+    <span class="c1">// V8Binding类的唯一id，用于将JS层对象与Java层对象进行一一对应</span>
+    <span class="c1">// 默认实现为该对象的hashCodeo().toString()</span>
+    <span class="k">fun</span> <span class="nf">getBindingId</span><span class="p">():</span> <span class="nc">String</span> <span class="p">{</span>  <span class="k">return</span> <span class="nf">hashCode</span><span class="p">().</span><span class="nf">toString</span><span class="p">()</span> <span class="p">}</span>
+    <span class="c1">// 获取或者创建一个与其对应的代理V8Object</span>
+    <span class="k">fun</span> <span class="nf">getMyBinding</span><span class="p">(</span><span class="n">v8</span><span class="p">:</span> <span class="nc">V8</span><span class="p">):</span> <span class="nc">V8Object</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">V8Manager</span><span class="p">.</span><span class="nf">obtain</span><span class="p">(</span><span class="n">v8</span><span class="p">).</span><span class="nf">run</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(!</span><span class="nf">isBound</span><span class="p">(</span><span class="nf">getBindingId</span><span class="p">()))</span> <span class="p">{</span>
+                <span class="nf">createBinding</span><span class="p">(</span><span class="k">this</span><span class="nd">@V8Binding</span><span class="p">)</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">getBinding</span><span class="p">(</span><span class="nf">getBindingId</span><span class="p">())</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// 没有绑定，但是仍然关心的属性，获取关心的属性名称</span>
+    <span class="k">fun</span> <span class="nf">getCareForFieldKeys</span><span class="p">():</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nf">emptyArray</span><span class="p">()</span> <span class="p">}</span>
+    <span class="c1">// 关心的属性值变更时</span>
+    <span class="k">fun</span> <span class="nf">onCareForFieldChanged</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">newValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?,</span> <span class="n">oldValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?)</span> <span class="p">{}</span>
+
+    <span class="c1">// 绑定的属性值由null变为非null值时触发，只针对非基本数据类型(数值与String)的属性触发</span>
+    <span class="k">fun</span> <span class="nf">onBindingCreated</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nc">V8Object</span><span class="p">,</span> <span class="n">fieldInfo</span><span class="p">:</span> <span class="nc">Key</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nc">V8Object</span><span class="p">):</span> <span class="nc">V8Binding</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">NotImplementedError</span><span class="p">(</span><span class="s">"onCreateBinding must be implement when new binding created"</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">// 绑定的属性值由非null变为null值时触发，只针对非基本数据类型(数值与String)的属性触发</span>
+    <span class="k">fun</span> <span class="nf">onBindingDestroyed</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nc">V8Object</span><span class="p">,</span> <span class="n">fieldInfo</span><span class="p">:</span> <span class="nc">Key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">NotImplementedError</span><span class="p">(</span><span class="s">"onBindingDestroyed must be implement when binding destroyed"</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="c1">// 绑定的属性值发生变化时触发</span>
+    <span class="k">fun</span> <span class="nf">onBindingChanged</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nc">V8Object</span><span class="p">,</span> <span class="n">fieldInfo</span><span class="p">:</span> <span class="nc">Key</span><span class="p">,</span> <span class="n">newValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?,</span> <span class="n">oldValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在<strong>getMyBinding</strong>方法中，我们使用V8Manager来创建或者获取一个与当前对象绑定的V8Object对象。</p>
+
+<h4 id="222-v8manager">2.2.2 V8Manager</h4>
+
+<p>V8Manager是一个针对某个V8环境的管理类，主要是用于维护JS层对象与Java层的绑定关系，执行创建绑定关系、删除绑定关系，分发属性变更事件等作用，J2V8Binding的主要核心逻辑的所在。</p>
+
+<p>由于此处涉及到大量代码细节，故不在此罗列代码具体分析。</p>
+
+<h4 id="223-v8field和v8method">2.2.3 V8Field和V8Method</h4>
+
+<p>这两个类是注解类，用于标记类内属性和方法。</p>
+
+<p><strong>@V8Field(binding=?)</strong>: 标记属性，其中有一个binding属性，标记此属性是否需要绑定，如果需要绑定，则会有事件回调，默认值为false。</p>
+
+<p><strong>@V8Method(jsFuncName=?)</strong>: 标记方法，其中有一个jsFuncName属性，用于标识对应的JS函数的名称。</p>
+
+<h3 id="23-基本使用方法">2.3 基本使用方法</h3>
+
+<p>一个简单的示例类如下：</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">User</span> <span class="p">:</span> <span class="nc">V8Binding</span> <span class="p">{</span>
+    <span class="c1">// 不需要绑定的属性，值会传递到对应的JS对象，但该值在JS层发生变化，Java层不会知道</span>
+    <span class="nd">@V8Field</span>
+    <span class="kd">val</span> <span class="py">name</span> <span class="p">=</span> <span class="s">"John"</span>
+    <span class="c1">// 需要绑定的属性，初始值会传递到JS对象，该值在JS层发生变化，会传递到Java层</span>
+    <span class="nd">@V8Field</span><span class="p">(</span><span class="n">binding</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+    <span class="kd">var</span> <span class="py">age</span> <span class="p">=</span> <span class="mi">15</span>
+
+    <span class="c1">// 需要绑定的V8Binding类型属性，与之对应的V8Object会传递到JS对象，</span>
+    <span class="c1">// 在JS层，如果变更为其他JS层内部的对象，会解绑之前的关系，与新的JS对象建立新的绑定关系</span>
+    <span class="nd">@V8Binding</span><span class="p">(</span><span class="n">binding</span> <span class="p">=</span> <span class="k">true</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">location</span><span class="p">:</span> <span class="nc">V8Binding</span> <span class="p">=</span> <span class="o">..</span><span class="p">.</span>
+
+    <span class="c1">// 在此方法中</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onBindingChanged</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nc">V8Object</span><span class="p">,</span> <span class="n">fieldInfo</span><span class="p">:</span> <span class="nc">Key</span><span class="p">,</span> <span class="n">newValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?,</span> <span class="n">oldValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?){</span>
+        <span class="k">when</span><span class="p">(</span><span class="n">fieldInfo</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+            <span class="s">"age"</span> <span class="p">-&gt;</span> <span class="p">{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@V8Method</span><span class="p">(</span><span class="n">jsFuncName</span> <span class="p">=</span> <span class="s">"js层对应的名称，默认值与当前方法名一致"</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">sayHello</span><span class="p">(</span><span class="n">helloTo</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">getCareForFieldKeys</span><span class="p">():</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nf">arrayOf</span><span class="p">(</span><span class="s">"introduction"</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">onCareForFieldChanged</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">newValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?,</span> <span class="n">oldValue</span><span class="p">:</span> <span class="nc">Any</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">when</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
+            <span class="s">"introduction"</span> <span class="p">-&gt;</span> <span class="p">{}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>当使用这个User类的一个对象user时候，可以按照如下方式使用。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">v8</span> <span class="p">=</span> <span class="nc">V8</span><span class="p">.</span><span class="nf">createRuntime</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">user</span> <span class="p">=</span> <span class="o">..</span><span class="p">.</span>
+<span class="n">v8</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="s">"user"</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="nf">getMyBinding</span><span class="p">(</span><span class="n">v8</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>这里，我们在JS环境中，增加了一个user变量。</p>
+
+<p>然后在JS层，执行以下代码。</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">user</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Smith</span><span class="dl">"</span><span class="p">;</span>    <span class="c1">// Java层不会感知到</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>        <span class="c1">// Java层可以在onBindingChanged感知到</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">location</span> <span class="o">=</span> <span class="p">{};</span>    <span class="c1">// Java层可以在onBindingChanged感知到，并解绑旧location值，与新值建立绑定关系</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">introduction</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hi</span><span class="dl">"</span><span class="p">;</span>    <span class="c1">// Java层可以在onCareForFieldChanged感知到</span>
+</code></pre></div></div>
+
+<p>在修改<code class="language-plaintext highlighter-rouge">name</code>属性时，由于此属性是被V8Field标记binding为false，则不会通知Java层此值的修改事件。</p>
+
+<p>在修改<code class="language-plaintext highlighter-rouge">age</code>属性时，由于此值被V8Field标记binding为true，会通知Java层此值的修改事件。</p>
+
+<p>在修改<code class="language-plaintext highlighter-rouge">location</code>属性时，虽然此值为一个对象，但是被V8Field标记binding为true，会通知Java层此值的修改事件。注意：用V8Field标记的对象类型，必须为V8可以接受的数据类型或者V8Binding类型。</p>
+
+<p>在修改<code class="language-plaintext highlighter-rouge">introduction</code>时，虽然此值没有被V8Field标记，但是由于在getCareForFieldKeys返回的数组中，同样会有事件通知。</p>
+
+<p>有了这种机制，小游戏开发中，就可以很方便的感知到绘制属性的变化。</p>
+
+<h3 id="24-仍然存在的问题">2.4 仍然存在的问题</h3>
+
+<p>目前仍然有一种问题是无法解决的，那就是数组中某个数据发生变化时，Java层是无法得知的。</p>
+
+<p>如下代码：</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">image</span> <span class="o">=</span> <span class="p">...;</span>
+<span class="nx">image</span><span class="p">.</span><span class="nx">pixelBytes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 修改R值</span>
+<span class="nx">image</span><span class="p">.</span><span class="nx">pixelBytes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 修改G值</span>
+<span class="nx">image</span><span class="p">.</span><span class="nx">pixelBytes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 修改B值</span>
+<span class="nx">image</span><span class="p">.</span><span class="nx">pixelBytes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 修改A值</span>
+</code></pre></div></div>
+
+<p>目前这种场景较少，只在部分demo中见到直接修改图像像素数据的情况。</p>
+
+<h2 id="三总结">三、总结</h2>
+
+<p>以上代码片段只为展示逻辑主脉络，省略了大量细节，需要看细节部分，可以从<strong>V8Manager</strong>这里作为入口。源码链接：<a href="https://github.com/boybeak/v8x">v8x</a></p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <a href="/tag/j2v8">J2V8</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

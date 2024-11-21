@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About</title>
+  <title>AMS启动流程</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
@@ -221,17 +221,203 @@
         <s-scroll-view>
           <div class="contentWrapper">
             <div class="content">
-              <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">AMS启动流程</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
 
-<p>You can find the source code for Minima at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/minima">minima</a></p>
+    
+    
+    September 19
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。</p>
 
-<p>You can find the source code for Jekyll at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<h2 id="系统启动流程">系统启动流程</h2>
+
+<pre><code class="language-mermaid">graph TD;
+    style A fill:#fff
+    style F fill:#5befb9
+    Z --&gt; A([Boot Loader]);
+    A --&gt; B(Kernel);
+    B --&gt; C("init(pid=1)/C++ Framework Native");
+    C --&gt; D(Zygote/Android Runtime);
+    D --&gt; E(System Server/Java Framework);
+    E --&gt; F(Apps);
+</code></pre>
+
+<blockquote>
+  <p><strong>面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。</strong></p>
+
+  <p><em>Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予<a href="https://zhuanlan.zhihu.com/p/48147304">Copy-on-Write</a>机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。</em></p>
+
+  <p><em>SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。</em></p>
+
+  <p><strong>如何导致死锁的？</strong></p>
+
+  <p>在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。</p>
+
+  <p>对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。</p>
+</blockquote>
+
+<h2 id="zygote集成启动">Zygote集成启动</h2>
+
+<pre><code class="language-mermaid">graph TD;
+    A["init.cpp - main()"] --&gt; B[解析init.zygote.rc];
+    B --&gt; C["启动main类型服务 do_class_start()"];
+    C --&gt; D["启动zygote服务 start()"];
+    D --&gt; E["创建Zygote进程 fork()"];
+    E --&gt; |execv|F["app_main.cpp - main()"];
+</code></pre>
+
+<h2 id="system-server进程启动">System Server进程启动</h2>
+
+<pre><code class="language-mermaid">graph TD;
+    A["app_main.cpp - main()"] --&gt; B["AndroidRuntime.start()"];
+    B --&gt; C["startVM()"];
+    C --&gt; D["startReg()"];
+    D --&gt; E["ZygoteInit.main()"];
+    E --&gt; F["registerZygoteSocket()"];
+    F --&gt; G["preload"];
+    G --&gt; H["startSystemServer"];
+    H --&gt; I["runSelectLoop"];
+</code></pre>
+
+<p><a href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/services/java/com/android/server/SystemServer.java">SystemServer.java</a></p>
+
+<h2 id="ams启动流程">AMS启动流程</h2>
+
+<p><a href="https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/am/ActivityManagerService.java">ActivityManagerService.java</a></p>
+
+<p>在SystemServer的<code class="language-plaintext highlighter-rouge">startBootstrapServices</code>方法中，开始了AMS的启动。</p>
+
+<h3 id="ams启动过程中做了哪些事">AMS启动过程中做了哪些事？</h3>
+
+<p>与<code class="language-plaintext highlighter-rouge">adb shell dumpsys</code>相关的一些process服务，比如<code class="language-plaintext highlighter-rouge">meminfo</code>、<code class="language-plaintext highlighter-rouge">gfxinfo</code>、<code class="language-plaintext highlighter-rouge">dbinfo</code>等，具体请参考<code class="language-plaintext highlighter-rouge">setSystemProcess</code>方法。</p>
+
+<h2 id="activity启动流程">Activity启动流程</h2>
+
+<p>ActivityStactSupervisor</p>
+
+<pre><code class="language-mermaid">flowchart LR;
+A[ActivityStactSupervisor] --&gt; B[mHomeStack];
+A --&gt; C[mFocusedStack];
+subgraph ActivityStack["ActivityStack"]
+  subgraph TaskRecord
+    AR1[ActivityRecord]
+    AR2[ActivityRecord]
+    AR3[ActivityRecord]
+  end
+  subgraph TaskRecord2
+    AR4[ActivityRecord]
+    AR5[ActivityRecord]
+    AR6[ActivityRecord]
+  end
+end
+B --&gt; ActivityStack;
+C --&gt; ActivityStack;
+</code></pre>
+
+<p>Activity启动简图</p>
+
+<blockquote>
+  <p>面试题：Zygote为什么不采用Binder机制进行IPC通信。</p>
+
+  <p>Binder机制中存在Binder线程池，是多线程的，如果Zygote采用Binder的话，就存在了上面说的fork多线程死锁问题了。其实严格来说，Binder机制不一定要多线程，所谓的Binder线程只不过是在循环读取Binder驱动消息而已，只注册一个Binder线程也是可以工作的，比如ServiceManager，实际上Zygote尽管没有采用Binder机制，它也不是单线程的，但它在fork前主动停止了其他线程，fork后重新启动了。</p>
+</blockquote>
+
+<pre><code class="language-mermaid">graph TD;
+  A([Launcher]) --&gt; B{"SystemServer - AMS&lt;br&gt;(app是否启动)"};
+  B --&gt; |否, 请求创建app进程|C[Zygote];
+  B -.-&gt; |"是, 1. ActivityManager.getService()"|D(App):::app;
+  C --&gt;|fork| D
+  D --&gt;|"2. mgr.attachApplication(mAppThread, startSeq)"| B;
+	classDef app fill:#5befb9
+</code></pre>
+
+<p>Activity启动细节图</p>
+
+<p><strong>Launcher到AMS阶段</strong></p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+	participant A as Launcher
+	participant B as Activity
+	participant C as Instrumentation
+	participant D as IActivityManager
+	participant E as AMS
+	
+	A -&gt;&gt; B: startActivity
+	B --&gt; B: startActivityForResult
+	B -&gt;&gt; C: execStartActivity
+	C -&gt;&gt; D: startActivity
+	D -&gt;&gt; E: startActivity
+</code></pre>
+
+<p><strong>AMS到ApplicationThread阶段</strong></p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+	participant A as AMS
+	participant B as ActivityStart
+	participant C as ActivityStackSupervisor
+	participant D as ActivityStack
+	participant E as ApplicationThread
+	A -&gt;&gt; A: startActivityStarter
+	A -&gt;&gt; B: startActivityMyWait
+	B -&gt;&gt; B: startActivityLocked
+	B -&gt;&gt; B: startActivity
+	B -&gt;&gt; B: startActivityUnchecked
+	B -&gt;&gt; C: startSpecificActivityLocked
+</code></pre>
+
+<p><strong>ApplicationThread到Activity</strong></p>
 
 
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</article>
             </div>
             <footer style="max-width: 100%; padding: 24px;">
     Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.

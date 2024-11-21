@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Glide源码分析与自我实现(二)——缓存与BitmapPool</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script src="/assets/js/sobekyll.js"></script>
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">Glide源码分析与自我实现(二)——缓存与BitmapPool</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 17
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <blockquote>
+  <p>本文基于Glide 4.11.0</p>
+</blockquote>
+
+<p>参考文章：<a href="https://zhuanlan.zhihu.com/p/60426316">Glide 源码分析解读-缓存模块-基于最新版Glide 4.9.0</a></p>
+
+<p><strong>注意：</strong>由于版本差异问题，本文有些部分与参考文章有差异。</p>
+
+<p>缓存模块是Glide中非常重要的部分，Glide图片加载的高效性，几乎有一半功劳都在这里了。</p>
+
+<p>一般来说，Glide有三级缓存，就是<strong>内存缓存</strong>、<strong>磁盘缓存</strong>和<strong>网络缓存</strong>。</p>
+
+<p>先来看缓存流程图，如下：</p>
+
+<pre><code class="language-mermaid">graph TD;
+style A fill:#99ccff
+style B1 fill:#aaffaa
+A(发起请求) --&gt; B{1. 通过&lt;br&gt;ActiveResources&lt;br&gt;获取资源} --&gt; |命中|B1([加载完成]);
+B --&gt; |未命中|C{2. 通过&lt;br&gt;MemoryCache&lt;br&gt;获取资源} --&gt; |命中|C1[缓存至&lt;br&gt;ActiveResources] --&gt; B1;
+C --&gt; |未命中|D{3. 通过&lt;br&gt;DiskCache&lt;br&gt;获取资源} --&gt; |命中|D1[缓存至&lt;br&gt;MemoryCache] --&gt; C1;
+D --&gt; |未命中|E["4. 通过数据源(网络、文件等)&lt;br&gt;加载数据"] --&gt; E1[缓存至&lt;br&gt;DiskCache] --&gt; D1;
+</code></pre>
+
+<h2 id="内存缓存">内存缓存</h2>
+
+<p>内存缓存主要靠三个部分组成：<strong>ActiveResources</strong>、<strong>MemoryCache</strong>和<strong>BitmapPool</strong>。</p>
+
+<h3 id="activeresources">ActiveResources</h3>
+
+<p>ActiveResources表示当前正在活动中的资源。ActiveResources通过一个<code class="language-plaintext highlighter-rouge">Map&lt;Key, ResourceWeakReference&gt;</code>来保存活动中的资源，其中的ResourceWeakReference就是资源数据，在构建这个ResourceWeakReference的时候必须传入一个ReferenceQueue用来检测资源是否被回收。</p>
+
+<blockquote>
+  <p><strong>Q1：如何探知WeakReference中的值被回收了呢？</strong></p>
+
+  <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ReferenceQueue</span> <span class="n">queue</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="nc">WeakReference</span> <span class="n">wr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">WeakReference</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">queue</span><span class="o">);</span>
+</code></pre></div>  </div>
+
+  <p>当构建WeakReference的时候，如果传入了queue参数，则在value被回收的时候，wr会被加入到queue中去，这样，通过检测queue中是否有值，就可以探知value是否被回收了。</p>
+</blockquote>
+
+<p>那么，在何时去探知ReferenceQueue中的值呢？我们查看ActiveResources的关键代码：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*构造方法中，通过monitorClearedResourcesExecutor执行了cleanReferenceQueue()方法。
+*/</span>
+<span class="nc">ActiveResources</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">isActiveResourceRetentionAllowed</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">this</span><span class="o">(</span>
+    <span class="n">isActiveResourceRetentionAllowed</span><span class="o">,</span>
+    <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">concurrent</span><span class="o">.</span><span class="na">Executors</span><span class="o">.</span><span class="na">newSingleThreadExecutor</span><span class="o">(</span>
+      <span class="k">new</span> <span class="nf">ThreadFactory</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">Thread</span> <span class="nf">newThread</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="kd">final</span> <span class="nc">Runnable</span> <span class="n">r</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span>
+            <span class="k">new</span> <span class="nf">Runnable</span><span class="o">()</span> <span class="o">{</span>
+              <span class="nd">@Override</span>
+              <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nc">Process</span><span class="o">.</span><span class="na">setThreadPriority</span><span class="o">(</span><span class="nc">Process</span><span class="o">.</span><span class="na">THREAD_PRIORITY_BACKGROUND</span><span class="o">);</span>
+                <span class="n">r</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+              <span class="o">}</span>
+            <span class="o">},</span>
+            <span class="s">"glide-active-resources"</span><span class="o">);</span>
+        <span class="o">}</span>
+      <span class="o">}));</span>
+<span class="o">}</span>
+
+<span class="nd">@VisibleForTesting</span>
+<span class="nc">ActiveResources</span><span class="o">(</span>
+  <span class="kt">boolean</span> <span class="n">isActiveResourceRetentionAllowed</span><span class="o">,</span> <span class="nc">Executor</span> <span class="n">monitorClearedResourcesExecutor</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">isActiveResourceRetentionAllowed</span> <span class="o">=</span> <span class="n">isActiveResourceRetentionAllowed</span><span class="o">;</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">monitorClearedResourcesExecutor</span> <span class="o">=</span> <span class="n">monitorClearedResourcesExecutor</span><span class="o">;</span>
+
+  <span class="n">monitorClearedResourcesExecutor</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span>
+    <span class="k">new</span> <span class="nf">Runnable</span><span class="o">()</span> <span class="o">{</span>
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">cleanReferenceQueue</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">});</span>
+<span class="o">}</span>
+
+
+<span class="kt">void</span> <span class="nf">cleanReferenceQueue</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">while</span> <span class="o">(!</span><span class="n">isShutdown</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="nc">ResourceWeakReference</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ResourceWeakReference</span><span class="o">)</span> <span class="n">resourceReferenceQueue</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+      <span class="n">cleanupActiveReference</span><span class="o">(</span><span class="n">ref</span><span class="o">);</span>
+
+      <span class="c1">// This section for testing only.</span>
+      <span class="nc">DequeuedResourceCallback</span> <span class="n">current</span> <span class="o">=</span> <span class="n">cb</span><span class="o">;</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">current</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">current</span><span class="o">.</span><span class="na">onResourceDequeued</span><span class="o">();</span>
+      <span class="o">}</span>
+      <span class="c1">// End for testing only.</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">interrupt</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们通过代码可以看出，<code class="language-plaintext highlighter-rouge">cleanReferenceQueue</code>是一个靠<code class="language-plaintext highlighter-rouge">isShutdown</code>变量控制的<strong>死循环</strong>方法，这个方法执行在一个优先级为<code class="language-plaintext highlighter-rouge">THREAD_PRIORITY_BACKGROUND</code>的线程上。</p>
+
+<blockquote>
+  <p><strong>Q2：那么，既然是死循环方法，会不会过多的占用CPU资源呢？</strong></p>
+
+  <p>其实不会的，因为ReferenceQueue#remove是一个阻塞式的方法，如果没有元素可以被remove，则等待至有元素可以remove的时候，等待期间释放CPU。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>注意：</strong>此处与<strong>参考文章</strong>中的说法不同，这是因为版本差异。查看<a href="https://github.com/bumptech/glide/commit/8f1ea5c07dff7ade8c49c324bcb5a7f40d0b4891#diff-c46e6c0760c04e74cb867c2bdf9cdee90ab279b119268478524c42cc743cb8a9">Glide update log hsitory</a>，可以看出<strong>出于避免在主线程做清理的原因</strong>，将清理任务放在了后台线程，而不是放在IdleHandler中。</p>
+</blockquote>
+
+<p><strong>那么被回收了的资源去哪里了呢？</strong></p>
+
+<p>我们查看<code class="language-plaintext highlighter-rouge">cleanupActiveReference</code>方法，得知，通过<em>ResourceListener#onResourceReleased</em>回调，交给了<strong>Engine</strong>来处理，我们查看Engine的onResourceReleased方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onResourceReleased</span><span class="o">(</span><span class="nc">Key</span> <span class="n">cacheKey</span><span class="o">,</span> <span class="nc">EngineResource</span><span class="o">&lt;?&gt;</span> <span class="n">resource</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">activeResources</span><span class="o">.</span><span class="na">deactivate</span><span class="o">(</span><span class="n">cacheKey</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">resource</span><span class="o">.</span><span class="na">isMemoryCacheable</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">cacheKey</span><span class="o">,</span> <span class="n">resource</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">resourceRecycler</span><span class="o">.</span><span class="na">recycle</span><span class="o">(</span><span class="n">resource</span><span class="o">,</span> <span class="cm">/*forceNextFrame=*/</span> <span class="kc">false</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>从这里我们发现，这里出现了两种情况：</p>
+
+<ol>
+  <li>如果资源是<strong>MemoryCacheable</strong>的，则缓存在MemoryCache；</li>
+  <li>如果资源不是<strong>MemoryCacheable</strong>的，则交给ResourceRecycler调用Resource的recycle()方法来回收，如果此Resource为BitmapResource，则会将Bitmap回收到BitmapPool中去。</li>
+</ol>
+
+<p>在开始MemoryCache和BitmapPool前，需要先了解一下<strong>MemorySizeCalculator</strong>这个类，这个类是用来计算 BitmapPool 、ArrayPool 以及 MemoryCache <strong>大小</strong>的。</p>
+
+<h3 id="memorycache">MemoryCache</h3>
+
+<p>MemoryCache的具体实现类是LruResourceCache，而实际的逻辑方法，都在其父类LruCache中，以put方法为例。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Nullable</span>
+<span class="kd">public</span> <span class="kd">synchronized</span> <span class="no">Y</span> <span class="nf">put</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="no">T</span> <span class="n">key</span><span class="o">,</span> <span class="nd">@Nullable</span> <span class="no">Y</span> <span class="n">item</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="kt">int</span> <span class="n">itemSize</span> <span class="o">=</span> <span class="n">getSize</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">itemSize</span> <span class="o">&gt;=</span> <span class="n">maxSize</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">onItemEvicted</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">item</span><span class="o">);</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="k">if</span> <span class="o">(</span><span class="n">item</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">currentSize</span> <span class="o">+=</span> <span class="n">itemSize</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="nd">@Nullable</span> <span class="nc">Entry</span><span class="o">&lt;</span><span class="no">Y</span><span class="o">&gt;</span> <span class="n">old</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">item</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="kc">null</span> <span class="o">:</span> <span class="k">new</span> <span class="nc">Entry</span><span class="o">&lt;&gt;(</span><span class="n">item</span><span class="o">,</span> <span class="n">itemSize</span><span class="o">));</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">old</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">currentSize</span> <span class="o">-=</span> <span class="n">old</span><span class="o">.</span><span class="na">size</span><span class="o">;</span>
+
+    <span class="k">if</span> <span class="o">(!</span><span class="n">old</span><span class="o">.</span><span class="na">value</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">item</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">onItemEvicted</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">old</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="n">evict</span><span class="o">();</span>
+
+  <span class="k">return</span> <span class="n">old</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">old</span><span class="o">.</span><span class="na">value</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>当有一个新的item被put进去以后，会替换出一个老的值old，如果old非为空，则需要将当前容量减去old的大小，如果old并非新的item，则需要通过onItemEvicted进行回调，通知有老值被<strong>“驱逐”</strong>了。最后还要执行一次evict方法，按照LRU算法，将超出maxSize的item<strong>“驱逐”</strong>出去，以确保在maxSize范围内。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">protected</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">trimToSize</span><span class="o">(</span><span class="kt">long</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="nc">Entry</span><span class="o">&lt;</span><span class="no">Y</span><span class="o">&gt;&gt;</span> <span class="n">last</span><span class="o">;</span>
+  <span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="nc">Entry</span><span class="o">&lt;</span><span class="no">Y</span><span class="o">&gt;&gt;&gt;</span> <span class="n">cacheIterator</span><span class="o">;</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">currentSize</span> <span class="o">&gt;</span> <span class="n">size</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">cacheIterator</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="na">entrySet</span><span class="o">().</span><span class="na">iterator</span><span class="o">();</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">cacheIterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="nc">Entry</span><span class="o">&lt;</span><span class="no">Y</span><span class="o">&gt;</span> <span class="n">toRemove</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+    <span class="n">currentSize</span> <span class="o">-=</span> <span class="n">toRemove</span><span class="o">.</span><span class="na">size</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="no">T</span> <span class="n">key</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+    <span class="n">cacheIterator</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span>
+    <span class="n">onItemEvicted</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="n">toRemove</span><span class="o">.</span><span class="na">value</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">void</span> <span class="nf">evict</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">trimToSize</span><span class="o">(</span><span class="n">maxSize</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>被<strong>“驱逐”</strong>的值去哪里了呢？我们查看<em>MemoryCache</em>类的源码，可以知道是通过<em>ResourceRemovedListener</em>回调给了<em>Engine</em>，在<em>Engine</em>中我们查看<em>onResourceRemoved</em>方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onResourceRemoved</span><span class="o">(</span><span class="nd">@NonNull</span> <span class="kd">final</span> <span class="nc">Resource</span><span class="o">&lt;?&gt;</span> <span class="n">resource</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// Avoid deadlock with RequestManagers when recycling triggers recursive clear() calls.</span>
+  <span class="c1">// See b/145519760.</span>
+  <span class="n">resourceRecycler</span><span class="o">.</span><span class="na">recycle</span><span class="o">(</span><span class="n">resource</span><span class="o">,</span> <span class="cm">/*forceNextFrame=*/</span> <span class="kc">true</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，这里同样是通过resourceRecycler进行了回收。在这里，则是交给resource自己的recycle()方法来处理，比如，<em>BitmapResource</em>是交给了<em>BitmapPool</em>进行处理。</p>
+
+<h3 id="bitmappool">BitmapPool</h3>
+
+<p>这里是专门用来存放被回收的Bitmap的，其中<strong>BitmapDrawableResource</strong>、<strong>BitmapResource</strong>都持有一个<strong>BitmapPool</strong>变量，在执行recycle()方法时候，调用<em>BitmapPool#put()</em>方法。我们来看一下这个BitmapPool的默认实现类<strong>LruBitmapPool</strong>的方法实现。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">put</span><span class="o">(</span><span class="nc">Bitmap</span> <span class="n">bitmap</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">bitmap</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">NullPointerException</span><span class="o">(</span><span class="s">"Bitmap must not be null"</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">bitmap</span><span class="o">.</span><span class="na">isRecycled</span><span class="o">())</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(</span><span class="s">"Cannot pool recycled bitmap"</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">bitmap</span><span class="o">.</span><span class="na">isMutable</span><span class="o">()</span>
+      <span class="o">||</span> <span class="n">strategy</span><span class="o">.</span><span class="na">getSize</span><span class="o">(</span><span class="n">bitmap</span><span class="o">)</span> <span class="o">&gt;</span> <span class="n">maxSize</span>
+      <span class="o">||</span> <span class="o">!</span><span class="n">allowedConfigs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">bitmap</span><span class="o">.</span><span class="na">getConfig</span><span class="o">()))</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="nc">Log</span><span class="o">.</span><span class="na">isLoggable</span><span class="o">(</span><span class="no">TAG</span><span class="o">,</span> <span class="nc">Log</span><span class="o">.</span><span class="na">VERBOSE</span><span class="o">))</span> <span class="o">{</span>
+      <span class="nc">Log</span><span class="o">.</span><span class="na">v</span><span class="o">(</span>
+        <span class="no">TAG</span><span class="o">,</span>
+        <span class="s">"Reject bitmap from pool"</span>
+        <span class="o">+</span> <span class="s">", bitmap: "</span>
+        <span class="o">+</span> <span class="n">strategy</span><span class="o">.</span><span class="na">logBitmap</span><span class="o">(</span><span class="n">bitmap</span><span class="o">)</span>
+        <span class="o">+</span> <span class="s">", is mutable: "</span>
+        <span class="o">+</span> <span class="n">bitmap</span><span class="o">.</span><span class="na">isMutable</span><span class="o">()</span>
+        <span class="o">+</span> <span class="s">", is allowed config: "</span>
+        <span class="o">+</span> <span class="n">allowedConfigs</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">bitmap</span><span class="o">.</span><span class="na">getConfig</span><span class="o">()));</span>
+    <span class="o">}</span>
+    <span class="n">bitmap</span><span class="o">.</span><span class="na">recycle</span><span class="o">();</span>
+    <span class="k">return</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">final</span> <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="na">getSize</span><span class="o">(</span><span class="n">bitmap</span><span class="o">);</span>
+  <span class="n">strategy</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">bitmap</span><span class="o">);</span>
+  <span class="n">tracker</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">bitmap</span><span class="o">);</span>
+	<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>这里我们可以看出，当Bitmap在三种情况下是不会被BitmapPool缓存起来的：</p>
+
+<ol>
+  <li>这个bitmap是非mutable的，也就是说是不允许被复用的；</li>
+  <li>这一个bitmap的字节数大小已经超过了可以容纳的总大小；</li>
+  <li>BitmapPool中不允许的Config类型。</li>
+</ol>
+
+<p>在这种情况，bitmap就被直接recycle掉，而不是放入缓存等待下次使用。</p>
+
+<p>如果不满足这三种情况，则会被strategy缓存起来，等待下次使用。</p>
+
+<p>我们再看LruBitmapPool#get()方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="nd">@NonNull</span>
+<span class="kd">public</span> <span class="nc">Bitmap</span> <span class="nf">get</span><span class="o">(</span><span class="kt">int</span> <span class="n">width</span><span class="o">,</span> <span class="kt">int</span> <span class="n">height</span><span class="o">,</span> <span class="nc">Bitmap</span><span class="o">.</span><span class="na">Config</span> <span class="n">config</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">Bitmap</span> <span class="n">result</span> <span class="o">=</span> <span class="n">getDirtyOrNull</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">height</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">result</span><span class="o">.</span><span class="na">eraseColor</span><span class="o">(</span><span class="nc">Color</span><span class="o">.</span><span class="na">TRANSPARENT</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">createBitmap</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">height</span><span class="o">,</span> <span class="n">config</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>我们可以看到，当能够查询到符合条件的Bitmap的时候，会先通过eraseColor方法，将其变成透明图片，然后再交给调用者来使用；如果查询不到，则创建一个新图交给调用者来使用。</p>
+
+<blockquote>
+  <p>LruBitmapPool的LruPoolStrategy变量，在KITKAT以及以上，是SizeConfigStrategy，在以下是AttributeStrategy，这是因为在KITKAT版本以下，Bitmap的复用需要尺寸的严格匹配，但是KITKAT及以上没有这个问题，只要被复用的图片尺寸比目标尺寸大就可以。</p>
+</blockquote>
+
+<h3 id="arraypool">ArrayPool</h3>
+
+<p>ArrayPool主要用在<strong>ThumbnailStreamOpener</strong>和<strong>ByteBufferGifDecoder</strong>中，具体的实现类为<strong>LruArrayPool</strong>。</p>
+
+<p>在LruArrayPool中，通过groupedMap来缓存数据，而缓存数据的byte字节数是通过<strong>ArrayAdapterInterface</strong>来计算的，ArrayAdapterInterface是一个接口，实现类有两个：<strong>IntegerArrayAdapter</strong>和<strong>ByteArrayAdapter</strong>，分别对应缓存int[].class和byte[].class。</p>
+
+<p>StreamGifDecoder和StreamBitmapDecoder都有一个ArrayPool成员。解码过程中需要用到byte[]，但不是直接new byte[]，而是调用<code class="language-plaintext highlighter-rouge">ArrayPool.get()</code>从对象池中拿，用完了归还。</p>
+
+<h2 id="diskcache">DiskCache</h2>
+
+<p>在上一章<a href="/源码分析系列/Glide源码分析与自我实现2.md">Glide源码分析与自我实现(一)——数据加载主流程</a>中，提到过数据加载的主流程，其中一个非常重要的类是 <strong>DecodeJob</strong>，在这个类的<code class="language-plaintext highlighter-rouge">getNextGenerator</code>方法中，返回的<strong>SourceGenerator</strong>会用来加载远程数据，但是这个方法不止返回这一个<strong>DataFetcherGenerator</strong>类，这是一个通过条件判断，返回不同DataFetcherGenerator类的方法。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">DataFetcherGenerator</span> <span class="nf">getNextGenerator</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">switch</span> <span class="o">(</span><span class="n">stage</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nl">RESOURCE_CACHE:</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">ResourceCacheGenerator</span><span class="o">(</span><span class="n">decodeHelper</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+    <span class="k">case</span> <span class="nl">DATA_CACHE:</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">DataCacheGenerator</span><span class="o">(</span><span class="n">decodeHelper</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+    <span class="k">case</span> <span class="nl">SOURCE:</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">SourceGenerator</span><span class="o">(</span><span class="n">decodeHelper</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+    <span class="k">case</span> <span class="nl">FINISHED:</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="k">default</span><span class="o">:</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalStateException</span><span class="o">(</span><span class="s">"Unrecognized stage: "</span> <span class="o">+</span> <span class="n">stage</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>实际上，这是依次递进的<strong>有限状态机</strong>设计模式，当一个获取数据请求到来时候，此时是默认状态INITIALIZE，然后通过<code class="language-plaintext highlighter-rouge">getNextStage</code>方法判断下一个状态是什么，再按照新的状态获取DataFetcherGenerator，然后随着任务的执行，不断改变状态。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="nc">Stage</span> <span class="nf">getNextStage</span><span class="o">(</span><span class="nc">Stage</span> <span class="n">current</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">switch</span> <span class="o">(</span><span class="n">current</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="nl">INITIALIZE:</span>
+      <span class="k">return</span> <span class="n">diskCacheStrategy</span><span class="o">.</span><span class="na">decodeCachedResource</span><span class="o">()</span>
+        <span class="o">?</span> <span class="nc">Stage</span><span class="o">.</span><span class="na">RESOURCE_CACHE</span>
+        <span class="o">:</span> <span class="n">getNextStage</span><span class="o">(</span><span class="nc">Stage</span><span class="o">.</span><span class="na">RESOURCE_CACHE</span><span class="o">);</span>
+    <span class="k">case</span> <span class="nl">RESOURCE_CACHE:</span>
+      <span class="k">return</span> <span class="n">diskCacheStrategy</span><span class="o">.</span><span class="na">decodeCachedData</span><span class="o">()</span>
+        <span class="o">?</span> <span class="nc">Stage</span><span class="o">.</span><span class="na">DATA_CACHE</span>
+        <span class="o">:</span> <span class="n">getNextStage</span><span class="o">(</span><span class="nc">Stage</span><span class="o">.</span><span class="na">DATA_CACHE</span><span class="o">);</span>
+    <span class="k">case</span> <span class="nl">DATA_CACHE:</span>
+      <span class="c1">// Skip loading from source if the user opted to only retrieve the resource from cache.</span>
+      <span class="k">return</span> <span class="n">onlyRetrieveFromCache</span> <span class="o">?</span> <span class="nc">Stage</span><span class="o">.</span><span class="na">FINISHED</span> <span class="o">:</span> <span class="nc">Stage</span><span class="o">.</span><span class="na">SOURCE</span><span class="o">;</span>
+    <span class="k">case</span> <span class="nl">SOURCE:</span>
+    <span class="k">case</span> <span class="nl">FINISHED:</span>
+      <span class="k">return</span> <span class="nc">Stage</span><span class="o">.</span><span class="na">FINISHED</span><span class="o">;</span>
+    <span class="k">default</span><span class="o">:</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Unrecognized stage: "</span> <span class="o">+</span> <span class="n">current</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>其状态变更顺序为INITIALIZE -&gt; RESOURCE_CACHE -&gt; DATA_CACHE -&gt; SOURCE，代表着ResourceCacheGenerator、DataCacheGenerator和SourceGenerator，当从ResourceCahce中拿不到数据，则向DataCacheGenerator请求数据，如果还是拿不到，则通过SourceGenerator去请求数据了。</p>
+
+<p>在这个过程中，SourceGenerator向DiskCache中写入数据，ResourceCacheGenerator和DataCacheGenerator从DiskCache中读取数据。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">ResourceCacheGenerator</span> <span class="kd">implements</span> <span class="nc">DataFetcherGenerator</span><span class="o">,</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">startNext</span><span class="o">()</span> <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="n">currentKey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ResourceCacheKey</span><span class="o">(</span><span class="n">sourceId</span><span class="o">,</span> <span class="n">helper</span><span class="o">.</span><span class="na">getSignature</span><span class="o">(),</span> <span class="n">helper</span><span class="o">.</span><span class="na">getWidth</span><span class="o">(),</span>
+          <span class="n">helper</span><span class="o">.</span><span class="na">getHeight</span><span class="o">(),</span> <span class="n">transformation</span><span class="o">,</span> <span class="n">resourceClass</span><span class="o">,</span> <span class="n">helper</span><span class="o">.</span><span class="na">getOptions</span><span class="o">());</span>
+      <span class="n">cacheFile</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="na">getDiskCache</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">currentKey</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">cacheFile</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">sourceKey</span> <span class="o">=</span> <span class="n">sourceId</span><span class="o">;</span>
+        <span class="n">modelLoaders</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="na">getModelLoaders</span><span class="o">(</span><span class="n">cacheFile</span><span class="o">);</span>
+        <span class="n">modelLoaderIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">DataCacheGenerator</span> <span class="kd">implements</span> <span class="nc">DataFetcherGenerator</span><span class="o">,</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">startNext</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">modelLoaders</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span><span class="n">hasNextModelLoader</span><span class="o">())</span> <span class="o">{</span>
+      <span class="o">...</span>
+      <span class="nc">Key</span> <span class="n">sourceId</span> <span class="o">=</span> <span class="n">cacheKeys</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">sourceIdIndex</span><span class="o">);</span>
+      <span class="nc">Key</span> <span class="n">originalKey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DataCacheKey</span><span class="o">(</span><span class="n">sourceId</span><span class="o">,</span> <span class="n">helper</span><span class="o">.</span><span class="na">getSignature</span><span class="o">());</span>
+      <span class="n">cacheFile</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="na">getDiskCache</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">originalKey</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">cacheFile</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">sourceKey</span> <span class="o">=</span> <span class="n">sourceId</span><span class="o">;</span>
+        <span class="n">modelLoaders</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="na">getModelLoaders</span><span class="o">(</span><span class="n">cacheFile</span><span class="o">);</span>
+        <span class="n">modelLoaderIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">SourceGenerator</span> <span class="kd">implements</span> <span class="nc">DataFetcherGenerator</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">startNext</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">dataToCache</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">Object</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dataToCache</span><span class="o">;</span>
+      <span class="n">dataToCache</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+      <span class="n">cacheData</span><span class="o">(</span><span class="n">data</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">cacheData</span><span class="o">(</span><span class="nc">Object</span> <span class="n">dataToCache</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">long</span> <span class="n">startTime</span> <span class="o">=</span> <span class="nc">LogTime</span><span class="o">.</span><span class="na">getLogTime</span><span class="o">();</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="nc">Encoder</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">encoder</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="na">getSourceEncoder</span><span class="o">(</span><span class="n">dataToCache</span><span class="o">);</span>
+      <span class="nc">DataCacheWriter</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">writer</span> <span class="o">=</span>
+          <span class="k">new</span> <span class="nc">DataCacheWriter</span><span class="o">&lt;&gt;(</span><span class="n">encoder</span><span class="o">,</span> <span class="n">dataToCache</span><span class="o">,</span> <span class="n">helper</span><span class="o">.</span><span class="na">getOptions</span><span class="o">());</span>
+      <span class="n">originalKey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DataCacheKey</span><span class="o">(</span><span class="n">loadData</span><span class="o">.</span><span class="na">sourceKey</span><span class="o">,</span> <span class="n">helper</span><span class="o">.</span><span class="na">getSignature</span><span class="o">());</span>
+      <span class="n">helper</span><span class="o">.</span><span class="na">getDiskCache</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="n">originalKey</span><span class="o">,</span> <span class="n">writer</span><span class="o">);</span>
+      <span class="o">...</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="n">loadData</span><span class="o">.</span><span class="na">fetcher</span><span class="o">.</span><span class="na">cleanup</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="n">sourceCacheGenerator</span> <span class="o">=</span>
+        <span class="k">new</span> <span class="nf">DataCacheGenerator</span><span class="o">(</span><span class="nc">Collections</span><span class="o">.</span><span class="na">singletonList</span><span class="o">(</span><span class="n">loadData</span><span class="o">.</span><span class="na">sourceKey</span><span class="o">),</span> <span class="n">helper</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>DiskCache的默认实现类是<strong>DiskLruCacheWrapper</strong>，其内部通过<strong>DiskLruCache</strong>来管理磁盘缓存。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>到现在，Glide主要部分已经分析的差不多了，实际上这个优秀的框架可挖的地方还有很多，比如通过<a href="/源码分析系列/Glide源码分析与自我实现3.md">APT来实现很好的扩展</a>，框架中涉及多种涉及模式等。</p>
+
+<blockquote>
+  <p>其中涉及到的涉及模式，比如无处不在的<strong>构建者模式</strong>和<strong>工厂模式</strong>，DecodeJob中的<strong>有限状态机模式</strong>，还有BitmapPool和ArrayPool中的<strong>享元模式</strong>，DiskLruCacheWrapper中的<strong>代理模式</strong>等。</p>
+</blockquote>
+
+<h2 id="参考文章">参考文章</h2>
+
+<p><a href="https://www.sunmoonblog.com/2018/07/27/glide-cache/">Glide缓存分析</a></p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/源码分析">源码分析</a>
+    
+    
+  </p>
+</article>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

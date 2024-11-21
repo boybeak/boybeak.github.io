@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About</title>
+  <title>难忘的bug</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
@@ -221,17 +221,109 @@
         <s-scroll-view>
           <div class="contentWrapper">
             <div class="content">
-              <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>
+              <article>
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">难忘的bug</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
 
-<p>You can find the source code for Minima at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/minima">minima</a></p>
+    
+    
+    September 22
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>此贴是为了记录日常开发过程中，遇到的一些让人难忘的bug。</p>
+<ul>
+  <li>MediaPlayer: surface has already been released</li>
+  <li>kotlin ?.的陷阱与缺陷</li>
+</ul>
 
-<p>You can find the source code for Jekyll at GitHub:
-<a href="https://github.com/jekyll">jekyll</a> /
-<a href="https://github.com/jekyll/jekyll">jekyll</a></p>
+<h2 id="surface-has-already-been-released">surface has already been released</h2>
+<p><strong>场景</strong>：MediaPlayer做跨进程的视频播放发现的，由于有无画面的后台播放场景，所以，MediaPlayer的相关操作放在独立进程的Service中，通过跨进程的调度，进行相关媒体操作，包括设置用于展示画面的Surface，Surface是一个Parcable类，所以是可以通过跨进程传输的。
+<strong>归因</strong>：在播放进程中，用成员变量缓存了通过<code class="language-plaintext highlighter-rouge">setSurface</code>设置的surface变量，以便于从后台恢复前台播放时候，可以直接使用，而不需要再次传入surface参数。但是这样做是不可以的，会爆出<code class="language-plaintext highlighter-rouge">surface has already been released</code>的错误。
+IPlayer.aidl如下：</p>
+<pre><code class="language-aidl">interface IPlayer {
+    void setSurface(inout Surface surface);
+}
+</code></pre>
+<p>需要注意的是，此处surface的修饰符包括一个inout。这样设置，是为了适配IjkMediaPlayer切换全屏的场景。如果把这个修饰符改成<code class="language-plaintext highlighter-rouge">in</code>，则IjkMediaPlayer在通过<code class="language-plaintext highlighter-rouge">setSurface</code>多次修改surface时候，也会爆出<code class="language-plaintext highlighter-rouge">surface has already been released</code>这样的问题。</p>
 
+<h2 id="kotlin-的陷阱与缺陷">kotlin ?.的陷阱与缺陷</h2>
+<p><code class="language-plaintext highlighter-rouge">?.</code>是kotlin的空安全语法。相比Java的if语句判断，这样做要简洁的多，但是这里边有一种“陷阱”，这并不是kotlin本身的问题，而是使用者容易疏忽的问题。
+展示逻辑的伪代码如下：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>方法A(回调) {
+    结果1 = 动作1
+    结果2 = 动作2
+    回调(结果1, 结果2)
+}
+</code></pre></div></div>
+<p>简单解释一下，一个<code class="language-plaintext highlighter-rouge">方法A</code>，带有一个Nullable的<code class="language-plaintext highlighter-rouge">回调</code>，需要执行<code class="language-plaintext highlighter-rouge">动作1</code>和<code class="language-plaintext highlighter-rouge">动作2</code>，分别返回了<code class="language-plaintext highlighter-rouge">结果1</code>和<code class="language-plaintext highlighter-rouge">结果2</code>，并且在<code class="language-plaintext highlighter-rouge">回调</code>中返回结果。
+上述逻辑用kotlin实现如下：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 方案一</span>
+<span class="k">fun</span> <span class="nf">action1</span><span class="p">():</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="k">fun</span> <span class="nf">action2</span><span class="p">():</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">2</span>
+<span class="k">fun</span> <span class="nf">methodA</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">((</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">result1</span> <span class="p">=</span> <span class="nf">action1</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">result2</span> <span class="p">=</span> <span class="nf">action2</span><span class="p">()</span>
+    <span class="n">block</span><span class="o">?.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">result1</span><span class="p">,</span> <span class="n">result2</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>或者</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 方案二</span>
+<span class="k">fun</span> <span class="nf">action1</span><span class="p">():</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">1</span>
+<span class="k">fun</span> <span class="nf">action2</span><span class="p">():</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">2</span>
+<span class="k">fun</span> <span class="nf">methodA</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">((</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">block</span><span class="o">?.</span><span class="nf">invoke</span><span class="p">(</span><span class="nf">action1</span><span class="p">(),</span> <span class="nf">action2</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>如果你选择了方案二，那么你就掉入”陷阱”了。
+因为方法内执行的逻辑，不应该收到回调的影响。如果在<code class="language-plaintext highlighter-rouge">methodA</code>中传入了null作为参数，或者直接调用<code class="language-plaintext highlighter-rouge">methodA()</code>，这样参数<code class="language-plaintext highlighter-rouge">block</code>就为null，那么<code class="language-plaintext highlighter-rouge">方案二</code>是不等价于<code class="language-plaintext highlighter-rouge">方案一</code>的，我只是不需要知道方法的执行结果，不是让你不执行方法。</p>
 
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/陷阱与缺陷">陷阱与缺陷</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/陷阱与缺陷">陷阱与缺陷</a>
+    
+    
+  </p>
+</article>
             </div>
             <footer style="max-width: 100%; padding: 24px;">
     Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
