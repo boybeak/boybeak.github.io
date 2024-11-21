@@ -13,7 +13,7 @@ date: 2022-09-23 00:00:00
 ## 开始
 首先，下载IDEA，我这里用的是社区版，社区版已经足以应对大多数情况了。
 然后，新建一个KN的项目。
-![kotlin-native-start.jpg](/images/kotlin-native-starter.jpg)
+![kotlin-native-start.jpg](/assets/images/kotlin-native-starter.jpg)
 IDE会自动生成hello world代码，直接点运行，如果工具栏的运行按钮没有可执行的配置，那就直接在Main.kt文件上右键运行。相比直接用Clion写**C/C++**代码的运行速度，KN项目运行要慢得多，因为要先执行gradle脚本。
 即便是这样，你也很可能第一次运行不成功，在macOs上，要安装*XCode command line tools*工具，我这里直接安装了完整版的XCode。
 然后继续尝试运行，你很可能会发现，依然执行不成功，报如下错误：
@@ -21,7 +21,7 @@ IDE会自动生成hello world代码，直接点运行，如果工具栏的运行
 The /usr/bin/xcrun command returned non-zero exit code: 72
 ```
 这时候，你需要打开XCode，执行一系列同意操作后，进入**Preferences** -> **Locations**，选中一个版本。如下：
-![xcode-select](/images/xcode-select.jpg)
+![xcode-select](/assets/images/xcode-select.jpg)
 如果你没有安装完整XCode，可以尝试`xcode select`这个命令，这里具体不做详述。
 经过这个设置后，再次尝试运行，这次终于运行成功。
 ```log

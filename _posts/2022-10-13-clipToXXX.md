@@ -9,7 +9,7 @@ date: 2022-10-13 00:00:00
 
 最近处理工作bug的过程中，有一个需求是这样的，两层view，父view包含着子view，然后子view能显示出的区域，要以父view的背景来过滤。没看懂是不是？参考下图：
 <!-- more -->
-![playground](/images/playground.jpg)
+![playground](/assets/images/playground.jpg)
 简单说，就是子view的背景显示区域，不能超过父view的背景区域。
 
 ## clipToOutline

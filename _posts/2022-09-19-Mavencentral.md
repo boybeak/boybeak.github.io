@@ -30,17 +30,17 @@ Demo项目地址：
 
 其次，账号创建后，登录，然后在这个页面https://issues.sonatype.org/projects 点击Create创建一个issue，如下图：
 
-![create](/images/mc_create.jpg)
+![create](/assets/images/mc_create.jpg)
 
 > 这里group id最好使用你的github地址，这样比较容易验证，如果你想用自己单独的域名，需要做更多的操作。很繁琐，不建议这样做。
 
 创建以后，会有管理员处理你的这个issue，等待管理员回复你的issue，他会告诉你，要在你的github创建一个repo，repo的名字是这个issue的id，比如我的是**OSSRH-66052**。管理员回复我的如下图：
 
-![](/images/mc_replay.jpg)
+![](/assets/images/mc_replay.jpg)
 
 你创建好repo后，回复管理员就好了，等待这个issue的状态变成**RESOLVED**状态。
 
-![](/images/mc_resolved.jpg)
+![](/assets/images/mc_resolved.jpg)
 
 这样，你就创建好了一个issue，用来承接对应group id下所有的库。
 
@@ -210,7 +210,7 @@ signing {
 
 4. 之后会弹出一个对话框，让输入密码。
 
-   ![密码](/images/mc_pwd.png)
+   ![密码](/assets/images/mc_pwd.png)
 
    ```shell
    gpg: revocation certificate stored as '~/.gnupg/openpgp-revocs.d/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXE478F7CC.rev'
@@ -230,7 +230,7 @@ signing {
 
 6. 回到gpg客户端，选择我们刚生成的秘钥条目，右键，选择`Send Public Key to Key Server`。
 
-   ![](/images/mc_cer_push.png)
+   ![](/assets/images/mc_cer_push.png)
 
 
 
@@ -250,8 +250,8 @@ ossrhPassword=sonatype密码
 
 设置完这些后，在AndroidStudio右侧的gradle tasks中找到你想提交的module，先后执行以下两个任务。
 
-![](/images/mc_build_push.jpg)
+![](/assets/images/mc_build_push.jpg)
 
 上传成功后，打开[Nexus Repository Manager](https://oss.sonatype.org/)，登录你的sonatype账号，在左侧`Staging Repositories`页面找到你的group id，选中，点击上边的close，等待几分钟十几分钟后刷新状态，等其状态变为closed后，再点击Release，则所有人都用使用你的库了。
 
-![](/images/mc_publish.jpg)。
+![](/assets/images/mc_publish.jpg)。
