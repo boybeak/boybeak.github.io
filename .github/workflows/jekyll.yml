@@ -1,0 +1,36 @@
+name: Build and Deploy Jekyll
+
+on:
+  push:
+    branches:
+      - main  # 或者你的默认分支\
+
+permissions:
+  contents: write  # 允许对仓库内容进行写操作
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1' # 确保版本兼容 Jekyll
+
+    - name: Install Dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    - name: Build Site
+      run: bundle exec jekyll build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_site
