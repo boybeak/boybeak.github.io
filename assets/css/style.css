@@ -1,0 +1,165 @@
+:root {
+    --border-width: max(1px, 0.0625rem);
+}
+
+/* 基础样式 */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+}
+
+s-page {
+    display: flow-root;
+    height: 100%;
+}
+
+.author {
+    width: 100%;
+    height: 256px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(22.5deg, #43434305 0%, #43434305 29%, #2f2f2f05 29%, #2f2f2f05 37%, #17171705 37%, #17171705 55%, #b6b6b605 55%, #b6b6b605 69%, #1b1b1b05 69%, #1b1b1b05 71%, #fafafa05 71%, #fafafa05 100%), linear-gradient(67.5deg, #75757505 0%, #75757505 14%, #c7c7c705 14%, #c7c7c705 40%, #21212105 40%, #21212105 48%, #87878705 48%, #87878705 60%, #94949405 60%, #94949405 95%, #35353505 95%, #35353505 100%), linear-gradient(135deg, #bebebe05 0%, #bebebe05 6%, #fbfbfb05 6%, #fbfbfb05 18%, #02020205 18%, #02020205 27%, #fdfdfd05 27%, #fdfdfd05 49%, #80808005 49%, #80808005 76%, #96969605 76%, #96969605 100%);
+}
+
+.author-avatar {
+    width: 60px;
+    /* 缩小头像以适应移动端 */
+    height: 60px;
+    border: 1px var(--s-color-outline-variant) solid;
+    border-radius: 50%;
+    /* 保持圆形 */
+    object-fit: cover;
+}
+
+.author-name {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    /* 缩小字体 */
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-bar-title {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.app-bar-action {
+    border-radius: 4px;
+}
+
+main s-scroll-view {
+    width: 100%;
+    flex-grow: 1;
+}
+
+.contentWrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: linear-gradient(22.5deg, #43434305 0%, #43434305 29%, #2f2f2f05 29%, #2f2f2f05 37%, #17171705 37%, #17171705 55%, #b6b6b605 55%, #b6b6b605 69%, #1b1b1b05 69%, #1b1b1b05 71%, #fafafa05 71%, #fafafa05 100%), linear-gradient(67.5deg, #75757505 0%, #75757505 14%, #c7c7c705 14%, #c7c7c705 40%, #21212105 40%, #21212105 48%, #87878705 48%, #87878705 60%, #94949405 60%, #94949405 95%, #35353505 95%, #35353505 100%), linear-gradient(135deg, #bebebe05 0%, #bebebe05 6%, #fbfbfb05 6%, #fbfbfb05 18%, #02020205 18%, #02020205 27%, #fdfdfd05 27%, #fdfdfd05 49%, #80808005 49%, #80808005 76%, #96969605 76%, #96969605 100%);
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    /* 减少内边距以适配小屏 */
+}
+
+.post-item {
+    margin-bottom: 16px;
+    /* 减小间距 */
+    border-bottom: var(--border-width) solid var(--s-color-outline-variant);
+    padding-bottom: 8px;
+    /* 添加间距以区分内容 */
+}
+
+.post-item-title {
+    color: var(--color-on-background);
+    text-decoration: none;
+    font-size: 1.25rem;
+    /* 调整标题大小 */
+}
+
+.post-item h3 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.post-meta {
+    font-size: 0.875rem;
+    /* 缩小字体 */
+    color: gray;
+}
+
+.post-meta a {
+    font-weight: bold;
+    color: var(--color-on-surface-variant);
+    text-decoration: none;
+}
+
+.post-excerpt {
+    font-size: 1rem;
+    margin-top: 8px;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination-indexing {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+article {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-content {
+    max-width: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    flex: 1;
+    border-top: var(--border-width) solid var(--s-color-outline-variant);
+    border-bottom: var(--border-width) solid var(--s-color-outline-variant);
+}
+
+.markdown-body {
+    background-color: transparent;
+    min-height: 0px;
+}
+
+.highlight {
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 8px;
+}
+
+footer a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--color-on-surface-variant);
+}
