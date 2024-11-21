@@ -75,7 +75,7 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sobekyll (0.2.0)
+    sobekyll (0.2.2)
       jekyll (~> 3.10.0)
     wdm (0.1.1)
     webrick (1.9.0)
@@ -99,7 +99,7 @@ DEPENDENCIES
   jekyll-feed (~> 0.6)
   kramdown-parser-gfm
   minima (~> 2.0)
-  sobekyll (~> 0.2.0)
+  sobekyll (~> 0.2.2)
   tzinfo (>= 1, < 3)
   tzinfo-data
   wdm (~> 0.1.0)
