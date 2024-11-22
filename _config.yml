@@ -30,18 +30,23 @@ markdown: kramdown
 theme: sobekyll
 plugins:
   - jekyll-feed
+  - jekyll-archives
+  - jekyll-paginate
 
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+jekyll-archives:
+  enabled: 
+    - tags
+    - categories
+  layout: archive
+  permalinks:
+    year: '/:year/'
+    month: '/:year/:month/'
+    day: '/:year/:month/:day/'
+    tag: '/tag/:name/'
+    category: '/category/:name/'
+
+paginate: 5   # 每页显示的文章数量
+paginate_path: "/page:num/"  # 分页路径，:num 会被页码替换
 
 author: 
   name: boybeak
