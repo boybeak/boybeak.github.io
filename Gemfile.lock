@@ -40,12 +40,18 @@ GEM
       rouge (>= 1.7, < 4)
       safe_yaml (~> 1.0)
       webrick (>= 1.0)
+    jekyll-archives (2.2.1)
+      jekyll (>= 3.6, < 5.0)
     jekyll-feed (0.17.0)
       jekyll (>= 3.7, < 5.0)
+    jekyll-mermaid (1.0.0)
+    jekyll-paginate (1.1.0)
     jekyll-sass-converter (1.5.2)
       sass (~> 3.4)
     jekyll-seo-tag (2.8.0)
       jekyll (>= 3.8, < 5.0)
+    jekyll-sitemap (1.4.0)
+      jekyll (>= 3.7, < 5.0)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
     kramdown (2.5.1)
@@ -75,7 +81,7 @@ GEM
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sobekyll (0.2.2)
+    sobekyll (0.2.8)
       jekyll (~> 3.10.0)
     wdm (0.1.1)
     webrick (1.9.0)
@@ -96,10 +102,15 @@ PLATFORMS
 DEPENDENCIES
   http_parser.rb (~> 0.6.0)
   jekyll (~> 3.10.0)
+  jekyll-archives
   jekyll-feed (~> 0.6)
+  jekyll-mermaid
+  jekyll-paginate (~> 1.1.0)
+  jekyll-seo-tag
+  jekyll-sitemap
   kramdown-parser-gfm
   minima (~> 2.0)
-  sobekyll (~> 0.2.2)
+  sobekyll (~> 0.2.7)
   tzinfo (>= 1, < 3)
   tzinfo-data
   wdm (~> 0.1.0)
