@@ -40,7 +40,8 @@ gem "kramdown-parser-gfm"
 # do not have a Java counterpart.
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
-gem "sobekyll", "~>0.2.5"
+gem "sobekyll", "~>0.2.6"
 gem "jekyll-paginate", "~> 1.1.0"
 gem "jekyll-archives"
 gem 'jekyll-sitemap'
+gem 'jekyll-seo-tag'

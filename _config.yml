@@ -33,6 +33,7 @@ plugins:
   - jekyll-archives
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-seo-tag
 
 jekyll-archives:
   enabled: 
