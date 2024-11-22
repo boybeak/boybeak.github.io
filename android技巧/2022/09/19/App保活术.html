@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>App保活术</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
 
   
-    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
   
   
-      <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -37,24 +37,29 @@
 <!-- End Jekyll SEO tag -->
 
 
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
 
   <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
 
-  <script src="/assets/js/sobekyll.js"></script>
+  <script
+    src="/assets/js/sobekyll.js"></script>
 
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
   
-      gtag('config', "G-6JFG91EQ3M");
-    </script>
-  
+
 </head>
 
 <body>
@@ -310,7 +315,9 @@
 
 <p><img src="/assets/images/process_priority.jpg" alt="oom_adj" /></p>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
 style 关键优先级 fill:#5befb9
 style 高级优先级 fill:#6998c6
 style 低优先级 fill:#d38a49
@@ -325,7 +332,7 @@ C --&gt; D(后台进程);
 subgraph 低优先级
 D --&gt; E(空进程);
 end
-</code></pre>
+</div>
 
 <p>优先级从高到低依次是，<code class="language-plaintext highlighter-rouge">前台进程</code>、<code class="language-plaintext highlighter-rouge">可见进程</code>、<code class="language-plaintext highlighter-rouge">服务进程</code>、<code class="language-plaintext highlighter-rouge">后台进程</code>、<code class="language-plaintext highlighter-rouge">空进程</code>。</p>
 

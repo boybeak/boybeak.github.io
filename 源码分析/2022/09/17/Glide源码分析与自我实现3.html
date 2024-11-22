@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>Glide源码分析与自我实现(三)——APT的使用与GIF的优化</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
 
   
-    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
   
   
-      <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -37,24 +37,29 @@
 <!-- End Jekyll SEO tag -->
 
 
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
 
   <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
 
-  <script src="/assets/js/sobekyll.js"></script>
+  <script
+    src="/assets/js/sobekyll.js"></script>
 
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
   
-      gtag('config', "G-6JFG91EQ3M");
-    </script>
-  
+
 </head>
 
 <body>
@@ -478,17 +483,21 @@
 
 <p><code class="language-plaintext highlighter-rouge">Glide.with(itemView).asGif().load(item.source()).into(gifIV)</code></p>
 
-<pre><code class="language-mermaid">graph LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph LR;
 A[Glide] --&gt;|"with(xxx)"| B[RequestManager] --&gt;|"asGif"| C[RequestBuilder];
-</code></pre>
+</div>
 
 <p>而新的方式却不同，如下图：</p>
 
 <p><code class="language-plaintext highlighter-rouge">GlideApp.with(itemView).asGifX().load(item.source()).into(gifIV)</code></p>
 
-<pre><code class="language-mermaid">graph LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph LR;
 A[GlideApp] --&gt;|"with(xxx)"| B[GlideRequests]  --&gt;|asGifX| C[GlideRequest];
-</code></pre>
+</div>
 
 <p>这其中的<em>GlideRequest</em>和<em>GlideRequest</em>，同样都是生成的类，其中GlideRequests继承自RequestManager，GlideRequest继承自RequestBuilder。</p>
 

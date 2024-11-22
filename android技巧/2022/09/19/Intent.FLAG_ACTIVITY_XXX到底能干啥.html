@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>Intent.FLAG_ACTIVITY_***解密</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
 
   
-    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
   
   
-      <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -37,24 +37,29 @@
 <!-- End Jekyll SEO tag -->
 
 
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
 
   <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
 
-  <script src="/assets/js/sobekyll.js"></script>
+  <script
+    src="/assets/js/sobekyll.js"></script>
 
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
   
-      gtag('config', "G-6JFG91EQ3M");
-    </script>
-  
+
 </head>
 
 <body>
@@ -307,23 +312,27 @@
   </li>
 </ol>
 
-<pre><code class="language-mermaid">graph LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph LR;
 subgraph Task;
 D;
 C;
 B;
 A;
 end;
-</code></pre>
+</div>
 
 <p>此时D通过一个添加了<code class="language-plaintext highlighter-rouge">FLAG_ACTIVITY_CLEAR_TOP</code>的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：</p>
 
-<pre><code class="language-mermaid">graph LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph LR;
 subgraph Task;
 B;
 A;
 end;
-</code></pre>
+</div>
 
 <p>接下来就有两种情况了。</p>
 

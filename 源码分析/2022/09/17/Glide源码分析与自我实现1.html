@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>Glide源码分析与自我实现(一)——数据加载主流程</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
 
   
-    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
   
   
-      <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -37,24 +37,29 @@
 <!-- End Jekyll SEO tag -->
 
 
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
 
   <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
 
-  <script src="/assets/js/sobekyll.js"></script>
+  <script
+    src="/assets/js/sobekyll.js"></script>
 
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
   
-      gtag('config', "G-6JFG91EQ3M");
-    </script>
-  
+
 </head>
 
 <body>
@@ -294,9 +299,11 @@
 
 <p>我们就称我们自己低配版Glide为<strong>Slide</strong>。那么Slide要实现哪些功能呢？简单来说，就是<strong>获取图片</strong>+<strong>界面显示</strong>。我们通过先构架大体框架，再分步丰富其中细节的方式，来构建Slide的整体结构。</p>
 
-<pre><code class="language-mermaid">flowchart LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+flowchart LR;
 A[获取图片] --&gt; C[Slide] --&gt; B[界面显示];
-</code></pre>
+</div>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Glide</span><span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">xxx</span><span class="o">).</span><span class="na">load</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">into</span><span class="o">(</span><span class="n">iv</span><span class="o">);</span>
 </code></pre></div></div>
@@ -305,11 +312,13 @@ A[获取图片] --&gt; C[Slide] --&gt; B[界面显示];
 
 <p>我们可以通过这个链式调用的返回值发现，有如下过程：</p>
 
-<pre><code class="language-mermaid">graph LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph LR;
 style A fill:#aaffcc
 style D fill:#ffaa99
 A(Glide) --&gt;|"with(xxx)"| B(RequestManager) --&gt;|"load(xxx)"| C(RequestBuilder) --&gt;|"into(iv)"| D(Target);
-</code></pre>
+</div>
 
 <h2 id="glidewithxxx发生了什么事">Glide.with(xxx)发生了什么事？</h2>
 
@@ -583,10 +592,12 @@ A(Glide) --&gt;|"with(xxx)"| B(RequestManager) --&gt;|"load(xxx)"| C(RequestBuil
 
 <p>在这个方法中，主要做了以下事情：</p>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
 A --&gt; |有|B[为此job添加新的回调];
 A --&gt; |无|C[添加并执行一个EngineJob];
-</code></pre>
+</div>
 
 <h4 id="enginejobstartdecodejob">EngineJob.start(decodeJob)</h4>
 
@@ -610,7 +621,9 @@ A --&gt; |无|C[添加并执行一个EngineJob];
 
 <p>接下来的调用路径参考下图。</p>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
 subgraph DecodeJob;
 A(run) --&gt; B[runWrapped] --&gt; C[runGenerators] --&gt; D[getNextGenerator];
 end;
@@ -620,7 +633,7 @@ end;
 subgraph HttpUrlFetcher
 F --&gt; G[loadData] --&gt; H[loadDataWithRedirects];
 end;
-</code></pre>
+</div>
 
 <p>经过这么长的调用链，我们终于来到了网络请求的部分，我们可以看到Glide原生使用的<em>HttpURLConnection</em>进行网络请求的。<strong>获取到InputStream后，在SourceGenerator中的cacheData方法进行缓存处理。</strong></p>
 
@@ -652,15 +665,16 @@ end;
   <li>远端图片：我们服务器或者来自第三方服务器的图片，通过URL来获取。这就需要<strong>异步网络请求</strong>，请求结束以后，要<strong>缓存</strong>图片，避免重复请求远端图片，造成时间、网络的浪费。</li>
 </ol>
 
-<pre><code class="language-mermaid">graph LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph LR;
 A[Slide];
 B([1. 资源图片]) --&gt; A;
 C([2. 本地图片]) --&gt; A;
 E{缓存是否存在} --&gt; |是,交给Slide|A;
 E --&gt; |否,网络请求|D([3. 远端图片]);
 D -.-&gt; |获取到图片并缓存|E;
-
-</code></pre>
+</div>
 
 <p>那么接下来，要丰富的细节，就来到了<strong>网络请求</strong>和<strong>缓存</strong>了。</p>
 

@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>AMS启动流程</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
 
   
-    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
   
   
-      <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -37,24 +37,29 @@
 <!-- End Jekyll SEO tag -->
 
 
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
 
   <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
 
-  <script src="/assets/js/sobekyll.js"></script>
+  <script
+    src="/assets/js/sobekyll.js"></script>
 
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
   
-      gtag('config', "G-6JFG91EQ3M");
-    </script>
-  
+
 </head>
 
 <body>
@@ -288,7 +293,9 @@
 
 <h2 id="系统启动流程">系统启动流程</h2>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
     style A fill:#fff
     style F fill:#5befb9
     Z --&gt; A([Boot Loader]);
@@ -297,7 +304,7 @@
     C --&gt; D(Zygote/Android Runtime);
     D --&gt; E(System Server/Java Framework);
     E --&gt; F(Apps);
-</code></pre>
+</div>
 
 <blockquote>
   <p><strong>面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。</strong></p>
@@ -315,17 +322,21 @@
 
 <h2 id="zygote集成启动">Zygote集成启动</h2>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
     A["init.cpp - main()"] --&gt; B[解析init.zygote.rc];
     B --&gt; C["启动main类型服务 do_class_start()"];
     C --&gt; D["启动zygote服务 start()"];
     D --&gt; E["创建Zygote进程 fork()"];
     E --&gt; |execv|F["app_main.cpp - main()"];
-</code></pre>
+</div>
 
 <h2 id="system-server进程启动">System Server进程启动</h2>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
     A["app_main.cpp - main()"] --&gt; B["AndroidRuntime.start()"];
     B --&gt; C["startVM()"];
     C --&gt; D["startReg()"];
@@ -334,7 +345,7 @@
     F --&gt; G["preload"];
     G --&gt; H["startSystemServer"];
     H --&gt; I["runSelectLoop"];
-</code></pre>
+</div>
 
 <p><a href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/services/java/com/android/server/SystemServer.java">SystemServer.java</a></p>
 
@@ -352,7 +363,9 @@
 
 <p>ActivityStactSupervisor</p>
 
-<pre><code class="language-mermaid">flowchart LR;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+flowchart LR;
 A[ActivityStactSupervisor] --&gt; B[mHomeStack];
 A --&gt; C[mFocusedStack];
 subgraph ActivityStack["ActivityStack"]
@@ -369,7 +382,7 @@ subgraph ActivityStack["ActivityStack"]
 end
 B --&gt; ActivityStack;
 C --&gt; ActivityStack;
-</code></pre>
+</div>
 
 <p>Activity启动简图</p>
 
@@ -379,20 +392,24 @@ C --&gt; ActivityStack;
   <p>Binder机制中存在Binder线程池，是多线程的，如果Zygote采用Binder的话，就存在了上面说的fork多线程死锁问题了。其实严格来说，Binder机制不一定要多线程，所谓的Binder线程只不过是在循环读取Binder驱动消息而已，只注册一个Binder线程也是可以工作的，比如ServiceManager，实际上Zygote尽管没有采用Binder机制，它也不是单线程的，但它在fork前主动停止了其他线程，fork后重新启动了。</p>
 </blockquote>
 
-<pre><code class="language-mermaid">graph TD;
-  A([Launcher]) --&gt; B{"SystemServer - AMS&lt;br&gt;(app是否启动)"};
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
+  A([Launcher]) --&gt; B{"SystemServer - AMS<br />(app是否启动)"};
   B --&gt; |否, 请求创建app进程|C[Zygote];
   B -.-&gt; |"是, 1. ActivityManager.getService()"|D(App):::app;
   C --&gt;|fork| D
   D --&gt;|"2. mgr.attachApplication(mAppThread, startSeq)"| B;
 	classDef app fill:#5befb9
-</code></pre>
+</div>
 
 <p>Activity启动细节图</p>
 
 <p><strong>Launcher到AMS阶段</strong></p>
 
-<pre><code class="language-mermaid">sequenceDiagram
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+sequenceDiagram
 	participant A as Launcher
 	participant B as Activity
 	participant C as Instrumentation
@@ -404,11 +421,13 @@ C --&gt; ActivityStack;
 	B -&gt;&gt; C: execStartActivity
 	C -&gt;&gt; D: startActivity
 	D -&gt;&gt; E: startActivity
-</code></pre>
+</div>
 
 <p><strong>AMS到ApplicationThread阶段</strong></p>
 
-<pre><code class="language-mermaid">sequenceDiagram
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+sequenceDiagram
 	participant A as AMS
 	participant B as ActivityStart
 	participant C as ActivityStackSupervisor
@@ -420,7 +439,7 @@ C --&gt; ActivityStack;
 	B -&gt;&gt; B: startActivity
 	B -&gt;&gt; B: startActivityUnchecked
 	B -&gt;&gt; C: startSpecificActivityLocked
-</code></pre>
+</div>
 
 <p><strong>ApplicationThread到Activity</strong></p>
 

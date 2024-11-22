@@ -4,17 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>Glide源码分析与自我实现(二)——缓存与BitmapPool</title>
   
   <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
   
 
   
-    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
   
   
-      <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
   <!-- Begin Jekyll SEO tag v2.8.0 -->
@@ -37,24 +37,29 @@
 <!-- End Jekyll SEO tag -->
 
 
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
-  <link rel="stylesheet" href="/assets/css/github-markdown.css">
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
 
   <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
 
-  <script src="/assets/js/sobekyll.js"></script>
+  <script
+    src="/assets/js/sobekyll.js"></script>
 
   
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
   
-      gtag('config', "G-6JFG91EQ3M");
-    </script>
-  
+
 </head>
 
 <body>
@@ -298,14 +303,16 @@
 
 <p>先来看缓存流程图，如下：</p>
 
-<pre><code class="language-mermaid">graph TD;
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<div class="mermaid">
+graph TD;
 style A fill:#99ccff
 style B1 fill:#aaffaa
-A(发起请求) --&gt; B{1. 通过&lt;br&gt;ActiveResources&lt;br&gt;获取资源} --&gt; |命中|B1([加载完成]);
-B --&gt; |未命中|C{2. 通过&lt;br&gt;MemoryCache&lt;br&gt;获取资源} --&gt; |命中|C1[缓存至&lt;br&gt;ActiveResources] --&gt; B1;
-C --&gt; |未命中|D{3. 通过&lt;br&gt;DiskCache&lt;br&gt;获取资源} --&gt; |命中|D1[缓存至&lt;br&gt;MemoryCache] --&gt; C1;
-D --&gt; |未命中|E["4. 通过数据源(网络、文件等)&lt;br&gt;加载数据"] --&gt; E1[缓存至&lt;br&gt;DiskCache] --&gt; D1;
-</code></pre>
+A(发起请求) --&gt; B{1. 通过<br />ActiveResources<br />获取资源} --&gt; |命中|B1([加载完成]);
+B --&gt; |未命中|C{2. 通过<br />MemoryCache<br />获取资源} --&gt; |命中|C1[缓存至<br />ActiveResources] --&gt; B1;
+C --&gt; |未命中|D{3. 通过<br />DiskCache<br />获取资源} --&gt; |命中|D1[缓存至<br />MemoryCache] --&gt; C1;
+D --&gt; |未命中|E["4. 通过数据源(网络、文件等)<br />加载数据"] --&gt; E1[缓存至<br />DiskCache] --&gt; D1;
+</div>
 
 <h2 id="内存缓存">内存缓存</h2>
 
