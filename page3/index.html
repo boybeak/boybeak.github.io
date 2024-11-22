@@ -244,10 +244,11 @@
 <ul style="list-style: none; padding: 0; margin: 0; flex: 1;">
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/2024/09/22/%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAHexo%E4%B8%BB%E9%A2%98%E4%B8%8E%E6%8F%92%E4%BB%B6.html">写了一个Hexo主题与插件</a></h3>
+    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html">MacOS项目引入c语言源码</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            最近写了一个Hexo的主题，同时为了配合主题Hexober，写了一个插件hexo-auto-photos。
+            在上一篇文章macOS项目中引入c静态库中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。
+很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。
 
 
         </div>
@@ -266,110 +267,7 @@
 
     
     
-    September 22
-    
-    
-</small>
-        
-        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                <path
-                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
-                </path>
-            </svg>
-        </s-icon>
-        
-        <a href="/tag/hexo">Hexo</a>
-        
-        
-
-        
-    </p>
-</li>
-  
-  <li class="post-item">
-    <h3><a class="post-item-title" href="/%E9%9D%A2%E8%AF%95%E7%AC%94%E8%AE%B0/2024/06/16/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%931.html">面试笔记</a></h3>
-    <div class="post-excerpt">
-        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            边独立，边面试，两手都要抓，两手都要硬。
-1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标
-```kotlin
-fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
-    // 创建一个哈希表来存储数组中的数字及其索引
-    val map = mutableMapOf&lt;Int, Int&gt;()
-
-
-        </div>
-    </div>
-    <p class="post-meta">
-        <s-icon style="width: 20px; height: 20px;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-        <path
-            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
-        </path>
-    </svg>
-</s-icon>
-<small>
-    
-    
-
-    
-    
-    June 16
-    
-    
-</small>
-        
-        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                <path
-                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
-                </path>
-            </svg>
-        </s-icon>
-        
-        <a href="/tag/面试">面试</a>
-        
-        
-
-        
-        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
-              </svg>
-        </s-icon>
-        
-        <a href="/category/面试笔记">面试笔记</a>
-        
-        
-    </p>
-</li>
-  
-  <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/14/Tray-macOS%E8%8F%9C%E5%8D%95%E6%A0%8Fapp%E5%BC%80%E5%8F%91%E5%BA%93.html">Tray - macOS菜单栏app开发库</a></h3>
-    <div class="post-excerpt">
-        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            最近开发了JustTodo和DeskNote两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app Translator时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。
-为了解决这一痛点，在总结了JustTodo和DeskNote两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库Tray，方便以后使用。
-
-
-        </div>
-    </div>
-    <p class="post-meta">
-        <s-icon style="width: 20px; height: 20px;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-        <path
-            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
-        </path>
-    </svg>
-</s-icon>
-<small>
-    
-    
-
-    
-    
-    June 14
+    April 29
     
     
 </small>
@@ -400,13 +298,10 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift-Package%E5%BA%93.html">发布Swift Package库</a></h3>
+    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/26/MacOS%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E5%85%A5c%E9%9D%99%E6%80%81%E5%BA%93.html">macOS项目中引入c静态库</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            最近开发JustTodo时，发觉把处理托盘应用的代码封装起来是很有必要的，这样的话，在以后开发其他应用时，便不需要一而再的写重复代码。以前发布过很多Android平台的类库，但是对于macOS平台的swift库，我还是第一次。
-
-  再次吐槽一下苹果生态下的包管理，挺混乱的，最终我选择使用最新的Swift Package Manager
-
+            最近在写一款多平台的文件传输工具，Android平台已经写的差不多了，现在正在写macOS端，为了多端共享同一套底层协议代码，通讯协议部分，使用了c语言开发，对于Android通过jni调用c的相关代码，我已经驾轻就熟了，但是在macOS项目里，添加静态库并成功调试，我还是有一些懵逼。好在通过ChatGPT的各种帮助，还是跌跌撞撞的调通了。为了防止遗忘，记录一下过程。
 
 
         </div>
@@ -425,7 +320,7 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
 
     
     
-    June 04
+    April 26
     
     
 </small>
@@ -439,6 +334,8 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
         </s-icon>
         
         <a href="/tag/macos">macOS</a>
+        
+        <a href="/tag/静态库">静态库</a>
         
         
 
@@ -456,10 +353,11 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/26/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%94)-SwiftUI-+-web.html">JustTodo开发(五) SwiftUI + web</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/11/20/%E7%9B%B8%E6%9C%BA%E5%BD%95%E5%83%8F%E6%96%B0%E5%A7%BF%E5%8A%BF-OpenGL%E5%85%B1%E4%BA%AB%E4%B8%8A%E4%B8%8B%E6%96%87+MediaCodec.html">相机录像新姿势-OpenGL共享上下文+MediaCodec</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            初版完成以后，发现了一个问题，就是web中的输入框不接受复制/粘贴的快捷键(cmd+c, cmd+v)，触发快捷键时，会弹“咚”一声系统音，暂时在AppKit下没能解决这个问题，搜了很多资料，比如这里-Cut/copy/paste keyboard shortcuts not working in NSPopover，想要支持这两个快捷键还是很不容易的，其实包括cmd+x, cmd+a也都不支持，但是我想到之前写的同样是托盘应用Translator，这个就支持这些快捷键，让我突然想到，是不是可以在SwiftUI下，封装一个WKWebView，然后再加载web内容呢？
+            一、前言
+承接上一文章Camera无变形任意尺寸预览，我们已经实现了无形变的任意尺寸的相机画面预览。接下来要完成相机的相关录像、拍照、扫码等功能，最重要也是最难的就是录像部分。
 
 
         </div>
@@ -478,7 +376,7 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
 
     
     
-    May 26
+    November 20
     
     
 </small>
@@ -491,9 +389,9 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
             </svg>
         </s-icon>
         
-        <a href="/tag/macos">macOS</a>
+        <a href="/tag/android">Android</a>
         
-        <a href="/tag/justtodo">JustTodo</a>
+        <a href="/tag/camera">Camera</a>
         
         
 
@@ -504,7 +402,117 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
               </svg>
         </s-icon>
         
-        <a href="/category/独立开发笔记">独立开发笔记</a>
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/11/12/Camera%E6%97%A0%E5%8F%98%E5%BD%A2%E4%BB%BB%E6%84%8F%E5%B0%BA%E5%AF%B8%E9%A2%84%E8%A7%88.html">Camera无变形任意尺寸预览</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            在以往做Camera应用开发时，遇到一个问题，就是相机的预览如何做到在任意尺寸完全无变形的画面预览与视频录制。做过相机应用开发的朋友都知道，相机的预览尺寸并不是可以随意设置的，而是需要在支持的预览尺寸中选择一个，你的预览的view大小必须与选择的尺寸相匹配，才能保证画面不变形，但是这在实际开发中是无法应对各种各样的需求的，而且每个手机，支持的预览尺寸并不是完全一致的，而视频的大小往往是需要做到一致的，不然录制出来的视频，在其他手机上播放，就需要做大量的UI适配工作，也没有平台的统一性。
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    November 12
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        <a href="/tag/camera">Camera</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/08/12/J2V8%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E5%88%86%E4%BA%AB.html">J2V8深度绑定机制分享</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            一、问题背景
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    August 12
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        <a href="/tag/j2v8">J2V8</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
         
         
     </p>
@@ -515,6 +523,10 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
 
 <div class="pagination">
   
+  <s-icon-button>
+    <s-icon type="chevron_left" onclick="selfOpen('/page2/')"></s-icon>
+  </s-icon-button>
+  
 
   
   <div class="pagination-indexing">
@@ -522,7 +534,9 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
     
     
     
-    <span style="margin: 8px; font-weight: bolder;">1</span>
+    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/')">
+      <span style="margin: 8px;">1</span>
+    </s-ripple>
     
     
     
@@ -536,9 +550,7 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
     
     
     
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page3')">
-      <span style="margin: 8px;">3</span>
-    </s-ripple>
+    <span style="margin: 8px; font-weight: bolder;">3</span>
     
     
     
@@ -586,7 +598,7 @@ fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int&gt;? {
 
   
   <s-icon-button>
-    <s-icon type="chevron_right" onclick="selfOpen('/page2/')"></s-icon>
+    <s-icon type="chevron_right" onclick="selfOpen('/page4/')"></s-icon>
   </s-icon-button>
   
 </div>
