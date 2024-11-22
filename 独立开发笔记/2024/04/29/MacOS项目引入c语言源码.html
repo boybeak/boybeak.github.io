@@ -17,6 +17,26 @@
       <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>MacOS项目引入c语言源码 | Boybeak</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="MacOS项目引入c语言源码" />
+<meta name="author" content="boybeak" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="在上一篇文章macOS项目中引入c静态库中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。 很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。" />
+<meta property="og:description" content="在上一篇文章macOS项目中引入c静态库中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。 很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。" />
+<link rel="canonical" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html" />
+<meta property="og:url" content="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html" />
+<meta property="og:site_name" content="Boybeak" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-04-29T22:40:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="MacOS项目引入c语言源码" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"boybeak"},"dateModified":"2024-04-29T22:40:00+00:00","datePublished":"2024-04-29T22:40:00+00:00","description":"在上一篇文章macOS项目中引入c静态库中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。 很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。","headline":"MacOS项目引入c语言源码","mainEntityOfPage":{"@type":"WebPage","@id":"/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/icons/favicon-32x32.png"},"name":"boybeak"},"url":"/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
   <link rel="stylesheet" href="/assets/css/github-markdown.css">

@@ -17,6 +17,26 @@
       <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
   
 
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>MacOS SwiftUI托盘应用开发 | Boybeak</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="MacOS SwiftUI托盘应用开发" />
+<meta name="author" content="boybeak" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="最近想利用闲暇时间，做一些托盘工具类app的开发，主要是方便自己在Mac上的部分操作。在遇到各种问题后，总结了一下实现托盘SwiftUI应用的两种方式。 小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。" />
+<meta property="og:description" content="最近想利用闲暇时间，做一些托盘工具类app的开发，主要是方便自己在Mac上的部分操作。在遇到各种问题后，总结了一下实现托盘SwiftUI应用的两种方式。 小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。" />
+<link rel="canonical" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html" />
+<meta property="og:url" content="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html" />
+<meta property="og:site_name" content="Boybeak" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-05-08T23:29:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="MacOS SwiftUI托盘应用开发" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"boybeak"},"dateModified":"2024-05-08T23:29:00+00:00","datePublished":"2024-05-08T23:29:00+00:00","description":"最近想利用闲暇时间，做一些托盘工具类app的开发，主要是方便自己在Mac上的部分操作。在遇到各种问题后，总结了一下实现托盘SwiftUI应用的两种方式。 小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。","headline":"MacOS SwiftUI托盘应用开发","mainEntityOfPage":{"@type":"WebPage","@id":"/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/icons/favicon-32x32.png"},"name":"boybeak"},"url":"/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/rouge-github-auto.css">
   <link rel="stylesheet" href="/assets/css/github-markdown.css">
