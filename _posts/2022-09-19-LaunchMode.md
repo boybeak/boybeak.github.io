@@ -13,7 +13,7 @@ date: 2022-09-19 07:00:00
 
 在正式讲解launchMode前，先要理解三个概念：**ActivityStack**, **TaskRecord**, **ActivityRecord**。
 
-```mermaid
+{% mermaid %}
 graph LR;
 style TaskRecord-A fill:#aaddff;
 style TaskRecord-B fill:#aaddff;
@@ -27,7 +27,7 @@ C[ActivityRecord-3]
 D[ActivityRecord-4]
 end
 end
-```
+{% endmermaid %}
 
 他们的一般结构是这样的。
 

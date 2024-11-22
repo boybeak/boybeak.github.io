@@ -34,6 +34,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-mermaid
 
 jekyll-archives:
   enabled: 
@@ -49,6 +50,9 @@ jekyll-archives:
 
 paginate: 10   # 每页显示的文章数量
 paginate_path: "/page:num/"  # 分页路径，:num 会被页码替换
+
+mermaid:
+  src: 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js'
 
 author: 
   name: boybeak
