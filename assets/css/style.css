@@ -44,6 +44,12 @@ s-page {
     /* 缩小字体 */
 }
 
+.author-desc {
+    max-width: 80%;
+    text-align: center;
+    margin-top: 8px;
+}
+
 main {
     display: flex;
     flex-direction: column;
