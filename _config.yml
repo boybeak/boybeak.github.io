@@ -32,6 +32,7 @@ plugins:
   - jekyll-feed
   - jekyll-archives
   - jekyll-paginate
+  - jekyll-sitemap
 
 jekyll-archives:
   enabled: 
@@ -45,7 +46,7 @@ jekyll-archives:
     tag: '/tag/:name/'
     category: '/category/:name/'
 
-paginate: 5   # 每页显示的文章数量
+paginate: 10   # 每页显示的文章数量
 paginate_path: "/page:num/"  # 分页路径，:num 会被页码替换
 
 author: 

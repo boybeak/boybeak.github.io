@@ -43,3 +43,4 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 gem "sobekyll", "~>0.2.5"
 gem "jekyll-paginate", "~> 1.1.0"
 gem "jekyll-archives"
+gem 'jekyll-sitemap'
