@@ -40,4 +40,4 @@ gem "kramdown-parser-gfm"
 # do not have a Java counterpart.
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
-gem "sobekyll", "~>0.2.2"
+gem "sobekyll", "~>0.2.3"
