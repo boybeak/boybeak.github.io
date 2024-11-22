@@ -244,11 +244,11 @@
 <ul style="list-style: none; padding: 0; margin: 0; flex: 1;">
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html">MacOS项目引入c语言源码</a></h3>
+    <h3><a class="post-item-title" href="/kotlin/native/2022/09/23/Kotlin-Native.html">Kotlin Native从初识到放弃</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            在上一篇文章macOS项目中引入c静态库中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。
-很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。
+            此贴用于记录对Kotlin Native从初识到放弃的过程，因为还不清楚这一平台的开发能力上限多高，不排除用的好，会一直用下去。
+以下Kotlin Native会用KN来代替。
 
 
         </div>
@@ -267,7 +267,7 @@
 
     
     
-    April 29
+    September 23
     
     
 </small>
@@ -280,7 +280,7 @@
             </svg>
         </s-icon>
         
-        <a href="/tag/macos">macOS</a>
+        <a href="/tag/kotlin">Kotlin</a>
         
         
 
@@ -291,17 +291,23 @@
               </svg>
         </s-icon>
         
-        <a href="/category/独立开发笔记">独立开发笔记</a>
+        <a href="/category/kotlin">Kotlin</a>
+        
+        <a href="/category/native">Native</a>
         
         
     </p>
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/26/MacOS%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E5%85%A5c%E9%9D%99%E6%80%81%E5%BA%93.html">macOS项目中引入c静态库</a></h3>
+    <h3><a class="post-item-title" href="/%E9%99%B7%E9%98%B1%E4%B8%8E%E7%BC%BA%E9%99%B7/2022/09/22/%E9%9A%BE%E5%BF%98%E7%9A%84bug.html">难忘的bug</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            最近在写一款多平台的文件传输工具，Android平台已经写的差不多了，现在正在写macOS端，为了多端共享同一套底层协议代码，通讯协议部分，使用了c语言开发，对于Android通过jni调用c的相关代码，我已经驾轻就熟了，但是在macOS项目里，添加静态库并成功调试，我还是有一些懵逼。好在通过ChatGPT的各种帮助，还是跌跌撞撞的调通了。为了防止遗忘，记录一下过程。
+            此贴是为了记录日常开发过程中，遇到的一些让人难忘的bug。
+
+  MediaPlayer: surface has already been released
+  kotlin ?.的陷阱与缺陷
+
 
 
         </div>
@@ -320,7 +326,7 @@
 
     
     
-    April 26
+    September 22
     
     
 </small>
@@ -333,9 +339,7 @@
             </svg>
         </s-icon>
         
-        <a href="/tag/macos">macOS</a>
-        
-        <a href="/tag/静态库">静态库</a>
+        <a href="/tag/陷阱与缺陷">陷阱与缺陷</a>
         
         
 
@@ -346,18 +350,17 @@
               </svg>
         </s-icon>
         
-        <a href="/category/独立开发笔记">独立开发笔记</a>
+        <a href="/category/陷阱与缺陷">陷阱与缺陷</a>
         
         
     </p>
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/11/20/%E7%9B%B8%E6%9C%BA%E5%BD%95%E5%83%8F%E6%96%B0%E5%A7%BF%E5%8A%BF-OpenGL%E5%85%B1%E4%BA%AB%E4%B8%8A%E4%B8%8B%E6%96%87+MediaCodec.html">相机录像新姿势-OpenGL共享上下文+MediaCodec</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/Intent.FLAG_ACTIVITY_XXX%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5.html">Intent.FLAG_ACTIVITY_***解密</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            一、前言
-承接上一文章Camera无变形任意尺寸预览，我们已经实现了无形变的任意尺寸的相机画面预览。接下来要完成相机的相关录像、拍照、扫码等功能，最重要也是最难的就是录像部分。
+            最好先看这一篇Launch Mode。
 
 
         </div>
@@ -376,7 +379,7 @@
 
     
     
-    November 20
+    September 19
     
     
 </small>
@@ -390,8 +393,6 @@
         </s-icon>
         
         <a href="/tag/android">Android</a>
-        
-        <a href="/tag/camera">Camera</a>
         
         
 
@@ -409,10 +410,10 @@
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/11/12/Camera%E6%97%A0%E5%8F%98%E5%BD%A2%E4%BB%BB%E6%84%8F%E5%B0%BA%E5%AF%B8%E9%A2%84%E8%A7%88.html">Camera无变形任意尺寸预览</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/Mavencentral.html">发布Android库到MavenCentral教程</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            在以往做Camera应用开发时，遇到一个问题，就是相机的预览如何做到在任意尺寸完全无变形的画面预览与视频录制。做过相机应用开发的朋友都知道，相机的预览尺寸并不是可以随意设置的，而是需要在支持的预览尺寸中选择一个，你的预览的view大小必须与选择的尺寸相匹配，才能保证画面不变形，但是这在实际开发中是无法应对各种各样的需求的，而且每个手机，支持的预览尺寸并不是完全一致的，而视频的大小往往是需要做到一致的，不然录制出来的视频，在其他手机上播放，就需要做大量的UI适配工作，也没有平台的统一性。
+            JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2022年2月21号以前，连库的解析服务也停止，所以，把以前的库或者未来的新库替换到MavenCentral是当务之急了。
 
 
         </div>
@@ -431,7 +432,7 @@
 
     
     
-    November 12
+    September 19
     
     
 </small>
@@ -445,8 +446,6 @@
         </s-icon>
         
         <a href="/tag/android">Android</a>
-        
-        <a href="/tag/camera">Camera</a>
         
         
 
@@ -464,10 +463,10 @@
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/08/12/J2V8%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E5%88%86%E4%BA%AB.html">J2V8深度绑定机制分享</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/LaunchMode.html">LaunchMode</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            一、问题背景
+            此文是阅读《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》一文后的总结，视频地址Bilibili、Youtube。
 
 
         </div>
@@ -486,7 +485,7 @@
 
     
     
-    August 12
+    September 19
     
     
 </small>
@@ -501,7 +500,272 @@
         
         <a href="/tag/android">Android</a>
         
-        <a href="/tag/j2v8">J2V8</a>
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/Binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90.html">Binder机制分析</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            参考文章：写给 Android 应用工程师的 Binder 原理剖析
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 19
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/ASM.html">ASM库介绍与使用</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            
+  原文
+
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 19
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/App%E4%BF%9D%E6%B4%BB%E6%9C%AF.html">App保活术</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            为什么要保活？
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 19
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/Apk%E7%98%A6%E8%BA%AB%E6%9C%AF.html">Apk瘦身术</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 19
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/09/19/AMS%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B.html">AMS启动流程</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    September 19
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
         
         
 
@@ -558,38 +822,6 @@
     
     <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page4')">
       <span style="margin: 8px;">4</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page5')">
-      <span style="margin: 8px;">5</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page6')">
-      <span style="margin: 8px;">6</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page7')">
-      <span style="margin: 8px;">7</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page8')">
-      <span style="margin: 8px;">8</span>
     </s-ripple>
     
     

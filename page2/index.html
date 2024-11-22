@@ -244,11 +244,11 @@
 <ul style="list-style: none; padding: 0; margin: 0; flex: 1;">
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/23/JustTodo%E5%BC%80%E5%8F%91(%E5%9B%9B)-%E5%88%9D%E7%89%88%E5%AE%8C%E6%88%90.html">JustTodo开发(四) 初版完成</a></h3>
+    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/29/MacOS%E9%A1%B9%E7%9B%AE%E5%BC%95%E5%85%A5c%E8%AF%AD%E8%A8%80%E6%BA%90%E7%A0%81.html">MacOS项目引入c语言源码</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            初版已经完成，从切换到SoberJS，基本上只用了一周，便写出来了，如果是使用macOS的原生开发方案，可能现在还困在各种不兼容中。
-
+            在上一篇文章macOS项目中引入c静态库中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。
+很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。
 
 
         </div>
@@ -267,7 +267,7 @@
 
     
     
-    May 23
+    April 29
     
     
 </small>
@@ -281,8 +281,6 @@
         </s-icon>
         
         <a href="/tag/macos">macOS</a>
-        
-        <a href="/tag/justtodo">JustTodo</a>
         
         
 
@@ -300,10 +298,10 @@
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/17/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%89)-%E6%9B%B4%E6%8D%A2%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF-%E8%B7%91%E6%AD%A5%E5%89%8D%E8%BF%9B.html">JustTodo开发(三) 更换技术路线，跑步前进</a></h3>
+    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/04/26/MacOS%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E5%85%A5c%E9%9D%99%E6%80%81%E5%BA%93.html">macOS项目中引入c静态库</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。
+            最近在写一款多平台的文件传输工具，Android平台已经写的差不多了，现在正在写macOS端，为了多端共享同一套底层协议代码，通讯协议部分，使用了c语言开发，对于Android通过jni调用c的相关代码，我已经驾轻就熟了，但是在macOS项目里，添加静态库并成功调试，我还是有一些懵逼。好在通过ChatGPT的各种帮助，还是跌跌撞撞的调通了。为了防止遗忘，记录一下过程。
 
 
         </div>
@@ -322,7 +320,7 @@
 
     
     
-    May 17
+    April 26
     
     
 </small>
@@ -337,7 +335,7 @@
         
         <a href="/tag/macos">macOS</a>
         
-        <a href="/tag/justtodo">JustTodo</a>
+        <a href="/tag/静态库">静态库</a>
         
         
 
@@ -355,28 +353,11 @@
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html">JustTodo开发(二) 界面初始化</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/11/20/%E7%9B%B8%E6%9C%BA%E5%BD%95%E5%83%8F%E6%96%B0%E5%A7%BF%E5%8A%BF-OpenGL%E5%85%B1%E4%BA%AB%E4%B8%8A%E4%B8%8B%E6%96%87+MediaCodec.html">相机录像新姿势-OpenGL共享上下文+MediaCodec</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            一、界面布局
-一个简单的界面布局描述如下：
----------------------
-|   |               |
-|   |               |
-|   |               |
-| 1 |      2        |
-|   |               |
-|   |               |
-|   |---------------|
-|   |      3        |
----------------------
-
-简单分为3个区域：
-
-  导航 - 用于做Todo Item的分类导航，是一个列表；
-  内容 - 展示当前分类下的Todo Items；
-  输入 - 在当前分类下创建新的Todo。
-
+            一、前言
+承接上一文章Camera无变形任意尺寸预览，我们已经实现了无形变的任意尺寸的相机画面预览。接下来要完成相机的相关录像、拍照、扫码等功能，最重要也是最难的就是录像部分。
 
 
         </div>
@@ -395,7 +376,7 @@
 
     
     
-    May 12
+    November 20
     
     
 </small>
@@ -408,9 +389,9 @@
             </svg>
         </s-icon>
         
-        <a href="/tag/macos">macOS</a>
+        <a href="/tag/android">Android</a>
         
-        <a href="/tag/justtodo">JustTodo</a>
+        <a href="/tag/camera">Camera</a>
         
         
 
@@ -421,24 +402,17 @@
               </svg>
         </s-icon>
         
-        <a href="/category/独立开发笔记">独立开发笔记</a>
+        <a href="/category/android技巧">Android技巧</a>
         
         
     </p>
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/11/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%80)-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96.html">JustTodo开发(一) 项目初始化</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/11/12/Camera%E6%97%A0%E5%8F%98%E5%BD%A2%E4%BB%BB%E6%84%8F%E5%B0%BA%E5%AF%B8%E9%A2%84%E8%A7%88.html">Camera无变形任意尺寸预览</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            正如很多开发者一样，进入一个新平台开发连带学习，通常都会开发一个极简的应用，很多人都会开发Todo类应用，这类应用一般来说比较简单容易上手。我也打算开发一个，一来是练手，二来是写一个自己用的极简Todo类应用。
-目前市面上的Todo类应用，一般来说，都比较复杂，太多我不需要的功能了，而且还有一些增值付费，对于我来说，根本没有那么多的复杂需求，只需要一个随手打开和关闭的记录而已，放在托盘上就非常的方便。
-所以，需求如下：
-
-  macOS托盘应用，随手打开和关闭；
-  带有分页标签，以便标记不同类型的todo；
-  最好有利用iCloud的数据云同步，方便未来与其他平台同步数据；
-
+            在以往做Camera应用开发时，遇到一个问题，就是相机的预览如何做到在任意尺寸完全无变形的画面预览与视频录制。做过相机应用开发的朋友都知道，相机的预览尺寸并不是可以随意设置的，而是需要在支持的预览尺寸中选择一个，你的预览的view大小必须与选择的尺寸相匹配，才能保证画面不变形，但是这在实际开发中是无法应对各种各样的需求的，而且每个手机，支持的预览尺寸并不是完全一致的，而视频的大小往往是需要做到一致的，不然录制出来的视频，在其他手机上播放，就需要做大量的UI适配工作，也没有平台的统一性。
 
 
         </div>
@@ -457,7 +431,7 @@
 
     
     
-    May 11
+    November 12
     
     
 </small>
@@ -470,9 +444,9 @@
             </svg>
         </s-icon>
         
-        <a href="/tag/macos">macOS</a>
+        <a href="/tag/android">Android</a>
         
-        <a href="/tag/justtodo">JustTodo</a>
+        <a href="/tag/camera">Camera</a>
         
         
 
@@ -483,19 +457,237 @@
               </svg>
         </s-icon>
         
-        <a href="/category/独立开发笔记">独立开发笔记</a>
+        <a href="/category/android技巧">Android技巧</a>
         
         
     </p>
 </li>
   
   <li class="post-item">
-    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html">MacOS SwiftUI托盘应用开发</a></h3>
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/08/12/J2V8%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E5%88%86%E4%BA%AB.html">J2V8深度绑定机制分享</a></h3>
     <div class="post-excerpt">
         <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            最近想利用闲暇时间，做一些托盘工具类app的开发，主要是方便自己在Mac上的部分操作。在遇到各种问题后，总结了一下实现托盘SwiftUI应用的两种方式。
+            一、问题背景
 
-  小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    August 12
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        <a href="/tag/j2v8">J2V8</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/07/29/%E8%BD%AF%E9%94%AE%E7%9B%98%E9%AB%98%E5%BA%A6%E7%9B%91%E6%B5%8B%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5.html">软键盘高度监测最佳实践</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            最近终于总结出最佳的软键盘高度监测方案了，特此分享出来。
+源码在此：KeyboardObserver.kt
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    July 29
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/05/04/%E9%9A%BE%E5%BF%98%E7%9A%84%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7.html">难忘的调试技巧</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            这里用于总结一些在工作中发现的调试技巧。
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    May 04
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2023/03/04/Jitpack%E6%89%98%E7%AE%A1%E5%BA%93.html">Jitpack托管库</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            以前只是用过别人托管在Jitpack上的库，自己的库都是托管在MavenCentral上，但是MavenCentral使用起来，相比Jitpack还是有些麻烦。经过简单尝试和学习，了解了Jitpack的使用，做一下简单记录。
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    March 04
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/translator/2022/11/02/Translator.html">Translator</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            A simple translator app for macOS.
+
+
+    
+    Translator
+    
 
 
 
@@ -515,7 +707,7 @@
 
     
     
-    May 08
+    November 02
     
     
 </small>
@@ -528,7 +720,7 @@
             </svg>
         </s-icon>
         
-        <a href="/tag/macos">macOS</a>
+        <a href="/tag/translator">Translator</a>
         
         
 
@@ -539,7 +731,63 @@
               </svg>
         </s-icon>
         
-        <a href="/category/独立开发笔记">独立开发笔记</a>
+        <a href="/category/translator">Translator</a>
+        
+        
+    </p>
+</li>
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/android%E6%8A%80%E5%B7%A7/2022/10/13/clipToXXX.html">Android的clipToXXX</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            最近处理工作bug的过程中，有一个需求是这样的，两层view，父view包含着子view，然后子view能显示出的区域，要以父view的背景来过滤。没看懂是不是？参考下图：
+
+
+简单说，就是子view的背景显示区域，不能超过父view的背景区域。
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    October 13
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/android">Android</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/android技巧">Android技巧</a>
         
         
     </p>
@@ -585,38 +833,6 @@
     
     <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page4')">
       <span style="margin: 8px;">4</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page5')">
-      <span style="margin: 8px;">5</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page6')">
-      <span style="margin: 8px;">6</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page7')">
-      <span style="margin: 8px;">7</span>
-    </s-ripple>
-    
-    
-    
-    
-    
-    <s-ripple style="border-radius: 4px;" onclick="selfOpen('/page8')">
-      <span style="margin: 8px;">8</span>
     </s-ripple>
     
     
