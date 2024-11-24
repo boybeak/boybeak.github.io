@@ -6,4 +6,7 @@ tags:
     - Android
 ---
 
-<video src="/assets/videos/aod-volume-fg-service.webm" style="width: 400px"></video>
+<video width="400" controls autoplay>
+  <source src="/assets/videos/aod-volume-fg-service.webm" type="video/webm">
+  您的浏览器不支持 video 标签。
+</video>
