@@ -236,6 +236,10 @@
         
         <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
         
+        <s-popup-menu-item onclick="selfOpen('/tag/jekyll')">Jekyll</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/material-design')">Material Design</s-popup-menu-item>
+        
     </s-popup-menu>
     
 
@@ -271,6 +275,68 @@
             <div class="content">
               
 <ul style="list-style: none; padding: 0; margin: 0; flex: 1;">
+  
+  <li class="post-item">
+    <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/11/JustTodo%E5%BC%80%E5%8F%91(%E4%B8%80)-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96.html">JustTodo开发(一) 项目初始化</a></h3>
+    <div class="post-excerpt">
+        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+            正如很多开发者一样，进入一个新平台开发连带学习，通常都会开发一个极简的应用，很多人都会开发Todo类应用，这类应用一般来说比较简单容易上手。我也打算开发一个，一来是练手，二来是写一个自己用的极简Todo类应用。
+目前市面上的Todo类应用，一般来说，都比较复杂，太多我不需要的功能了，而且还有一些增值付费，对于我来说，根本没有那么多的复杂需求，只需要一个随手打开和关闭的记录而已，放在托盘上就非常的方便。
+所以，需求如下：
+
+  macOS托盘应用，随手打开和关闭；
+  带有分页标签，以便标记不同类型的todo；
+  最好有利用iCloud的数据云同步，方便未来与其他平台同步数据；
+
+
+
+        </div>
+    </div>
+    <p class="post-meta">
+        <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    May 11
+    
+    
+</small>
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+                </path>
+            </svg>
+        </s-icon>
+        
+        <a href="/tag/macos">macOS</a>
+        
+        <a href="/tag/justtodo">JustTodo</a>
+        
+        
+
+        
+        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
+              </svg>
+        </s-icon>
+        
+        <a href="/category/独立开发笔记">独立开发笔记</a>
+        
+        
+    </p>
+</li>
   
   <li class="post-item">
     <h3><a class="post-item-title" href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/08/MacOS-SwiftUI%E6%89%98%E7%9B%98%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91.html">MacOS SwiftUI托盘应用开发</a></h3>
@@ -758,65 +824,6 @@
         </s-icon>
         
         <a href="/category/android技巧">Android技巧</a>
-        
-        
-    </p>
-</li>
-  
-  <li class="post-item">
-    <h3><a class="post-item-title" href="/translator/2022/11/02/Translator.html">Translator</a></h3>
-    <div class="post-excerpt">
-        <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
-            A simple translator app for macOS.
-
-
-    
-    Translator
-    
-
-
-
-        </div>
-    </div>
-    <p class="post-meta">
-        <s-icon style="width: 20px; height: 20px;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-        <path
-            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
-        </path>
-    </svg>
-</s-icon>
-<small>
-    
-    
-
-    
-    
-    November 02
-    
-    
-</small>
-        
-        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                <path
-                    d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
-                </path>
-            </svg>
-        </s-icon>
-        
-        <a href="/tag/translator">Translator</a>
-        
-        
-
-        
-        <s-icon style="width: 20px; height: 20px; margin-left: 8px;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                <path d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z"></path>
-              </svg>
-        </s-icon>
-        
-        <a href="/category/translator">Translator</a>
         
         
     </p>
