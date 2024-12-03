@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-12-03T12:46:13+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>The fortress besieged of an independent developer</subtitle><author><name>boybeak</name></author><entry><title type="html">我写了一个Jekyll的Material Design的主题</title><link href="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html" rel="alternate" type="text/html" title="我写了一个Jekyll的Material Design的主题" /><published>2024-11-25T17:41:32+00:00</published><updated>2024-11-25T17:41:32+00:00</updated><id>/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98</id><content type="html" xml:base="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html"><![CDATA[<p>使用了很久的Hexo作为博客模板引擎，最近出了一些莫名其妙的问题，简单来说，就是部署在github pages的博客，在没有修改任何环境变量的前提下，突然就无法执行任何构建了，报出版本号的一系列问题，尝试修复无果，最终选择切换回老牌博客模板引擎Jekyll。</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-12-03T12:50:14+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>The fortress besieged of an independent developer</subtitle><author><name>boybeak</name></author><entry><title type="html">Test</title><link href="/android%E6%8A%80%E5%B7%A7/2024/12/01/Test.html" rel="alternate" type="text/html" title="Test" /><published>2024-12-01T16:13:00+00:00</published><updated>2024-12-01T16:13:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2024/12/01/Test</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2024/12/01/Test.html"><![CDATA[<p>TEST</p>]]></content><author><name>boybeak</name></author><category term="Android技巧" /><category term="Android" /><summary type="html"><![CDATA[TEST]]></summary></entry><entry><title type="html">我写了一个Jekyll的Material Design的主题</title><link href="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html" rel="alternate" type="text/html" title="我写了一个Jekyll的Material Design的主题" /><published>2024-11-25T17:41:32+00:00</published><updated>2024-11-25T17:41:32+00:00</updated><id>/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98</id><content type="html" xml:base="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html"><![CDATA[<p>使用了很久的Hexo作为博客模板引擎，最近出了一些莫名其妙的问题，简单来说，就是部署在github pages的博客，在没有修改任何环境变量的前提下，突然就无法执行任何构建了，报出版本号的一系列问题，尝试修复无果，最终选择切换回老牌博客模板引擎Jekyll。</p>
 
 <!-- more -->
 
@@ -426,31 +426,4 @@ IO密集型任务主要涉及等待外部资源（如文件系统、网络请求
 <img src="/assets/images/sober_my_todo.png" alt="" />
 这样既实现了最初的顶部导航设想，又能加快开发速度。</p>
 
-<p>再次吐槽苹果的原生开发在macOS上真的好吃力。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。]]></summary></entry><entry><title type="html">JustTodo开发(二) 界面初始化</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html" rel="alternate" type="text/html" title="JustTodo开发(二) 界面初始化" /><published>2024-05-12T17:18:00+00:00</published><updated>2024-05-12T17:18:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)%20%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html"><![CDATA[<h2 id="一界面布局">一、界面布局</h2>
-<p>一个简单的界面布局描述如下：</p>
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------------</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span> <span class="err">1</span> <span class="o">|</span>      <span class="err">2</span>        <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span><span class="nt">---------------</span><span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>      <span class="err">3</span>        <span class="o">|</span>
-<span class="nt">---------------------</span>
-</code></pre></div></div>
-<p>简单分为3个区域：</p>
-<ol>
-  <li>导航 - 用于做Todo Item的分类导航，是一个列表；</li>
-  <li>内容 - 展示当前分类下的Todo Items；</li>
-  <li>输入 - 在当前分类下创建新的Todo。</li>
-</ol>
-
-<blockquote>
-  <p>这实际上是一个妥协方案，我的理想方案是简单的上中下三部分，上部分上导航，类似于chrome浏览器顶部页面管理那种，但是macOS对于列表横向滑动的滚轮支持实在是太差了，没有找到成熟的方式实现，妥协成当前这样了</p>
-</blockquote>
-
-<h2 id="二页面构建">二、页面构建</h2>
-<p><a href="">上一章</a>中，我们有一个用于展示界面的ViewController类，这次要在其中填充上述的布局内容。
-代码可参考<a href="https://github.com/boybeak/MyTodo">MyTodo</a>，最终实现效果如下：
-<img src="/assets/images/my_todo_ui_init.png" alt="my_todo_ui_init" /></p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[一、界面布局 一个简单的界面布局描述如下： --------------------- | | | | | | | | | | 1 | 2 | | | | | | | | |---------------| | | 3 | --------------------- 简单分为3个区域： 导航 - 用于做Todo Item的分类导航，是一个列表； 内容 - 展示当前分类下的Todo Items； 输入 - 在当前分类下创建新的Todo。]]></summary></entry></feed>
+<p>再次吐槽苹果的原生开发在macOS上真的好吃力。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。]]></summary></entry></feed>
