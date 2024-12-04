@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>可能是软键盘状态与高度监听最佳方案</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+
+  
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  
+  
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>可能是软键盘状态与高度监听最佳方案 | Boybeak</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="可能是软键盘状态与高度监听最佳方案" />
+<meta name="author" content="boybeak" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="之前写过一个监听Android系统软键盘高度的解决方案——软键盘高度监测最佳实践，今天将这个方案加以改进，写成了一个库——skb-global。" />
+<meta property="og:description" content="之前写过一个监听Android系统软键盘高度的解决方案——软键盘高度监测最佳实践，今天将这个方案加以改进，写成了一个库——skb-global。" />
+<link rel="canonical" href="/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88.html" />
+<meta property="og:url" content="/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88.html" />
+<meta property="og:site_name" content="Boybeak" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-12-03T16:13:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="可能是软键盘状态与高度监听最佳方案" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"boybeak"},"dateModified":"2024-12-03T16:13:00+00:00","datePublished":"2024-12-03T16:13:00+00:00","description":"之前写过一个监听Android系统软键盘高度的解决方案——软键盘高度监测最佳实践，今天将这个方案加以改进，写成了一个库——skb-global。","headline":"可能是软键盘状态与高度监听最佳方案","mainEntityOfPage":{"@type":"WebPage","@id":"/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/icons/favicon-32x32.png"},"name":"boybeak"},"url":"/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script
+    src="/assets/js/sobekyll.js"></script>
+
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
+  
+
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+            
+            <small class="author-desc">The fortress besieged of an independent developer</small>
+            
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://play.google.com/store/apps/details?id=com.github.boybeak.aodvolumebar')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/jekyll')">Jekyll</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/material-design')">Material Design</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <div class="article">
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">可能是软键盘状态与高度监听最佳方案</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    December 03
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>之前写过一个监听Android系统软键盘高度的解决方案——<a href="./2023-07-29-软键盘高度监测最佳实践.md">软键盘高度监测最佳实践</a>，今天将这个方案加以改进，写成了一个库——<a href="https://github.com/boybeak/skb-global">skb-global</a>。</p>
+
+<!-- more -->
+
+<p><img src="/assets/images/skb-global.gif" alt="gif" /></p>
+
+<h2 id="一安装">一、安装</h2>
+<p>该库托管于<strong>jitpack</strong>，所以在使用前，请先引入<strong>jitpack</strong>。</p>
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencyResolutionManagement</span> <span class="o">{</span>
+    <span class="n">repositoriesMode</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">RepositoriesMode</span><span class="o">.</span><span class="na">FAIL_ON_PROJECT_REPOS</span><span class="o">)</span>
+    <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+        <span class="n">maven</span> <span class="o">{</span> <span class="n">url</span> <span class="s1">'https://jitpack.io'</span> <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>然后添加依赖。</p>
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="s1">'com.github.boybeak:skb-global:Tag'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>最新版本为：<img src="https://jitpack.io/v/boybeak/skb-global.svg" alt="version" /></p>
+
+<h2 id="二使用">二、使用</h2>
+<p>有两种使用方式：<strong>全局</strong>和<strong>局部</strong>。</p>
+
+<h3 id="21-全局使用">2.1 全局使用</h3>
+<p>在使用前，需要先在Application中初始化<code class="language-plaintext highlighter-rouge">SoftKeyboardGlobal</code>。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">App</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">()</span>
+        <span class="nc">SoftKeyboardGlobal</span><span class="p">.</span><span class="nf">install</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>其中，第二个参数传入<code class="language-plaintext highlighter-rouge">true</code>，可以在UI界面显示一个高度指示器。</p>
+</blockquote>
+
+<p>然后，在你应用中的任意位置，可以监听键盘的状态与高度，如下方式：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">SoftKeyboardGlobal</span><span class="p">.</span><span class="nf">addSoftKeyboardCallback</span><span class="p">(</span><span class="kd">object</span> <span class="err">: </span><span class="nc">SoftKeyboardGlobal</span><span class="p">.</span><span class="nc">SoftKeyboardCallback</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onOpen</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Log</span><span class="p">.</span><span class="nf">d</span><span class="p">(</span><span class="nc">TAG</span><span class="p">,</span> <span class="s">"onOpen height=$height"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onClose</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nc">Log</span><span class="p">.</span><span class="nf">d</span><span class="p">(</span><span class="nc">TAG</span><span class="p">,</span> <span class="s">"onClose"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onHeightChanged</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Log</span><span class="p">.</span><span class="nf">d</span><span class="p">(</span><span class="nc">TAG</span><span class="p">,</span> <span class="s">"onHeightChanged height=$height"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="22-局部使用">2.2 局部使用</h3>
+<p>你可以在任意<code class="language-plaintext highlighter-rouge">Activity</code>, <code class="language-plaintext highlighter-rouge">Fragment</code>或者<code class="language-plaintext highlighter-rouge">View</code>中使用这种方式，只要能获取到<code class="language-plaintext highlighter-rouge">Activity</code>实例。以<code class="language-plaintext highlighter-rouge">Activity</code>为例，如下方式：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">observer</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">KeyboardObserver</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">switchBtn</span><span class="p">:</span> <span class="nc">SwitchCompat</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nf">findViewById</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">switchBtn</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="nf">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+
+        <span class="n">switchBtn</span><span class="p">.</span><span class="nf">setOnCheckedChangeListener</span> <span class="p">{</span> <span class="n">buttonView</span><span class="p">,</span> <span class="n">isChecked</span> <span class="p">-&gt;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">isChecked</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">observer</span><span class="p">.</span><span class="nf">watch</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">observer</span><span class="p">.</span><span class="nf">unwatch</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>同样的，在创建<code class="language-plaintext highlighter-rouge">KeyboardObserver</code>时，第二个参数传入<code class="language-plaintext highlighter-rouge">true</code>可以显示一个键盘高度指示器，方便调试。</p>
+
+<h2 id="三原理分析">三、原理分析</h2>
+<p>该方案是在多年开发过程中，实践出来的最佳的方案。以前的旧方案，实现方式如下：</p>
+<ol>
+  <li>在界面中放置一个测量布局，然后监听布局变化，但是布局尺寸变化，有可能会执行多次，很难判断键盘的高度是什么时候停止变化的；</li>
+  <li>为了解决这个问题，我放置了一个延迟触发任务，只要布局变化就取消上一个任务，并且布置一个新的延迟任务，等到布局不再发生变化，就会存留最后一个放置的任务被触发了，再获取测量布局高度，计算与总高度的差值。</li>
+</ol>
+
+<p>这种旧方案的缺点很多，比如：</p>
+<ol>
+  <li>侵入性，必须在布局中显式的放置测量布局；</li>
+  <li>滞后性，测量时机上延迟的，并不能在布局稳定的第一时间获取到键盘的高度；</li>
+  <li>误触性，由于获取键盘高度靠延迟任务，延迟的时间太长，则导致滞后性太严重，太短，则可能来不及取消上一个任务，测量高度就被错误触发；</li>
+  <li>不定性，由于设备可能会有横竖屏幕切换，因横竖屏切换导致的测量布局尺寸发生变化进而触发键盘高度事件，这个是不可接受的。</li>
+</ol>
+
+<p>为了解决这些问题，进而开发出这个方案，简单阐述一下原理。
+新的方案使用了两个隐藏的<code class="language-plaintext highlighter-rouge">PopupWindow</code>，一个用于测量屏幕的总高度，称为Ruler——尺子，另外一个用于跟随软键盘的弹起/收回而进行伸缩，称为Cursor——游标。
+这样做，可以避免侵入。</p>
+<ol>
+  <li>低侵入性，只需要调用watch与unwatch即可；</li>
+  <li>无滞后性，由于不采用延迟任务的方式，所以没有滞后性；</li>
+  <li>无误触性，同样是因为没有采用延迟任务的方式，所以没有误触性；</li>
+  <li>稳定性，由于采用的是双布局的差值比较，所以不会因为横竖屏幕切换导致的触发键盘高度事件；</li>
+</ol>
+
+<p>想要更多细节，请查看代码：<a href="https://github.com/boybeak/skb-global">skb-global</a>。</p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</div>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>

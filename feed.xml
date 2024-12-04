@@ -1,4 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-12-03T12:54:26+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>The fortress besieged of an independent developer</subtitle><author><name>boybeak</name></author><entry><title type="html">我写了一个Jekyll的Material Design的主题</title><link href="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html" rel="alternate" type="text/html" title="我写了一个Jekyll的Material Design的主题" /><published>2024-11-25T17:41:32+00:00</published><updated>2024-11-25T17:41:32+00:00</updated><id>/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98</id><content type="html" xml:base="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html"><![CDATA[<p>使用了很久的Hexo作为博客模板引擎，最近出了一些莫名其妙的问题，简单来说，就是部署在github pages的博客，在没有修改任何环境变量的前提下，突然就无法执行任何构建了，报出版本号的一系列问题，尝试修复无果，最终选择切换回老牌博客模板引擎Jekyll。</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-12-04T16:01:08+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>The fortress besieged of an independent developer</subtitle><author><name>boybeak</name></author><entry><title type="html">可能是软键盘状态与高度监听最佳方案</title><link href="/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88.html" rel="alternate" type="text/html" title="可能是软键盘状态与高度监听最佳方案" /><published>2024-12-03T16:13:00+00:00</published><updated>2024-12-03T16:13:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2024/12/03/%E5%8F%AF%E8%83%BD%E6%98%AF%E8%BD%AF%E9%94%AE%E7%9B%98%E7%8A%B6%E6%80%81%E4%B8%8E%E9%AB%98%E5%BA%A6%E7%9B%91%E5%90%AC%E6%9C%80%E4%BD%B3%E6%96%B9%E6%A1%88.html"><![CDATA[<p>之前写过一个监听Android系统软键盘高度的解决方案——<a href="./2023-07-29-软键盘高度监测最佳实践.md">软键盘高度监测最佳实践</a>，今天将这个方案加以改进，写成了一个库——<a href="https://github.com/boybeak/skb-global">skb-global</a>。</p>
+
+<!-- more -->
+
+<p><img src="/assets/images/skb-global.gif" alt="gif" /></p>
+
+<h2 id="一安装">一、安装</h2>
+<p>该库托管于<strong>jitpack</strong>，所以在使用前，请先引入<strong>jitpack</strong>。</p>
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencyResolutionManagement</span> <span class="o">{</span>
+    <span class="n">repositoriesMode</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">RepositoriesMode</span><span class="o">.</span><span class="na">FAIL_ON_PROJECT_REPOS</span><span class="o">)</span>
+    <span class="n">repositories</span> <span class="o">{</span>
+        <span class="n">mavenCentral</span><span class="o">()</span>
+        <span class="n">maven</span> <span class="o">{</span> <span class="n">url</span> <span class="s1">'https://jitpack.io'</span> <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>然后添加依赖。</p>
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="s1">'com.github.boybeak:skb-global:Tag'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>最新版本为：<img src="https://jitpack.io/v/boybeak/skb-global.svg" alt="version" /></p>
+
+<h2 id="二使用">二、使用</h2>
+<p>有两种使用方式：<strong>全局</strong>和<strong>局部</strong>。</p>
+
+<h3 id="21-全局使用">2.1 全局使用</h3>
+<p>在使用前，需要先在Application中初始化<code class="language-plaintext highlighter-rouge">SoftKeyboardGlobal</code>。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">App</span> <span class="p">:</span> <span class="nc">Application</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">()</span>
+        <span class="nc">SoftKeyboardGlobal</span><span class="p">.</span><span class="nf">install</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>其中，第二个参数传入<code class="language-plaintext highlighter-rouge">true</code>，可以在UI界面显示一个高度指示器。</p>
+</blockquote>
+
+<p>然后，在你应用中的任意位置，可以监听键盘的状态与高度，如下方式：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">SoftKeyboardGlobal</span><span class="p">.</span><span class="nf">addSoftKeyboardCallback</span><span class="p">(</span><span class="kd">object</span> <span class="err">: </span><span class="nc">SoftKeyboardGlobal</span><span class="p">.</span><span class="nc">SoftKeyboardCallback</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onOpen</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Log</span><span class="p">.</span><span class="nf">d</span><span class="p">(</span><span class="nc">TAG</span><span class="p">,</span> <span class="s">"onOpen height=$height"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onClose</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nc">Log</span><span class="p">.</span><span class="nf">d</span><span class="p">(</span><span class="nc">TAG</span><span class="p">,</span> <span class="s">"onClose"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onHeightChanged</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Log</span><span class="p">.</span><span class="nf">d</span><span class="p">(</span><span class="nc">TAG</span><span class="p">,</span> <span class="s">"onHeightChanged height=$height"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<h3 id="22-局部使用">2.2 局部使用</h3>
+<p>你可以在任意<code class="language-plaintext highlighter-rouge">Activity</code>, <code class="language-plaintext highlighter-rouge">Fragment</code>或者<code class="language-plaintext highlighter-rouge">View</code>中使用这种方式，只要能获取到<code class="language-plaintext highlighter-rouge">Activity</code>实例。以<code class="language-plaintext highlighter-rouge">Activity</code>为例，如下方式：</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MainActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">observer</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">KeyboardObserver</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">switchBtn</span><span class="p">:</span> <span class="nc">SwitchCompat</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nf">findViewById</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">switchBtn</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="nf">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+
+        <span class="n">switchBtn</span><span class="p">.</span><span class="nf">setOnCheckedChangeListener</span> <span class="p">{</span> <span class="n">buttonView</span><span class="p">,</span> <span class="n">isChecked</span> <span class="p">-&gt;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">isChecked</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">observer</span><span class="p">.</span><span class="nf">watch</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">observer</span><span class="p">.</span><span class="nf">unwatch</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>同样的，在创建<code class="language-plaintext highlighter-rouge">KeyboardObserver</code>时，第二个参数传入<code class="language-plaintext highlighter-rouge">true</code>可以显示一个键盘高度指示器，方便调试。</p>
+
+<h2 id="三原理分析">三、原理分析</h2>
+<p>该方案是在多年开发过程中，实践出来的最佳的方案。以前的旧方案，实现方式如下：</p>
+<ol>
+  <li>在界面中放置一个测量布局，然后监听布局变化，但是布局尺寸变化，有可能会执行多次，很难判断键盘的高度是什么时候停止变化的；</li>
+  <li>为了解决这个问题，我放置了一个延迟触发任务，只要布局变化就取消上一个任务，并且布置一个新的延迟任务，等到布局不再发生变化，就会存留最后一个放置的任务被触发了，再获取测量布局高度，计算与总高度的差值。</li>
+</ol>
+
+<p>这种旧方案的缺点很多，比如：</p>
+<ol>
+  <li>侵入性，必须在布局中显式的放置测量布局；</li>
+  <li>滞后性，测量时机上延迟的，并不能在布局稳定的第一时间获取到键盘的高度；</li>
+  <li>误触性，由于获取键盘高度靠延迟任务，延迟的时间太长，则导致滞后性太严重，太短，则可能来不及取消上一个任务，测量高度就被错误触发；</li>
+  <li>不定性，由于设备可能会有横竖屏幕切换，因横竖屏切换导致的测量布局尺寸发生变化进而触发键盘高度事件，这个是不可接受的。</li>
+</ol>
+
+<p>为了解决这些问题，进而开发出这个方案，简单阐述一下原理。
+新的方案使用了两个隐藏的<code class="language-plaintext highlighter-rouge">PopupWindow</code>，一个用于测量屏幕的总高度，称为Ruler——尺子，另外一个用于跟随软键盘的弹起/收回而进行伸缩，称为Cursor——游标。
+这样做，可以避免侵入。</p>
+<ol>
+  <li>低侵入性，只需要调用watch与unwatch即可；</li>
+  <li>无滞后性，由于不采用延迟任务的方式，所以没有滞后性；</li>
+  <li>无误触性，同样是因为没有采用延迟任务的方式，所以没有误触性；</li>
+  <li>稳定性，由于采用的是双布局的差值比较，所以不会因为横竖屏幕切换导致的触发键盘高度事件；</li>
+</ol>
+
+<p>想要更多细节，请查看代码：<a href="https://github.com/boybeak/skb-global">skb-global</a>。</p>]]></content><author><name>boybeak</name></author><category term="Android技巧" /><category term="Android" /><summary type="html"><![CDATA[之前写过一个监听Android系统软键盘高度的解决方案——软键盘高度监测最佳实践，今天将这个方案加以改进，写成了一个库——skb-global。]]></summary></entry><entry><title type="html">我写了一个Jekyll的Material Design的主题</title><link href="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html" rel="alternate" type="text/html" title="我写了一个Jekyll的Material Design的主题" /><published>2024-11-25T17:41:32+00:00</published><updated>2024-11-25T17:41:32+00:00</updated><id>/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98</id><content type="html" xml:base="/2024/11/25/%E6%88%91%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AAJekyll%E7%9A%84Material-Design%E7%9A%84%E4%B8%BB%E9%A2%98.html"><![CDATA[<p>使用了很久的Hexo作为博客模板引擎，最近出了一些莫名其妙的问题，简单来说，就是部署在github pages的博客，在没有修改任何环境变量的前提下，突然就无法执行任何构建了，报出版本号的一系列问题，尝试修复无果，最终选择切换回老牌博客模板引擎Jekyll。</p>
 
 <!-- more -->
 
@@ -426,31 +530,4 @@ IO密集型任务主要涉及等待外部资源（如文件系统、网络请求
 <img src="/assets/images/sober_my_todo.png" alt="" />
 这样既实现了最初的顶部导航设想，又能加快开发速度。</p>
 
-<p>再次吐槽苹果的原生开发在macOS上真的好吃力。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。]]></summary></entry><entry><title type="html">JustTodo开发(二) 界面初始化</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html" rel="alternate" type="text/html" title="JustTodo开发(二) 界面初始化" /><published>2024-05-12T17:18:00+00:00</published><updated>2024-05-12T17:18:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)%20%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/05/12/JustTodo%E5%BC%80%E5%8F%91(%E4%BA%8C)-%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96.html"><![CDATA[<h2 id="一界面布局">一、界面布局</h2>
-<p>一个简单的界面布局描述如下：</p>
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">---------------------</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span> <span class="err">1</span> <span class="o">|</span>      <span class="err">2</span>        <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>               <span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span><span class="nt">---------------</span><span class="o">|</span>
-<span class="o">|</span>   <span class="o">|</span>      <span class="err">3</span>        <span class="o">|</span>
-<span class="nt">---------------------</span>
-</code></pre></div></div>
-<p>简单分为3个区域：</p>
-<ol>
-  <li>导航 - 用于做Todo Item的分类导航，是一个列表；</li>
-  <li>内容 - 展示当前分类下的Todo Items；</li>
-  <li>输入 - 在当前分类下创建新的Todo。</li>
-</ol>
-
-<blockquote>
-  <p>这实际上是一个妥协方案，我的理想方案是简单的上中下三部分，上部分上导航，类似于chrome浏览器顶部页面管理那种，但是macOS对于列表横向滑动的滚轮支持实在是太差了，没有找到成熟的方式实现，妥协成当前这样了</p>
-</blockquote>
-
-<h2 id="二页面构建">二、页面构建</h2>
-<p><a href="">上一章</a>中，我们有一个用于展示界面的ViewController类，这次要在其中填充上述的布局内容。
-代码可参考<a href="https://github.com/boybeak/MyTodo">MyTodo</a>，最终实现效果如下：
-<img src="/assets/images/my_todo_ui_init.png" alt="my_todo_ui_init" /></p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[一、界面布局 一个简单的界面布局描述如下： --------------------- | | | | | | | | | | 1 | 2 | | | | | | | | |---------------| | | 3 | --------------------- 简单分为3个区域： 导航 - 用于做Todo Item的分类导航，是一个列表； 内容 - 展示当前分类下的Todo Items； 输入 - 在当前分类下创建新的Todo。]]></summary></entry></feed>
+<p>再次吐槽苹果的原生开发在macOS上真的好吃力。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><category term="JustTodo" /><summary type="html"><![CDATA[在尝试使用AppKit原生开发界面几天后，我还是放弃了这种尝试了，其羸弱UI表现力，真的是让搭建界面的我心力交瘁。转而，我尝试使用web的形式来开发，即NSPopover中嵌套WKWebView的方式，配合原生层提供一些数据库接口。]]></summary></entry></feed>
