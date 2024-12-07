@@ -69,6 +69,9 @@ menus:
         url: mailto:boybeak@gmail.com
   - title: My Apps
     items:
+      - title: Banner Dog
+        img: /assets/images/BannerDog.png
+        url: https://banner-dog.vercel.app/
       - title: AOD Volume
         img: /assets/images/AODVolume.png
         url: https://play.google.com/store/apps/details?id=com.github.boybeak.aodvolumebar
