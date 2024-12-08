@@ -17,3 +17,4 @@ tags:
 ![TrayBanner](/assets/images/Tray-banner.png)
 
 欢迎访问：**[BannerDog](https://banner-dog.vercel.app/)**
+![website-capture](/assets/images/capture-banner-dog.png)
