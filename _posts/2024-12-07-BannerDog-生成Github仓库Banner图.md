@@ -20,4 +20,4 @@ tags:
 
 ![TrayBanner](/assets/images/Tray-banner.png)
 
-欢迎访问：**[BannerDog](https://banner-dog.vercel.app/)**
+欢迎访问：**[BannerDog](https://banner-dog.fun/)**
