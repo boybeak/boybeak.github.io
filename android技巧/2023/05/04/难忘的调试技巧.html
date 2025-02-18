@@ -313,8 +313,8 @@
 
 <p>这一技巧来自于最近工作中，做子线程渲染时，发现有卡顿、手势操作延迟过大的情况，而渲染的子线程是一个HandlerThread，为了判断此线程是否有大量耗时操作，探索出一些技巧。</p>
 
-<p>##判断HandlerThread是否繁忙##
-可以通过对应的Handler执行一个post操作，在看其中执行的延迟，代码如下：</p>
+<h3 id="判断handlerthread是否繁忙">判断HandlerThread是否繁忙</h3>
+<p>可以通过对应的Handler执行一个post操作，在看其中执行的延迟，代码如下：</p>
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">handler</span> <span class="p">=</span> <span class="nc">Handler</span><span class="p">(</span><span class="n">renderThread</span><span class="p">.</span><span class="n">looper</span><span class="p">)</span>
 <span class="kd">val</span> <span class="py">postAt</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="nf">currentTimeMillis</span><span class="p">()</span>
@@ -327,8 +327,8 @@
 <p>在正常情况下，<code class="language-plaintext highlighter-rouge">delay</code>的值是很小的，大概率为0，但是，如果renderThread异常繁忙，则这个值会很大，说明等了很久来轮到一个需要立马执行的操作执行到，具体这个阈值怎么来定，要看你的实际场景，一般做ui渲染的话，超过17ms就可以认为是比较耗时了。
 这个操作可以定时执行用于检测是否繁忙，也可以用于在怀疑的操作后添加此行为，判断是否是之前的操作耗时过长引起了操作延迟过大。</p>
 
-<p>##如何找到导致繁忙的操作？##
-上述操作，一般是用于常规检测和重点怀疑，如果要做“普筛”，则需要通过代理的方式。方法如下：</p>
+<h3 id="如何找到导致繁忙的操作">如何找到导致繁忙的操作？</h3>
+<p>上述操作，一般是用于常规检测和重点怀疑，如果要做“普筛”，则需要通过代理的方式。方法如下：</p>
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">DebugThread</span><span class="p">(</span><span class="kd">val</span> <span class="py">task</span><span class="p">:</span> <span class="nc">Runnable</span><span class="p">,</span> <span class="kd">val</span> <span class="py">postDelayed</span><span class="p">:</span> <span class="nc">Long</span><span class="p">)</span> <span class="p">:</span>  <span class="nc">Runnable</span> <span class="p">{</span>
 
