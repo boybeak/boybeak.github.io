@@ -1,4 +1,160 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-07-11T14:30:01+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>我也不知道到底有没有看我的博客</subtitle><author><name>boybeak</name></author><entry><title type="html">一个冷门库J2V8的赋能之旅——深度绑定机制的实现</title><link href="/android%E6%8A%80%E5%B7%A7/2025/03/29/%E4%B8%80%E4%B8%AA%E5%86%B7%E9%97%A8%E5%BA%93J2V8%E7%9A%84%E8%B5%8B%E8%83%BD%E4%B9%8B%E6%97%85-%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0.html" rel="alternate" type="text/html" title="一个冷门库J2V8的赋能之旅——深度绑定机制的实现" /><published>2025-03-29T21:22:00+00:00</published><updated>2025-03-29T21:22:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2025/03/29/%E4%B8%80%E4%B8%AA%E5%86%B7%E9%97%A8%E5%BA%93J2V8%E7%9A%84%E8%B5%8B%E8%83%BD%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2025/03/29/%E4%B8%80%E4%B8%AA%E5%86%B7%E9%97%A8%E5%BA%93J2V8%E7%9A%84%E8%B5%8B%E8%83%BD%E4%B9%8B%E6%97%85-%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0.html"><![CDATA[<p>不知道各位大神在工作中有没有用到过J2V8，简单介绍一下J2V8，这是谷歌开源的大名鼎鼎的JS执行引擎V8的java封装，旨在将V8引擎引入到java的开发项目中，这样就可以在java项目中执行js代码了。
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-07-11T14:36:42+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>我也不知道到底有没有人看我的博客</subtitle><author><name>boybeak</name></author><entry><title type="html">让PAG动画在富文本中动起来</title><link href="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html" rel="alternate" type="text/html" title="让PAG动画在富文本中动起来" /><published>2025-07-10T21:22:00+00:00</published><updated>2025-07-10T21:22:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html"><![CDATA[<p>我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。
+但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？</p>
+
+<p>我经过几日研究，发现这也不是不能实现的，只不过又得曲线救国了。</p>
+
+<h2 id="一pag是什么">一、PAG是什么？</h2>
+<blockquote>
+  <p>Portable Animated Graphics 是一套完整的动效工作流解决方案。
+目标是降低或消除动效相关的研发成本，能够一键将设计师在 AE（Adobe After Effects）中制作的动效内容导出成素材文件，并快速上线应用于几乎所有的主流平台。</p>
+</blockquote>
+
+<p>这是其<a href="https://pag.io/">官网</a>的介绍。</p>
+
+<h3 id="11-pag怎么使用">1.1 PAG怎么使用？</h3>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'com.tencent.tav:libpag:libpag:4.4.25'</span>
+</code></pre></div></div>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;org.libpag.PAGImageView</span>
+    <span class="na">android:id=</span><span class="s">"@+id/pagImageView"</span>
+    <span class="na">android:layout_width=</span><span class="s">"240dp"</span>
+    <span class="na">android:layout_height=</span><span class="s">"240dp"</span>
+    <span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pagImageView</span><span class="p">.</span><span class="n">path</span> <span class="p">=</span> <span class="s">"assets://live_follow.pag"</span>
+<span class="n">pagImageView</span><span class="p">.</span><span class="nf">setRepeatCount</span><span class="p">(-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pagImageView</span><span class="p">.</span><span class="nf">play</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>基本使用是不是很简单？但是很遗憾的是，这些并不能直接在富文本中使用。
+其实，你可能会有疑问，为什么非得让PAG动画在富文本中动起来呢？对啊，我也想知道，产品脑子里在想什么。</p>
+
+<h2 id="二如何让pag动画在富文本中动起来">二、如何让PAG动画在富文本中动起来？</h2>
+
+<p>富文本，在Android中就是Spannable那一套东西，而在富文本中展示图像，就需要ImageSpan。我们的思路就是，让ImageSpan可以对接Pag动画。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">PAGSpan</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">,</span> <span class="n">onUpdate</span><span class="p">:</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">:</span> <span class="nc">ImageSpan</span><span class="p">(</span><span class="nc">PAGDrawable</span><span class="p">(</span><span class="n">activity</span><span class="p">,</span> <span class="n">onUpdate</span><span class="p">))</span> <span class="p">{</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">TAG</span> <span class="p">=</span> <span class="s">"PAGSpan"</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="py">path</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span>
+        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">pagDrawable</span><span class="p">.</span><span class="n">path</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pagDrawable</span><span class="p">.</span><span class="n">path</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+    <span class="kd">val</span> <span class="py">pagDrawable</span><span class="p">:</span> <span class="nc">PAGDrawable</span>
+        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">drawable</span> <span class="k">as</span> <span class="nc">PAGDrawable</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getSize</span><span class="p">(</span>
+        <span class="n">paint</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">?,</span>
+        <span class="n">start</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">fm</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">.</span><span class="nc">FontMetricsInt</span><span class="p">?</span>
+    <span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">width</span> <span class="p">=</span> <span class="p">(</span><span class="n">paint</span><span class="p">.</span><span class="nf">measureText</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="p">+</span> <span class="mf">0.5f</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+        <span class="n">pagDrawable</span><span class="p">.</span><span class="nf">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">paint</span><span class="p">.</span><span class="n">textSize</span><span class="p">.</span><span class="nf">toInt</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">width</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>只要把这个PAGSapn塞入SpannableString就可以展示一个PAG动画了，当然，还需要PAGDrawable的支持。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">PAGDrawable</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">,</span> <span class="k">private</span> <span class="kd">val</span> <span class="py">onUpdate</span><span class="p">:</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">:</span> <span class="nc">Drawable</span><span class="p">(),</span> <span class="nc">PAGDrawableManager</span><span class="p">.</span><span class="nc">OnPAGDrawCallback</span> <span class="p">{</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">TAG</span> <span class="p">=</span> <span class="s">"PAGDrawable"</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">activityRef</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">&lt;</span><span class="nc">Activity</span><span class="p">&gt;(</span><span class="n">activity</span><span class="p">)</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">bitmapRef</span><span class="p">:</span> <span class="nc">WeakReference</span><span class="p">&lt;</span><span class="nc">Bitmap</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">null</span>
+    <span class="kd">var</span> <span class="py">path</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">val</span> <span class="py">oldValue</span> <span class="p">=</span> <span class="n">field</span>
+            <span class="n">field</span> <span class="p">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">oldValue</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">stop</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">start</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">stop</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">srcRect</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">Rect</span><span class="p">()</span> <span class="p">}</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">dstRect</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">Rect</span><span class="p">()</span> <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">p</span> <span class="p">=</span> <span class="n">path</span> <span class="o">?:</span> <span class="k">throw</span> <span class="nc">IllegalStateException</span><span class="p">(</span><span class="s">"set path value before call start"</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">activity</span> <span class="p">=</span> <span class="n">activityRef</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+        <span class="nc">PAGDrawableManager</span><span class="p">.</span><span class="nf">obtain</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">fun</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">p</span> <span class="p">=</span> <span class="n">path</span> <span class="o">?:</span> <span class="k">return</span>
+        <span class="kd">val</span> <span class="py">activity</span> <span class="p">=</span> <span class="n">activityRef</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+        <span class="nc">PAGDrawableManager</span><span class="p">.</span><span class="nf">obtain</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">unregister</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">draw</span><span class="p">(</span><span class="n">canvas</span><span class="p">:</span> <span class="nc">Canvas</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">bitmap</span> <span class="p">=</span> <span class="n">bitmapRef</span><span class="o">?.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+
+        <span class="c1">// 获取原始尺寸和目标尺寸</span>
+        <span class="kd">val</span> <span class="py">srcWidth</span> <span class="p">=</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">width</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">srcHeight</span> <span class="p">=</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">height</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">dstWidth</span> <span class="p">=</span> <span class="n">bounds</span><span class="p">.</span><span class="nf">width</span><span class="p">().</span><span class="nf">toFloat</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">dstHeight</span> <span class="p">=</span> <span class="n">bounds</span><span class="p">.</span><span class="nf">height</span><span class="p">().</span><span class="nf">toFloat</span><span class="p">()</span>
+
+        <span class="c1">// 计算缩放比例（取宽度和高度比例中较小的）</span>
+        <span class="kd">val</span> <span class="py">scale</span> <span class="p">=</span> <span class="nf">min</span><span class="p">(</span><span class="n">dstWidth</span> <span class="p">/</span> <span class="n">srcWidth</span><span class="p">,</span> <span class="n">dstHeight</span> <span class="p">/</span> <span class="n">srcHeight</span><span class="p">)</span>
+
+        <span class="c1">// 计算缩放后尺寸</span>
+        <span class="kd">val</span> <span class="py">scaledWidth</span> <span class="p">=</span> <span class="n">srcWidth</span> <span class="p">*</span> <span class="n">scale</span>
+        <span class="kd">val</span> <span class="py">scaledHeight</span> <span class="p">=</span> <span class="n">srcHeight</span> <span class="p">*</span> <span class="n">scale</span>
+
+        <span class="c1">// 计算居中位置</span>
+        <span class="kd">val</span> <span class="py">left</span> <span class="p">=</span> <span class="p">(</span><span class="n">dstWidth</span> <span class="p">-</span> <span class="n">scaledWidth</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+        <span class="kd">val</span> <span class="py">top</span> <span class="p">=</span> <span class="p">(</span><span class="n">dstHeight</span> <span class="p">-</span> <span class="n">scaledHeight</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+
+        <span class="c1">// 设置源矩形（完整原始图片）</span>
+        <span class="n">srcRect</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+
+        <span class="c1">// 创建目标矩形（保持比例并居中）</span>
+        <span class="n">dstRect</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+            <span class="n">left</span><span class="p">.</span><span class="nf">toInt</span><span class="p">(),</span>
+            <span class="n">top</span><span class="p">.</span><span class="nf">toInt</span><span class="p">(),</span>
+            <span class="p">(</span><span class="n">left</span> <span class="p">+</span> <span class="n">scaledWidth</span><span class="p">).</span><span class="nf">toInt</span><span class="p">(),</span>
+            <span class="p">(</span><span class="n">top</span> <span class="p">+</span> <span class="n">scaledHeight</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">canvas</span><span class="p">.</span><span class="nf">drawBitmap</span><span class="p">(</span><span class="n">bitmap</span><span class="p">,</span> <span class="n">srcRect</span><span class="p">,</span> <span class="n">dstRect</span><span class="p">,</span> <span class="k">null</span><span class="p">)</span>
+
+        <span class="n">onUpdate</span><span class="o">?.</span><span class="nf">invoke</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDraw</span><span class="p">(</span><span class="n">bitmap</span><span class="p">:</span> <span class="nc">Bitmap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">bitmapRef</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+        <span class="nf">invalidateSelf</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">setAlpha</span><span class="p">(</span><span class="n">alpha</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">setColorFilter</span><span class="p">(</span><span class="n">colorFilter</span><span class="p">:</span> <span class="nc">ColorFilter</span><span class="p">?)</span> <span class="p">{}</span>
+
+    <span class="nd">@Deprecated</span><span class="p">(</span><span class="s">"Deprecated in Java"</span><span class="p">)</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getOpacity</span><span class="p">():</span> <span class="nc">Int</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">PixelFormat</span><span class="p">.</span><span class="nc">TRANSLUCENT</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在PAGDrawable中，主要是靠<code class="language-plaintext highlighter-rouge">PAGDrawableManager</code>控制动画播放，而PAGDrawableManager中，主要是维护了依托于PAGImageView的刷新回调分发，当创建了一个PAGDrawable时，会根据绑定的pag资源路径，进行创建或者查找一个PAGImageView，并将其放置在当前activity的屏幕窗口之外的位置，让其一直播放，并进行刷新事件的订阅，刷新事</p>
+
+<p><strong>注意，这并不是一个严肃的实现方式，只是一种迫于无奈之下的奇技淫巧，可改进空间可能很大，只是提供一种思路。</strong></p>
+
+<p>源码地址：<a href="https://github.com/boybeak/PagDrawable">PagDrawable</a></p>]]></content><author><name>boybeak</name></author><category term="Android技巧" /><category term="Android" /><category term="PAG动画" /><summary type="html"><![CDATA[我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。 但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？]]></summary></entry><entry><title type="html">一个冷门库J2V8的赋能之旅——深度绑定机制的实现</title><link href="/android%E6%8A%80%E5%B7%A7/2025/03/29/%E4%B8%80%E4%B8%AA%E5%86%B7%E9%97%A8%E5%BA%93J2V8%E7%9A%84%E8%B5%8B%E8%83%BD%E4%B9%8B%E6%97%85-%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0.html" rel="alternate" type="text/html" title="一个冷门库J2V8的赋能之旅——深度绑定机制的实现" /><published>2025-03-29T21:22:00+00:00</published><updated>2025-03-29T21:22:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2025/03/29/%E4%B8%80%E4%B8%AA%E5%86%B7%E9%97%A8%E5%BA%93J2V8%E7%9A%84%E8%B5%8B%E8%83%BD%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2025/03/29/%E4%B8%80%E4%B8%AA%E5%86%B7%E9%97%A8%E5%BA%93J2V8%E7%9A%84%E8%B5%8B%E8%83%BD%E4%B9%8B%E6%97%85-%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E7%9A%84%E5%AE%9E%E7%8E%B0.html"><![CDATA[<p>不知道各位大神在工作中有没有用到过J2V8，简单介绍一下J2V8，这是谷歌开源的大名鼎鼎的JS执行引擎V8的java封装，旨在将V8引擎引入到java的开发项目中，这样就可以在java项目中执行js代码了。
 为什么要使用这个库呢？因为我之前的工作是做SDK，这个SDK的一个核心功能就是作为JS的容器，将JS的代码在移动端跑起来，当然，WebView本身就可以执行JS代码，J2V8是作为高性能的替代引入的，目的是在运行JS游戏时更高效。</p>
 
 <!-- more -->
@@ -685,60 +841,4 @@ IO密集型任务主要涉及等待外部资源（如文件系统、网络请求
 3x: 54*54</p>
 
 <h3 id="32-隐藏docker栏中应用的图标">3.2 隐藏Docker栏中应用的图标</h3>
-<p>在Info.plist中，增加一个配置项: <strong>Application is agent(UIElement)</strong> - <strong>YES</strong>.</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><summary type="html"><![CDATA[最近开发了JustTodo和DeskNote两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app Translator时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。 为了解决这一痛点，在总结了JustTodo和DeskNote两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库Tray，方便以后使用。]]></summary></entry><entry><title type="html">发布Swift Package库</title><link href="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift-Package%E5%BA%93.html" rel="alternate" type="text/html" title="发布Swift Package库" /><published>2024-06-04T22:19:00+00:00</published><updated>2024-06-04T22:19:00+00:00</updated><id>/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift%20Package%E5%BA%93</id><content type="html" xml:base="/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/2024/06/04/%E5%8F%91%E5%B8%83Swift-Package%E5%BA%93.html"><![CDATA[<p>最近开发<a href="https://github.com/boybeak/JustTodo">JustTodo</a>时，发觉把处理托盘应用的代码封装起来是很有必要的，这样的话，在以后开发其他应用时，便不需要一而再的写重复代码。以前发布过很多Android平台的类库，但是对于macOS平台的swift库，我还是第一次。</p>
-<blockquote>
-  <p>再次吐槽一下苹果生态下的包管理，挺混乱的，最终我选择使用最新的Swift Package Manager</p>
-</blockquote>
-
-<p>该文章中涉及到的所有代码都在<a href="https://github.com/boybeak/Tray">boybeak/Tray</a></p>
-
-<h2 id="一创建github仓库">一、创建Github仓库</h2>
-<p>我们需要先创建一个Github仓库，我的仓库名称为Tray，将其clone到本地。</p>
-
-<h2 id="二在仓库目录下初始化一个swift-package">二、在仓库目录下，初始化一个Swift Package。</h2>
-<p>在Tray仓库目录下，执行以下脚本。</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Tray % swift package init <span class="nt">--type</span> library
-</code></pre></div></div>
-<p>该命令，会自动按照目录名称，初始化一个Swift Package，其目录如下：</p>
-<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">Tray</span>
-  <span class="nt">-</span> <span class="nt">Package</span><span class="nc">.swift</span>
-  <span class="nt">-</span> <span class="nc">.gitignore</span>
-  <span class="nt">-</span> <span class="nt">Sources</span><span class="o">/</span>
-    <span class="nt">-</span> <span class="nt">Tray</span><span class="o">/</span><span class="nt">Tray</span><span class="nc">.swift</span>
-  <span class="nt">-</span> <span class="nt">Tests</span><span class="o">/</span>
-    <span class="nt">-</span> <span class="nt">TrayTests</span><span class="o">/</span><span class="nt">TrayTests</span><span class="nc">.swift</span>
-</code></pre></div></div>
-<p>其中，Package.swift为库的索引入口，当Xcode在按照Github链接查找库时，会以查到此文件为准则。其内容如下：</p>
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// swift-tools-version: 5.10</span>
-<span class="c1">// The swift-tools-version declares the minimum version of Swift required to build this package.</span>
-
-<span class="kd">import</span> <span class="kt">PackageDescription</span>
-
-<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
-    <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">,</span>
-    <span class="nv">products</span><span class="p">:</span> <span class="p">[</span>
-        <span class="c1">// Products define the executables and libraries a package produces, making them visible to other packages.</span>
-        <span class="o">.</span><span class="nf">library</span><span class="p">(</span>
-            <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">,</span>
-            <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span><span class="s">"Tray"</span><span class="p">]),</span>
-    <span class="p">],</span>
-    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
-        <span class="c1">// Targets are the basic building blocks of a package, defining a module or a test suite.</span>
-        <span class="c1">// Targets can depend on other targets in this package and products from dependencies.</span>
-        <span class="o">.</span><span class="nf">target</span><span class="p">(</span>
-            <span class="nv">name</span><span class="p">:</span> <span class="s">"Tray"</span><span class="p">),</span>
-        <span class="o">.</span><span class="nf">testTarget</span><span class="p">(</span>
-            <span class="nv">name</span><span class="p">:</span> <span class="s">"TrayTests"</span><span class="p">,</span>
-            <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span><span class="s">"Tray"</span><span class="p">]),</span>
-    <span class="p">]</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="三发布库">三、发布库</h2>
-<p>补充相关逻辑代码，提交/推送到GitHub，便可以在其他库中使用。不需要特别的发布操作。
-在正式发布前，也可以本地使用，创建一个新项目，在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，点击<strong>Add Local</strong>按钮，然后选择Tray文件夹，便可以本地使用，同时，你也可以在项目中，直接编辑该库的代码。</p>
-
-<p>提交代码到Github后，你可以把自己的库提交到<a href="https://swiftpackageindex.com/">Swift Package Index</a>，方便他人查找。进入页面后，点击<strong>Add a package</strong>，进入新页面后，会有一个绿色的<strong>Add Package(s)</strong>按钮，此点击此按钮，会自动跳转到Swift Package Index的Github的issue页面，并会有一个提交模板，输入自己库的Github链接后，提issue，机器人会处理这个issue，并再提一个新的issue，点击链接到新的issue中，点击链接，对你的代码进行code review，注意勾选<strong>viewed</strong>复选框，完成code review后，机器人会自动处理接下来的流程。</p>
-
-<h2 id="四使用库">四、使用库</h2>
-<p>在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，复制<code class="language-plaintext highlighter-rouge">https://github.com/boybeak/Tray.git</code>到搜索库，然后就可以添加库了。</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><summary type="html"><![CDATA[最近开发JustTodo时，发觉把处理托盘应用的代码封装起来是很有必要的，这样的话，在以后开发其他应用时，便不需要一而再的写重复代码。以前发布过很多Android平台的类库，但是对于macOS平台的swift库，我还是第一次。 再次吐槽一下苹果生态下的包管理，挺混乱的，最终我选择使用最新的Swift Package Manager]]></summary></entry></feed>
+<p>在Info.plist中，增加一个配置项: <strong>Application is agent(UIElement)</strong> - <strong>YES</strong>.</p>]]></content><author><name>boybeak</name></author><category term="独立开发笔记" /><category term="macOS" /><summary type="html"><![CDATA[最近开发了JustTodo和DeskNote两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app Translator时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。 为了解决这一痛点，在总结了JustTodo和DeskNote两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库Tray，方便以后使用。]]></summary></entry></feed>

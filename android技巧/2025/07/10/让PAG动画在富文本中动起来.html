@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>让PAG动画在富文本中动起来</title>
+  
+  <link rel="icon" href="/assets/icons/favicon-32x32.png" type="image/*">
+  
+
+  
+  <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+  
+  
+  <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>让PAG动画在富文本中动起来 | Boybeak</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="让PAG动画在富文本中动起来" />
+<meta name="author" content="boybeak" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。 但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？" />
+<meta property="og:description" content="我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。 但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？" />
+<link rel="canonical" href="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html" />
+<meta property="og:url" content="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html" />
+<meta property="og:site_name" content="Boybeak" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-07-10T21:22:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="让PAG动画在富文本中动起来" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"boybeak"},"dateModified":"2025-07-10T21:22:00+00:00","datePublished":"2025-07-10T21:22:00+00:00","description":"我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。 但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？","headline":"让PAG动画在富文本中动起来","mainEntityOfPage":{"@type":"WebPage","@id":"/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/icons/favicon-32x32.png"},"name":"boybeak"},"url":"/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <link rel="stylesheet"
+    href="/assets/css/style.css">
+  <link rel="stylesheet"
+    href="/assets/css/rouge-github-auto.css">
+  <link rel="stylesheet"
+    href="/assets/css/github-markdown.css">
+
+  <script src="https://unpkg.com/sober@0.6.8/dist/sober.min.js"></script>
+
+  <script
+    src="/assets/js/sobekyll.js"></script>
+
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', "G-6JFG91EQ3M");
+  </script>
+  
+
+</head>
+
+<body>
+  <s-page theme="auto">
+    <s-drawer id="drawer">
+      <s-scroll-view slot="start" style="height: 100%;">
+    <div>
+        
+        <div class="author">
+            <img class="author-avatar" src="https://avatars.githubusercontent.com/u/6696502?v=4">
+            <span class="author-name">boybeak</span>
+            
+            <small class="author-desc">我也不知道到底有没有人看我的博客</small>
+            
+        </div>
+        
+        
+        <s-divider style="padding: 0px; margin: 0px;"></s-divider>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">Contact Me</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+                </s-icon>
+                
+
+                Github
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://x.com/BeakInAir')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </s-icon>
+                
+
+                X
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('mailto:boybeak@gmail.com')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                </s-icon>
+                
+
+                Email
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            <div slot="label">My Apps</div>
+            
+            
+            
+            <s-menu-item onclick="window.open('https://banner-dog.vercel.app/')">
+                
+                <img slot="start" src="/assets/images/BannerDog.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Banner Dog
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://play.google.com/store/apps/details?id=com.github.boybeak.aodvolumebar')">
+                
+                <img slot="start" src="/assets/images/AODVolume.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                AOD Volume
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/JustTodo')">
+                
+                <img slot="start" src="/assets/images/JustTodo.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                JustTodo
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/DeskNote')">
+                
+                <img slot="start" src="/assets/images/DeskNote.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                DeskNote
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('https://github.com/boybeak/TranslatorDocs')">
+                
+                <img slot="start" src="/assets/images/Translator.png" style="width: 32px; height: 32px; object-fit: cover;">
+                
+
+                Translator
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        <s-menu style="width: 100%;">
+            
+            
+            
+            <s-menu-item onclick="window.open('https://1kafei.com/user/payment/new/boybeak/069DN2BH0I7/?referrer=/boybeak/')">
+                
+                <s-icon slot="start">
+                    <svg stroke-width="0" viewBox="0 0 24 24" class="inline-block text-primary" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" style="font-size: 30px;"><path d="M7 22h10a1 1 0 0 0 .99-.858L19.867 8H21V6h-1.382l-1.724-3.447A.998.998 0 0 0 17 2H7c-.379 0-.725.214-.895.553L4.382 6H3v2h1.133L6.01 21.142A1 1 0 0 0 7 22zm10.418-11H6.582l-.429-3h11.693l-.428 3zm-9.551 9-.429-3h9.123l-.429 3H7.867zM7.618 4h8.764l1 2H6.618l1-2z"></path></svg>
+                </s-icon>
+                
+
+                Donate Me
+                
+            </s-menu-item>
+            
+            <s-menu-item onclick="window.open('/about')">
+                
+                <s-icon slot="start">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg>
+                </s-icon>
+                
+
+                About
+                
+            </s-menu-item>
+            
+            
+        </s-menu>
+        
+        
+    </div>
+</s-scroll-view>
+      <main>
+        <s-appbar>
+    <s-icon-button slot="navigation" onclick="document.querySelector('#drawer').toggle()">
+        <s-icon type="menu"></s-icon>
+    </s-icon-button>
+    <!-- onclick="window.open('', '_self')" -->
+    <a class="app-bar-title" slot="headline" href="/"> Boybeak </a>
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Tags
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/android')">Android</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/j2v8')">J2V8</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/camera')">Camera</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/macos')">macOS</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/静态库')">静态库</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/justtodo')">JustTodo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/面试')">面试</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/hexo')">Hexo</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/jekyll')">Jekyll</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/material-design')">Material Design</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/github')">Github</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/要饭')">要饭</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/tag/pag动画')">PAG动画</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+
+    
+    <s-popup-menu slot="action">
+        <s-button type="text" slot="trigger" class="app-bar-action">
+            Categories
+            <s-icon type="arrow_drop_down" slot="end"></s-icon>
+        </s-button>
+        
+        
+        <s-popup-menu-item onclick="selfOpen('/category/源码分析')">源码分析</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/android技巧')">Android技巧</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/陷阱与缺陷')">陷阱与缺陷</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/kotlin')">Kotlin</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/native')">Native</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/translator')">Translator</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/独立开发笔记')">独立开发笔记</s-popup-menu-item>
+        
+        <s-popup-menu-item onclick="selfOpen('/category/面试笔记')">面试笔记</s-popup-menu-item>
+        
+    </s-popup-menu>
+    
+</s-appbar>
+        <s-scroll-view>
+          <div class="contentWrapper">
+            <div class="content">
+              <div class="article">
+  <h1 style="margin-block-start: 0; margin-block-end: 0;">让PAG动画在富文本中动起来</h1>
+  <p class="post-meta">
+    <s-icon style="width: 20px; height: 20px;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+            d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z">
+        </path>
+    </svg>
+</s-icon>
+<small>
+    
+    
+
+    
+    
+    July 10
+    
+    
+</small>
+  </p>
+  
+  <div class="post-content">
+    <div class="markdown-body" style="background-color: transparent; min-height: 0px;">
+      <p>我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。
+但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？</p>
+
+<p>我经过几日研究，发现这也不是不能实现的，只不过又得曲线救国了。</p>
+
+<h2 id="一pag是什么">一、PAG是什么？</h2>
+<blockquote>
+  <p>Portable Animated Graphics 是一套完整的动效工作流解决方案。
+目标是降低或消除动效相关的研发成本，能够一键将设计师在 AE（Adobe After Effects）中制作的动效内容导出成素材文件，并快速上线应用于几乎所有的主流平台。</p>
+</blockquote>
+
+<p>这是其<a href="https://pag.io/">官网</a>的介绍。</p>
+
+<h3 id="11-pag怎么使用">1.1 PAG怎么使用？</h3>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'com.tencent.tav:libpag:libpag:4.4.25'</span>
+</code></pre></div></div>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;org.libpag.PAGImageView</span>
+    <span class="na">android:id=</span><span class="s">"@+id/pagImageView"</span>
+    <span class="na">android:layout_width=</span><span class="s">"240dp"</span>
+    <span class="na">android:layout_height=</span><span class="s">"240dp"</span>
+    <span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pagImageView</span><span class="p">.</span><span class="n">path</span> <span class="p">=</span> <span class="s">"assets://live_follow.pag"</span>
+<span class="n">pagImageView</span><span class="p">.</span><span class="nf">setRepeatCount</span><span class="p">(-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">pagImageView</span><span class="p">.</span><span class="nf">play</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>基本使用是不是很简单？但是很遗憾的是，这些并不能直接在富文本中使用。
+其实，你可能会有疑问，为什么非得让PAG动画在富文本中动起来呢？对啊，我也想知道，产品脑子里在想什么。</p>
+
+<h2 id="二如何让pag动画在富文本中动起来">二、如何让PAG动画在富文本中动起来？</h2>
+
+<p>富文本，在Android中就是Spannable那一套东西，而在富文本中展示图像，就需要ImageSpan。我们的思路就是，让ImageSpan可以对接Pag动画。</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">PAGSpan</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">,</span> <span class="n">onUpdate</span><span class="p">:</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">:</span> <span class="nc">ImageSpan</span><span class="p">(</span><span class="nc">PAGDrawable</span><span class="p">(</span><span class="n">activity</span><span class="p">,</span> <span class="n">onUpdate</span><span class="p">))</span> <span class="p">{</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">TAG</span> <span class="p">=</span> <span class="s">"PAGSpan"</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="py">path</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span>
+        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">pagDrawable</span><span class="p">.</span><span class="n">path</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pagDrawable</span><span class="p">.</span><span class="n">path</span> <span class="p">=</span> <span class="n">value</span>
+        <span class="p">}</span>
+    <span class="kd">val</span> <span class="py">pagDrawable</span><span class="p">:</span> <span class="nc">PAGDrawable</span>
+        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">drawable</span> <span class="k">as</span> <span class="nc">PAGDrawable</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getSize</span><span class="p">(</span>
+        <span class="n">paint</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">:</span> <span class="nc">CharSequence</span><span class="p">?,</span>
+        <span class="n">start</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+        <span class="n">fm</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">.</span><span class="nc">FontMetricsInt</span><span class="p">?</span>
+    <span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">width</span> <span class="p">=</span> <span class="p">(</span><span class="n">paint</span><span class="p">.</span><span class="nf">measureText</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="p">+</span> <span class="mf">0.5f</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+        <span class="n">pagDrawable</span><span class="p">.</span><span class="nf">setBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">paint</span><span class="p">.</span><span class="n">textSize</span><span class="p">.</span><span class="nf">toInt</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">width</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>只要把这个PAGSapn塞入SpannableString就可以展示一个PAG动画了，当然，还需要PAGDrawable的支持。</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">PAGDrawable</span><span class="p">(</span><span class="n">activity</span><span class="p">:</span> <span class="nc">Activity</span><span class="p">,</span> <span class="k">private</span> <span class="kd">val</span> <span class="py">onUpdate</span><span class="p">:</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span> <span class="p">:</span> <span class="nc">Drawable</span><span class="p">(),</span> <span class="nc">PAGDrawableManager</span><span class="p">.</span><span class="nc">OnPAGDrawCallback</span> <span class="p">{</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">TAG</span> <span class="p">=</span> <span class="s">"PAGDrawable"</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">activityRef</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">&lt;</span><span class="nc">Activity</span><span class="p">&gt;(</span><span class="n">activity</span><span class="p">)</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">bitmapRef</span><span class="p">:</span> <span class="nc">WeakReference</span><span class="p">&lt;</span><span class="nc">Bitmap</span><span class="p">&gt;?</span> <span class="p">=</span> <span class="k">null</span>
+    <span class="kd">var</span> <span class="py">path</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+        <span class="k">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">val</span> <span class="py">oldValue</span> <span class="p">=</span> <span class="n">field</span>
+            <span class="n">field</span> <span class="p">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">oldValue</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">stop</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">start</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">stop</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">srcRect</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">Rect</span><span class="p">()</span> <span class="p">}</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">dstRect</span> <span class="k">by</span> <span class="nf">lazy</span> <span class="p">{</span> <span class="nc">Rect</span><span class="p">()</span> <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">p</span> <span class="p">=</span> <span class="n">path</span> <span class="o">?:</span> <span class="k">throw</span> <span class="nc">IllegalStateException</span><span class="p">(</span><span class="s">"set path value before call start"</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">activity</span> <span class="p">=</span> <span class="n">activityRef</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+        <span class="nc">PAGDrawableManager</span><span class="p">.</span><span class="nf">obtain</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">register</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">fun</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">p</span> <span class="p">=</span> <span class="n">path</span> <span class="o">?:</span> <span class="k">return</span>
+        <span class="kd">val</span> <span class="py">activity</span> <span class="p">=</span> <span class="n">activityRef</span><span class="p">.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+        <span class="nc">PAGDrawableManager</span><span class="p">.</span><span class="nf">obtain</span><span class="p">(</span><span class="n">activity</span><span class="p">).</span><span class="nf">unregister</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">draw</span><span class="p">(</span><span class="n">canvas</span><span class="p">:</span> <span class="nc">Canvas</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">bitmap</span> <span class="p">=</span> <span class="n">bitmapRef</span><span class="o">?.</span><span class="k">get</span><span class="p">()</span> <span class="o">?:</span> <span class="k">return</span>
+
+        <span class="c1">// 获取原始尺寸和目标尺寸</span>
+        <span class="kd">val</span> <span class="py">srcWidth</span> <span class="p">=</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">width</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">srcHeight</span> <span class="p">=</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">height</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">dstWidth</span> <span class="p">=</span> <span class="n">bounds</span><span class="p">.</span><span class="nf">width</span><span class="p">().</span><span class="nf">toFloat</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">dstHeight</span> <span class="p">=</span> <span class="n">bounds</span><span class="p">.</span><span class="nf">height</span><span class="p">().</span><span class="nf">toFloat</span><span class="p">()</span>
+
+        <span class="c1">// 计算缩放比例（取宽度和高度比例中较小的）</span>
+        <span class="kd">val</span> <span class="py">scale</span> <span class="p">=</span> <span class="nf">min</span><span class="p">(</span><span class="n">dstWidth</span> <span class="p">/</span> <span class="n">srcWidth</span><span class="p">,</span> <span class="n">dstHeight</span> <span class="p">/</span> <span class="n">srcHeight</span><span class="p">)</span>
+
+        <span class="c1">// 计算缩放后尺寸</span>
+        <span class="kd">val</span> <span class="py">scaledWidth</span> <span class="p">=</span> <span class="n">srcWidth</span> <span class="p">*</span> <span class="n">scale</span>
+        <span class="kd">val</span> <span class="py">scaledHeight</span> <span class="p">=</span> <span class="n">srcHeight</span> <span class="p">*</span> <span class="n">scale</span>
+
+        <span class="c1">// 计算居中位置</span>
+        <span class="kd">val</span> <span class="py">left</span> <span class="p">=</span> <span class="p">(</span><span class="n">dstWidth</span> <span class="p">-</span> <span class="n">scaledWidth</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+        <span class="kd">val</span> <span class="py">top</span> <span class="p">=</span> <span class="p">(</span><span class="n">dstHeight</span> <span class="p">-</span> <span class="n">scaledHeight</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+
+        <span class="c1">// 设置源矩形（完整原始图片）</span>
+        <span class="n">srcRect</span><span class="p">.</span><span class="k">set</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bitmap</span><span class="p">.</span><span class="n">height</span><span class="p">)</span>
+
+        <span class="c1">// 创建目标矩形（保持比例并居中）</span>
+        <span class="n">dstRect</span><span class="p">.</span><span class="k">set</span><span class="p">(</span>
+            <span class="n">left</span><span class="p">.</span><span class="nf">toInt</span><span class="p">(),</span>
+            <span class="n">top</span><span class="p">.</span><span class="nf">toInt</span><span class="p">(),</span>
+            <span class="p">(</span><span class="n">left</span> <span class="p">+</span> <span class="n">scaledWidth</span><span class="p">).</span><span class="nf">toInt</span><span class="p">(),</span>
+            <span class="p">(</span><span class="n">top</span> <span class="p">+</span> <span class="n">scaledHeight</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">canvas</span><span class="p">.</span><span class="nf">drawBitmap</span><span class="p">(</span><span class="n">bitmap</span><span class="p">,</span> <span class="n">srcRect</span><span class="p">,</span> <span class="n">dstRect</span><span class="p">,</span> <span class="k">null</span><span class="p">)</span>
+
+        <span class="n">onUpdate</span><span class="o">?.</span><span class="nf">invoke</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDraw</span><span class="p">(</span><span class="n">bitmap</span><span class="p">:</span> <span class="nc">Bitmap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">bitmapRef</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">(</span><span class="n">bitmap</span><span class="p">)</span>
+        <span class="nf">invalidateSelf</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">setAlpha</span><span class="p">(</span><span class="n">alpha</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">setColorFilter</span><span class="p">(</span><span class="n">colorFilter</span><span class="p">:</span> <span class="nc">ColorFilter</span><span class="p">?)</span> <span class="p">{}</span>
+
+    <span class="nd">@Deprecated</span><span class="p">(</span><span class="s">"Deprecated in Java"</span><span class="p">)</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">getOpacity</span><span class="p">():</span> <span class="nc">Int</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nc">PixelFormat</span><span class="p">.</span><span class="nc">TRANSLUCENT</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>在PAGDrawable中，主要是靠<code class="language-plaintext highlighter-rouge">PAGDrawableManager</code>控制动画播放，而PAGDrawableManager中，主要是维护了依托于PAGImageView的刷新回调分发，当创建了一个PAGDrawable时，会根据绑定的pag资源路径，进行创建或者查找一个PAGImageView，并将其放置在当前activity的屏幕窗口之外的位置，让其一直播放，并进行刷新事件的订阅，刷新事</p>
+
+<p><strong>注意，这并不是一个严肃的实现方式，只是一种迫于无奈之下的奇技淫巧，可改进空间可能很大，只是提供一种思路。</strong></p>
+
+<p>源码地址：<a href="https://github.com/boybeak/PagDrawable">PagDrawable</a></p>
+
+    </div>
+  </div>
+  
+  <p class="post-meta">
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m240-160 40-160H120l20-80h160l40-160H180l20-80h160l40-160h80l-40 160h160l40-160h80l-40 160h160l-20 80H660l-40 160h160l-20 80H600l-40 160h-80l40-160H360l-40 160h-80Zm140-240h160l40-160H420l-40 160Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/tag/android">Android</a>
+    
+    <a href="/tag/pag动画">PAG动画</a>
+    
+    <space style="margin-right: 8px;"></space>
+    
+
+    
+    <s-icon style="width: 20px; height: 20px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+        <path
+          d="m260-520 220-360 220 360H260ZM700-80q-75 0-127.5-52.5T520-260q0-75 52.5-127.5T700-440q75 0 127.5 52.5T880-260q0 75-52.5 127.5T700-80Zm-580-20v-320h320v320H120Zm580-60q42 0 71-29t29-71q0-42-29-71t-71-29q-42 0-71 29t-29 71q0 42 29 71t71 29Zm-500-20h160v-160H200v160Zm202-420h156l-78-126-78 126Zm78 0ZM360-340Zm340 80Z">
+        </path>
+      </svg>
+    </s-icon>
+    
+    <a href="/category/android技巧">Android技巧</a>
+    
+    
+  </p>
+</div>
+            </div>
+            <footer style="max-width: 100%; padding: 24px;">
+    Powered by <a href="https://sobekyll.github.io/">Sobekyll</a>, based on <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://soberjs.com/">SoberJS</a>.
+</footer>
+          </div>
+        </s-scroll-view>
+      </main>
+    </s-drawer>
+  </s-page>
+</body>
+
+</html>
