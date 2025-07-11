@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-07-11T14:36:42+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>我也不知道到底有没有人看我的博客</subtitle><author><name>boybeak</name></author><entry><title type="html">让PAG动画在富文本中动起来</title><link href="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html" rel="alternate" type="text/html" title="让PAG动画在富文本中动起来" /><published>2025-07-10T21:22:00+00:00</published><updated>2025-07-10T21:22:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html"><![CDATA[<p>我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2025-07-11T14:42:50+00:00</updated><id>/feed.xml</id><title type="html">Boybeak</title><subtitle>我也不知道到底有没有人看我的博客</subtitle><author><name>boybeak</name></author><entry><title type="html">让PAG动画在富文本中动起来</title><link href="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html" rel="alternate" type="text/html" title="让PAG动画在富文本中动起来" /><published>2025-07-10T21:22:00+00:00</published><updated>2025-07-10T21:22:00+00:00</updated><id>/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5</id><content type="html" xml:base="/android%E6%8A%80%E5%B7%A7/2025/07/10/%E8%AE%A9PAG%E5%8A%A8%E7%94%BB%E5%9C%A8%E5%AF%8C%E6%96%87%E6%9C%AC%E4%B8%AD%E5%8A%A8%E8%B5%B7%E6%9D%A5.html"><![CDATA[<p>我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。
 但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？</p>
 
 <p>我经过几日研究，发现这也不是不能实现的，只不过又得曲线救国了。</p>
@@ -28,8 +28,7 @@
 <span class="n">pagImageView</span><span class="p">.</span><span class="nf">play</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>基本使用是不是很简单？但是很遗憾的是，这些并不能直接在富文本中使用。
-其实，你可能会有疑问，为什么非得让PAG动画在富文本中动起来呢？对啊，我也想知道，产品脑子里在想什么。</p>
+<p>基本使用是不是很简单？但是很遗憾的是，这些并不能直接在富文本中使用。</p>
 
 <h2 id="二如何让pag动画在富文本中动起来">二、如何让PAG动画在富文本中动起来？</h2>
 
