@@ -1,0 +1,39 @@
+name: Essence
+description: 内容为本，无关浮华
+author: 本质君
+version: 1.0.0
+
+menu:
+  Home: /
+  About: /about
+
+# 自定义配置
+custom:
+  site_title: Boybeak
+  site_subtitle: 技术分享 · 生活感悟 · 读书心得
+  site_quote: —— 内容为本，无关浮华
+  site_logo: /assets/icons/favicon-32x32.png
+  author_name: boybeak
+  author_bio: 我也不知道到底有没有人看我的博客
+  author_avatar: https://avatars.githubusercontent.com/u/6696502?v=4
+  footer_quote: "少即是多"
+  posts_per_page: 5
+  social_links:
+    - name: github
+      url: https://github.com/boybeak
+      icon: code
+    - name: twitter
+      url: https://x.com/BeakInAir
+      icon: send
+    - name: email
+      url: mailto:boybeak@gmail.com
+      icon: mail
+
+# SEO 配置
+seo:
+  # Google Analytics 跟踪 ID，留空则不启用
+  googleAnalytics: G-6JFG91EQ3M
+  # Google Site Verification 代码，留空则不启用
+  googleSiteVerification: Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI
+  # Bing Site Verification 代码，留空则不启用
+  bingSiteVerification: FF63C4E8F966AF567DA7288160196C79

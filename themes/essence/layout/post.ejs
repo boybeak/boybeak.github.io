@@ -1,0 +1,33 @@
+<main class="article-container">
+  <a href="<%= config.root %>" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title"><%= page.title %></h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="<%= date(page.date, 'YYYY-MM-DD') %>">
+          <%= date(page.date, 'YYYY.MM.DD') %>
+        </time>
+        <% if (page.tags && page.tags.length > 0) { %>
+          <% page.tags.forEach(function(tag) { %>
+            <span class="article-tag"><%= tag.name %></span>
+          <% }); %>
+        <% } %>
+      </div>
+    </div>
+    <div class="article-content">
+      <%- page.content %>
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="<%= config.root %>">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
