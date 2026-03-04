@@ -60,7 +60,7 @@
               <li class="nav-item dropdown">
                 <a href="#" class="dropdown-toggle">分类</a>
                 <ul class="dropdown-menu">
-                  <li><a href="/categories">全部分类</a></li>
+                  <li><a href="<%= config.root %>categories">全部分类</a></li>
                   <% site.categories.each(function(category) { %>
                   <li><a href="<%= category.path %>"><%= category.name %></a></li>
                   <% }) %>
@@ -69,7 +69,7 @@
               <li class="nav-item dropdown">
                 <a href="#" class="dropdown-toggle">标签</a>
                 <ul class="dropdown-menu">
-                  <li><a href="/tags">全部标签</a></li>
+                  <li><a href="<%= config.root %>tags">全部标签</a></li>
                   <% site.tags.each(function(tag) { %>
                   <li><a href="<%= tag.path %>"><%= tag.name %></a></li>
                   <% }) %>
@@ -125,8 +125,8 @@
       <span class="footer-quote">"少即是多"</span>
       <span class="footer-links">
         <a href="<%= config.root %>">首页</a>
-        <a href="/tags">标签</a>
-        <a href="/about">关于</a>
+        <a href="<%= config.root %>tags">标签</a>
+        <a href="<%= config.root %>about">关于</a>
       </span>
     </footer>
   </div>
