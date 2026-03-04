@@ -13,6 +13,7 @@ custom:
   site_subtitle: 技术分享 · 生活感悟 · 读书心得
   site_quote: —— 内容为本，无关浮华
   site_logo: /assets/icons/favicon-32x32.png
+  favicon: /favicon.png
   author_name: boybeak
   author_bio: 我也不知道到底有没有人看我的博客
   author_avatar: https://avatars.githubusercontent.com/u/6696502?v=4

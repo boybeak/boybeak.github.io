@@ -114,6 +114,10 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: essence
 
+theme_config:
+  custom:
+    favicon: /favicon.png
+
 # Mermaid
 mermaid:
   enable: true
