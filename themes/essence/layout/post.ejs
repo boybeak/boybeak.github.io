@@ -11,9 +11,14 @@
         <time class="article-date" datetime="<%= date(page.date, 'YYYY-MM-DD') %>">
           <%= date(page.date, 'YYYY.MM.DD') %>
         </time>
+        <% if (page.categories && page.categories.length > 0) { %>
+          <% page.categories.forEach(function(category) { %>
+            <a href="<%- url_for(category.path) %>" class="article-category"><%= category.name %></a>
+          <% }); %>
+        <% } %>
         <% if (page.tags && page.tags.length > 0) { %>
           <% page.tags.forEach(function(tag) { %>
-            <span class="article-tag"><%= tag.name %></span>
+            <a href="<%- url_for(tag.path) %>" class="article-tag"><%= tag.name %></a>
           <% }); %>
         <% } %>
       </div>
