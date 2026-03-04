@@ -118,75 +118,65 @@
       </div>
     </header>
 
-    <% 
-  function strip_html(str) {
-    return str.replace(/<[^>]*>/g, '');
-  }
-  
-  function truncate(str, length) {
-    if (str.length <= length) return str;
-    return str.substring(0, length) + '...';
-  }
-%>
-
-<% const posts = page.posts; %>
-
-<main class="article-list">
-  <% posts.forEach(function(post) { %>
-  <article class="article">
-    <h2 class="article-title">
-      <a href="<%- url_for(post.path) %>"><%= post.title %></a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="<%= date(post.date, 'YYYY-MM-DD') %>">
-        <%= date(post.date, 'YYYY.MM.DD') %>
-      </time>
-      <% if (post.tags && post.tags.length > 0) { %>
-        <% post.tags.forEach(function(tag) { %>
-          <span class="article-tag"><%= tag.name %></span>
-        <% }); %>
+<div class="article-container">
+  <h1 class="page-title">关于</h1>
+  <div class="about-content">
+    <p>欢迎访问我的博客！</p>
+    <p>我是 boybeak，一名热爱技术的开发者。</p>
+    <p>这个博客记录了我的技术分享、生活感悟和读书心得。</p>
+    <p>如果你有任何问题或建议，欢迎通过以下方式联系我：</p>
+    <div class="contact-links">
+      <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+      <% theme.custom.social_links.forEach(function(link) { %>
+      <% if (link.url) { %>
+      <a href="<%= link.url.indexOf('mailto:') === 0 ? link.url : link.url %>" class="social-link" title="<%= link.name.charAt(0).toUpperCase() + link.name.slice(1) %>" <%= link.url.indexOf('mailto:') === 0 ? '' : 'target="_blank"' %>>
+        <% if (link.icon && (link.icon.indexOf('/') > -1 || link.icon.indexOf('.') > -1)) { %>
+        <img src="<%= link.icon %>" alt="<%= link.name %>" style="width: 24px; height: 24px; object-fit: contain;">
+        <% } else { %>
+        <span class="material-icons"><%= link.icon %></span>
+        <% } %>
+        <%= link.name.charAt(0).toUpperCase() + link.name.slice(1) %>
+      </a>
+      <% } %>
+      <% }); %>
       <% } %>
     </div>
-    <p class="article-summary">
-      <%= post.excerpt ? truncate(strip_html(post.excerpt), 150) : truncate(strip_html(post.content), 150) %>
-    </p>
-  </article>
-  <% }); %>
-</main>
-
-<% if (page.total > 1) { %>
-<nav class="pagination" aria-label="文章分页">
-  <% if (page.prev) { %>
-    <a href="<%- url_for(page.prev_link) %>" class="pagination-btn prev-btn">
-      <span class="material-icons">chevron_left</span>
-    </a>
-  <% } else { %>
-    <button class="pagination-btn prev-btn" disabled>
-      <span class="material-icons">chevron_left</span>
-    </button>
-  <% } %>
-  
-  <div class="pagination-numbers">
-    <% for (let i = 1; i <= page.total; i++) { %>
-      <% if (i === page.current) { %>
-        <span class="pagination-number active"><%= i %></span>
-      <% } else { %>
-        <a href="<%- url_for(i === 1 ? '/' : '/page/' + i + '/') %>" class="pagination-number"><%= i %></a>
-      <% } %>
-    <% } %>
   </div>
-  
-  <% if (page.next) { %>
-    <a href="<%- url_for(page.next_link) %>" class="pagination-btn next-btn">
-      <span class="material-icons">chevron_right</span>
-    </a>
-  <% } else { %>
-    <button class="pagination-btn next-btn" disabled>
-      <span class="material-icons">chevron_right</span>
-    </button>
-  <% } %>
-</nav>
-<% } %>
+</div>
+
+<style>
+.about-content {
+  margin-top: 2rem;
+  line-height: 1.8;
+}
+
+.about-content p {
+  margin-bottom: 1.5rem;
+}
+
+.contact-links {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.contact-links .social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--tag-bg);
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.contact-links .social-link:hover {
+  background-color: color-mix(in srgb, var(--tag-bg) 80%, black);
+}
+</style>
 
     <footer class="site-footer">
       <span class="footer-copy">© <%= date(new Date(), 'YYYY') %> 本质</span>

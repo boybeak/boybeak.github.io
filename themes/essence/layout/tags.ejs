@@ -118,75 +118,49 @@
       </div>
     </header>
 
-    <% 
-  function strip_html(str) {
-    return str.replace(/<[^>]*>/g, '');
-  }
-  
-  function truncate(str, length) {
-    if (str.length <= length) return str;
-    return str.substring(0, length) + '...';
-  }
-%>
-
-<% const posts = page.posts; %>
-
-<main class="article-list">
-  <% posts.forEach(function(post) { %>
-  <article class="article">
-    <h2 class="article-title">
-      <a href="<%- url_for(post.path) %>"><%= post.title %></a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="<%= date(post.date, 'YYYY-MM-DD') %>">
-        <%= date(post.date, 'YYYY.MM.DD') %>
-      </time>
-      <% if (post.tags && post.tags.length > 0) { %>
-        <% post.tags.forEach(function(tag) { %>
-          <span class="article-tag"><%= tag.name %></span>
-        <% }); %>
-      <% } %>
-    </div>
-    <p class="article-summary">
-      <%= post.excerpt ? truncate(strip_html(post.excerpt), 150) : truncate(strip_html(post.content), 150) %>
-    </p>
-  </article>
-  <% }); %>
-</main>
-
-<% if (page.total > 1) { %>
-<nav class="pagination" aria-label="文章分页">
-  <% if (page.prev) { %>
-    <a href="<%- url_for(page.prev_link) %>" class="pagination-btn prev-btn">
-      <span class="material-icons">chevron_left</span>
+<div class="article-container">
+  <h1 class="page-title">标签</h1>
+  <div class="tag-cloud">
+    <% site.tags.each(function(tag) { %>
+    <a href="<%= config.root %><%= tag.path %>" class="tag-item" style="font-size: <%= 10 + tag.length * 2 %>px;">
+      <%= tag.name %>
+      <span class="tag-count"><%= tag.length %></span>
     </a>
-  <% } else { %>
-    <button class="pagination-btn prev-btn" disabled>
-      <span class="material-icons">chevron_left</span>
-    </button>
-  <% } %>
-  
-  <div class="pagination-numbers">
-    <% for (let i = 1; i <= page.total; i++) { %>
-      <% if (i === page.current) { %>
-        <span class="pagination-number active"><%= i %></span>
-      <% } else { %>
-        <a href="<%- url_for(i === 1 ? '/' : '/page/' + i + '/') %>" class="pagination-number"><%= i %></a>
-      <% } %>
-    <% } %>
+    <% }) %>
   </div>
-  
-  <% if (page.next) { %>
-    <a href="<%- url_for(page.next_link) %>" class="pagination-btn next-btn">
-      <span class="material-icons">chevron_right</span>
-    </a>
-  <% } else { %>
-    <button class="pagination-btn next-btn" disabled>
-      <span class="material-icons">chevron_right</span>
-    </button>
-  <% } %>
-</nav>
-<% } %>
+</div>
+
+<style>
+.tag-cloud {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.tag-item:hover {
+  background-color: color-mix(in srgb, var(--tag-bg) 80%, black);
+  transform: translateY(-2px);
+}
+
+.tag-count {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+</style>
 
     <footer class="site-footer">
       <span class="footer-copy">© <%= date(new Date(), 'YYYY') %> 本质</span>
