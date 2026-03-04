@@ -62,7 +62,7 @@
                 <ul class="dropdown-menu">
                   <li><a href="<%= config.root %>categories">全部分类</a></li>
                   <% site.categories.each(function(category) { %>
-                  <li><a href="<%= category.path %>"><%= category.name %></a></li>
+                  <li><a href="<%= config.root %><%= category.path %>"><%= category.name %></a></li>
                   <% }) %>
                 </ul>
               </li>
@@ -71,7 +71,7 @@
                 <ul class="dropdown-menu">
                   <li><a href="<%= config.root %>tags">全部标签</a></li>
                   <% site.tags.each(function(tag) { %>
-                  <li><a href="<%= tag.path %>"><%= tag.name %></a></li>
+                  <li><a href="<%= config.root %><%= tag.path %>"><%= tag.name %></a></li>
                   <% }) %>
                 </ul>
               </li>
