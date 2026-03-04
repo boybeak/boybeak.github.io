@@ -69,11 +69,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -88,11 +88,11 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
-                  
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/tags/J2V8/">J2V8</a></li>
                   
@@ -106,6 +106,8 @@
                   
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
@@ -113,8 +115,6 @@
                   <li><a href="/tags/Github/">Github</a></li>
                   
                   <li><a href="/tags/要饭/">要饭</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/PAG动画/">PAG动画</a></li>
                   
@@ -177,215 +177,230 @@
 
     
 
-
-
-<main class="article-list">
+<div class="article-container">
+  <h1 class="page-title">分类：源码分析</h1>
+  <p class="category-description">包含 9 篇文章</p>
   
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/17/2022-09-17-%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6IRouter/">IRouter——自己手撸一个路由框架</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+  <main class="article-list">
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/17/2022-09-17-%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6IRouter/">IRouter——自己手撸一个路由框架</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      现在最流行的路由框架应该是阿里的ARouter，这几乎是组件化应用的必备了。但是ARouter用起来稍微有一点不爽，不爽在以下两点：
+      </div>
+      <p class="article-summary">
+        现在最流行的路由框架应该是阿里的ARouter，这几乎是组件化应用的必备了。但是ARouter用起来稍微有一点不爽，不爽在以下两点：
 
 没有一个规范化的api式的调用方式：项目大了，调用路由的方法分布在项目各处，难以查找；
 对startActivityForResult支持不够友好：按照传统方式，在...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-LiveEventBus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">LiveEventBus源码分析</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-LiveEventBus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">LiveEventBus源码分析</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      
+      </div>
+      <p class="article-summary">
+        
 不再分析了，理解了LiveData后，不难理解这个框架。
 
 阅读本文前，请先阅读[《Jetpack之LiveData源码分析》](&amp;#x2F;源码分析系列&amp;#x2F;LiveEventBus源码分析.md)。因为LiveEventBus是基于LiveData构建的。
 源码地址：LiveEventB...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-LeakCanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">LeakCanary原理分析</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-LeakCanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">LeakCanary原理分析</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      dependencies &amp;#123;
+      </div>
+      <p class="article-summary">
+        dependencies &amp;#123;
   // debugImplementation because LeakCanary should only run in debug builds.
   debugImplementation &#39;com.squareup.leakcanary:leakca...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLiveData%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之LiveData源码分析</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLiveData%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之LiveData源码分析</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      在阅读这篇文章前，需要先对Lifecycle有所了解。
+      </div>
+      <p class="article-summary">
+        在阅读这篇文章前，需要先对Lifecycle有所了解。
 Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
 先要引入LiveData：
 implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之Lifecycle源码分析</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之Lifecycle源码分析</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      这是一篇解析jetpack库中的Lifecycle库的分析文章。
+      </div>
+      <p class="article-summary">
+        这是一篇解析jetpack库中的Lifecycle库的分析文章。
 def lifecycle_version = &#34;2.2.0&#34;
 // Lifecycles only (without ViewModel or LiveData)
 implementation &#34;androidx.lifecycle...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/">Glide源码分析与自我实现(三)——APT的使用与GIF的优化</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/">Glide源码分析与自我实现(三)——APT的使用与GIF的优化</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      项目Demo地址：GifHelper
+      </div>
+      <p class="article-summary">
+        项目Demo地址：GifHelper
 什么是APT？
 APT是Annotation Processing Tool的简称，即编译时注解处理器。它是一个javac的工具，在编译时，通过注解，按照规则自动生成相关代码的工具。
 APT与Glide什么关系？
 我们通常通过在build.gradle加入这样一...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/">Glide源码分析与自我实现(二)——缓存与BitmapPool</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/">Glide源码分析与自我实现(二)——缓存与BitmapPool</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      
+      </div>
+      <p class="article-summary">
+        
 本文基于Glide 4.11.0
 
 参考文章：Glide 源码分析解读-缓存模块-基于最新版Glide 4.9.0
 **注意：**由于版本差异问题，本文有些部分与参考文章有差异。
 缓存模块是Glide中非常重要的部分，Glide图片加载的高效性，几乎有一半功劳都在这里了。
 一般来说，Glide有三...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01/">Glide源码分析与自我实现(一)——数据加载主流程</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01/">Glide源码分析与自我实现(一)——数据加载主流程</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      
+      </div>
+      <p class="article-summary">
+        
 本文基于Glide 4.11.0
 
 阅读前请参考Glide 源码分析解读-基于最新版Glide 4.9.0一文，该文章中，将Glide中各个部分的作用分析的非常好了。
 Glide几乎是现在做Android图片加载的最佳选择了。如此优秀的一个框架是如何实现的呢？如果让我们自己来实现该怎么做呢？我们就...
-    </p>
-  </article>
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/16/2022-09-17-ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">ARouter源码分析</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-17">
-        2022.09.17
-      </time>
-      
+      </p>
+    </article>
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2022/09/16/2022-09-17-ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">ARouter源码分析</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
         
-          <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Android</span>
+          
         
-      
-    </div>
-    <p class="article-summary">
-      在阅读源码前，请先下载源码：ARouter
+      </div>
+      <p class="article-summary">
+        在阅读源码前，请先下载源码：ARouter
 最近阅读ARouter源码，发现这真的是一个非常优秀的框架。激发出兴趣来读一下他的源码，实际上，这个框架的结构非常简单。这个框架可以分为主流程和辅助流程来拆开分析。
 主流程包含编译时和运行时两个部分，其中编译时主要做的是路由路径表的构建，运行时主要做的是路...
-    </p>
-  </article>
+      </p>
+    </article>
+    
+  </main>
+
   
-</main>
+</div>
 
+<style>
+.page-title {
+  margin-bottom: 0.5rem;
+}
 
+.category-description {
+  color: var(--meta-color);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+</style>
 
     <footer class="site-footer">
       <span class="footer-copy">© 2026 本质</span>
