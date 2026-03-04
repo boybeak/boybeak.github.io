@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相机录像新姿势-OpenGL共享上下文+MediaCodec · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">相机录像新姿势-OpenGL共享上下文+MediaCodec</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2023-11-20">
+          2023.11.20
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+            <span class="article-tag">Camera</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>承接上一文章<a target="_blank" rel="noopener" href="https://boybeak.github.io/2023/11/12/2023-11-12-Camera%E6%97%A0%E5%8F%98%E5%BD%A2%E4%BB%BB%E6%84%8F%E5%B0%BA%E5%AF%B8%E9%A2%84%E8%A7%88/">Camera无变形任意尺寸预览</a>，我们已经实现了无形变的任意尺寸的相机画面预览。接下来要完成相机的相关录像、拍照、扫码等功能，最重要也是最难的就是录像部分。</p>
+<p>最终示例代码可以参考我的Github: <a target="_blank" rel="noopener" href="https://github.com/boybeak/iCamera">iCamera</a>。</p>
+<h2 id="二、技术要求"><a href="#二、技术要求" class="headerlink" title="二、技术要求"></a>二、技术要求</h2><p>我们要实现的录像功能技术要求如下：</p>
+<ol>
+<li>所见即所得，预览画面什么样，最终结果就是什么样，不能经过二次裁剪与变换；</li>
+<li>允许过程中，切换摄像头而不中断录制；</li>
+<li>效率尽可能高，不许按下停止键后，有长时间的等待最终结果的过程；</li>
+<li>不要引入额外的库；</li>
+</ol>
+<h2 id="三、基本思路"><a href="#三、基本思路" class="headerlink" title="三、基本思路"></a>三、基本思路</h2><p>在讲解基本思路以前，我们先看一下共享OpenGL上下文，能够达到怎样的效果。<br><a target="_blank" rel="noopener" href="https://github.com/boybeak/iCamera/assets/6696502/94bec530-4e54-4c41-9ce2-638b163fff60">share_preview</a><br>查看视频，最上方是相机的预览画面，下方左侧为通过共享OpenGL上下文获得的共享画面，也就是说，我们可以把相机画面，共享给另外一个Surface，既然有了这个思路，那么通过共享画面进行录像，也就可以了。<br>那么基本思路如下：</p>
+<ol>
+<li>实现相机的OpenGL预览，保留相关上下文实例；</li>
+<li>创建并配置MediaCodec，通过createInputSurface，创建共享画面；</li>
+<li>以预览的OpenGL上下文与MediaCodec的surface，创建另外一个共享的OpenGL环境；</li>
+<li>MediaCodec开始编码录制；</li>
+</ol>
+<h2 id="四、具体实现"><a href="#四、具体实现" class="headerlink" title="四、具体实现"></a>四、具体实现</h2><h3 id="4-1-实现OpenGL画面预览"><a href="#4-1-实现OpenGL画面预览" class="headerlink" title="4.1 实现OpenGL画面预览"></a>4.1 实现OpenGL画面预览</h3><p>这里我们通过已经封装好的PreviewSurface实现。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token keyword">open</span><span class="token punctuation">(</span>id<span class="token operator">:</span> Int<span class="token punctuation">,</span> surfaceView<span class="token operator">:</span> SurfaceView<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>id <span class="token operator">==</span> cameraId<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>camera <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    previewSurface <span class="token operator">=</span> <span class="token function">PreviewSurface</span><span class="token punctuation">(</span>surfaceView<span class="token punctuation">.</span>holder<span class="token punctuation">.</span>surface<span class="token punctuation">)</span>
+    previewSurfaceView <span class="token operator">=</span> surfaceView
+    previewSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">start</span> <span class="token punctuation">&#123;</span> surfaceTexture <span class="token operator">-></span>
+        previewSurfaceTexture <span class="token operator">=</span> surfaceTexture
+
+        <span class="token keyword">val</span> previewSize <span class="token operator">=</span> <span class="token function">openCameraOnly</span><span class="token punctuation">(</span>id<span class="token punctuation">,</span> surfaceTexture<span class="token punctuation">)</span>
+        <span class="token keyword">when</span><span class="token punctuation">(</span>display<span class="token punctuation">.</span>rotation<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            Surface<span class="token punctuation">.</span>ROTATION_0<span class="token punctuation">,</span> Surface<span class="token punctuation">.</span>ROTATION_180 <span class="token operator">-></span> previewSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">setInputSize</span><span class="token punctuation">(</span>previewSize<span class="token punctuation">.</span>height<span class="token punctuation">,</span> previewSize<span class="token punctuation">.</span>width<span class="token punctuation">)</span>
+            Surface<span class="token punctuation">.</span>ROTATION_90<span class="token punctuation">,</span> Surface<span class="token punctuation">.</span>ROTATION_270 <span class="token operator">-></span> previewSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">setInputSize</span><span class="token punctuation">(</span>previewSize<span class="token punctuation">.</span>width<span class="token punctuation">,</span> previewSize<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>previewSurface</code>可以提供<code>SurfaceTexture</code>进行预览，同时也保存了OpenGL上下文。</p>
+<h3 id="4-2-MediaCodec创建Surface"><a href="#4-2-MediaCodec创建Surface" class="headerlink" title="4.2 MediaCodec创建Surface"></a>4.2 MediaCodec创建Surface</h3><p>我们的视频编码是通过<code>MediaCodec</code>实现的，之所以不直接用<code>MediaRecorder</code>实现，是因为<code>MediaRecorder</code>不支持录制期间翻转摄像头。</p>
+<p>一个简单的MediaCodec实现如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">videoCodec <span class="token operator">=</span> MediaCodec<span class="token punctuation">.</span><span class="token function">createEncoderByType</span><span class="token punctuation">(</span>MIME_TYPE<span class="token punctuation">)</span>
+<span class="token keyword">val</span> codecInfo <span class="token operator">=</span> videoCodec<span class="token operator">!!</span><span class="token punctuation">.</span>codecInfo
+<span class="token keyword">val</span> capabilities <span class="token operator">=</span> codecInfo<span class="token punctuation">.</span><span class="token function">getCapabilitiesForType</span><span class="token punctuation">(</span>MIME_TYPE<span class="token punctuation">)</span>
+<span class="token keyword">val</span> mediaFormat <span class="token operator">=</span> onConfig<span class="token punctuation">.</span><span class="token function">onConfig</span><span class="token punctuation">(</span>capabilities<span class="token punctuation">.</span>videoCapabilities<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toMediaFormat</span><span class="token punctuation">(</span>
+    MIME_TYPE
+<span class="token punctuation">)</span>
+videoCodec<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span>mediaFormat<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> MediaCodec<span class="token punctuation">.</span>CONFIGURE_FLAG_ENCODE<span class="token punctuation">)</span>
+
+<span class="token keyword">val</span> inputSurface <span class="token operator">=</span> videoCodec<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">createInputSurface</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这样，我们就获得了一个用于共享的surface。</p>
+<h3 id="4-3-创建共享OpenGL环境"><a href="#4-3-创建共享OpenGL环境" class="headerlink" title="4.3 创建共享OpenGL环境"></a>4.3 创建共享OpenGL环境</h3><p>以前两步中获得到OpenGL上下文与共享surface，创建一个新的共享OpenGL环境，这里我们已经封装成了<code>SharedSurface</code>，只要直接调用其attach方法即可直接共享预览Surface的画面。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> avEncoder <span class="token operator">=</span> <span class="token function">AVEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token keyword">var</span> recordSurface<span class="token operator">:</span> SharedSurface<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+<span class="token keyword">private</span> <span class="token keyword">val</span> timeSynchronizer <span class="token operator">=</span> <span class="token keyword">object</span> <span class="token operator">:</span> TimeSynchronizer <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">var</span> startAt <span class="token operator">=</span> <span class="token number">0L</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        startAt <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1000</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getTimestamp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Long <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1000</span> <span class="token operator">-</span> startAt
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">fun</span> <span class="token function">startRecord</span><span class="token punctuation">(</span>output<span class="token operator">:</span> File<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isRecording</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">&#125;</span>
+    avEncoder<span class="token punctuation">.</span><span class="token function">prepare</span><span class="token punctuation">(</span><span class="token function">SimpleAudioConfigAdapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">SimpleVideoConfigAdapter</span><span class="token punctuation">(</span><span class="token function">Size</span><span class="token punctuation">(</span>previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>width<span class="token punctuation">,</span> previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeSynchronizer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        avEncoder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>output<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> inputSurface <span class="token operator">-></span>
+            recordSurface <span class="token operator">=</span> <span class="token function">SharedSurface</span><span class="token punctuation">(</span>inputSurface<span class="token punctuation">)</span>
+            recordSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>previewSurface<span class="token operator">!!</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上述代码中，<code>AVEncoder</code>为一个同时录制画面与声音的逻辑集合类，当开始录像时，会提供一个inputSurface对象，利用此对象，创建SharedSurface，就可以直接利用预览画面的共享纹理进行绘制，这些会绘制到共享surface上，MediaCodec会直接对画面进行编码。</p>
+<p>当然，这里会有很多MediaCodec相关的问题，这里的兼容性也是非常头疼的，需要处理高通&#x2F;海思&#x2F;联发科处理器的编码器的大量兼容性问题，但是这不是本文的重点。</p>
+<h3 id="4-4-编码录制"><a href="#4-4-编码录制" class="headerlink" title="4.4 编码录制"></a>4.4 编码录制</h3><p>这部分请直接参考代码吧</p>
+<h2 id="五、思路发散"><a href="#五、思路发散" class="headerlink" title="五、思路发散"></a>五、思路发散</h2><p>我们从录制上，可以看出，实际上连接预览与录制的，就是一个surface，只要有了surface，那我们就可以做很多操作了。比如拍照和扫码。</p>
+<p>当然，我们可以通过直接调用相机实例的接口进行拍照，只不过需要拍照后再做裁剪等操作，这里耗时不高。</p>
+<p>说一下拍照的逻辑，就是利用<code>ImageReader</code>，这种方式，就与Camera2的api差异不大了，简单代码实现如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">var</span> photoSurface<span class="token operator">:</span> SharedSurface<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+<span class="token keyword">private</span> <span class="token keyword">val</span> photoHandler <span class="token operator">=</span> <span class="token operator">..</span><span class="token punctuation">.</span>
+<span class="token keyword">fun</span> <span class="token function">takePhoto</span><span class="token punctuation">(</span>callback<span class="token operator">:</span> <span class="token punctuation">(</span>Bitmap<span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> imageReader <span class="token operator">=</span> ImageReader<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span>previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>width<span class="token punctuation">,</span> previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>height<span class="token punctuation">,</span> PixelFormat<span class="token punctuation">.</span>RGBA_8888<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    photoSurface <span class="token operator">=</span> <span class="token function">SharedSurface</span><span class="token punctuation">(</span>imageReader<span class="token punctuation">.</span>surface<span class="token punctuation">)</span>
+    imageReader<span class="token punctuation">.</span><span class="token function">setOnImageAvailableListener</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> image <span class="token operator">=</span> imageReader<span class="token punctuation">.</span><span class="token function">acquireNextImage</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">// convert image to bitmap</span>
+        callback<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> photoHandler<span class="token punctuation">)</span>
+    photoSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>previewSurface<span class="token operator">!!</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>同样的，扫码功能也类似，不过这里要借助zxing这个二维码解析库，同时做一个RGBA的转换，因为当前方案下，ImageReader只允许PixelFormat.RGBA_8888的颜色编码，好处就是，可以比较容易实现扫码预览大小的自定义，并且在预览范围内的都可以扫到，不会出现以前那种预览区域与扫码感知区域不一致的问题。</p>
+<p>既然有Surface就可以连接预览画面，那实际上就可以做到边录像，边扫码，边拍照了，只要你的手机性能足够，更多的使用方式，你可以自由去发散。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>具体的代码可以参考我的<a target="_blank" rel="noopener" href="https://github.com/boybeak/iCamera">iCamera</a>，但是我的代码只是做简单的逻辑演示，并不能保证在所有机型上的兼容性，了解了基本思路后，你可以在此基础上做兼容性处理。</p>
+<p>实际上我个人在生产环境的代码，做的兼容性处理要多得多。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

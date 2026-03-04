@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacOS项目引入c语言源码 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">MacOS项目引入c语言源码</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2024-04-29">
+          2024.04.29
+        </time>
+        
+          
+            <span class="article-tag">macOS</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>在上一篇文章<a target="_blank" rel="noopener" href="https://boybeak.github.io/2024/04/26/2024-04-26-MacOS%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E5%85%A5c%E9%9D%99%E6%80%81%E5%BA%93/">macOS项目中引入c静态库</a>中，为阐述了如何在macOS项目中引入c语言的静态库，但是这样做有一个问题，就是静态库中的代码报错，会无法定义报错的位置，进而不利于排查问题。为了解决这个问题，我修改为源码引入c语言库。<br>很多教程中都提到，要引入c语言库的源码，需要将源码和头文件都拷贝到macOS项目的目录中，这样做，有一个弊病，就是对于需要引入c语言库的项目，通常都是想底层多平台支持，底层代码就需要独立于任何一个平台代码，如果要拷贝到macOS项目中，那后续修改和维护都会比较麻烦，实际上这是不需要的，接下来就阐述一下我这两天的实践。</p>
+<h2 id="一、项目结构"><a href="#一、项目结构" class="headerlink" title="一、项目结构"></a>一、项目结构</h2><p>我们准备两个示例项目，其中项目A是基于swift构建的macOS项目，项目B是基于cmake构建的c语言项目。其目录树如下：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">A/
+├── A   // macOS中的同名target
+│   └── AApp.swift
+│   └── ContentView.swift
+│   └── Assets
+│   └── ....    // Other files<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">B/
+├── CMakeLists.txt
+├── src/
+│   └── library.c
+└── include/
+    └── library.h<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>library的头文件和代码文件如下：</p>
+<pre class="line-numbers language-h" data-language="h"><code class="language-h">#include &lt;stdio.h&gt;
+
+int get_id();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"../include/library.h"</span></span>
+
+<span class="token keyword">int</span> <span class="token function">get_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">int</span> <span class="token operator">*</span>ptr <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token operator">*</span>ptr <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span> <span class="token comment">// 这里会导致空指针解引用崩溃</span>
+
+    <span class="token keyword">return</span> <span class="token number">100</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里c代码文件中，故意制造了一个空指针崩溃，以便于测试定位崩溃位置。</p>
+<h2 id="二、macOS项目引入c语言源代码项目"><a href="#二、macOS项目引入c语言源代码项目" class="headerlink" title="二、macOS项目引入c语言源代码项目"></a>二、macOS项目引入c语言源代码项目</h2><p>在XCode中，A项目的根目录下，右键-Add Files to “A”，然后选择项目B的根目录选择的时候，千万<strong>不要勾选“Copy items if needed”</strong>，然后点击Add，如此操作之后，你会在XCode的项目目录中，看到在根目录下多了一个名为B的Group，但是这个Group并不会出现在实际的文件目录下。那在XCode中，项目A的目录结构变成了如下这样：</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css">A/
+├── A   // macOS中的同名target
+│   └── AApp.swift
+│   └── ContentView.swift
+│   └── Assets
+│   └── ....    // Other files
+│
+├── B   // 引入的c源码库，只在XCode视图中可见
+│   └── CMakeLists.txt
+│   └──src/
+│   │   └── library.c
+│   └──include/
+        └── library.h<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="三、创建桥接文件"><a href="#三、创建桥接文件" class="headerlink" title="三、创建桥接文件"></a>三、创建桥接文件</h2><p>与静态库方案类似，也需要创建一个桥接文件，名为A-Bridging-Header.h，放置在根目录下，然后在Build Settings下搜索<strong>Header Search Paths</strong>设置项，在Debug和Release下，设置B库的include目录，<strong>注意</strong>：因为B库并未实际在A项目的文件目录下，所以，你不能设置一个A项目下的目录。我设置的值为：<code>$(SRCROOT)/../B/include</code>。增加此配置后，在桥接文件中，增加头文件的引入，内容如下：</p>
+<pre class="line-numbers language-h" data-language="h"><code class="language-h">#ifndef A_Bridging_Header_h
+#define A_Bridging_Header_h
+
+#include &quot;library.h&quot;
+
+#endif<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>还差最后一步，把桥接文件设置到<strong>Objective-C Bridging Header</strong>配置中，由于桥接文件在根目录下，所以我设置的值为<code>A-Bridging-Header.h</code>。</p>
+<h2 id="四、运行"><a href="#四、运行" class="headerlink" title="四、运行"></a>四、运行</h2><p>在AApp.swift代码中，我们创建一个Application Delegate，代码如下：</p>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">import</span> <span class="token class-name">SwiftUI</span>
+
+<span class="token attribute atrule">@main</span>
+<span class="token keyword">struct</span> <span class="token class-name">AApp</span><span class="token punctuation">:</span> <span class="token class-name">App</span> <span class="token punctuation">&#123;</span>
+    <span class="token attribute atrule">@NSApplicationDelegateAdaptor</span> <span class="token keyword">var</span> delegate<span class="token punctuation">:</span> <span class="token class-name">AppDelegate</span>
+    <span class="token keyword">var</span> body<span class="token punctuation">:</span> <span class="token keyword">some</span> <span class="token class-name">Scene</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">WindowGroup</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">ContentView</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">AppDelegate</span><span class="token punctuation">:</span> <span class="token class-name">NSObject</span><span class="token punctuation">,</span> <span class="token class-name">NSApplicationDelegate</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">func</span> <span class="token function-definition function">applicationDidFinishLaunching</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> notification<span class="token punctuation">:</span> <span class="token class-name">Notification</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"applicationDidFinishLaunching"</span></span><span class="token punctuation">)</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"</span><span class="token interpolation-punctuation punctuation">\(</span><span class="token interpolation"><span class="token function">get_id</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><span class="token interpolation-punctuation punctuation">)</span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当应用启动时，调用一下c语言中<code>get_id</code>这个方法，由于方法中有一个空指针错误，会触发崩溃，并指向崩溃位置。<br><img src="/assets/images/macOS-App-crash.png" alt="crash"></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>在现实项目中，c源码项目可能远比demo中的要复杂的多，引入源码后，可能会引起类似于如下的编译错误：</p>
+<pre class="line-numbers language-none"><code class="language-none">xcode macOS项目中，引入了第三方的c语言库后，出现了这样的错误，似乎是因为不能识别这些文件造成的，我把这些文件的引用从xcode删除后，就没有这些错误了，请问情况是这样的吗？以下是错误的内容：
+Showing All Issues
+Multiple commands produce &#39;&#x2F;Users&#x2F;xxx&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&#x2F;Test-gkhgciuuhcjhzjayrjomcyvjrhgq&#x2F;Build&#x2F;Products&#x2F;Debug&#x2F;Test.app&#x2F;Contents&#x2F;Resources&#x2F;CI.yml&#39;
+Target &#39;Test&#39; (project &#39;Test&#39;) has copy command from &#39;&#x2F;Users&#x2F;xxx&#x2F;byte-cat&#x2F;ByteCat&#x2F;native&#x2F;bytecat-native&#x2F;cJSON&#x2F;.github&#x2F;workflows&#x2F;CI.yml&#39; to &#39;&#x2F;Users&#x2F;xxx&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&#x2F;Test-gkhgciuuhcjhzjayrjomcyvjrhgq&#x2F;Build&#x2F;Products&#x2F;Debug&#x2F;Test.app&#x2F;Contents&#x2F;Resources&#x2F;CI.yml&#39;
+Target &#39;Test&#39; (project &#39;Test&#39;) has copy command from &#39;&#x2F;Users&#x2F;xxx&#x2F;byte-cat&#x2F;ByteCat&#x2F;native&#x2F;bytecat-native&#x2F;libhv&#x2F;.github&#x2F;workflows&#x2F;CI.yml&#39; to &#39;&#x2F;Users&#x2F;xxx&#x2F;Library&#x2F;Developer&#x2F;Xcode&#x2F;DerivedData&#x2F;Test-gkhgciuuhcjhzjayrjomcyvjrhgq&#x2F;Build&#x2F;Products&#x2F;Debug&#x2F;Test.app&#x2F;Contents&#x2F;Resources&#x2F;CI.yml&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果发生了这个错误，需要在<strong>Build Phases</strong>中，找到<strong>Copy Bundle Resources</strong>选项，点击底部”-“号按钮，删除掉重复的项，如果重复的项过多，这个按钮会被顶到列表最下边。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面试笔记 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">面试笔记</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2024-06-16">
+          2024.06.16
+        </time>
+        
+          
+            <span class="article-tag">面试</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>边独立，边面试，两手都要抓，两手都要硬。</p>
+<h3 id="1-给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标"><a href="#1-给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标" class="headerlink" title="1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标"></a>1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标</h3><pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">findTwoSum</span><span class="token punctuation">(</span>array<span class="token operator">:</span> IntArray<span class="token punctuation">,</span> num<span class="token operator">:</span> Int<span class="token punctuation">)</span><span class="token operator">:</span> Pair<span class="token operator">&lt;</span>Int<span class="token punctuation">,</span> Int<span class="token operator">></span><span class="token operator">?</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 创建一个哈希表来存储数组中的数字及其索引</span>
+    <span class="token keyword">val</span> map <span class="token operator">=</span> mutableMapOf<span class="token operator">&lt;</span>Int<span class="token punctuation">,</span> Int<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// 遍历数组</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">in</span> array<span class="token punctuation">.</span>indices<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> complement <span class="token operator">=</span> num <span class="token operator">-</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+
+        <span class="token comment">// 检查哈希表中是否存在这个补数</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>complement<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 如果存在，返回这个数及其补数的索引</span>
+            <span class="token keyword">return</span> <span class="token function">Pair</span><span class="token punctuation">(</span>map<span class="token punctuation">[</span>complement<span class="token punctuation">]</span><span class="token operator">!!</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// 将当前数字及其索引存入哈希表</span>
+        map<span class="token punctuation">[</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> i
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 如果没有找到符合条件的数对，返回null</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>解读：</strong></p>
+<ol>
+<li>创建一个map，在遍历的过程中，报错所有数字以及其对应的坐标，数字为键，坐标为值；</li>
+<li>遍历时，计算出num与当前元素的差值，然后试图从map中索引，如果有索引，则命中，如果没有则继续遍历；</li>
+<li>map的作用，相当于取代了双层遍历法其中的一层遍历；</li>
+</ol>
+<h3 id="2-jvm如何判断一个对象可以被回收？"><a href="#2-jvm如何判断一个对象可以被回收？" class="headerlink" title="2. jvm如何判断一个对象可以被回收？"></a>2. jvm如何判断一个对象可以被回收？</h3><ol>
+<li>引用计数法<br>优点：实现简单，时间复杂度低；<br>缺点：无法解决循环引用问题；</li>
+<li>可达性分析算法<br>通过GC Roots开始标记所有可达的对象；可以被标记的，认为是活的对象，未被标记的，则认为已经不需要，可以被回收；</li>
+</ol>
+<h4 id="2-1-有哪些可以作为GC-Root"><a href="#2-1-有哪些可以作为GC-Root" class="headerlink" title="2.1 有哪些可以作为GC Root?"></a>2.1 有哪些可以作为GC Root?</h4><ul>
+<li>虚拟机栈（栈帧中的本地变量表）中引用的对象。</li>
+<li>方法区中的类静态属性引用的对象。</li>
+<li>方法区中常量引用的对象。</li>
+<li>本地方法栈中JNI（即Native方法）引用的对象。</li>
+</ul>
+<h4 id="2-2-垃圾回收的过程是怎样的？"><a href="#2-2-垃圾回收的过程是怎样的？" class="headerlink" title="2.2 垃圾回收的过程是怎样的？"></a>2.2 垃圾回收的过程是怎样的？</h4><p>有三种策略：</p>
+<ul>
+<li>标记清除：首先标记所有可达对象，然后清除所有未被标记的对象；</li>
+<li>复制算法：将存活的对象，从一块内存复制到另外一块内存，然后清空原来的内存；</li>
+<li>标记-压缩： 首先标记所有可达的对象，然后将所有存活的对象压缩到内存的一端，清除便捷以外的空间；</li>
+</ul>
+<h3 id="3-Android的Handler是如何造成内存泄露的？"><a href="#3-Android的Handler是如何造成内存泄露的？" class="headerlink" title="3. Android的Handler是如何造成内存泄露的？"></a>3. Android的Handler是如何造成内存泄露的？</h3><p> 非静态内部类或者匿名内部类，会隐式的持有外部类的对象，如果在Activity中声明一个Handler，而Handler执行延迟任务，在任务结束前，Activity已经被销毁了，则Activiey泄露了；</p>
+<h4 id="3-1-如何解决Handler的内存泄露？"><a href="#3-1-如何解决Handler的内存泄露？" class="headerlink" title="3.1 如何解决Handler的内存泄露？"></a>3.1 如何解决Handler的内存泄露？</h4><ol>
+<li>将<code>Handler</code>声明为静态内部类，并且使用弱引用持有外部类的引用；</li>
+<li>在Activity的onDestroy中，使用<code>Handler</code>的<code>removeCallbacksAndMessages</code>方法，移除所有未执行的消息和回调；</li>
+</ol>
+<h4 id="3-2-有没有非Activity的其他内存泄露的场景？"><a href="#3-2-有没有非Activity的其他内存泄露的场景？" class="headerlink" title="3.2 有没有非Activity的其他内存泄露的场景？"></a>3.2 有没有非Activity的其他内存泄露的场景？</h4><ol>
+<li>单例持有外部对象；</li>
+<li>静态持有外部对象；</li>
+<li>未取消注册监听器或者回调；</li>
+<li>WebView导致内存泄露；</li>
+<li>异步任务；<br> 总结来说，就是生命周期长的对象，持有了一个生命周期短的对象的引用；</li>
+</ol>
+<h3 id="4-应用启动白屏如何排查？如何解决？"><a href="#4-应用启动白屏如何排查？如何解决？" class="headerlink" title="4. 应用启动白屏如何排查？如何解决？"></a>4. 应用启动白屏如何排查？如何解决？</h3><ol>
+<li>在应用入口，比如Application的onCreate、启动Activity的onCreate中，做耗时检查，如果耗时异常，具体检查代码；</li>
+<li>如果是Activity的onCreate中耗时长，检查是否为布局过于复杂，造成的布局解析耗时长，可以使用异步布局处理；</li>
+<li>如果为系统机制问题导致，可以配置主题或者使用Splash库来做过渡；</li>
+</ol>
+<h3 id="5-线上问题如何排查？"><a href="#5-线上问题如何排查？" class="headerlink" title="5. 线上问题如何排查？"></a>5. 线上问题如何排查？</h3><ol>
+<li>运营种子用户，提前内测，按照用户反馈，复现问题场景；</li>
+<li>集成bugly等线上日志抓取工具，按照机型、系统等信息，复现问题场景；</li>
+<li>如果有可能，可以通过热更新修复问题；</li>
+</ol>
+<h3 id="6-不同任务类型-IO密集型-计算密集型-任务，如何分配线程池策略？"><a href="#6-不同任务类型-IO密集型-计算密集型-任务，如何分配线程池策略？" class="headerlink" title="6. 不同任务类型(IO密集型&#x2F;计算密集型)任务，如何分配线程池策略？"></a>6. 不同任务类型(IO密集型&#x2F;计算密集型)任务，如何分配线程池策略？</h3><h4 id="IO密集型任务"><a href="#IO密集型任务" class="headerlink" title="IO密集型任务"></a>IO密集型任务</h4><p><strong>特点</strong><br>IO密集型任务主要涉及等待外部资源（如文件系统、网络请求、数据库操作等），因此大部分时间处于等待状态，而非消耗CPU。</p>
+<p><strong>策略</strong><br>对于IO密集型任务，可以使用较大的线程池，因为线程在等待IO操作完成时不会消耗大量CPU资源。</p>
+<p><strong>线程池配置</strong><br>通常，线程池的大小可以设置为CPU核心数的2倍或更多。一个常见的公式是：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">线程池大小 <span class="token operator">=</span> CPU核心数 * <span class="token number">2</span>
+或更大，根据实际情况调整。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Executors</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ExecutorService</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IOIntensiveTaskExample</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">N_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">ExecutorService</span> ioThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">N_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            ioThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 模拟IO操作</span>
+                <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        ioThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 模拟IO操作</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="计算密集型任务"><a href="#计算密集型任务" class="headerlink" title="计算密集型任务"></a>计算密集型任务</h4><p><strong>特点</strong><br>计算密集型任务主要消耗CPU资源，执行过程中几乎不涉及等待时间，因此可以充分利用CPU。</p>
+<p><strong>策略</strong><br>对于计算密集型任务，线程池的大小应设置为接近CPU核心数。过多的线程会导致频繁的上下文切换，反而降低性能。</p>
+<p><strong>线程池配置</strong><br>通常，线程池的大小可以设置为CPU核心数。一个常见的公式是：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">线程池大小 <span class="token operator">=</span> CPU核心数<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Executors</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ExecutorService</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CPUIntensiveTaskExample</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">N_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">ExecutorService</span> cpuThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">N_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            cpuThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 模拟计算操作</span>
+                <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        cpuThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 模拟计算操作</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>混合任务</strong><br>在实际应用中，有些任务可能既包含IO操作又包含计算操作。这种情况下，可以考虑使用不同的线程池分别处理不同类型的任务，或者根据任务的主要特征选择适当的线程池配置。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Executors</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ExecutorService</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MixedTaskExample</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">IO_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">CPU_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">ExecutorService</span> ioThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">IO_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">ExecutorService</span> cpuThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">CPU_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            ioThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 模拟IO操作</span>
+                <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            cpuThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
+                <span class="token comment">// 模拟计算操作</span>
+                <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        ioThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cpuThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 模拟IO操作</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 模拟计算操作</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>IO密集型任务</strong>：使用较大的线程池，通常为CPU核心数的2倍或更多，以应对大量的IO等待时间。<br><strong>计算密集型任务</strong>：使用较小的线程池，接近CPU核心数，以充分利用CPU资源，避免过多的线程上下文切换。<br><strong>混合任务</strong>：根据任务的主要特征，分别使用不同的线程池处理IO操作和计算操作。<br>通过合理配置线程池，可以有效提高应用程序的性能和资源利用率。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

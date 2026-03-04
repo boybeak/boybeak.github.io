@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS启动流程 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">AMS启动流程</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-19">
+          2022.09.19
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。</p>
+<h2 id="系统启动流程"><a href="#系统启动流程" class="headerlink" title="系统启动流程"></a>系统启动流程</h2><pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+graph TD;
+    style A fill:#fff
+    style F fill:#5befb9
+    Z&#123;&#123;Boot ROM&#125;&#125; --> A([Boot Loader]);
+    A --> B(Kernel);
+    B --> C("init(pid=1)/C++ Framework Native");
+    C --> D(Zygote/Android Runtime);
+    D --> E(System Server/Java Framework);
+    E --> F(Apps);
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p><strong>面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。</strong></p>
+<p><em>Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48147304">Copy-on-Write</a>机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。</em></p>
+<p><em>SystemServer相比Zygote多运行了AMS、WMS等服务，这些对于一个应用程序来说是不需要的，另外fork对多线程不友好，仅会将发起调用的线程拷贝到子进程，这可能会导致死锁，而SystemServer中肯定是有很多多线程的。</em></p>
+<p><strong>如何导致死锁的？</strong></p>
+<p>在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。</p>
+<p>对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。</p>
+</blockquote>
+<h2 id="Zygote集成启动"><a href="#Zygote集成启动" class="headerlink" title="Zygote集成启动"></a>Zygote集成启动</h2><pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+graph TD;
+    A["init.cpp - main()"] --> B[解析init.zygote.rc];
+    B --> C["启动main类型服务 do_class_start()"];
+    C --> D["启动zygote服务 start()"];
+    D --> E["创建Zygote进程 fork()"];
+    E --> |execv|F["app_main.cpp - main()"];
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="System-Server进程启动"><a href="#System-Server进程启动" class="headerlink" title="System Server进程启动"></a>System Server进程启动</h2><pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+graph TD;
+    A["app_main.cpp - main()"] --> B["AndroidRuntime.start()"];
+    B --> C["startVM()"];
+    C --> D["startReg()"];
+    D --> E["ZygoteInit.main()"];
+    E --> F["registerZygoteSocket()"];
+    F --> G["preload"];
+    G --> H["startSystemServer"];
+    H --> I["runSelectLoop"];
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/services/java/com/android/server/SystemServer.java">SystemServer.java</a></p>
+<h2 id="AMS启动流程"><a href="#AMS启动流程" class="headerlink" title="AMS启动流程"></a>AMS启动流程</h2><p><a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/am/ActivityManagerService.java">ActivityManagerService.java</a></p>
+<p>在SystemServer的<code>startBootstrapServices</code>方法中，开始了AMS的启动。</p>
+<h3 id="AMS启动过程中做了哪些事？"><a href="#AMS启动过程中做了哪些事？" class="headerlink" title="AMS启动过程中做了哪些事？"></a>AMS启动过程中做了哪些事？</h3><p>与<code>adb shell dumpsys</code>相关的一些process服务，比如<code>meminfo</code>、<code>gfxinfo</code>、<code>dbinfo</code>等，具体请参考<code>setSystemProcess</code>方法。</p>
+<h2 id="Activity启动流程"><a href="#Activity启动流程" class="headerlink" title="Activity启动流程"></a>Activity启动流程</h2><p>ActivityStactSupervisor</p>
+<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+flowchart LR;
+A[ActivityStactSupervisor] --> B[mHomeStack];
+A --> C[mFocusedStack];
+subgraph ActivityStack["ActivityStack"]
+  subgraph TaskRecord
+    AR1[ActivityRecord]
+    AR2[ActivityRecord]
+    AR3[ActivityRecord]
+  end
+  subgraph TaskRecord2
+    AR4[ActivityRecord]
+    AR5[ActivityRecord]
+    AR6[ActivityRecord]
+  end
+end
+B --> ActivityStack;
+C --> ActivityStack;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Activity启动简图</p>
+<blockquote>
+<p>面试题：Zygote为什么不采用Binder机制进行IPC通信。</p>
+<p>Binder机制中存在Binder线程池，是多线程的，如果Zygote采用Binder的话，就存在了上面说的fork多线程死锁问题了。其实严格来说，Binder机制不一定要多线程，所谓的Binder线程只不过是在循环读取Binder驱动消息而已，只注册一个Binder线程也是可以工作的，比如ServiceManager，实际上Zygote尽管没有采用Binder机制，它也不是单线程的，但它在fork前主动停止了其他线程，fork后重新启动了。</p>
+</blockquote>
+<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+graph TD;
+  A([Launcher]) --> B&#123;"SystemServer - AMS<br>(app是否启动)"&#125;;
+  B --> |否, 请求创建app进程|C[Zygote];
+  B -.-> |"是, 1. ActivityManager.getService()"|D(App):::app;
+  C -->|fork| D
+  D -->|"2. mgr.attachApplication(mAppThread, startSeq)"| B;
+	classDef app fill:#5befb9
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Activity启动细节图</p>
+<p><strong>Launcher到AMS阶段</strong></p>
+<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+sequenceDiagram
+	participant A as Launcher
+	participant B as Activity
+	participant C as Instrumentation
+	participant D as IActivityManager
+	participant E as AMS
+	
+	A ->> B: startActivity
+	B --> B: startActivityForResult
+	B ->> C: execStartActivity
+	C ->> D: startActivity
+	D ->> E: startActivity
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>AMS到ApplicationThread阶段</strong></p>
+<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+sequenceDiagram
+	participant A as AMS
+	participant B as ActivityStart
+	participant C as ActivityStackSupervisor
+	participant D as ActivityStack
+	participant E as ApplicationThread
+	A ->> A: startActivityStarter
+	A ->> B: startActivityMyWait
+	B ->> B: startActivityLocked
+	B ->> B: startActivity
+	B ->> B: startActivityUnchecked
+	B ->> C: startSpecificActivityLocked
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>ApplicationThread到Activity</strong></p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jetpack之Lifecycle源码分析 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">Jetpack之Lifecycle源码分析</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>这是一篇解析jetpack库中的<strong>Lifecycle</strong>库的分析文章。</p>
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy"><span class="token keyword">def</span> lifecycle_version <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"2.2.0"</span></span>
+<span class="token comment">// Lifecycles only (without ViewModel or LiveData)</span>
+implementation <span class="token interpolation-string"><span class="token string">"androidx.lifecycle:lifecycle-runtime-ktx:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">lifecycle_version</span></span><span class="token string">"</span></span>
+<span class="token comment">// Annotation processor</span>
+kapt <span class="token interpolation-string"><span class="token string">"androidx.lifecycle:lifecycle-compiler:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">lifecycle_version</span></span><span class="token string">"</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> MyObserver <span class="token operator">:</span> LifecycleObserver <span class="token punctuation">&#123;</span>
+    <span class="token annotation builtin">@OnLifecycleEvent</span><span class="token punctuation">(</span>Lifecycle<span class="token punctuation">.</span>Event<span class="token punctuation">.</span>ON_CREATE<span class="token punctuation">)</span>
+    <span class="token keyword">fun</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation builtin">@OnLifecycleEvent</span><span class="token punctuation">(</span>Lifecycle<span class="token punctuation">.</span>Event<span class="token punctuation">.</span>ON_PAUSE<span class="token punctuation">)</span>
+    <span class="token keyword">fun</span> <span class="token function">onPause</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> MainActivity <span class="token operator">:</span> <span class="token function">AppCompatActivity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token operator">:</span> Bundle<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span>
+        <span class="token function">setContentView</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_main<span class="token punctuation">)</span>
+
+        lifecycle<span class="token punctuation">.</span><span class="token function">addObserver</span><span class="token punctuation">(</span><span class="token function">MyObserver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这是一个很典型的Lifecycle库的使用过程，通过注解的方式，在<em>MyObserver</em>中声明对应的生命周期函数，然后将这个<em>MyObserver</em>实例添加到<em>MainActivity</em>的lifecycle中去。</p>
+<p>看到与注解相关，熟悉框架源码的朋友可能已经知道如何去分析了，很可能用到<strong>注解处理器</strong>，与<a target="_blank" rel="noopener" href="https://boybeak.github.io/2020/11/28/2022-09-17-ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><strong>ARouter</strong></a>类似，Lifecycle的工作流程也分成两部分——<strong>编译时</strong>和<strong>运行时</strong>。</p>
+<p>简要的说，在编译时，生成<strong>LifecycleObserver</strong>的辅助类；在运行时，<em>addObserver</em>方法被调用后，解析出对应observer的辅助类。</p>
+<h2 id="生命周期探知"><a href="#生命周期探知" class="headerlink" title="生命周期探知"></a>生命周期探知</h2><p>在正式详解这两个过程前，我们需要先要了解Lifecycle库是如何感知生命周期的呢？</p>
+<p>读过Glide源码(附上<a target="_blank" rel="noopener" href="https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B01.html">Glide源码解读</a>)的同学可能知道，Glide感知生命周期是通过一个无UI的fragment来实现的，其实，Lifecycle也是这么做的。</p>
+<p>对外提供生命周期的类，需要实现LifecycleOwner接口。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">public</span> <span class="token keyword">interface</span> LifecycleOwner <span class="token punctuation">&#123;</span>
+    <span class="token comment">/**
+     * Returns the Lifecycle of the provider.
+     *
+     * @return The lifecycle of the provider.
+     */</span>
+    <span class="token annotation builtin">@NonNull</span>
+    Lifecycle <span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们以<em>AppCompatActivity</em>为例去查看它是如何实现的这个接口，我们查看其父类中有一个<em>ComponentActivity</em>类(AppCompatActivity -&gt; FragmentActivity -&gt; ComponentActivity)。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">public</span> <span class="token keyword">class</span> ComponentActivity extends androidx<span class="token punctuation">.</span>core<span class="token punctuation">.</span>app<span class="token punctuation">.</span>ComponentActivity implements
+        LifecycleOwner<span class="token punctuation">,</span>
+        ViewModelStoreOwner<span class="token punctuation">,</span>
+        SavedStateRegistryOwner<span class="token punctuation">,</span>
+        OnBackPressedDispatcherOwner <span class="token punctuation">&#123;</span>
+        <span class="token annotation builtin">@Override</span>
+    <span class="token keyword">protected</span> void <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token annotation builtin">@Nullable</span> Bundle savedInstanceState<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mSavedStateRegistryController<span class="token punctuation">.</span><span class="token function">performRestore</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ReportFragment<span class="token punctuation">.</span><span class="token function">injectIfNeededIn</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>mContentLayoutId <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">setContentView</span><span class="token punctuation">(</span>mContentLayoutId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意此处，有一个<em>ReportFragment</em>执行了injectIfNeededIn方法，在这个方法中，就是检测是否已经添加了这个<em>ReportFragment</em>，如果没添加则添加一个。继续查看这个<em>ReportFragment</em>的源码，可以在其生命周期函数中，执行了分发生命周期的流程。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">public</span> <span class="token keyword">class</span> ReportFragment extends Fragment <span class="token punctuation">&#123;</span>
+  static void <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token annotation builtin">@NonNull</span> Activity activity<span class="token punctuation">,</span> <span class="token annotation builtin">@NonNull</span> Lifecycle<span class="token punctuation">.</span>Event event<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>activity instanceof LifecycleRegistryOwner<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">(</span><span class="token punctuation">(</span>LifecycleRegistryOwner<span class="token punctuation">)</span> activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">handleLifecycleEvent</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>activity instanceof LifecycleOwner<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 3</span>
+      Lifecycle lifecycle <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>LifecycleOwner<span class="token punctuation">)</span> activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>lifecycle instanceof LifecycleRegistry<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>LifecycleRegistry<span class="token punctuation">)</span> lifecycle<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">handleLifecycleEvent</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">private</span> void <span class="token function">dispatchCreate</span><span class="token punctuation">(</span>ActivityInitializationListener listener<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>listener <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      listener<span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token annotation builtin">@Override</span>
+  <span class="token keyword">public</span> void <span class="token function">onActivityCreated</span><span class="token punctuation">(</span>Bundle savedInstanceState<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onActivityCreated</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">dispatchCreate</span><span class="token punctuation">(</span>mProcessListener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">dispatch</span><span class="token punctuation">(</span>Lifecycle<span class="token punctuation">.</span>Event<span class="token punctuation">.</span>ON_CREATE<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">private</span> void <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token annotation builtin">@NonNull</span> Lifecycle<span class="token punctuation">.</span>Event event<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Build<span class="token punctuation">.</span>VERSION<span class="token punctuation">.</span>SDK_INT <span class="token operator">&lt;</span> <span class="token number">29</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// Only dispatch events from ReportFragment on API levels prior</span>
+      <span class="token comment">// to API 29. On API 29+, this is handled by the ActivityLifecycleCallbacks</span>
+      <span class="token comment">// added in ReportFragment.injectIfNeededIn</span>
+      <span class="token function">dispatch</span><span class="token punctuation">(</span><span class="token function">getActivity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 2</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>看代码中我标注的注释顺序onActivityCreated -&gt; dispatch(Lifecycle.Event) -&gt; dispatch(Activity, Lifecycle.Event)，我们看到最后一个流程中，拿到<em>Lifecycle</em>对象后，判断是否为<em>LifecycleRegistry</em>类，如果是，则调用handleLifecycleEvent方法。这里，<em>ComponentActivity</em>提供的<em>Lifecycle</em>对象就是<em>LifecycleRegistry</em>类。</p>
+<p>经过这样一个流程，我们就将感知生命周期的无UI的<em>ReportFragment</em>与执行事件的<em>LifecycleRegistry</em>进行了连接。这样我们就获得了感知生命周期的能力了。</p>
+<p>那么具体是如何执行到<em>MyObserver</em>对应的生命周期的方法的呢？</p>
+<blockquote>
+<p>或许你看到这里，会觉得很简单，在<em>LifecycleRegistry</em>维护一个observer队列，然后在执行handleLifecycleEvent方法的时候，通过反射从<em>MyObserver</em>中筛选出带有 ** @OnLifecycleEvent ** 注解的方法，如果注解中的值与事件event相等，则通过method.invoke()来调用。</p>
+<p>可是谷歌工程师并没有这么做，因为在执行事件时候，经过这么多反射，效率会很低。那么正确的流程是怎么样的？这就需要我们关注上面提到的两个流程了——<strong>编译时</strong>和<strong>运行时</strong>。</p>
+</blockquote>
+<h2 id="编译时"><a href="#编译时" class="headerlink" title="编译时"></a>编译时</h2><p>参考<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/support/+/androidx-master-dev/lifecycle/lifecycle-compiler">Lifecycle-compiler</a>源码。</p>
+<p>通过注解处理器，AS为我们生成了MyObserver的辅助类——<em>MyObserver_LifecycleAdapter</em>。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyObserver_LifecycleAdapter</span> <span class="token keyword">implements</span> <span class="token class-name">GeneratedAdapter</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">final</span> <span class="token class-name">MyObserver</span> mReceiver<span class="token punctuation">;</span>
+
+  <span class="token class-name">MyObserver_LifecycleAdapter</span><span class="token punctuation">(</span><span class="token class-name">MyObserver</span> receiver<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>mReceiver <span class="token operator">=</span> receiver<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">callMethods</span><span class="token punctuation">(</span><span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">,</span> <span class="token class-name">Lifecycle<span class="token punctuation">.</span>Event</span> event<span class="token punctuation">,</span> <span class="token keyword">boolean</span> onAny<span class="token punctuation">,</span>
+      <span class="token class-name">MethodCallsLogger</span> logger<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">boolean</span> hasLogger <span class="token operator">=</span> logger <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>onAny<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>event <span class="token operator">==</span> <span class="token class-name">Lifecycle<span class="token punctuation">.</span>Event</span><span class="token punctuation">.</span><span class="token constant">ON_CREATE</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hasLogger <span class="token operator">||</span> logger<span class="token punctuation">.</span><span class="token function">approveCall</span><span class="token punctuation">(</span><span class="token string">"onCreate"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        mReceiver<span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>event <span class="token operator">==</span> <span class="token class-name">Lifecycle<span class="token punctuation">.</span>Event</span><span class="token punctuation">.</span><span class="token constant">ON_PAUSE</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>hasLogger <span class="token operator">||</span> logger<span class="token punctuation">.</span><span class="token function">approveCall</span><span class="token punctuation">(</span><span class="token string">"onPause"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        mReceiver<span class="token punctuation">.</span><span class="token function">onPause</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，实际的生命周期事件分发是在这里完成的。那么这个辅助类是在哪里被使用到的呢？</p>
+<p>接下来就是<strong>运行时</strong>发挥作用的时候了。</p>
+<h2 id="运行时"><a href="#运行时" class="headerlink" title="运行时"></a>运行时</h2><p>运行时的起点，是从<em>addObserver</em>开始的。</p>
+<p>我们查看<em>LifecycleRegistry#addObserver</em>方法。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">FastSafeIterableMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">LifecycleObserver</span><span class="token punctuation">,</span> <span class="token class-name">ObserverWithState</span><span class="token punctuation">></span></span> mObserverMap <span class="token operator">=</span>
+            <span class="token keyword">new</span> <span class="token class-name">FastSafeIterableMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token annotation punctuation">@Override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addObserver</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">LifecycleObserver</span> observer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token class-name">State</span> initialState <span class="token operator">=</span> mState <span class="token operator">==</span> <span class="token constant">DESTROYED</span> <span class="token operator">?</span> <span class="token constant">DESTROYED</span> <span class="token operator">:</span> <span class="token constant">INITIALIZED</span><span class="token punctuation">;</span>
+  <span class="token class-name">ObserverWithState</span> statefulObserver <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObserverWithState</span><span class="token punctuation">(</span>observer<span class="token punctuation">,</span> initialState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token class-name">ObserverWithState</span> previous <span class="token operator">=</span> mObserverMap<span class="token punctuation">.</span><span class="token function">putIfAbsent</span><span class="token punctuation">(</span>observer<span class="token punctuation">,</span> statefulObserver<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，<em>LifecycleRegistry</em>中并不是直接维护observer对象，而是维护<em>ObserverWithState</em>对象。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ObserverWithState</span> <span class="token punctuation">&#123;</span>
+  <span class="token class-name">State</span> mState<span class="token punctuation">;</span>
+  <span class="token class-name">LifecycleEventObserver</span> mLifecycleObserver<span class="token punctuation">;</span>
+
+  <span class="token class-name">ObserverWithState</span><span class="token punctuation">(</span><span class="token class-name">LifecycleObserver</span> observer<span class="token punctuation">,</span> <span class="token class-name">State</span> initialState<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    mLifecycleObserver <span class="token operator">=</span> <span class="token class-name">Lifecycling</span><span class="token punctuation">.</span><span class="token function">lifecycleEventObserver</span><span class="token punctuation">(</span>observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mState <span class="token operator">=</span> initialState<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">void</span> <span class="token function">dispatchEvent</span><span class="token punctuation">(</span><span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">,</span> <span class="token class-name">Event</span> event<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">State</span> newState <span class="token operator">=</span> <span class="token function">getStateAfter</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mState <span class="token operator">=</span> <span class="token function">min</span><span class="token punctuation">(</span>mState<span class="token punctuation">,</span> newState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mLifecycleObserver<span class="token punctuation">.</span><span class="token function">onStateChanged</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mState <span class="token operator">=</span> newState<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在这个类的构造方法中，执行了一个<code>mLifecycleObserver = Lifecycling.lifecycleEventObserver(observer);</code></p>
+<p>在我们的案例中，这个方法返回了一个<em>SingleGeneratedAdapterObserver</em>类，我们查看这个类的代码。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">SingleGeneratedAdapterObserver</span> <span class="token keyword">implements</span> <span class="token class-name">LifecycleEventObserver</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">GeneratedAdapter</span> mGeneratedAdapter<span class="token punctuation">;</span>
+
+    <span class="token class-name">SingleGeneratedAdapterObserver</span><span class="token punctuation">(</span><span class="token class-name">GeneratedAdapter</span> generatedAdapter<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        mGeneratedAdapter <span class="token operator">=</span> generatedAdapter<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onStateChanged</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">LifecycleOwner</span> source<span class="token punctuation">,</span> <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Lifecycle<span class="token punctuation">.</span>Event</span> event<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        mGeneratedAdapter<span class="token punctuation">.</span><span class="token function">callMethods</span><span class="token punctuation">(</span>source<span class="token punctuation">,</span> event<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mGeneratedAdapter<span class="token punctuation">.</span><span class="token function">callMethods</span><span class="token punctuation">(</span>source<span class="token punctuation">,</span> event<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>也就是在这里，调用了<em>MyObserver_LifecycleAdapter</em>的<em>callMethods</em>方法。</p>
+<p>那么是如何找到<em>MyObserver_LifecycleAdapter</em>方法的呢？</p>
+<p>在<em>Lifecycling</em>类中，通过observer的类名来找的，我们看到有这样的一个方法：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">String</span> <span class="token function">getAdapterName</span><span class="token punctuation">(</span><span class="token class-name">String</span> className<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> className<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">,</span> <span class="token string">"_"</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"_LifecycleAdapter"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>这样，整个流程就串起来了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>编译时：生成<em>XXX_LifecycleAdapter</em>类，用来分发不同的生命周期事件。</p>
+<p>运行时：在addObserver时候，通过类名找到这个<em>XXX_LifecycleAdapter</em>类，生成对象在<em>LifecycleRegistry</em>中进行维护；在ReportFragment方法中触发生命周期时候，调用<em>LifecycleRegistry</em>的<em>handleLifecycleEvent</em>方法进行具体的生命周期事件分发。</p>
+<p>总体来看，其整个流程并不复杂，我们可以看到ARouter、Glide的影子，读过其他源码后，理解这个并不难。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustTodo开发(一) 项目初始化 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">JustTodo开发(一) 项目初始化</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2024-05-11">
+          2024.05.11
+        </time>
+        
+          
+            <span class="article-tag">macOS</span>
+          
+            <span class="article-tag">JustTodo</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>正如很多开发者一样，进入一个新平台开发连带学习，通常都会开发一个极简的应用，很多人都会开发Todo类应用，这类应用一般来说比较简单容易上手。我也打算开发一个，一来是练手，二来是写一个自己用的极简Todo类应用。<br>目前市面上的Todo类应用，一般来说，都比较复杂，太多我不需要的功能了，而且还有一些增值付费，对于我来说，根本没有那么多的复杂需求，只需要一个随手打开和关闭的记录而已，放在托盘上就非常的方便。<br>所以，需求如下：</p>
+<ol>
+<li>macOS托盘应用，随手打开和关闭；</li>
+<li>带有分页标签，以便标记不同类型的todo；</li>
+<li>最好有利用iCloud的数据云同步，方便未来与其他平台同步数据；</li>
+</ol>
+<p>基于以上需求，做一个技术选型：</p>
+<ol>
+<li>由于SwiftUI在macOS上表现实在是不敢恭维，所以选用传统的AppKit进行开发；</li>
+<li>基于个人写Android应用的习惯，更倾向于使用代码或者XML的方式构建界面，所以在使用AppKit时，不使用Storyboard或者XIB的方式构建界面。</li>
+</ol>
+<h2 id="一、创建项目"><a href="#一、创建项目" class="headerlink" title="一、创建项目"></a>一、创建项目</h2><p>打开Xcode，创建一个新的macOS项目，语言选择swift，Interface暂时选storyboard，先创建项目，在稍后删除相关的storyboard文件和配置。</p>
+<h2 id="二、项目配置"><a href="#二、项目配置" class="headerlink" title="二、项目配置"></a>二、项目配置</h2><h3 id="2-1-删除Main-storyboard"><a href="#2-1-删除Main-storyboard" class="headerlink" title="2.1 删除Main.storyboard"></a>2.1 删除Main.storyboard</h3><p>首先，删除自动创建的storyboard文件Main.storyboard，此时再构建项目会出现错误，先不用着急，接下来进行修改。</p>
+<h3 id="2-2-替换应用程序入口"><a href="#2-2-替换应用程序入口" class="headerlink" title="2.2 替换应用程序入口"></a>2.2 替换应用程序入口</h3><p>其次，在target目录下，创建一个main.swift文件，然后把AppDelegate.swift中的<code>@main</code>注解删除掉，main.swift文件内容如下：</p>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">import</span> <span class="token class-name">Cocoa</span>
+
+<span class="token keyword">class</span> <span class="token class-name">MyApplication</span><span class="token punctuation">:</span> <span class="token class-name">NSApplication</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token class-name">MyApplication</span><span class="token punctuation">.</span>shared
+<span class="token keyword">let</span> delegate <span class="token operator">=</span> <span class="token class-name">AppDelegate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span>delegate <span class="token operator">=</span> delegate
+app<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-3-创建托盘应用的基本框架"><a href="#2-3-创建托盘应用的基本框架" class="headerlink" title="2.3 创建托盘应用的基本框架"></a>2.3 创建托盘应用的基本框架</h3><p>在AppDelegate.swift文件中，添加相关代码以实现点击托盘图标，主窗口的显示&#x2F;隐藏。<br>创建一个Tray类，用于管理托盘图标的创建和窗口的弹出。</p>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">class</span> <span class="token class-name">Tray</span> <span class="token punctuation">&#123;</span>
+    
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">let</span> <span class="token constant">POPOVER_SIZE</span> <span class="token operator">=</span> <span class="token class-name">NSSize</span><span class="token punctuation">(</span>width<span class="token punctuation">:</span> <span class="token number">320</span><span class="token punctuation">,</span> height<span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">private</span> <span class="token keyword">let</span> iconName<span class="token punctuation">:</span> <span class="token class-name">String</span>
+    <span class="token keyword">private</span> <span class="token keyword">var</span> statusItem<span class="token punctuation">:</span> <span class="token class-name">NSStatusItem</span><span class="token operator">!</span>
+    <span class="token keyword">private</span> <span class="token keyword">var</span> popover<span class="token punctuation">:</span> <span class="token class-name">NSPopover</span><span class="token operator">!</span>
+    <span class="token keyword">private</span> <span class="token keyword">var</span> viewController<span class="token punctuation">:</span> <span class="token class-name">NSViewController</span>
+    
+    <span class="token keyword">init</span><span class="token punctuation">(</span>iconName<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">,</span> viewController<span class="token punctuation">:</span> <span class="token class-name">NSViewController</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>iconName <span class="token operator">=</span> iconName
+        <span class="token keyword">self</span><span class="token punctuation">.</span>viewController <span class="token operator">=</span> viewController
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">func</span> <span class="token function-definition function">install</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        statusItem <span class="token operator">=</span> <span class="token class-name">NSStatusBar</span><span class="token punctuation">.</span>system<span class="token punctuation">.</span><span class="token function">statusItem</span><span class="token punctuation">(</span>withLength<span class="token punctuation">:</span> <span class="token class-name">NSStatusItem</span><span class="token punctuation">.</span>variableLength<span class="token punctuation">)</span>
+        
+        <span class="token keyword">if</span> <span class="token keyword">let</span> trayBtn<span class="token punctuation">:</span> <span class="token class-name">NSStatusBarButton</span> <span class="token operator">=</span> statusItem<span class="token punctuation">.</span>button <span class="token punctuation">&#123;</span>
+            trayBtn<span class="token punctuation">.</span>image <span class="token operator">=</span> <span class="token class-name">NSImage</span><span class="token punctuation">(</span>systemSymbolName<span class="token punctuation">:</span> iconName<span class="token punctuation">,</span> accessibilityDescription<span class="token punctuation">:</span> <span class="token nil constant">nil</span><span class="token punctuation">)</span>
+            
+            trayBtn<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token keyword">self</span><span class="token punctuation">;</span>
+            trayBtn<span class="token punctuation">.</span>action <span class="token operator">=</span> <span class="token other-directive property">#selector</span><span class="token punctuation">(</span><span class="token function">togglePopover</span><span class="token punctuation">(</span><span class="token omit keyword">_</span><span class="token punctuation">:</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+        
+        viewController<span class="token punctuation">.</span><span class="token function">loadViewIfNeeded</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        viewController<span class="token punctuation">.</span>view<span class="token punctuation">.</span>frame <span class="token operator">=</span> <span class="token class-name">NSRect</span><span class="token punctuation">(</span>x<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">:</span> <span class="token class-name">Tray</span><span class="token punctuation">.</span><span class="token constant">POPOVER_SIZE</span><span class="token punctuation">.</span>width<span class="token punctuation">,</span> height<span class="token punctuation">:</span> <span class="token class-name">Tray</span><span class="token punctuation">.</span><span class="token constant">POPOVER_SIZE</span><span class="token punctuation">.</span>height<span class="token punctuation">)</span>
+        
+        popover <span class="token operator">=</span> <span class="token class-name">NSPopover</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        popover<span class="token punctuation">.</span>contentViewController <span class="token operator">=</span> viewController
+        
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token attribute atrule">@objc</span> <span class="token keyword">private</span> <span class="token keyword">func</span> <span class="token function-definition function">togglePopover</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> sender<span class="token punctuation">:</span> <span class="token keyword">Any</span><span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> popover<span class="token punctuation">.</span>isShown <span class="token punctuation">&#123;</span>
+            <span class="token function">closePopover</span><span class="token punctuation">(</span>sender<span class="token punctuation">:</span> sender<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">showPopover</span><span class="token punctuation">(</span>sender<span class="token punctuation">:</span> sender<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">func</span> <span class="token function-definition function">showPopover</span><span class="token punctuation">(</span>sender<span class="token punctuation">:</span> <span class="token keyword">Any</span><span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token keyword">let</span> button <span class="token operator">=</span> statusItem<span class="token punctuation">.</span>button <span class="token punctuation">&#123;</span>
+            popover<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span>relativeTo<span class="token punctuation">:</span> button<span class="token punctuation">.</span>bounds<span class="token punctuation">,</span> of<span class="token punctuation">:</span> button<span class="token punctuation">,</span> preferredEdge<span class="token punctuation">:</span> <span class="token class-name">NSRectEdge</span><span class="token punctuation">.</span>minY<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">func</span> <span class="token function-definition function">closePopover</span><span class="token punctuation">(</span>sender<span class="token punctuation">:</span> <span class="token keyword">Any</span><span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        popover<span class="token punctuation">.</span><span class="token function">performClose</span><span class="token punctuation">(</span>sender<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>此类中，接收两个构造参数，一个是图标名称，对应着资源名称或者是SF Symbols图标名称，另外一个参数就是ViewController的具体实现。<br>在AppDelegate中的<code>applicationDidFinishLaunching</code>方法中，执行<code>Tray.install()</code>，就添加了一个系统图标。</p>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">class</span> <span class="token class-name">AppDelegate</span><span class="token punctuation">:</span> <span class="token class-name">NSObject</span><span class="token punctuation">,</span> <span class="token class-name">NSApplicationDelegate</span> <span class="token punctuation">&#123;</span>
+    
+    <span class="token keyword">private</span> <span class="token keyword">let</span> tray <span class="token operator">=</span> <span class="token class-name">Tray</span><span class="token punctuation">(</span>iconName<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"text.badge.checkmark"</span></span><span class="token punctuation">,</span> viewController<span class="token punctuation">:</span> <span class="token class-name">ViewController</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token keyword">func</span> <span class="token function-definition function">applicationDidFinishLaunching</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> aNotification<span class="token punctuation">:</span> <span class="token class-name">Notification</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        tray<span class="token punctuation">.</span><span class="token function">install</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>此处需要注意的是，必须要声明一个Tray的成员变量，如果不声明成员变量，则系统图标不会添加成功。</p>
+</blockquote>
+<p>现在在ViewController中，显示一个Hello World。</p>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">class</span> <span class="token class-name">ViewController</span><span class="token punctuation">:</span> <span class="token class-name">NSViewController</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">func</span> <span class="token function-definition function">viewDidLoad</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">viewDidLoad</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">let</span> text <span class="token operator">=</span> <span class="token class-name">NSTextView</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        text<span class="token punctuation">.</span>translatesAutoresizingMaskIntoConstraints <span class="token operator">=</span> <span class="token boolean">false</span>
+        text<span class="token punctuation">.</span>alignment <span class="token operator">=</span> <span class="token punctuation">.</span>center
+        text<span class="token punctuation">.</span>string <span class="token operator">=</span> <span class="token string-literal"><span class="token string">"Hello World"</span></span>
+        
+        <span class="token keyword">self</span><span class="token punctuation">.</span>view<span class="token punctuation">.</span><span class="token function">addSubview</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+        
+        <span class="token class-name">NSLayoutConstraint</span><span class="token punctuation">.</span><span class="token function">activate</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+            text<span class="token punctuation">.</span>leadingAnchor<span class="token punctuation">.</span><span class="token function">constraint</span><span class="token punctuation">(</span>equalTo<span class="token punctuation">:</span> <span class="token keyword">self</span><span class="token punctuation">.</span>view<span class="token punctuation">.</span>leadingAnchor<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            text<span class="token punctuation">.</span>trailingAnchor<span class="token punctuation">.</span><span class="token function">constraint</span><span class="token punctuation">(</span>equalTo<span class="token punctuation">:</span> <span class="token keyword">self</span><span class="token punctuation">.</span>view<span class="token punctuation">.</span>trailingAnchor<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            text<span class="token punctuation">.</span>topAnchor<span class="token punctuation">.</span><span class="token function">constraint</span><span class="token punctuation">(</span>equalTo<span class="token punctuation">:</span> <span class="token keyword">self</span><span class="token punctuation">.</span>view<span class="token punctuation">.</span>topAnchor<span class="token punctuation">)</span><span class="token punctuation">,</span>
+            text<span class="token punctuation">.</span>bottomAnchor<span class="token punctuation">.</span><span class="token function">constraint</span><span class="token punctuation">(</span>equalTo<span class="token punctuation">:</span> <span class="token keyword">self</span><span class="token punctuation">.</span>view<span class="token punctuation">.</span>bottomAnchor<span class="token punctuation">)</span>
+        <span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意此处的<code>text.translatesAutoresizingMaskIntoConstraints = false</code>，这里如果不设置的话，弹出窗口是不会填满整个父布局的。<br>translatesAutoresizingMaskIntoConstraints 是一个布尔属性，用于指示是否启用自动布局中的自动转换。</p>
+<p>在 iOS 和 macOS 开发中，通常使用自动布局来管理界面的布局。自动布局系统使用约束（constraints）来描述视图之间的关系和布局规则。当你通过 Interface Builder 或代码创建视图时，默认情况下，视图的 translatesAutoresizingMaskIntoConstraints 属性是设置为 true 的。这意味着视图会根据其 frame 和 autoresizingMask 属性自动转换为相应的约束。</p>
+<p>但是，在使用自动布局时，通常推荐将 translatesAutoresizingMaskIntoConstraints 设置为 false。这样做的原因是，如果你手动创建约束来布局视图，那么这些约束将会和自动转换的约束发生冲突，导致布局问题。通过将 translatesAutoresizingMaskIntoConstraints 设置为 false，你可以明确地告诉系统不要自动转换视图的 autoresizingMask 为约束，从而避免这种冲突。</p>
+<p>最终的效果如下：<br><img src="/assets/images/tray_app_hello_world.png" alt="tray_app_hello_world"></p>
+<p>另外，若要应用图标不显示在Docker栏上，需要在Info.plist上设置 <strong>Application is agent (UIEelement)</strong> 为YES。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaunchMode · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">LaunchMode</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-19">
+          2022.09.19
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>此文是阅读<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265946165">《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》</a>一文后的总结，视频地址<a href="https://link.zhihu.com/?target=https://www.bilibili.com/video/BV1CA41177Se/">Bilibili</a>、<a href="https://link.zhihu.com/?target=https://youtu.be/r4T9zkhpmII">Youtube</a>。</p>
+<p>演示代码：</p>
+<p>在正式讲解launchMode前，先要理解三个概念：<strong>ActivityStack</strong>, <strong>TaskRecord</strong>, <strong>ActivityRecord</strong>。</p>
+<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+graph LR;
+style TaskRecord-A fill:#aaddff;
+style TaskRecord-B fill:#aaddff;
+subgraph ActivityStack
+subgraph TaskRecord-A
+A[ActivityRecord-1]
+B[ActivityRecord-2]
+end
+subgraph TaskRecord-B
+C[ActivityRecord-3]
+D[ActivityRecord-4]
+end
+end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>他们的一般结构是这样的。</p>
+<p>通过adb命令可以查看当前的ActivityStack、TaskRecord和ActivityRecord的结构。</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">adb shell dumpsys activity<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>结果如下(搜索<code>ACTIVITY MANAGER STARTER (dumpsys activity containers)</code>)：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+ACTIVITY MANAGER STARTER <span class="token punctuation">(</span>dumpsys activity containers<span class="token punctuation">)</span>
+com<span class="token punctuation">.</span>android<span class="token punctuation">.</span>server<span class="token punctuation">.</span>am<span class="token punctuation">.</span>ActivityStackSupervisor@299f1c5 <span class="token function">type</span>=undefined mode=fullscreen
+  <span class="token comment">#0 ActivityDisplay=&#123;0 numStacks=2&#125; type=undefined mode=fullscreen</span>
+   <span class="token comment">#1 ActivityStack&#123;694271a stackId=0 type=home mode=fullscreen visible=true translucent=false, 1 tasks&#125; type=home mode=fullscreen</span>
+    <span class="token comment">#0 TaskRecord&#123;e42980e #2 I=com.android.launcher3/.Launcher U=0 StackId=0 sz=1&#125; type=home mode=fullscreen</span>
+     <span class="token comment">#0 ActivityRecord&#123;5efeaf4 u0 com.android.launcher3/.Launcher t2&#125; type=home mode=fullscreen</span>
+   <span class="token comment">#0 ActivityStack&#123;91ac24b stackId=1 type=standard mode=fullscreen visible=false translucent=true, 1 tasks&#125; type=standard mode=fullscreen</span>
+    <span class="token comment">#0 TaskRecord&#123;583322f #72 A=com.github.boybeak.hellolaunchmode U=0 StackId=1 sz=1&#125; type=standard mode=fullscreen</span>
+     <span class="token comment">#0 ActivityRecord&#123;a126ec8 u0 com.github.boybeak.hellolaunchmode/.MainActivity t72&#125; type=standard mode=fullscreen</span>
+
+
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，此时有两个ActivityStack，索引为0的ActivityStack中，有一个TaskRecord，这个TaskRecord里有一个ActivityRecord，就是我们实验App的MainActivity；索引为1的ActivityStack为我们的Home界面。</p>
+<h2 id="四种launchMode的一般行为"><a href="#四种launchMode的一般行为" class="headerlink" title="四种launchMode的一般行为"></a>四种launchMode的一般行为</h2><p>LaunchMode共有4个值可以选择：<strong>Standard</strong>、<strong>SingleTop</strong>、<strong>SingleTask</strong>、<strong>SingleInstance</strong>。接下来将分开讲这4个值的作用，实际上，由于Activity的跳转会涉及到两个Activity，比如ActivityA -&gt; ActivityB，ActivityB的跳转行为模式，不止受到自己launchMode的影响，还会受到ActivityA的launchMode的影响。除此以外，还会有其他属性的影响，比如<code>taskAffinity</code>、<code>allowTaskReparenting</code>、<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/manifest/activity-element#dlmode"><code>documentLaunchMode</code></a>等。</p>
+<p><strong>Standard</strong></p>
+<p>这是launchMode的值。它的默认行为是：在当前TaskRecord下创建新Activity。</p>
+<p><strong>SingleTop</strong></p>
+<p>SingleTop的行为是：如果有一个同类型的Activity在当前TaskRecord的栈顶，那么就直接使用这个栈顶的Activity并调用其<code>onNewIntent()</code>方法；如果栈顶没有同类型的Activity，则在栈顶创建一个对应的Activity。</p>
+<p><strong>SingleTask</strong></p>
+<p>SingleTask的行为是：在对应<code>taskAffinity</code>的TaskRecord中，如果已经有了对应类型的Activity，则直接使用该Activity，并调用<code>onNewIntent()</code>方法，如果有其他Activity压在该Activity上，则这些Activity都将出栈，该Activity重回栈顶；如果对应<code>taskAffinity</code>的TaskRecord中没有对应类型的Activity，则创建对应类型的Activity并压入栈顶。</p>
+<blockquote>
+<p>这里需要注意的是<code>taskAffinity</code>对该属性的影响，如果没有为<code>android:launchMode=&quot;singleTask&quot;</code>的Activity指定<code>taskAffinity</code>，则默认值为Application的<code>taskAffinity</code>，而Application的默认<code>taskAffinity</code>为包名。</p>
+</blockquote>
+<p><strong>SingleInstance</strong></p>
+<p>SingleInstance的行为是：1，只允许有一个栈中有此Activity，并且这个栈只允许有这一个Activity；2，如果已经有一个栈中有对应的Activity，则直接使用该Activity，并调用<code>onNewIntent()</code>方法。</p>
+<h2 id="SingleInstance对其他三种launchMode的影响"><a href="#SingleInstance对其他三种launchMode的影响" class="headerlink" title="SingleInstance对其他三种launchMode的影响"></a>SingleInstance对其他三种launchMode的影响</h2><p>由于SingleInstance是如此的霸道，导致从一个SingleInstance的Activity启动其他类型Activity的话，会改变其他三种模式的一般行为。</p>
+<p><strong>SingleInstanceA -&gt; StandardB</strong></p>
+<p>StandardActivityB将无法在当前栈中创建，会回到默认栈中创建。</p>
+<p><strong>SingleInstanceA -&gt; SingleTopB</strong></p>
+<p>这个行为就很复杂了，可以按照SingleTopB有无<code>taskAffinity</code>属性分为两种情况：</p>
+<ul>
+<li>无<code>taskAffinity</code>：则直接在默认的栈中，创建新的SingleTopB或者使用已经存在的SingleTopB。</li>
+<li>有<code>taskAffinity</code>：则在指定<code>taskAffinity</code>的栈中创建创建新的SingleTopB或者使用已经存在的SingleTopB。</li>
+</ul>
+<blockquote>
+<p>这里实际上存在一个更为复杂的行为模式：<strong>StandardA -&gt; SingleTopB -&gt; SingleInstanceC -&gt; SingleTopB</strong>。</p>
+<p>如果SingleTop有<code>taskAffinity</code>属性的话，情况就可以分为两个部分：</p>
+<p><strong>StandardA -&gt; SingleTopB</strong>：在StandardA相同TaskRecord中创建SingleTopB的实例singleTopB1。</p>
+<p><strong>SingleInstanceC -&gt; SingleTopB</strong>：在指定<code>taskAffinity</code>的TaskRecord中，创建SingleTopB的实例singleTopB2。</p>
+<p>也就是说，此时有两个SingleTopB对象——singleTopB1和singleTopB2，分别在两个TaskRecord中。</p>
+</blockquote>
+<p><strong>SingleInstanceA -&gt; SingleTaskB</strong></p>
+<p>比照<strong>SingleInstanceA -&gt; SingleTopB</strong>的例子，同样可以可以按照SingleTaskB有无<code>taskAffinity</code>属性分为两种情况：</p>
+<ul>
+<li>无<code>taskAffinity</code>：则直接在默认的栈中，创建新的SingleTaskB或者使用已经存在的SingleTaskB。</li>
+<li>有<code>taskAffinity</code>：则在指定<code>taskAffinity</code>的栈中创建创建新的SingleTaskB或者使用已经存在的SingleTaskB。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>大体了解了不同launchMode的行为逻辑，他们的用途可以简单粗暴的归结如下规律：</p>
+<ul>
+<li>standard和singleTop：多用于App内部；</li>
+<li>singleInstance：多用于开放给外部App来共享使用；</li>
+<li>singleTask：内部交互和外部调用都会用得上。</li>
+</ul>
+<p>当然，不能一概而论，还是要看具体需求。</p>
+<p>看起来似乎很复杂，其实只要掌握了<code>adb shell dumpsys activity</code>这个命令工具，就能清晰的看到当前Activity的分布情况，就能分析出，你的Activity应该用什么<code>launchMode</code>，要不要设置<code>taskAffinity</code>。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/94816e52cd77">ActivityRecord、TaskRecord、ActivityStack以及Activity启动模式详解</a></p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

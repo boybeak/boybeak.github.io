@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jetpack之LiveData源码分析 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">Jetpack之LiveData源码分析</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>在阅读这篇文章前，需要先对<a target="_blank" rel="noopener" href="https://boybeak.github.io/2021/03/12/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Lifecycle</a>有所了解。</p>
+<p>Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。</p>
+<p>先要引入LiveData：</p>
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">implementation <span class="token interpolation-string"><span class="token string">"androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"</span></span>
+
+<span class="token keyword">def</span> activity_version <span class="token operator">=</span> <span class="token interpolation-string"><span class="token string">"1.1.0"</span></span>
+<span class="token comment">// Kotlin，引入这个扩展，可以使用by viewModels()方法</span>
+implementation <span class="token interpolation-string"><span class="token string">"androidx.activity:activity-ktx:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">activity_version</span></span><span class="token string">"</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>典型的用法如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> MainActivity <span class="token operator">:</span> <span class="token function">AppCompatActivity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">val</span> vm <span class="token keyword">by</span> viewModels<span class="token operator">&lt;</span>MainVM<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token operator">:</span> Bundle<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span>
+        <span class="token function">setContentView</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_main<span class="token punctuation">)</span>
+
+        vm<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            Toast<span class="token punctuation">.</span><span class="token function">makeText</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token label symbol">@MainActivity</span><span class="token punctuation">,</span> it<span class="token punctuation">,</span> Toast<span class="token punctuation">.</span>LENGTH_SHORT<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+
+        vm<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> MainVM <span class="token operator">:</span> <span class="token function">ViewModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">val</span> <span class="token keyword">data</span> <span class="token operator">=</span> MutableLiveData<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">fun</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">data</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"start"</span></span>
+        Thread <span class="token punctuation">&#123;</span>
+            Thread<span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span>
+            <span class="token keyword">data</span><span class="token punctuation">.</span><span class="token function">postValue</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"run after 2000ms"</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>从这两段代码中，我们就可以看出典型的用法，主要是在三个方法上，<em>observe</em>、<em>setValue</em>和<em>postValue</em>。我们就从这三个方法入手去探究LiveData的工作机制。</p>
+<h2 id="observe方法"><a href="#observe方法" class="headerlink" title="observe方法"></a>observe方法</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// LiveData.java</span>
+
+<span class="token annotation punctuation">@MainThread</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">observe</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">,</span> <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Observer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">T</span><span class="token punctuation">></span></span> observer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">assertMainThread</span><span class="token punctuation">(</span><span class="token string">"observe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>owner<span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token constant">DESTROYED</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// ignore</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token class-name">LifecycleBoundObserver</span> wrapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LifecycleBoundObserver</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token class-name">ObserverWrapper</span> existing <span class="token operator">=</span> mObservers<span class="token punctuation">.</span><span class="token function">putIfAbsent</span><span class="token punctuation">(</span>observer<span class="token punctuation">,</span> wrapper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>existing <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>existing<span class="token punctuation">.</span><span class="token function">isAttachedTo</span><span class="token punctuation">(</span>owner<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Cannot add the same observer"</span>
+                                       <span class="token operator">+</span> <span class="token string">" with different lifecycles"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>existing <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  owner<span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addObserver</span><span class="token punctuation">(</span>wrapper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol>
+<li>只允许在主线程中监听数据变化，并且如果<em>LifecycleOwner</em>已经处于<strong>DESTROYED</strong>状态，则忽略这次监听请求。</li>
+<li>以<em>LifecycleOwner</em>和<em>Observer</em>创建一个<em>LifecycleBoundObserver</em>对象，这个对象继承了<em>ObserverWrapper</em>类，同时实现了<em>LifecycleEventObserver</em>接口，看到这个接口，我们便明白了<em>LiveData</em>能够生命周期安全的监听数据变化的原因了。</li>
+<li>这个<em>LifecycleBoundObserver</em>对象需要存储在一个<em>SafeIterableMap</em>当中去，在存储时候，会通过observer判断是否已经存在一个<em>ObserverWrapper</em>对象existing，如果已经存在则分为两种：a. 如果existing没有attach在owner上，则说明，existing已经attach在另外一个<em>LifecycleOwner</em>上了，这是不允许的，此时需要抛出异常；b. 如果没有attach在另外一个<em>LifecycleOwner</em>上，则说明此时监听的就是当前的owner上，则不需要再次添加监听，直接返回。如果existing不存在，则向owner.getLifecycle()添加监听。</li>
+</ol>
+<h2 id="setValue和postValue方法"><a href="#setValue和postValue方法" class="headerlink" title="setValue和postValue方法"></a>setValue和postValue方法</h2><p>在子线程中更新数据，需要调用postValue方法，实际上，这个方法就是通过一个MainHandler去post一个<em>Runnable</em>的方式切换到主线程中执行setValue方法。所以，我们重点看setValue方法即可。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// LiveData.java</span>
+
+<span class="token annotation punctuation">@MainThread</span>
+<span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">setValue</span><span class="token punctuation">(</span><span class="token class-name">T</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">assertMainThread</span><span class="token punctuation">(</span><span class="token string">"setValue"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  mVersion<span class="token operator">++</span><span class="token punctuation">;</span>
+  mData <span class="token operator">=</span> value<span class="token punctuation">;</span>
+  <span class="token function">dispatchingValue</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里需要注意到的是<code>mVersion++</code>这句话，<em>LiveData</em>就是通过版本号来记录新的值的。继续看dispatchingValue方法。</p>
+<h3 id="dispatchingValue"><a href="#dispatchingValue" class="headerlink" title="dispatchingValue"></a>dispatchingValue</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"WeakerAccess"</span><span class="token punctuation">)</span> <span class="token comment">/* synthetic access */</span>
+<span class="token keyword">void</span> <span class="token function">dispatchingValue</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Nullable</span> <span class="token class-name">ObserverWrapper</span> initiator<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>mDispatchingValue<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>				<span class="token comment">// ①</span>
+    mDispatchInvalidated <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  mDispatchingValue <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  <span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
+    mDispatchInvalidated <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>	<span class="token comment">// ②</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>initiator <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">considerNotify</span><span class="token punctuation">(</span>initiator<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      initiator <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Iterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Map<span class="token punctuation">.</span>Entry</span><span class="token punctuation">&lt;</span><span class="token class-name">Observer</span><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">T</span><span class="token punctuation">></span><span class="token punctuation">,</span> <span class="token class-name">ObserverWrapper</span><span class="token punctuation">></span><span class="token punctuation">></span></span> iterator <span class="token operator">=</span>
+           mObservers<span class="token punctuation">.</span><span class="token function">iteratorWithAdditions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">considerNotify</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>mDispatchInvalidated<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// ③</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>mDispatchInvalidated<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  mDispatchingValue <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在这里，涉及到两个方法，1. 第一个dispatchingValue —— 用来分发控制数据更新流程；2. considerNotify具体执行数据更新操作。</p>
+<p>这个方法是双信号量控制分发流程，<strong>mDispatchingValue</strong>和<strong>mDispatchInvalidated</strong>，之所以这样设计，按照我的理解，是考虑到了dispatchingValue方法多线程重入的问题，但是依我看来，这样做没必要，因为这个方法的几处调用，都是在主线程上，不可能出现第一次调用没有执行完，就又被调用一次的可能，也可能是设计者考虑到未来的扩展或者在这个库涉及之初有多线程调用的情况才这样写的，先按照有重入可能来分析。</p>
+<p>我们先要弄清这两个信号量的作用：mDispatchingValue表示是否正在执行分发数据更新的操作，mDispatchInvalidated表示是否中断正在进行的分发，开始新一轮分发。</p>
+<p>这个方法是根据传入的参数，有两个执行流程，一个是执行具体某个ObserverWrapper的数据更新操作，另外一个就是批量更新所有observer的数据操作。我们以setValue触发的dispatchingValue(null)批量更新操作为例进行分析。</p>
+<p>注意我在上段代码中的序号①②③注释，我们分步骤进行分析：</p>
+<blockquote>
+<p>假设，此时我们有两个observer。</p>
+<p>初始状态 <strong>mDispatchingValue &#x3D; false, mDispatchInvalidated &#x3D; false</strong></p>
+<p>当<strong>第一次</strong>调用开始后，会顺利通过①处判断，然后进入do - while循环，并且在②处先将mDispatchInvalidated信号量置为false，所以，一般情况下，这个while循环只会执行一次；</p>
+<p>信号量：<strong>mDispatchingValue &#x3D; true, mDispatchInvalidated &#x3D; false</strong></p>
+<p>由于initiator参数为null，所以会进入到else分支中的for循环中，这里需要注意的是，每一次for循环结束时候，都判断一次mDispatchInvalidated信号量，也就是注释③处；</p>
+<p>假设我们执行了第一个observer后，dispatchingValue方法进行了<strong>第二次</strong>调用，由于此时mDispatchingValue信号量为true，所以会进入①处if条件判断语句，将mDispatchInvalidated信号量置为true并且直接return了；</p>
+<p>信号量：<strong>mDispatchingValue &#x3D; true, mDispatchInvalidated &#x3D; true</strong></p>
+<p>此时，第一次调用的for循环体就会因为mDispatchInvalidated变成了true，而退出for循环，while循环开始判断条件，同样因为mDispatchInvalidated为true，回再次执行while循环，执行新值更新；</p>
+<p>最后退出dispatchingValue方法后，两个信号量都置为false。</p>
+</blockquote>
+<p>这样做的目的，或许是为了及时抛弃旧值通知，开始新值通知。</p>
+<h3 id="considerNotify"><a href="#considerNotify" class="headerlink" title="considerNotify"></a>considerNotify</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java">
+
+<span class="token annotation punctuation">@SuppressWarnings</span><span class="token punctuation">(</span><span class="token string">"unchecked"</span><span class="token punctuation">)</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">considerNotify</span><span class="token punctuation">(</span><span class="token class-name">ObserverWrapper</span> observer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>observer<span class="token punctuation">.</span>mActive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token comment">// Check latest state b4 dispatch. Maybe it changed state but we didn't get the event yet.</span>
+  <span class="token comment">//</span>
+  <span class="token comment">// we still first check observer.active to keep it as the entrance for events. So even if</span>
+  <span class="token comment">// the observer moved to an active state, if we've not received that event, we better not</span>
+  <span class="token comment">// notify for a more predictable notification order.</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>observer<span class="token punctuation">.</span><span class="token function">shouldBeActive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    observer<span class="token punctuation">.</span><span class="token function">activeStateChanged</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>observer<span class="token punctuation">.</span>mLastVersion <span class="token operator">>=</span> mVersion<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  observer<span class="token punctuation">.</span>mLastVersion <span class="token operator">=</span> mVersion<span class="token punctuation">;</span>
+  observer<span class="token punctuation">.</span>mObserver<span class="token punctuation">.</span><span class="token function">onChanged</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">T</span><span class="token punctuation">)</span> mData<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个方法是具体执行通知观察者值变化的地方。</p>
+<p>那么LiveData是如何判断新值和旧值的呢？</p>
+<p>在setValue方法中，有一个<code>mVersion++</code>语句，每次设置新值都会触发这个mVersion的自增，然后在considerNotify方法中，去校验observer是否处于active状态以及新值版本号与observer中的版本号，如果observer<strong>应当</strong>处于非active状态而仍然处于active状态(<strong>因为状态可能由于handler机制并没有及时变更</strong>)，则进行状态变更并返回，并且如果<code>observer.mLastVersion &gt;= mVersion</code>，则直接返回，因为此时observer已经更新过此值。<strong>也就是说，只有observer处于active状态且当前mVersion &gt; observer.mVersion的时候，才去通知observer更新值</strong>。</p>
+<p>接下来，着重看一下<em>LifecycleBoundObserver</em>和<em>ObserverWrapper</em>这个两个类。</p>
+<h2 id="LifecycleBoundObserver和ObserverWrapper"><a href="#LifecycleBoundObserver和ObserverWrapper" class="headerlink" title="LifecycleBoundObserver和ObserverWrapper"></a>LifecycleBoundObserver和ObserverWrapper</h2><p><em>ObserverWrapper</em>是<em>Observer</em>的抽象包装类，代码很简单：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">ObserverWrapper</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">final</span> <span class="token class-name">Observer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">T</span><span class="token punctuation">></span></span> mObserver<span class="token punctuation">;</span>
+  <span class="token keyword">boolean</span> mActive<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> mLastVersion <span class="token operator">=</span> <span class="token constant">START_VERSION</span><span class="token punctuation">;</span>
+
+  <span class="token class-name">ObserverWrapper</span><span class="token punctuation">(</span><span class="token class-name">Observer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">T</span><span class="token punctuation">></span></span> observer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    mObserver <span class="token operator">=</span> observer<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">abstract</span> <span class="token keyword">boolean</span> <span class="token function">shouldBeActive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">boolean</span> <span class="token function">isAttachedTo</span><span class="token punctuation">(</span><span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">void</span> <span class="token function">detachObserver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">void</span> <span class="token function">activeStateChanged</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> newActive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>newActive <span class="token operator">==</span> mActive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// immediately set active state, so we'd never dispatch anything to inactive</span>
+    <span class="token comment">// owner</span>
+    mActive <span class="token operator">=</span> newActive<span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> wasInactive <span class="token operator">=</span> <span class="token class-name">LiveData</span><span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>mActiveCount <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token class-name">LiveData</span><span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>mActiveCount <span class="token operator">+=</span> mActive <span class="token operator">?</span> <span class="token number">1</span> <span class="token operator">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>wasInactive <span class="token operator">&amp;&amp;</span> mActive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">onActive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">LiveData</span><span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>mActiveCount <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>mActive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">onInactive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>mActive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">dispatchingValue</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在activeStateChanged方法中，先判断是否是状态的改变，如果<code>newActive == mActive</code>说明激活状态未改变，则直接返回；然后判断按照激活的observer数目和mActive状态，来判断LiveData的状态，并调用其空回调函数；最后如果mActive为true，则进行针对这个<em>ObserverWrapper</em>的事件分发。</p>
+<p><em>ObserverWrapper</em>有两个子类，<em>LifecycleBoundObserver</em>和<em>AlwaysActiveObserver</em>，<em>AlwaysActiveObserver</em>是与生命周期无关的observer，需要谨慎使用，在适当的时候，通过removeObserver来删除，我们重点看<em>LifecycleBoundObserver</em>。</p>
+<p><em>LifecycleBoundObserver</em>同时实现了<em>LifecycleEventObserver</em>，这就使得这个类具备了生命周期关联性。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">LifecycleBoundObserver</span> <span class="token keyword">extends</span> <span class="token class-name">ObserverWrapper</span> <span class="token keyword">implements</span> <span class="token class-name">LifecycleEventObserver</span> <span class="token punctuation">&#123;</span>
+  <span class="token annotation punctuation">@NonNull</span>
+  <span class="token keyword">final</span> <span class="token class-name">LifecycleOwner</span> mOwner<span class="token punctuation">;</span>
+
+  <span class="token class-name">LifecycleBoundObserver</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">,</span> <span class="token class-name">Observer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> <span class="token class-name">T</span><span class="token punctuation">></span></span> observer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mOwner <span class="token operator">=</span> owner<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">boolean</span> <span class="token function">shouldBeActive</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> mOwner<span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isAtLeast</span><span class="token punctuation">(</span><span class="token constant">STARTED</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onStateChanged</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">LifecycleOwner</span> source<span class="token punctuation">,</span>
+                             <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Lifecycle<span class="token punctuation">.</span>Event</span> event<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>mOwner<span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCurrentState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token constant">DESTROYED</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">removeObserver</span><span class="token punctuation">(</span>mObserver<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">activeStateChanged</span><span class="token punctuation">(</span><span class="token function">shouldBeActive</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">boolean</span> <span class="token function">isAttachedTo</span><span class="token punctuation">(</span><span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> mOwner <span class="token operator">==</span> owner<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">void</span> <span class="token function">detachObserver</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    mOwner<span class="token punctuation">.</span><span class="token function">getLifecycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">removeObserver</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在onStateChanged方法中，当生命周期处于<strong>DESTROYED</strong>状态时候，则删除这个observer。除此以外，当mOwner的生命周期处于<strong>STARTED</strong>之后的状态，则认为<code>shouldBeActive</code>，当生命周期函数onStateChanged被触发时候，将设置是否active。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过LiveData的这些特性，我们可以实现Activity - Fragment, Fragment - Fragment的通信，另外也可以做应用的事件总线，比如<strong>LiveEventBus</strong>。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

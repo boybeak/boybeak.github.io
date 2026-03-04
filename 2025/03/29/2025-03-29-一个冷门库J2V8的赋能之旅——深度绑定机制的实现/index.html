@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一个冷门库J2V8的赋能之旅——深度绑定机制的实现 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">一个冷门库J2V8的赋能之旅——深度绑定机制的实现</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2025-03-29">
+          2025.03.29
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+            <span class="article-tag">J2V8</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>不知道各位大神在工作中有没有用到过J2V8，简单介绍一下J2V8，这是谷歌开源的大名鼎鼎的JS执行引擎V8的java封装，旨在将V8引擎引入到java的开发项目中，这样就可以在java项目中执行js代码了。<br>为什么要使用这个库呢？因为我之前的工作是做SDK，这个SDK的一个核心功能就是作为JS的容器，将JS的代码在移动端跑起来，当然，WebView本身就可以执行JS代码，J2V8是作为高性能的替代引入的，目的是在运行JS游戏时更高效。</p>
+<span id="more"></span>
+
+<p>该文章改自我的博客文章<a target="_blank" rel="noopener" href="https://boybeak.github.io/android%E6%8A%80%E5%B7%A7/2023/08/12/J2V8%E6%B7%B1%E5%BA%A6%E7%BB%91%E5%AE%9A%E6%9C%BA%E5%88%B6%E5%88%86%E4%BA%AB.html">J2V8深度绑定机制分享</a></p>
+<p>项目源码链接：<a target="_blank" rel="noopener" href="https://github.com/boybeak/v8x">v8x</a></p>
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy"><span class="token comment">// 核心库（必选）</span>
+implementation <span class="token string">'com.eclipsesource.j2v8:j2v8:6.2.0@aar'</span>
+
+<span class="token comment">// 按需选择 CPU 架构支持（以下为常见架构）</span>
+implementation <span class="token string">'com.eclipsesource.j2v8:j2v8-4.8.0-android-arm64:6.2.0@aar'</span>  <span class="token comment">// 64位 ARM</span>
+implementation <span class="token string">'com.eclipsesource.j2v8:j2v8-4.8.0-android-armeabi-v7a:6.2.0@aar'</span>  <span class="token comment">// 32位 ARM</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h2><pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> v8 <span class="token operator">=</span> V8<span class="token punctuation">.</span><span class="token function">createV8Runtime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">val</span> canvas <span class="token operator">=</span> <span class="token function">V8Object</span><span class="token punctuation">(</span>v8<span class="token punctuation">)</span><span class="token punctuation">;</span>
+canvas<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"getContext"</span></span><span class="token punctuation">,</span> <span class="token function">V8Function</span><span class="token punctuation">(</span>v8<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> _<span class="token punctuation">,</span> _ <span class="token operator">-></span>
+    <span class="token function">createContextObject</span><span class="token punctuation">(</span>v8<span class="token punctuation">,</span> androidCanvas<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+v8<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"canvas"</span></span><span class="token punctuation">,</span> canvas<span class="token punctuation">)</span>
+v8<span class="token punctuation">.</span><span class="token function">executeVoidScript</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"这里是js代码"</span></span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>做JS小游戏的容器时，我们的架构是这样的，由Android的原声控件(主要是SurfaceView)作为画面的渲染，然后封装一个context(这里指的是web canvas的context，而非Android原生的Context类)的java对象，将这个对象传递到J2V8的JS运行环境中。这样做，就是为了能将JS的执行与游戏画面的渲染，都能达到一个最高效的状态。<br>但是同样也有问题，就是双层(JS层&#x2F;Java层)的对象中变量不一致的问题，比如通过J2V8执行下面js代码。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> ctx <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 这里的ctx是Java层返回的V8Object对象</span>
+ctx<span class="token punctuation">.</span>lineWidth <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token operator">...</span>
+ctx<span class="token punctuation">.</span><span class="token function">stroke</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>JS层的ctx实际上是有一个对应的Java对象的，在js代码中，为ctx赋值了<code>ctx.lineWidth = 10;</code>，然后再执行<code>ctx.stroke()</code>方法，同样的，stroke方法也是java层对象执行，但是问题是，<code>ctx.lineWidth = 10</code>这句代码，java层的对象并不能感知到。导致绘制时，就有问题。</p>
+<h2 id="旧的方案"><a href="#旧的方案" class="headerlink" title="旧的方案"></a>旧的方案</h2><p>旧的方案是，让写js框架的同学，写一个代理，在遇到<code>ctx.lineWidth = 10</code>这类代码时，执行一个ctx中约定的方法，将新值以及变量名都通知给java端，但是这样做就有问题了：</p>
+<ol>
+<li>有这种需求的类可能很多，每一个都要JS层做相应的适配，这会增加工作量和调试沟通成本；</li>
+<li>并不是所有属性的变化都是Java层关心的；</li>
+<li>JS层并不知道Java层的属性与类的关系，容易错乱，导致通知了属性变化，却不知道是哪个对象的属性变化了；</li>
+<li>后期Java层类做了变动，需要JS层做相应修改，一旦遗漏，就会产生bug；</li>
+<li>js框架需要尽可能在多端保持一致，不可能单独为安卓写这么多定制代码；</li>
+</ol>
+<p>所以，卑微的Android狗就只能土法炼钢、曲线救国搞出这个J2V8的深度绑定机制了。</p>
+<h2 id="二、J2V8Binding"><a href="#二、J2V8Binding" class="headerlink" title="二、J2V8Binding"></a>二、J2V8Binding</h2><p>J2V8Binding的目标是，将JS层属性的变更感知，全部控制在Java层内，无需JS层参与额外代码。</p>
+<h3 id="2-1-基本原理"><a href="#2-1-基本原理" class="headerlink" title="2.1 基本原理"></a>2.1 基本原理</h3><p>与旧方案类似的，我们仍然需要一个JS层的代理，而与旧方案不同的，新方案的代理是由Java层“生成”。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> CREATE_PROXY_JS <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">""</span></span>"
+function <span class="token function">v8CreateProxy</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> new <span class="token function">Proxy</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">set</span><span class="token operator">:</span> <span class="token function">function</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 在此拦截需要的值变化，并发送给Java层</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token string-literal singleline"><span class="token string">""</span></span>"
+<span class="token comment">// ... 初始化V8时 ...</span>
+v8<span class="token punctuation">.</span><span class="token function">executeScript</span><span class="token punctuation">(</span>CREATE_PROXY_JS<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里我们声明一段JS代码，这里用于创建JS层的代理对象。在初始化V8时，将此段JS代码注入到V8环境中，当我们需要一个JS层代理对象时，就可以执行此JS函数<code>v8CreateProxy</code>创建一个JS层的代理对象。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">createJSProxy</span><span class="token punctuation">(</span>v8obj<span class="token operator">:</span> V8Object<span class="token punctuation">)</span><span class="token operator">:</span> V8Object <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> v8<span class="token punctuation">.</span><span class="token function">executeObjectFunction</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"v8CreateProxy"</span></span><span class="token punctuation">,</span> <span class="token function">V8Array</span><span class="token punctuation">(</span>v8<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span> <span class="token function">push</span><span class="token punctuation">(</span>v8obj<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-封装"><a href="#2-2-封装" class="headerlink" title="2.2 封装"></a>2.2 封装</h3><p>对以上基本逻辑进行封装，有关键类<strong>V8Binding</strong>、<strong>V8Manager</strong>、<strong>V8Field</strong>和<strong>V8Method</strong>。</p>
+<h4 id="2-2-1-V8Binding"><a href="#2-2-1-V8Binding" class="headerlink" title="2.2.1 V8Binding"></a>2.2.1 V8Binding</h4><p>一个需要绑定的类，需要实现<strong>V8Binding</strong>接口。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">interface</span> V8Binding <span class="token punctuation">&#123;</span>
+    <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> TAG <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"V8Binding"</span></span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// V8Binding类的唯一id，用于将JS层对象与Java层对象进行一一对应</span>
+    <span class="token comment">// 默认实现为该对象的hashCodeo().toString()</span>
+    <span class="token keyword">fun</span> <span class="token function">getBindingId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> String <span class="token punctuation">&#123;</span>  <span class="token keyword">return</span> <span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 获取或者创建一个与其对应的代理V8Object</span>
+    <span class="token keyword">fun</span> <span class="token function">getMyBinding</span><span class="token punctuation">(</span>v8<span class="token operator">:</span> V8<span class="token punctuation">)</span><span class="token operator">:</span> V8Object <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> V8Manager<span class="token punctuation">.</span><span class="token function">obtain</span><span class="token punctuation">(</span>v8<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">run</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isBound</span><span class="token punctuation">(</span><span class="token function">getBindingId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">createBinding</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token label symbol">@V8Binding</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">getBinding</span><span class="token punctuation">(</span><span class="token function">getBindingId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 没有绑定，但是仍然关心的属性，获取关心的属性名称</span>
+    <span class="token keyword">fun</span> <span class="token function">getCareForFieldKeys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token function">emptyArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 关心的属性值变更时</span>
+    <span class="token keyword">fun</span> <span class="token function">onCareForFieldChanged</span><span class="token punctuation">(</span>key<span class="token operator">:</span> String<span class="token punctuation">,</span> newValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">,</span> oldValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 绑定的属性值由null变为非null值时触发，只针对非基本数据类型(数值与String)的属性触发</span>
+    <span class="token keyword">fun</span> <span class="token function">onBindingCreated</span><span class="token punctuation">(</span>target<span class="token operator">:</span> V8Object<span class="token punctuation">,</span> fieldInfo<span class="token operator">:</span> Key<span class="token punctuation">,</span> value<span class="token operator">:</span> V8Object<span class="token punctuation">)</span><span class="token operator">:</span> V8Binding <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token function">NotImplementedError</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"onCreateBinding must be implement when new binding created"</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 绑定的属性值由非null变为null值时触发，只针对非基本数据类型(数值与String)的属性触发</span>
+    <span class="token keyword">fun</span> <span class="token function">onBindingDestroyed</span><span class="token punctuation">(</span>target<span class="token operator">:</span> V8Object<span class="token punctuation">,</span> fieldInfo<span class="token operator">:</span> Key<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token function">NotImplementedError</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"onBindingDestroyed must be implement when binding destroyed"</span></span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// 绑定的属性值发生变化时触发</span>
+    <span class="token keyword">fun</span> <span class="token function">onBindingChanged</span><span class="token punctuation">(</span>target<span class="token operator">:</span> V8Object<span class="token punctuation">,</span> fieldInfo<span class="token operator">:</span> Key<span class="token punctuation">,</span> newValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">,</span> oldValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在<strong>getMyBinding</strong>方法中，我们使用V8Manager来创建或者获取一个与当前对象绑定的V8Object对象。</p>
+<h4 id="2-2-2-V8Manager"><a href="#2-2-2-V8Manager" class="headerlink" title="2.2.2 V8Manager"></a>2.2.2 V8Manager</h4><p>V8Manager是一个针对某个V8环境的管理类，主要是用于维护JS层对象与Java层的绑定关系，执行创建绑定关系、删除绑定关系，分发属性变更事件等作用，J2V8Binding的主要核心逻辑的所在。</p>
+<p>由于此处涉及到大量代码细节，故不在此罗列代码具体分析。</p>
+<h4 id="2-2-3-V8Field和V8Method"><a href="#2-2-3-V8Field和V8Method" class="headerlink" title="2.2.3 V8Field和V8Method"></a>2.2.3 V8Field和V8Method</h4><p>这两个类是注解类，用于标记类内属性和方法。</p>
+<p><strong>@V8Field(binding&#x3D;?)</strong>: 标记属性，其中有一个binding属性，标记此属性是否需要绑定，如果需要绑定，则会有事件回调，默认值为false。</p>
+<p><strong>@V8Method(jsFuncName&#x3D;?)</strong>: 标记方法，其中有一个jsFuncName属性，用于标识对应的JS函数的名称。</p>
+<h3 id="2-3-基本使用方法"><a href="#2-3-基本使用方法" class="headerlink" title="2.3 基本使用方法"></a>2.3 基本使用方法</h3><p>一个简单的示例类如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> User <span class="token operator">:</span> V8Binding <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 不需要绑定的属性，值会传递到对应的JS对象，但该值在JS层发生变化，Java层不会知道</span>
+    <span class="token annotation builtin">@V8Field</span>
+    <span class="token keyword">val</span> name <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"John"</span></span>
+    <span class="token comment">// 需要绑定的属性，初始值会传递到JS对象，该值在JS层发生变化，会传递到Java层</span>
+    <span class="token annotation builtin">@V8Field</span><span class="token punctuation">(</span>binding <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    <span class="token keyword">var</span> age <span class="token operator">=</span> <span class="token number">15</span>
+
+    <span class="token comment">// 需要绑定的V8Binding类型属性，与之对应的V8Object会传递到JS对象，</span>
+    <span class="token comment">// 在JS层，如果变更为其他JS层内部的对象，会解绑之前的关系，与新的JS对象建立新的绑定关系</span>
+    <span class="token annotation builtin">@V8Binding</span><span class="token punctuation">(</span>binding <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> location<span class="token operator">:</span> V8Binding <span class="token operator">=</span> <span class="token operator">..</span><span class="token punctuation">.</span>
+
+    <span class="token comment">// 在此方法中</span>
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onBindingChanged</span><span class="token punctuation">(</span>target<span class="token operator">:</span> V8Object<span class="token punctuation">,</span> fieldInfo<span class="token operator">:</span> Key<span class="token punctuation">,</span> newValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">,</span> oldValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">when</span><span class="token punctuation">(</span>fieldInfo<span class="token punctuation">.</span>name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token string-literal singleline"><span class="token string">"age"</span></span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation builtin">@V8Method</span><span class="token punctuation">(</span>jsFuncName <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"js层对应的名称，默认值与当前方法名一致"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">fun</span> <span class="token function">sayHello</span><span class="token punctuation">(</span>helloTo<span class="token operator">:</span> String<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">fun</span> <span class="token function">getCareForFieldKeys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span> <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> <span class="token function">arrayOf</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"introduction"</span></span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">fun</span> <span class="token function">onCareForFieldChanged</span><span class="token punctuation">(</span>key<span class="token operator">:</span> String<span class="token punctuation">,</span> newValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">,</span> oldValue<span class="token operator">:</span> Any<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">when</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token string-literal singleline"><span class="token string">"introduction"</span></span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>当使用这个User类的一个对象user时候，可以按照如下方式使用。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> v8 <span class="token operator">=</span> V8<span class="token punctuation">.</span><span class="token function">createRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">val</span> user <span class="token operator">=</span> <span class="token operator">..</span><span class="token punctuation">.</span>
+v8<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"user"</span></span><span class="token punctuation">,</span> user<span class="token punctuation">.</span><span class="token function">getMyBinding</span><span class="token punctuation">(</span>v8<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>这里，我们在JS环境中，增加了一个user变量。</p>
+<p>然后在JS层，执行以下代码。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">user<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">"Smith"</span><span class="token punctuation">;</span>    <span class="token comment">// Java层不会感知到</span>
+user<span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">16</span><span class="token punctuation">;</span>        <span class="token comment">// Java层可以在onBindingChanged感知到</span>
+user<span class="token punctuation">.</span>location <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>    <span class="token comment">// Java层可以在onBindingChanged感知到，并解绑旧location值，与新值建立绑定关系</span>
+user<span class="token punctuation">.</span>introduction <span class="token operator">=</span> <span class="token string">"Hi"</span><span class="token punctuation">;</span>    <span class="token comment">// Java层可以在onCareForFieldChanged感知到</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在修改<code>name</code>属性时，由于此属性是被V8Field标记binding为false，则不会通知Java层此值的修改事件。</p>
+<p>在修改<code>age</code>属性时，由于此值被V8Field标记binding为true，会通知Java层此值的修改事件。</p>
+<p>在修改<code>location</code>属性时，虽然此值为一个对象，但是被V8Field标记binding为true，会通知Java层此值的修改事件。注意：用V8Field标记的对象类型，必须为V8可以接受的数据类型或者V8Binding类型。</p>
+<p>在修改<code>introduction</code>时，虽然此值没有被V8Field标记，但是由于在getCareForFieldKeys返回的数组中，同样会有事件通知。</p>
+<p>有了这种机制，小游戏开发中，就可以很方便的感知到绘制属性的变化。</p>
+<h3 id="2-4-仍然存在的问题"><a href="#2-4-仍然存在的问题" class="headerlink" title="2.4 仍然存在的问题"></a>2.4 仍然存在的问题</h3><p>目前仍然有一种问题是无法解决的，那就是数组中某个数据发生变化时，Java层是无法得知的。</p>
+<p>如下代码：</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> image <span class="token operator">=</span> <span class="token operator">...</span><span class="token punctuation">;</span>
+image<span class="token punctuation">.</span>pixelBytes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 修改R值</span>
+image<span class="token punctuation">.</span>pixelBytes<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 修改G值</span>
+image<span class="token punctuation">.</span>pixelBytes<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 修改B值</span>
+image<span class="token punctuation">.</span>pixelBytes<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 修改A值</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>目前这种场景较少，只在部分demo中见到直接修改图像像素数据的情况。</p>
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><p>以上代码片段只为展示逻辑主脉络，省略了大量细节，需要看细节部分，可以从<strong>V8Manager</strong>这里作为入口。源码链接：<a target="_blank" rel="noopener" href="https://github.com/boybeak/v8x">v8x</a></p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apk瘦身术 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">Apk瘦身术</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-19">
+          2022.09.19
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。</p>
+<h2 id="一、资源文件"><a href="#一、资源文件" class="headerlink" title="一、资源文件"></a>一、资源文件</h2><h3 id="1-1-删除无用资源文件"><a href="#1-1-删除无用资源文件" class="headerlink" title="1.1 删除无用资源文件"></a>1.1 删除无用资源文件</h3><h4 id="1-1-1-Lint工具"><a href="#1-1-1-Lint工具" class="headerlink" title="1.1.1 Lint工具"></a>1.1.1 Lint工具</h4><p>菜单 -&gt; Analyze -&gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除。</p>
+<h4 id="1-1-2-shrinkResources"><a href="#1-1-2-shrinkResources" class="headerlink" title="1.1.2 shrinkResources"></a>1.1.2 shrinkResources</h4><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">buildTypes <span class="token punctuation">&#123;</span>
+  release <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 不显示Log</span>
+    buildConfigField <span class="token interpolation-string"><span class="token string">"boolean"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"LOG_DEBUG"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"false"</span></span>
+    <span class="token comment">//混淆</span>
+    minifyEnabled <span class="token boolean">true</span>
+    <span class="token comment">// 移除无用的resource文件</span>
+    shrinkResources <span class="token boolean">true</span>
+    proguardFiles <span class="token function">getDefaultProguardFile</span><span class="token punctuation">(</span><span class="token string">'proguard-android.txt'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'proguard-rules.pro'</span>
+    signingConfig signingConfigs<span class="token punctuation">.</span>release
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>使用shrinkResources的前提是，打开混淆minifyEnabled，建议只在release版本开启，不然会使得编译速度变慢。</p>
+<h3 id="1-2-图标类资源图片矢量化"><a href="#1-2-图标类资源图片矢量化" class="headerlink" title="1.2 图标类资源图片矢量化"></a>1.2 图标类资源图片矢量化</h3><p>对于图标类资源，可以选择用vector-drawable来代替，通过AndroidStudio自带的转换工具可以将svg文件转换为vector-drawable文件。</p>
+<blockquote>
+<p>具体操作为，在drawable相关文件夹上右键 -&gt; New -&gt; Vector Assert。</p>
+</blockquote>
+<p>你也可以进行批量转换：<a target="_blank" rel="noopener" href="https://github.com/vdmeer/svg2vector">工具地址</a></p>
+<h3 id="1-3-非图标类资源图片适当压缩与格式选择"><a href="#1-3-非图标类资源图片适当压缩与格式选择" class="headerlink" title="1.3 非图标类资源图片适当压缩与格式选择"></a>1.3 非图标类资源图片适当压缩与格式选择</h3><h4 id="1-3-1-使用tinypng有损压缩png图片"><a href="#1-3-1-使用tinypng有损压缩png图片" class="headerlink" title="1.3.1 使用tinypng有损压缩png图片"></a>1.3.1 使用tinypng有损压缩png图片</h4><p>通过<a target="_blank" rel="noopener" href="http://tinypng.com/">Tinypng</a>官网上传压缩再下载，在保持alpha通道的情况下对png图片的压缩可达到1&#x2F;3以内，且肉眼基本看不出差别。</p>
+<h4 id="1-3-2-使用jpg格式"><a href="#1-3-2-使用jpg格式" class="headerlink" title="1.3.2 使用jpg格式"></a>1.3.2 使用jpg格式</h4><p>对于非透明的大图，jpg会比png的大小和内存都更有优势，虽然不是绝对的，但是通常会减少到一半不止。</p>
+<h4 id="1-3-3-使用webp格式"><a href="#1-3-3-使用webp格式" class="headerlink" title="1.3.3 使用webp格式"></a>1.3.3 使用webp格式</h4><p>webp格式支持透明度，压缩比比jpg高，但是显示效果却不输于jpg。缺点是在Android端的原生支持不好，从Android4.0+开始原生支持，但是不支持透明度，从Android4.3+开始支持带有透明度的webp。如果不需要兼容到这个版本，可以直接使用。</p>
+<p>在Android studio中，在图片资源上右键可以转换为webp。详细参见<a target="_blank" rel="noopener" href="https://developer.android.com/studio/write/convert-webp">创建 WebP 图片</a>。</p>
+<h4 id="1-3-4-适当的压缩和尺寸"><a href="#1-3-4-适当的压缩和尺寸" class="headerlink" title="1.3.4 适当的压缩和尺寸"></a>1.3.4 适当的压缩和尺寸</h4><p>无论以上哪种格式图片，都可以通过选择合适的尺寸和适当的提高压缩率的方式，来进一步减少文件大小，进而减小apk文件的体积。</p>
+<h4 id="1-3-5-帧动画尽可能使用lottie"><a href="#1-3-5-帧动画尽可能使用lottie" class="headerlink" title="1.3.5 帧动画尽可能使用lottie"></a>1.3.5 帧动画尽可能使用lottie</h4><p><a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-android">Lottie</a>是Aribnb开源的动画库，通过json文件来进行展示动画，动画文件可以通过Adobe AE来制作。</p>
+<h3 id="1-4-有限国际化"><a href="#1-4-有限国际化" class="headerlink" title="1.4 有限国际化"></a>1.4 有限国际化</h3><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">android <span class="token punctuation">&#123;</span>
+  defaultConfig <span class="token punctuation">&#123;</span>
+    resConfigs <span class="token interpolation-string"><span class="token string">"zh"</span></span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-5-第三方库中大尺寸的无用资源同名替换"><a href="#1-5-第三方库中大尺寸的无用资源同名替换" class="headerlink" title="1.5 第三方库中大尺寸的无用资源同名替换"></a>1.5 第三方库中大尺寸的无用资源同名替换</h3><p>如果在第三方类库中，存在用不到的图片资源文件，可以通过1x1像素的同名图片进行替换。</p>
+<h3 id="1-6-使用AndResGuard"><a href="#1-6-使用AndResGuard" class="headerlink" title="1.6 使用AndResGuard"></a>1.6 使用AndResGuard</h3><p><a target="_blank" rel="noopener" href="https://github.com/shwenzhang/AndResGuard">AndResGuard</a>，在gradle文件中就可以直接使用，非常方便。</p>
+<h2 id="二、源代码"><a href="#二、源代码" class="headerlink" title="二、源代码"></a>二、源代码</h2><h3 id="2-1-开启混淆"><a href="#2-1-开启混淆" class="headerlink" title="2.1 开启混淆"></a>2.1 开启混淆</h3><p>这是基本操作了，无需多言。</p>
+<h3 id="2-2-手动修改开源代码"><a href="#2-2-手动修改开源代码" class="headerlink" title="2.2 手动修改开源代码"></a>2.2 手动修改开源代码</h3><p>将开源代码中我们不需要的类或者方法等删除掉，但是这需要对开源代码非常了解，而且确保版本兼容性，将来开源库升级或者随着我们产品需求变更对开源库的要求也改变了，都会影响对开源库的修改，不建议使用。</p>
+<h2 id="三、第三方类库"><a href="#三、第三方类库" class="headerlink" title="三、第三方类库"></a>三、第三方类库</h2><h3 id="3-1-动态库"><a href="#3-1-动态库" class="headerlink" title="3.1 动态库"></a>3.1 动态库</h3><h4 id="3-1-1-删除非必要平台so库"><a href="#3-1-1-删除非必要平台so库" class="headerlink" title="3.1.1 删除非必要平台so库"></a>3.1.1 删除非必要平台so库</h4><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">ndk <span class="token punctuation">&#123;</span>
+  <span class="token comment">//设置支持的so库架构</span>
+  abiFilters <span class="token interpolation-string"><span class="token string">"armeabi-v7a"</span></span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>基本上，对于手机来说，支持armeabi-v7a就足够了。</p>
+<h4 id="3-1-2-动态加载so库"><a href="#3-1-2-动态加载so库" class="headerlink" title="3.1.2 动态加载so库"></a>3.1.2 动态加载so库</h4><p>如果不是一启动应用就需要初始化的so库，完全可以在需要的时候再下载这个so文件，再通过以下代码进行加载。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>
+  <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">loadLibrary</span><span class="token punctuation">(</span><span class="token string">"path/to/lib.so"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="插件化"><a href="#插件化" class="headerlink" title="插件化"></a>插件化</h3><p>将不需要在启动就加载的功能模块，通过插件化，在用户使用的时候再从服务器加载。</p>
+<h3 id="删除class文件的debug-items"><a href="#删除class文件的debug-items" class="headerlink" title="删除class文件的debug items"></a>删除class文件的debug items</h3><p>不建议使用，这种做法，事倍功半。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>让PAG动画在富文本中动起来 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">让PAG动画在富文本中动起来</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2025-07-10">
+          2025.07.10
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+            <span class="article-tag">PAG动画</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>我也是最近才接触到了PAG动画，PAG动画就是直播间送礼物时，礼物特效播放的那种动画。类似的是Lottie，但是Lottie相比PAG来说，不能做的很复杂，对于复杂动画播放效率不高。<br>但是这玩意儿它不能放入Spannable富文本中播放。您可能问了，谁会把礼物特效放在富文本中播放啊？对啊，我也想问啊，做礼物特效场景的库，干嘛非得塞到富文本中啊，谁能知道产品脑子里想的是什么啊？</p>
+<p><img src="/assets/pag-drawable.gif" alt="page-drawable"></p>
+<p>我经过几日研究，发现这也不是不能实现的，只不过又得曲线救国了。</p>
+<h2 id="一、PAG是什么？"><a href="#一、PAG是什么？" class="headerlink" title="一、PAG是什么？"></a>一、PAG是什么？</h2><blockquote>
+<p>Portable Animated Graphics 是一套完整的动效工作流解决方案。<br>目标是降低或消除动效相关的研发成本，能够一键将设计师在 AE（Adobe After Effects）中制作的动效内容导出成素材文件，并快速上线应用于几乎所有的主流平台。</p>
+</blockquote>
+<p>这是其<a target="_blank" rel="noopener" href="https://pag.io/">官网</a>的介绍。</p>
+<h3 id="1-1-PAG怎么使用？"><a href="#1-1-PAG怎么使用？" class="headerlink" title="1.1 PAG怎么使用？"></a>1.1 PAG怎么使用？</h3><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">implementation <span class="token string">'com.tencent.tav:libpag:libpag:4.4.25'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>org.libpag.PAGImageView</span>
+    <span class="token attr-name"><span class="token namespace">android:</span>id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@+id/pagImageView<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">android:</span>layout_width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>240dp<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">android:</span>layout_height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>240dp<span class="token punctuation">"</span></span>
+    <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">pagImageView<span class="token punctuation">.</span>path <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"assets://live_follow.pag"</span></span>
+pagImageView<span class="token punctuation">.</span><span class="token function">setRepeatCount</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+pagImageView<span class="token punctuation">.</span><span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>运行效果可参考文章开头的动图中位于上方的控件效果。</p>
+<p>基本使用是不是很简单？但是很遗憾的是，这些并不能直接在富文本中使用。</p>
+<h2 id="二、如何让PAG动画在富文本中动起来？"><a href="#二、如何让PAG动画在富文本中动起来？" class="headerlink" title="二、如何让PAG动画在富文本中动起来？"></a>二、如何让PAG动画在富文本中动起来？</h2><p>富文本，在Android中就是Spannable那一套东西，而在富文本中展示图像，就需要ImageSpan。我们的思路就是，让ImageSpan可以对接Pag动画。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">PAGSpan</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">,</span> onUpdate<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">ImageSpan</span><span class="token punctuation">(</span><span class="token function">PAGDrawable</span><span class="token punctuation">(</span>activity<span class="token punctuation">,</span> onUpdate<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> TAG <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"PAGSpan"</span></span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">var</span> path<span class="token operator">:</span> String<span class="token operator">?</span>
+        <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> pagDrawable<span class="token punctuation">.</span>path
+        <span class="token keyword">set</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            pagDrawable<span class="token punctuation">.</span>path <span class="token operator">=</span> value
+        <span class="token punctuation">&#125;</span>
+    <span class="token keyword">val</span> pagDrawable<span class="token operator">:</span> PAGDrawable
+        <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> drawable <span class="token keyword">as</span> PAGDrawable
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getSize</span><span class="token punctuation">(</span>
+        paint<span class="token operator">:</span> Paint<span class="token punctuation">,</span>
+        text<span class="token operator">:</span> CharSequence<span class="token operator">?</span><span class="token punctuation">,</span>
+        start<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        end<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        fm<span class="token operator">:</span> Paint<span class="token punctuation">.</span>FontMetricsInt<span class="token operator">?</span>
+    <span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> width <span class="token operator">=</span> <span class="token punctuation">(</span>paint<span class="token punctuation">.</span><span class="token function">measureText</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> start<span class="token punctuation">,</span> end<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        pagDrawable<span class="token punctuation">.</span><span class="token function">setBounds</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> paint<span class="token punctuation">.</span>textSize<span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> width
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只要把这个PAGSapn塞入SpannableString就可以展示一个PAG动画了，当然，还需要PAGDrawable的支持。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">PAGDrawable</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">,</span> <span class="token keyword">private</span> <span class="token keyword">val</span> onUpdate<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">Drawable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PAGDrawableManager<span class="token punctuation">.</span><span class="token function">OnPAGDrawCallback</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> TAG <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"PAGDrawable"</span></span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">var</span> activityRef <span class="token operator">=</span> WeakReference<span class="token operator">&lt;</span>Activity<span class="token operator">></span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token keyword">var</span> bitmapRef<span class="token operator">:</span> WeakReference<span class="token operator">&lt;</span>Bitmap<span class="token operator">></span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token keyword">var</span> path<span class="token operator">:</span> String<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+        <span class="token keyword">set</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> oldValue <span class="token operator">=</span> field
+            field <span class="token operator">=</span> value
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>oldValue <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">val</span> srcRect <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">Rect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">private</span> <span class="token keyword">val</span> dstRect <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">Rect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">fun</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> p <span class="token operator">=</span> path <span class="token operator">?:</span> <span class="token keyword">throw</span> <span class="token function">IllegalStateException</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"set path value before call start"</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> activity <span class="token operator">=</span> activityRef<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token keyword">return</span>
+        PAGDrawableManager<span class="token punctuation">.</span><span class="token function">obtain</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">fun</span> <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> p <span class="token operator">=</span> path <span class="token operator">?:</span> <span class="token keyword">return</span>
+        <span class="token keyword">val</span> activity <span class="token operator">=</span> activityRef<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token keyword">return</span>
+        PAGDrawableManager<span class="token punctuation">.</span><span class="token function">obtain</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unregister</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">draw</span><span class="token punctuation">(</span>canvas<span class="token operator">:</span> Canvas<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> bitmap <span class="token operator">=</span> bitmapRef<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token keyword">return</span>
+
+        <span class="token comment">// 获取原始尺寸和目标尺寸</span>
+        <span class="token keyword">val</span> srcWidth <span class="token operator">=</span> bitmap<span class="token punctuation">.</span>width<span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> srcHeight <span class="token operator">=</span> bitmap<span class="token punctuation">.</span>height<span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> dstWidth <span class="token operator">=</span> bounds<span class="token punctuation">.</span><span class="token function">width</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> dstHeight <span class="token operator">=</span> bounds<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token comment">// 计算缩放比例（取宽度和高度比例中较小的）</span>
+        <span class="token keyword">val</span> scale <span class="token operator">=</span> <span class="token function">min</span><span class="token punctuation">(</span>dstWidth <span class="token operator">/</span> srcWidth<span class="token punctuation">,</span> dstHeight <span class="token operator">/</span> srcHeight<span class="token punctuation">)</span>
+
+        <span class="token comment">// 计算缩放后尺寸</span>
+        <span class="token keyword">val</span> scaledWidth <span class="token operator">=</span> srcWidth <span class="token operator">*</span> scale
+        <span class="token keyword">val</span> scaledHeight <span class="token operator">=</span> srcHeight <span class="token operator">*</span> scale
+
+        <span class="token comment">// 计算居中位置</span>
+        <span class="token keyword">val</span> left <span class="token operator">=</span> <span class="token punctuation">(</span>dstWidth <span class="token operator">-</span> scaledWidth<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
+        <span class="token keyword">val</span> top <span class="token operator">=</span> <span class="token punctuation">(</span>dstHeight <span class="token operator">-</span> scaledHeight<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
+
+        <span class="token comment">// 设置源矩形（完整原始图片）</span>
+        srcRect<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bitmap<span class="token punctuation">.</span>width<span class="token punctuation">,</span> bitmap<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
+
+        <span class="token comment">// 创建目标矩形（保持比例并居中）</span>
+        dstRect<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>
+            left<span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            top<span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">(</span>left <span class="token operator">+</span> scaledWidth<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">(</span>top <span class="token operator">+</span> scaledHeight<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+        canvas<span class="token punctuation">.</span><span class="token function">drawBitmap</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">,</span> srcRect<span class="token punctuation">,</span> dstRect<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+
+        onUpdate<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onDraw</span><span class="token punctuation">(</span>bitmap<span class="token operator">:</span> Bitmap<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        bitmapRef <span class="token operator">=</span> <span class="token function">WeakReference</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span>
+        <span class="token function">invalidateSelf</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">setAlpha</span><span class="token punctuation">(</span>alpha<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">setColorFilter</span><span class="token punctuation">(</span>colorFilter<span class="token operator">:</span> ColorFilter<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+    <span class="token annotation builtin">@Deprecated</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"Deprecated in Java"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getOpacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> PixelFormat<span class="token punctuation">.</span>TRANSLUCENT
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在PAGDrawable中，主要是靠<code>PAGDrawableManager</code>控制动画播放，而PAGDrawableManager中，主要是维护了依托于PAGImageView的刷新回调分发，当创建了一个PAGDrawable时，会根据绑定的pag资源路径，进行创建或者查找一个PAGImageView，并将其放置在当前activity的屏幕窗口之外的位置，让其一直播放，并进行刷新事件的订阅，刷新事</p>
+<p><strong>注意，这并不是一个严肃的实现方式，只是一种迫于无奈之下的奇技淫巧，可改进空间可能很大，只是提供一种思路。</strong></p>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/boybeak/PagDrawable">PagDrawable</a></p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

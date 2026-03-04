@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeakCanary原理分析 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">LeakCanary原理分析</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2022-09-17">
+          2022.09.17
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">dependencies <span class="token punctuation">&#123;</span>
+  <span class="token comment">// debugImplementation because LeakCanary should only run in debug builds.</span>
+  debugImplementation <span class="token string">'com.squareup.leakcanary:leakcanary-android:2.5'</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>只需要这样简单配置，就能接入LeakCanary内存泄漏分析，到底是怎样做到的？</p>
+<p>我们将这个问题分成两个问题：</p>
+<ol>
+<li>如何<strong>自动</strong>进行初始化的；</li>
+<li>如何检测到内存泄漏的。</li>
+</ol>
+<h2 id="如何自动进行初始化的"><a href="#如何自动进行初始化的" class="headerlink" title="如何自动进行初始化的"></a>如何自动进行初始化的</h2><p>这部分，我们可以分成两部分去理解——<strong>自动</strong>和<strong>初始化</strong>。</p>
+<h3 id="自动"><a href="#自动" class="headerlink" title="自动"></a>自动</h3><p>这一切还要从<code>ActivityThread</code>说起。<code>ActivityThread</code>中，执行了一些应用启动的初始化工作，在<code>ActivityThread</code>源码中，我们可以看到其内部类<code>class H extends Handler</code>的<code>handleMessage</code>方法中，有很多与应用相关的一些基本操作，比如<strong>BIND_APPLICATION</strong>, <strong>EXIT_APPLICATION</strong>, <strong>CREATE_SERVICE</strong>, <strong>BIND_SERVICE</strong>等，其中需要我们关注的是<strong>BIND_APPLICATION</strong>。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">handleMessage</span><span class="token punctuation">(</span><span class="token class-name">Message</span> msg<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+            <span class="token keyword">switch</span> <span class="token punctuation">(</span>msg<span class="token punctuation">.</span>what<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">case</span> <span class="token constant">BIND_APPLICATION</span><span class="token operator">:</span>
+                    <span class="token class-name">Trace</span><span class="token punctuation">.</span><span class="token function">traceBegin</span><span class="token punctuation">(</span><span class="token class-name">Trace</span><span class="token punctuation">.</span><span class="token constant">TRACE_TAG_ACTIVITY_MANAGER</span><span class="token punctuation">,</span> <span class="token string">"bindApplication"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token class-name">AppBindData</span> data <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">AppBindData</span><span class="token punctuation">)</span>msg<span class="token punctuation">.</span>obj<span class="token punctuation">;</span>
+                    <span class="token function">handleBindApplication</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token class-name">Trace</span><span class="token punctuation">.</span><span class="token function">traceEnd</span><span class="token punctuation">(</span><span class="token class-name">Trace</span><span class="token punctuation">.</span><span class="token constant">TRACE_TAG_ACTIVITY_MANAGER</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span>
+                <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+            <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，其中调用了<code>handleBindApplication</code>方法。进入这个方法查看。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@UnsupportedAppUsage</span>
+<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">handleBindApplication</span><span class="token punctuation">(</span><span class="token class-name">AppBindData</span> data<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token class-name">Application</span> app<span class="token punctuation">;</span>
+  <span class="token keyword">final</span> <span class="token class-name">StrictMode<span class="token punctuation">.</span>ThreadPolicy</span> savedPolicy <span class="token operator">=</span> <span class="token class-name">StrictMode</span><span class="token punctuation">.</span><span class="token function">allowThreadDiskWrites</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">final</span> <span class="token class-name">StrictMode<span class="token punctuation">.</span>ThreadPolicy</span> writesAllowedPolicy <span class="token operator">=</span> <span class="token class-name">StrictMode</span><span class="token punctuation">.</span><span class="token function">getThreadPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// If the app is being launched for full backup or restore, bring it up in</span>
+    <span class="token comment">// a restricted environment with the base application class.</span>
+    app <span class="token operator">=</span> data<span class="token punctuation">.</span>info<span class="token punctuation">.</span><span class="token function">makeApplication</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>restrictedBackupMode<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// Propagate autofill compat state</span>
+    app<span class="token punctuation">.</span><span class="token function">setAutofillOptions</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>autofillOptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// Propagate Content Capture options</span>
+    app<span class="token punctuation">.</span><span class="token function">setContentCaptureOptions</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>contentCaptureOptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    mInitialApplication <span class="token operator">=</span> app<span class="token punctuation">;</span>
+    <span class="token comment">// don't bring up providers in restricted mode; they may depend on the</span>
+    <span class="token comment">// app's custom Application class</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>data<span class="token punctuation">.</span>restrictedBackupMode<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token class-name">ArrayUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>providers<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">installContentProviders</span><span class="token punctuation">(</span>app<span class="token punctuation">,</span> data<span class="token punctuation">.</span>providers<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">// Do this after providers, since instrumentation tests generally start their</span>
+    <span class="token comment">// test thread at this point, and we don't want that racing.</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      mInstrumentation<span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>instrumentationArgs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>
+        <span class="token string">"Exception thrown in onCreate() of "</span>
+        <span class="token operator">+</span> data<span class="token punctuation">.</span>instrumentationName <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      mInstrumentation<span class="token punctuation">.</span><span class="token function">callApplicationOnCreate</span><span class="token punctuation">(</span>app<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>mInstrumentation<span class="token punctuation">.</span><span class="token function">onException</span><span class="token punctuation">(</span>app<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>
+          <span class="token string">"Unable to create application "</span> <span class="token operator">+</span> app<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+          <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">finally</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// If the app targets &lt; O-MR1, or doesn't change the thread policy</span>
+    <span class="token comment">// during startup, clobber the policy to maintain behavior of b/36951662</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">.</span>appInfo<span class="token punctuation">.</span>targetSdkVersion <span class="token operator">&lt;</span> <span class="token class-name">Build</span><span class="token punctuation">.</span><span class="token constant">VERSION_CODES</span><span class="token punctuation">.</span><span class="token constant">O_MR1</span>
+        <span class="token operator">||</span> <span class="token class-name">StrictMode</span><span class="token punctuation">.</span><span class="token function">getThreadPolicy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>writesAllowedPolicy<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token class-name">StrictMode</span><span class="token punctuation">.</span><span class="token function">setThreadPolicy</span><span class="token punctuation">(</span>savedPolicy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>从这个方法中，我们可以找到这样一段代码，需要重点关注的是，<code>ContentProvider</code>的初始化是先于<code>Application.onCreate</code>的，且是被<code>ActivityThread</code><strong>自动</strong>执行的。</p>
+<p>接下来再看LeakCanary源码。找到<a target="_blank" rel="noopener" href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher-android/src/main/java/leakcanary/internal/AppWatcherInstaller.kt"><strong>AppWatcherInstaller.kt</strong></a>这个类。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">/**
+ * Content providers are loaded before the application class is created. [AppWatcherInstaller] is
+ * used to install [leakcanary.AppWatcher] on application start.
+ */</span>
+<span class="token keyword">internal</span> <span class="token keyword">sealed</span> <span class="token keyword">class</span> AppWatcherInstaller <span class="token operator">:</span> <span class="token function">ContentProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+  <span class="token comment">/**
+   * [MainProcess] automatically sets up the LeakCanary code that runs in the main app process.
+   */</span>
+  <span class="token keyword">internal</span> <span class="token keyword">class</span> MainProcess <span class="token operator">:</span> <span class="token function">AppWatcherInstaller</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token comment">/**
+   * When using the `leakcanary-android-process` artifact instead of `leakcanary-android`,
+   * [LeakCanaryProcess] automatically sets up the LeakCanary code
+   */</span>
+  <span class="token keyword">internal</span> <span class="token keyword">class</span> LeakCanaryProcess <span class="token operator">:</span> <span class="token function">AppWatcherInstaller</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Boolean <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> application <span class="token operator">=</span> context<span class="token operator">!!</span><span class="token punctuation">.</span>applicationContext <span class="token keyword">as</span> Application
+    AppWatcher<span class="token punctuation">.</span><span class="token function">manualInstall</span><span class="token punctuation">(</span>application<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">query</span><span class="token punctuation">(</span>
+    uri<span class="token operator">:</span> Uri<span class="token punctuation">,</span>
+    strings<span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token operator">?</span><span class="token punctuation">,</span>
+    s<span class="token operator">:</span> String<span class="token operator">?</span><span class="token punctuation">,</span>
+    strings1<span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token operator">?</span><span class="token punctuation">,</span>
+    s1<span class="token operator">:</span> String<span class="token operator">?</span>
+  <span class="token punctuation">)</span><span class="token operator">:</span> Cursor<span class="token operator">?</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getType</span><span class="token punctuation">(</span>uri<span class="token operator">:</span> Uri<span class="token punctuation">)</span><span class="token operator">:</span> String<span class="token operator">?</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">insert</span><span class="token punctuation">(</span>
+    uri<span class="token operator">:</span> Uri<span class="token punctuation">,</span>
+    contentValues<span class="token operator">:</span> ContentValues<span class="token operator">?</span>
+  <span class="token punctuation">)</span><span class="token operator">:</span> Uri<span class="token operator">?</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">null</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">delete</span><span class="token punctuation">(</span>
+    uri<span class="token operator">:</span> Uri<span class="token punctuation">,</span>
+    s<span class="token operator">:</span> String<span class="token operator">?</span><span class="token punctuation">,</span>
+    strings<span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token operator">?</span>
+  <span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">update</span><span class="token punctuation">(</span>
+    uri<span class="token operator">:</span> Uri<span class="token punctuation">,</span>
+    contentValues<span class="token operator">:</span> ContentValues<span class="token operator">?</span><span class="token punctuation">,</span>
+    s<span class="token operator">:</span> String<span class="token operator">?</span><span class="token punctuation">,</span>
+    strings<span class="token operator">:</span> Array<span class="token operator">&lt;</span>String<span class="token operator">></span><span class="token operator">?</span>
+  <span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，这个类是一个<code>ContentProvider</code>的子类，其query, insert等方法根本没有实际作用，有实际作用的只有<code>onCreate</code>方法，在这个方法中，执行了<code>AppWatcher</code>的install工作。</p>
+<p>这里我们就可以看出来，LeakCanary就是利用<code>ContentProvider</code>的<code>onCreate</code>方法自动执行的特性，来自动“安装”这个类库的。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>通过追踪<code>AppWatcher.manualInstall(application)</code>这句代码，我们可以追踪到<a target="_blank" rel="noopener" href="https://github.com/square/leakcanary/blob/main/leakcanary-android-core/src/main/java/leakcanary/internal/InternalLeakCanary.kt"><strong>InternalLeakCanary.kt</strong></a>的<code>install</code>方法，如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">install</span><span class="token punctuation">(</span>application<span class="token operator">:</span> Application<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">checkMainThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token operator">::</span>application<span class="token punctuation">.</span>isInitialized<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span>
+  <span class="token punctuation">&#125;</span>
+  InternalAppWatcher<span class="token punctuation">.</span>application <span class="token operator">=</span> application
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>isDebuggableBuild<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    SharkLog<span class="token punctuation">.</span>logger <span class="token operator">=</span> <span class="token function">DefaultCanaryLog</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">val</span> configProvider <span class="token operator">=</span> <span class="token punctuation">&#123;</span> AppWatcher<span class="token punctuation">.</span>config <span class="token punctuation">&#125;</span>
+  ActivityDestroyWatcher<span class="token punctuation">.</span><span class="token function">install</span><span class="token punctuation">(</span>application<span class="token punctuation">,</span> objectWatcher<span class="token punctuation">,</span> configProvider<span class="token punctuation">)</span>
+  FragmentDestroyWatcher<span class="token punctuation">.</span><span class="token function">install</span><span class="token punctuation">(</span>application<span class="token punctuation">,</span> objectWatcher<span class="token punctuation">,</span> configProvider<span class="token punctuation">)</span>
+  <span class="token function">onAppWatcherInstalled</span><span class="token punctuation">(</span>application<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，先后执行了<code>ActivityDestroyWatcher.install</code>,<code>FragmentDestroyWatcher.install</code>和<code>onAppWatcherInstalled(application)</code>方法。</p>
+<p>其中在<code>onAppWatcherInstalled</code>创建了LeakCanary图标的快捷方式，用于方便查看内存泄漏的路径信息。最终实现的具体过程可以查看<a target="_blank" rel="noopener" href="https://github.com/square/leakcanary/blob/main/leakcanary-android-core/src/main/java/leakcanary/internal/InternalLeakCanary.kt"><strong>InternalLeakCanary.kt</strong></a>的<code>addDynamicShortcut</code>方法。</p>
+<p>其他的两段代码——<code>ActivityDestroyWatcher.install</code>和<code>FragmentDestroyWatcher.install</code>，分别对应着两个类——<code>ActivityDestroyWatcher</code>和<code>FragmentDestroyWatcher</code>。这两个类相对来说比较简单，主要工作就是执行了<code>application.registerActivityLifecycleCallbacks</code>这段代码，目的是为了监听每个Activity的onDestroy事件。这也是判断该Activity是否泄漏的开端。</p>
+<p>以<code>ActivityDestroyWatcher</code>为例，其ActivityLifecycleCallback中代码如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> lifecycleCallbacks <span class="token operator">=</span>
+    <span class="token keyword">object</span> <span class="token operator">:</span> Application<span class="token punctuation">.</span>ActivityLifecycleCallbacks <span class="token keyword">by</span> <span class="token function">noOpDelegate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onActivityDestroyed</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">configProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>watchActivities<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          objectWatcher<span class="token punctuation">.</span><span class="token function">watch</span><span class="token punctuation">(</span>
+              activity<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token expression">activity<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">.</span>name</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string"> received Activity#onDestroy() callback"</span></span>
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>我们可以看到，这其中，最终是<code>objectWatcher</code>来进行内存泄漏监控的。</p>
+<h2 id="如何检测到内存泄漏的"><a href="#如何检测到内存泄漏的" class="headerlink" title="如何检测到内存泄漏的"></a>如何检测到内存泄漏的</h2><p>这里涉及到两个关键的类：<strong><a target="_blank" rel="noopener" href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher/src/main/java/leakcanary/ObjectWatcher.kt"><code>ObjectWatcher</code></a><strong>和</strong><a target="_blank" rel="noopener" href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher/src/main/java/leakcanary/KeyedWeakReference.kt"><code>KeyedWeakReference</code></a></strong>。</p>
+<p><code>KeyedWeakReference</code>是<code>WeakReference</code>的子类，添加了额外的属性，代码十分简单，如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">KeyedWeakReference</span><span class="token punctuation">(</span>
+  referent<span class="token operator">:</span> Any<span class="token punctuation">,</span>
+  <span class="token keyword">val</span> key<span class="token operator">:</span> String<span class="token punctuation">,</span>
+  <span class="token keyword">val</span> description<span class="token operator">:</span> String<span class="token punctuation">,</span>
+  <span class="token keyword">val</span> watchUptimeMillis<span class="token operator">:</span> Long<span class="token punctuation">,</span>
+  referenceQueue<span class="token operator">:</span> ReferenceQueue<span class="token operator">&lt;</span>Any<span class="token operator">></span>
+<span class="token punctuation">)</span> <span class="token operator">:</span> WeakReference<span class="token operator">&lt;</span>Any<span class="token operator">></span><span class="token punctuation">(</span>
+    referent<span class="token punctuation">,</span> referenceQueue
+<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">/**
+   * Time at which the associated object ([referent]) was considered retained, or -1 if it hasn't
+   * been yet.
+   */</span>
+  <span class="token annotation builtin">@Volatile</span>
+  <span class="token keyword">var</span> retainedUptimeMillis <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1L</span>
+
+  <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation builtin">@Volatile</span>
+    <span class="token annotation builtin">@JvmStatic</span> <span class="token keyword">var</span> heapDumpUptimeMillis <span class="token operator">=</span> <span class="token number">0L</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>接下来我们看<code>ObjectWatcher</code>中的<code>watchObject</code>方法。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">/**
+ * Watches the provided [watchedObject].
+ *
+ * @param description Describes why the object is watched.
+ */</span>
+<span class="token annotation builtin">@Synchronized</span> <span class="token keyword">fun</span> <span class="token function">watch</span><span class="token punctuation">(</span>
+  watchedObject<span class="token operator">:</span> Any<span class="token punctuation">,</span>
+  description<span class="token operator">:</span> String
+<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">isEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token function">removeWeaklyReachableObjects</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">val</span> key <span class="token operator">=</span> UUID<span class="token punctuation">.</span><span class="token function">randomUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">val</span> watchUptimeMillis <span class="token operator">=</span> clock<span class="token punctuation">.</span><span class="token function">uptimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">val</span> reference <span class="token operator">=</span>
+    <span class="token function">KeyedWeakReference</span><span class="token punctuation">(</span>watchedObject<span class="token punctuation">,</span> key<span class="token punctuation">,</span> description<span class="token punctuation">,</span> watchUptimeMillis<span class="token punctuation">,</span> queue<span class="token punctuation">)</span>
+  SharkLog<span class="token punctuation">.</span><span class="token function">d</span> <span class="token punctuation">&#123;</span>
+    <span class="token string-literal singleline"><span class="token string">"Watching "</span></span> <span class="token operator">+</span>
+        <span class="token punctuation">(</span><span class="token keyword">if</span> <span class="token punctuation">(</span>watchedObject <span class="token keyword">is</span> Class<span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">></span><span class="token punctuation">)</span> watchedObject<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">else</span> <span class="token string-literal singleline"><span class="token string">"instance of </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token expression">watchedObject<span class="token punctuation">.</span>javaClass<span class="token punctuation">.</span>name</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span> <span class="token operator">+</span>
+        <span class="token punctuation">(</span><span class="token keyword">if</span> <span class="token punctuation">(</span>description<span class="token punctuation">.</span><span class="token function">isNotEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token string-literal singleline"><span class="token string">" (</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">description</span></span><span class="token string">)"</span></span> <span class="token keyword">else</span> <span class="token string-literal singleline"><span class="token string">""</span></span><span class="token punctuation">)</span> <span class="token operator">+</span>
+        <span class="token string-literal singleline"><span class="token string">" with key </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">key</span></span><span class="token string">"</span></span>
+  <span class="token punctuation">&#125;</span>
+
+  watchedObjects<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> reference
+  checkRetainedExecutor<span class="token punctuation">.</span><span class="token function">execute</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">moveToRetained</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里分为三步：</p>
+<ol>
+<li>执行<code>removeWeaklyReachableObjects()</code>方法，这个方法之后讲到；</li>
+<li>生成一个<code>KeyedWeakReference</code>对象，并将这个对象添加到<code>watchedObjects</code>去；</li>
+<li>定时执行<code>moveToRetained</code>方法。</li>
+</ol>
+<ul>
+<li><p>我们先看第二步，生成<code>KeyedWeakReference</code>对象时候，传入了一个一个<code>ReferenceQueue</code>对象，这是检测对象是否被回收的关键。假如一个对象O，被弱引用WR持有的时候，同时这个弱引用WR在构造时候传入了一个<code>ReferenceQueue</code>对象Q，则这个对象O被回收时候，WR将会被添加到Q中去，这样，通过检测Q中有没有值，便可以知道O有没有被回收掉。这也就是第一步做的事。</p>
+</li>
+<li><p>接下来我们查看<code>removeWeaklyReachableObjects</code>方法中做了什么。</p>
+</li>
+</ul>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">removeWeaklyReachableObjects</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// WeakReferences are enqueued as soon as the object to which they point to becomes weakly</span>
+  <span class="token comment">// reachable. This is before finalization or garbage collection has actually happened.</span>
+  <span class="token keyword">var</span> ref<span class="token operator">:</span> KeyedWeakReference<span class="token operator">?</span>
+  <span class="token keyword">do</span> <span class="token punctuation">&#123;</span>
+    ref <span class="token operator">=</span> queue<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> KeyedWeakReference<span class="token operator">?</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ref <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      watchedObjects<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>ref<span class="token punctuation">.</span>key<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>ref <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在这个方法中，从queue中取值，取出来ref，则说明被ref修饰的对象已经被回收了，则将这个弱引用ref从<code>watchedObjects</code>清除掉。</p>
+<ul>
+<li>接下来到了第三步，这一步实际上是一个定时5秒(LeakCanary默认)去将watchedObjects中残留的引用，移入到<code>retainedObjects</code>中去。我们来看其中代码：</li>
+</ul>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token annotation builtin">@Synchronized</span> <span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">moveToRetained</span><span class="token punctuation">(</span>key<span class="token operator">:</span> String<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">removeWeaklyReachableObjects</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">val</span> retainedRef <span class="token operator">=</span> watchedObjects<span class="token punctuation">[</span>key<span class="token punctuation">]</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>retainedRef <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    retainedRef<span class="token punctuation">.</span>retainedUptimeMillis <span class="token operator">=</span> clock<span class="token punctuation">.</span><span class="token function">uptimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    onObjectRetainedListeners<span class="token punctuation">.</span><span class="token function">forEach</span> <span class="token punctuation">&#123;</span> it<span class="token punctuation">.</span><span class="token function">onObjectRetained</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>执行这个任务的Executor实际实现在<a target="_blank" rel="noopener" href="https://github.com/square/leakcanary/blob/main/leakcanary-object-watcher-android/src/main/java/leakcanary/internal/InternalAppWatcher.kt"><strong>InternalAppWatcher.kt</strong></a>中，代码如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> checkRetainedExecutor <span class="token operator">=</span> Executor <span class="token punctuation">&#123;</span>
+  mainHandler<span class="token punctuation">.</span><span class="token function">postDelayed</span><span class="token punctuation">(</span>it<span class="token punctuation">,</span> AppWatcher<span class="token punctuation">.</span>config<span class="token punctuation">.</span>watchDurationMillis<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>我们发现，在<code>moveToRetained</code>中，还是先执行了<code>removeWeaklyReachableObjects</code>这一方法。目的是再次清除已经被回收的对象。如果经过这一步，仍然有引用留在watchedObjects中，则可以认为，这些对象泄漏了。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">/**
+   * Returns the objects that are currently considered retained. Useful for logging purposes.
+   * Be careful with those objects and release them ASAP as you may creating longer lived leaks
+   * then the one that are already there.
+   */</span>
+<span class="token keyword">val</span> retainedObjects<span class="token operator">:</span> List<span class="token operator">&lt;</span>Any<span class="token operator">></span>
+<span class="token annotation builtin">@Synchronized</span> <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">removeWeaklyReachableObjects</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">val</span> instances <span class="token operator">=</span> mutableListOf<span class="token operator">&lt;</span>Any<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span>weakReference <span class="token keyword">in</span> watchedObjects<span class="token punctuation">.</span>values<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>weakReference<span class="token punctuation">.</span>retainedUptimeMillis <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1L</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">val</span> instance <span class="token operator">=</span> weakReference<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>instance <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        instances<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> instances
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>不要在发行版本中使用LeakCanary，因为一系列初始化动作，可能会导致应用启动较慢。如果要用，请使用LeakCanary-Object-Watcher，或者直接使用Buggly这样的成熟框架。</p>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>

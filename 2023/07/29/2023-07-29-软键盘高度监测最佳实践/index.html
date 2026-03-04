@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软键盘高度监测最佳实践 · Boybeak</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-32x32.png" alt="Boybeak" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
+          </a>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="tags/Android/">Android</a></li>
+                  
+                  <li><a href="tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="tags/面试/">面试</a></li>
+                  
+                  <li><a href="tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="tags/Github/">Github</a></li>
+                  
+                  <li><a href="tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
+        </div>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">code</span>
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <span class="material-icons">send</span>
+              
+            </a>
+            
+            
+            
+            <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+              
+              <span class="material-icons">mail</span>
+              
+            </a>
+            
+            
+            
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="article-container">
+  <a href="/" class="back-link">
+    <span class="material-icons">arrow_back</span>
+    返回文章列表
+  </a>
+
+  <article id="articleDetail">
+    <div class="article-header">
+      <h1 class="article-title">软键盘高度监测最佳实践</h1>
+      <div class="article-meta">
+        <time class="article-date" datetime="2023-07-29">
+          2023.07.29
+        </time>
+        
+          
+            <span class="article-tag">Android</span>
+          
+        
+      </div>
+    </div>
+    <div class="article-content">
+      <p>最近终于总结出最佳的软键盘高度监测方案了，特此分享出来。<br>源码在此：<a target="_blank" rel="noopener" href="https://gist.github.com/boybeak/62ab557ace8a9763f12803b82f274df5">KeyboardObserver.kt</a></p>
+<h2 id="视觉效果"><a href="#视觉效果" class="headerlink" title="视觉效果"></a>视觉效果</h2><p>当开启showDebug时候，可以看到这样的可视化的键盘高度监测。<br><img src="/assets/images/keyboard-height.gif" alt="showcase"></p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>简单来说，这里说通过两个PopupWindow来实现的键盘高度测量。一个用于测量<strong>当前屏幕状态可绘制区域的最大高度</strong>，一个用于跟随键盘移动，进而通过高度差，算出键盘的高度。我们这里将前者称为RulerPopWin, 后者称为CursorPopWin。他们的代码分别如下：</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">// RulerPopWin</span>
+<span class="token keyword">private</span> <span class="token keyword">val</span> rulerPopWin <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">makeRulerPopWin</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">makeRulerPopWin</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">PopupWindow</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
+    contentView <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">TextView</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
+            background <span class="token operator">=</span> <span class="token function">GradientDrawable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setStroke</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">.</span>dp<span class="token punctuation">,</span> Color<span class="token punctuation">.</span>LTGRAY<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            gravity <span class="token operator">=</span> Gravity<span class="token punctuation">.</span>BOTTOM <span class="token operator">or</span> Gravity<span class="token punctuation">.</span>CENTER_HORIZONTAL
+            <span class="token function">setTextColor</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>RED<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+       <span class="token function">View</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">setBackgroundDrawable</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+    width <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token number">80</span><span class="token punctuation">.</span>dp <span class="token keyword">else</span> <span class="token number">1</span>
+    height <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>MATCH_PARENT
+    elevation <span class="token operator">=</span> <span class="token number">0F</span>
+
+    isFocusable <span class="token operator">=</span> <span class="token boolean">false</span>
+    isTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
+    isOutsideTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">// CursorPopWin</span>
+<span class="token keyword">private</span> <span class="token keyword">val</span> cursorPopWin <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">makeCursorPopWin</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+<span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">makeCursorPopWin</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">PopupWindow</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
+    contentView <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">FrameLayout</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">addView</span><span class="token punctuation">(</span>
+                <span class="token function">View</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
+                    background <span class="token operator">=</span> <span class="token function">ColorDrawable</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>RED<span class="token punctuation">)</span>
+                <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+                FrameLayout<span class="token punctuation">.</span><span class="token function">LayoutParams</span><span class="token punctuation">(</span>
+                    FrameLayout<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>MATCH_PARENT<span class="token punctuation">,</span>
+                    <span class="token number">1</span><span class="token punctuation">.</span>dp<span class="token punctuation">,</span>
+                    Gravity<span class="token punctuation">.</span>BOTTOM
+                <span class="token punctuation">)</span>
+            <span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">View</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">setBackgroundDrawable</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+
+    width <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token number">80</span><span class="token punctuation">.</span>dp <span class="token keyword">else</span> <span class="token number">1</span>
+    height <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>MATCH_PARENT
+    elevation <span class="token operator">=</span> <span class="token number">0F</span>
+
+    softInputMode <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>SOFT_INPUT_ADJUST_RESIZE
+    inputMethodMode <span class="token operator">=</span> PopupWindow<span class="token punctuation">.</span>INPUT_METHOD_NEEDED
+
+    isFocusable <span class="token operator">=</span> <span class="token boolean">false</span>
+    isTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
+    isOutsideTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这两个PopupWindow，除了contentView不同以外，还有两个属性不同，cursorPopWin多了两个属性</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">softInputMode <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>SOFT_INPUT_ADJUST_RESIZE
+inputMethodMode <span class="token operator">=</span> PopupWindow<span class="token punctuation">.</span>INPUT_METHOD_NEEDED<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>这两个属性，使得cursorPopWin高度会随着软键盘的弹出而变化。</p>
+<p>当开启监听时，为<strong>cursorPopWin.contentView</strong>设置一个OnLayoutChangeListener，用于监听其布局变化。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">watch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>cursorPopWin<span class="token punctuation">.</span>isShowing<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        cursorPopWin<span class="token punctuation">.</span><span class="token function">showAtLocation</span><span class="token punctuation">(</span>decorView<span class="token punctuation">,</span> Gravity<span class="token punctuation">.</span>BOTTOM <span class="token operator">or</span> Gravity<span class="token punctuation">.</span>END<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        cursorPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">addOnLayoutChangeListener</span><span class="token punctuation">(</span>cursorLayoutChangeListener<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> cursorLayoutChangeListener <span class="token operator">=</span> OnLayoutChangeListener <span class="token punctuation">&#123;</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _ <span class="token operator">-></span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>rulerPopWin<span class="token punctuation">.</span>isShowing<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        rulerPopWin<span class="token punctuation">.</span><span class="token function">dismiss</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    rulerPopWin<span class="token punctuation">.</span><span class="token function">showAtLocation</span><span class="token punctuation">(</span>decorView<span class="token punctuation">,</span> Gravity<span class="token punctuation">.</span>BOTTOM <span class="token operator">or</span> Gravity<span class="token punctuation">.</span>END<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    rulerPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">addOnLayoutChangeListener</span><span class="token punctuation">(</span>rulerLayoutChangeListener<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在cursorLayoutChangeListener中，监听到cursotPopWin的变化后，再显示rulerPopWin。为什么要这么做呢？</p>
+<blockquote>
+<p>因为在实践中，软键盘的变化，触发了onLayoutChange方法，如果是在这之前就把rulerPopWin显示出来，在某些机型或者系统版本中，也会出现rulerPopWin跟随键盘改变尺寸的情况。所以要将rulerPopWin显示在键盘弹出之后。</p>
+</blockquote>
+<p>真实的键盘高度监听，实际上说在rulerLayoutChangeListener中。</p>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> rulerLayoutChangeListener <span class="token operator">=</span> <span class="token keyword">object</span> <span class="token operator">:</span> OnLayoutChangeListener <span class="token punctuation">&#123;</span>
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onLayoutChange</span><span class="token punctuation">(</span>
+        v<span class="token operator">:</span> View<span class="token operator">?</span><span class="token punctuation">,</span>
+        left<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        top<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        right<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        bottom<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        oldLeft<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        oldTop<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        oldRight<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        oldBottom<span class="token operator">:</span> Int
+    <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        rulerPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">removeOnLayoutChangeListener</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
+        rulerPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">getGlobalVisibleRect</span><span class="token punctuation">(</span>rulerRect<span class="token punctuation">)</span>
+        cursorPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">getGlobalVisibleRect</span><span class="token punctuation">(</span>cursorRect<span class="token punctuation">)</span>
+
+        <span class="token keyword">val</span> keyboardHeight <span class="token operator">=</span> rulerRect<span class="token punctuation">.</span>bottom <span class="token operator">-</span> cursorRect<span class="token punctuation">.</span>bottom
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>callbacks<span class="token punctuation">.</span><span class="token function">isNotEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> cbs <span class="token operator">=</span> ArrayList<span class="token operator">&lt;</span>Callback<span class="token operator">></span><span class="token punctuation">(</span>callbacks<span class="token punctuation">)</span>
+            cbs<span class="token punctuation">.</span><span class="token function">forEach</span> <span class="token punctuation">&#123;</span>
+                it<span class="token punctuation">.</span><span class="token function">onKeyboardHeightChanged</span><span class="token punctuation">(</span>keyboardHeight<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            cbs<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">(</span>v <span class="token keyword">as</span> TextView<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">run</span> <span class="token punctuation">&#123;</span>
+
+                text <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">keyboardHeight</span></span><span class="token string">"</span></span>
+                <span class="token function">setPadding</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token function">max</span><span class="token punctuation">(</span>keyboardHeight <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>lineHeight<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>OK，这就是全部关键逻辑了。</p>
+<h2 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><ol>
+<li><p>为什么要通过rulerPopWin来获取高度，用其他获取屏幕高度的方法不好吗？</p>
+<blockquote>
+<p>不可以，这里rulerPopWin，实际上是测量<strong>当前状态下</strong>，键盘收起时的最底部。这个状态受到很多其他方面的影响，比如横竖屏切换、底部导航条的显示或者隐藏。如果通过直接获取屏幕高度的方式，并不能与状态严格对其。尤其说底部导航条的各种显示模式，导致键盘收起的0线也是变化的。</p>
+</blockquote>
+</li>
+<li><p>为什么不只用一个cursorPopWin的软键盘弹起前后进行差值计算高度呢？</p>
+<blockquote>
+<p>这样做在实践中也是不可行的。同样跟问题1中的场景类似，由于底部导航条各种显示模式的影响，导致软键盘0线是不确定的，而软键盘的弹起与收回，可能对应着不同的导航条显示模式，也就对应着不同的0线，这样计算出来的软键盘高度，很容易把导航条的高度也算进去。</p>
+</blockquote>
+</li>
+<li><p>由问题2想到，把导航条的高度减掉不就是键盘的高度了吗？</p>
+<blockquote>
+<p>这样做理论上可行，但是实践上问题会很多。首先，你要针对不同的导航条模式做不同策略；其次，不同系统的导航条的高度不同，包括说传统3键导航条还是全面屏手势；再次，目前获取导航条高度，并没有一个完美的方案，有些系统下获取到的高度，跟实际高度是不相符的。</p>
+</blockquote>
+</li>
+</ol>
+
+    </div>
+  </article>
+
+  <div class="article-footer">
+    <h3>相关文章</h3>
+    <a href="/">
+      <span class="material-icons">list</span>
+      查看所有文章
+    </a>
+  </div>
+</main>
+
+    <footer class="site-footer">
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
+    </footer>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+</body>
+</html>
