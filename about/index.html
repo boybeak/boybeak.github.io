@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> · Boybeak</title>
+    <title>关于 · Boybeak</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 <link rel="stylesheet" href="/css/style.css">
@@ -180,7 +180,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> · Boybeak</title>
+    <title>关于 · Boybeak</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 <link rel="stylesheet" href="/css/style.css">
@@ -351,39 +351,81 @@
       </div>
     </header>
 
-    
-
-
-
-<main class="article-list">
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/21/2022-09-22-%E9%9A%BE%E5%BF%98%E7%9A%84bug/">难忘的bug</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-22">
-        2022.09.22
-      </time>
+<div class="article-container">
+  <h1 class="page-title">关于</h1>
+  <div class="about-content">
+    <p>欢迎访问我的博客！</p>
+    <p>我是 boybeak，一名热爱技术的开发者。</p>
+    <p>这个博客记录了我的技术分享、生活感悟和读书心得。</p>
+    <p>如果你有任何问题或建议，欢迎通过以下方式联系我：</p>
+    <div class="contact-links">
       
+      
+      
+      <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
         
-          <span class="article-tag">陷阱与缺陷</span>
+        <span class="material-icons">code</span>
         
+        Github
+      </a>
+      
+      
+      
+      <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+        
+        <span class="material-icons">send</span>
+        
+        Twitter
+      </a>
+      
+      
+      
+      <a href="mailto:boybeak@gmail.com" class="social-link" title="Email" >
+        
+        <span class="material-icons">mail</span>
+        
+        Email
+      </a>
+      
+      
       
     </div>
-    <p class="article-summary">
-      此贴是为了记录日常开发过程中，遇到的一些让人难忘的bug。
+  </div>
+</div>
 
-MediaPlayer: surface has already been released
-kotlin ?.的陷阱与缺陷
+<style>
+.about-content {
+  margin-top: 2rem;
+  line-height: 1.8;
+}
 
-surface has already been released场景：MediaPlayer做跨进程的视频播...
-    </p>
-  </article>
-  
-</main>
+.about-content p {
+  margin-bottom: 1.5rem;
+}
 
+.contact-links {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
 
+.contact-links .social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  background-color: var(--tag-bg);
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.contact-links .social-link:hover {
+  background-color: color-mix(in srgb, var(--tag-bg) 80%, black);
+}
+</style>
 
     <footer class="site-footer">
       <span class="footer-copy">© 2026 本质</span>

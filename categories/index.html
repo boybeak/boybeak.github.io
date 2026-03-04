@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> · Boybeak</title>
+    <title>分类 · Boybeak</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 <link rel="stylesheet" href="/css/style.css">
@@ -180,7 +180,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> · Boybeak</title>
+    <title>分类 · Boybeak</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 <link rel="stylesheet" href="/css/style.css">
@@ -351,39 +351,99 @@
       </div>
     </header>
 
+<div class="article-container">
+  <h1 class="page-title">分类</h1>
+  <div class="category-list">
     
-
-
-
-<main class="article-list">
-  
-  <article class="article">
-    <h2 class="article-title">
-      <a href="/2022/09/21/2022-09-22-%E9%9A%BE%E5%BF%98%E7%9A%84bug/">难忘的bug</a>
-    </h2>
-    <div class="article-meta">
-      <time class="article-date" datetime="2022-09-22">
-        2022.09.22
-      </time>
-      
-        
-          <span class="article-tag">陷阱与缺陷</span>
-        
-      
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/源码分析/">源码分析</a>
+      </h2>
+      <p class="category-count">9 篇文章</p>
     </div>
-    <p class="article-summary">
-      此贴是为了记录日常开发过程中，遇到的一些让人难忘的bug。
+    
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/Android技巧/">Android技巧</a>
+      </h2>
+      <p class="category-count">19 篇文章</p>
+    </div>
+    
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/Kotlin-Native/">Kotlin Native</a>
+      </h2>
+      <p class="category-count">1 篇文章</p>
+    </div>
+    
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/Translator/">Translator</a>
+      </h2>
+      <p class="category-count">1 篇文章</p>
+    </div>
+    
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/陷阱与缺陷/">陷阱与缺陷</a>
+      </h2>
+      <p class="category-count">1 篇文章</p>
+    </div>
+    
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/独立开发笔记/">独立开发笔记</a>
+      </h2>
+      <p class="category-count">10 篇文章</p>
+    </div>
+    
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="/categories/面试笔记/">面试笔记</a>
+      </h2>
+      <p class="category-count">1 篇文章</p>
+    </div>
+    
+  </div>
+</div>
 
-MediaPlayer: surface has already been released
-kotlin ?.的陷阱与缺陷
+<style>
+.category-list {
+  margin-top: 2rem;
+}
 
-surface has already been released场景：MediaPlayer做跨进程的视频播...
-    </p>
-  </article>
-  
-</main>
+.category-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
 
+.category-item:last-child {
+  border-bottom: none;
+}
 
+.category-name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.category-name a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.category-name a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.category-count {
+  color: var(--meta-color);
+  font-size: 0.9rem;
+  margin: 0;
+}
+</style>
 
     <footer class="site-footer">
       <span class="footer-copy">© 2026 本质</span>
