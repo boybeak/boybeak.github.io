@@ -1,9 +1,9 @@
-name: Build and Deploy Jekyll
+name: Build and Deploy Hexo
 
 on:
   push:
     branches:
-      - master  # 或者你的默认分支\
+      - master  # 或者你的默认分支
 
 permissions:
   contents: write  # 允许对仓库内容进行写操作
@@ -15,22 +15,22 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
-
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.1' # 确保版本兼容 Jekyll
+        fetch-depth: 0  # 确保获取完整的 git 历史
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # 使用兼容的 Node.js 版本
 
     - name: Install Dependencies
-      run: |
-        gem install bundler
-        bundle install
+      run: npm install
 
     - name: Build Site
-      run: bundle exec jekyll build
+      run: npm run build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./_site
+        publish_dir: ./public
