@@ -370,6 +370,25 @@ body {
   background-color: color-mix(in srgb, var(--tag-bg) 80%, black);
 }
 
+.article-category {
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.2rem 0.9rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  display: inline-block;
+  line-height: 1.4;
+  border: none;
+  transition: background 0.1s ease;
+}
+
+.article-category:hover {
+  background-color: color-mix(in srgb, var(--tag-bg) 80%, black);
+}
+
 .article-summary {
   color: var(--soft-text);
   font-size: 1rem;
