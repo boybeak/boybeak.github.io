@@ -9,6 +9,7 @@ menu:
 
 # 自定义配置
 custom:
+  favicon: /favicon.png
   site_title: Boybeak
   site_subtitle: 技术分享 · 生活感悟 · 读书心得
   site_quote: —— 内容为本，无关浮华
