@@ -1,0 +1,84 @@
+<% 
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+%>
+
+<div class="article-container">
+  <h1 class="page-title">标签：<%= page.tag %></h1>
+  <p class="tag-description">包含 <%= page.posts.length %> 篇文章</p>
+  
+  <main class="article-list">
+    <% page.posts.forEach(function(post) { %>
+    <article class="article">
+      <h2 class="article-title">
+        <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="<%= date(post.date, 'YYYY-MM-DD') %>">
+          <%= date(post.date, 'YYYY.MM.DD') %>
+        </time>
+        <% if (post.tags && post.tags.length > 0) { %>
+          <% post.tags.forEach(function(tag) { %>
+            <span class="article-tag"><%= tag.name %></span>
+          <% }); %>
+        <% } %>
+      </div>
+      <p class="article-summary">
+        <%= post.excerpt ? truncate(strip_html(post.excerpt), 150) : truncate(strip_html(post.content), 150) %>
+      </p>
+    </article>
+    <% }); %>
+  </main>
+
+  <% if (page.total > 1) { %>
+  <nav class="pagination" aria-label="文章分页">
+    <% if (page.prev) { %>
+      <a href="<%- url_for(page.prev_link) %>" class="pagination-btn prev-btn">
+        <span class="material-icons">chevron_left</span>
+      </a>
+    <% } else { %>
+      <button class="pagination-btn prev-btn" disabled>
+        <span class="material-icons">chevron_left</span>
+      </button>
+    <% } %>
+    
+    <div class="pagination-numbers">
+      <% for (let i = 1; i <= page.total; i++) { %>
+        <% if (i === page.current) { %>
+          <span class="pagination-number active"><%= i %></span>
+        <% } else { %>
+          <a href="<%- url_for(i === 1 ? page.tag : page.tag + '/page/' + i + '/') %>" class="pagination-number"><%= i %></a>
+        <% } %>
+      <% } %>
+    </div>
+    
+    <% if (page.next) { %>
+      <a href="<%- url_for(page.next_link) %>" class="pagination-btn next-btn">
+        <span class="material-icons">chevron_right</span>
+      </a>
+    <% } else { %>
+      <button class="pagination-btn next-btn" disabled>
+        <span class="material-icons">chevron_right</span>
+      </button>
+    <% } %>
+  </nav>
+  <% } %>
+</div>
+
+<style>
+.page-title {
+  margin-bottom: 0.5rem;
+}
+
+.tag-description {
+  color: var(--meta-color);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+</style>
