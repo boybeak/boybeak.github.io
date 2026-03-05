@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -206,6 +206,8 @@
       Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
 一、资源文件1.1 删除无用资源文件1.1.1 Lint工具菜单 -&amp;gt; Analyze -&amp;gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -235,6 +237,8 @@ graph TD;
     style F fill:#5befb9
     Z&amp;#123...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -262,6 +266,8 @@ graph TD;
 graph TD;
 A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C[通过Intent获取到目标Activity] --&gt; D&amp;#123;目标Activity是否启动&amp;#...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -289,6 +295,14 @@ A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C
 没有一个规范化的api式的调用方式：项目大了，调用路由的方法分布在项目各处，难以查找；
 对startActivityForResult支持不够友好：按照传统方式，在...
     </p>
+    
+    
+      
+        <div class="article-images single-image">
+          <img src="/assets/images/jd_loader_manager.jpg" alt="IRouter——自己手撸一个路由框架">
+        </div>
+      
+    
   </article>
   
   <article class="article">
@@ -317,6 +331,8 @@ A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C
 阅读本文前，请先阅读[《Jetpack之LiveData源码分析》](&amp;#x2F;源码分析系列&amp;#x2F;LiveEventBus源码分析.md)。因为LiveEventBus是基于LiveData构建的。
 源码地址：LiveEventB...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -343,6 +359,8 @@ A(启动Activity) --&gt; B[通过Binder调用AMS的startActivity方法] --&gt; C
   // debugImplementation because LeakCanary should only run in debug builds.
   debugImplementation &#39;com.squareup.leakcanary:leakca...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -370,6 +388,8 @@ Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安
 先要引入LiveData：
 implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -397,6 +417,8 @@ def lifecycle_version = &#34;2.2.0&#34;
 // Lifecycles only (without ViewModel or LiveData)
 implementation &#34;androidx.lifecycle...
     </p>
+    
+    
   </article>
   
   <article class="article">
@@ -425,6 +447,30 @@ APT是Annotation Processing Tool的简称，即编译时注解处理器。它是
 APT与Glide什么关系？
 我们通常通过在build.gradle加入这样一...
     </p>
+    
+    
+      
+        <div class="article-images grid-4">
+          
+            <div class="image-item">
+              <img src="/assets/images/glide_struct.jpg" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 1">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/gif_before_optimization.png" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 2">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/gif_after_optimization.png" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 3">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/gif.webp" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 4">
+            </div>
+          
+        </div>
+      
+    
   </article>
   
   <article class="article">
@@ -455,6 +501,8 @@ APT与Glide什么关系？
 缓存模块是Glide中非常重要的部分，Glide图片加载的高效性，几乎有一半功劳都在这里了。
 一般来说，Glide有三...
     </p>
+    
+    
   </article>
   
 </main>

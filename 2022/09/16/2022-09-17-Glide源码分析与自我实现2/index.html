@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -211,7 +211,7 @@
 <p>缓存模块是Glide中非常重要的部分，Glide图片加载的高效性，几乎有一半功劳都在这里了。</p>
 <p>一般来说，Glide有三级缓存，就是<strong>内存缓存</strong>、<strong>磁盘缓存</strong>和<strong>网络缓存</strong>。</p>
 <p>先来看缓存流程图，如下：</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph TD;
 style A fill:#99ccff
 style B1 fill:#aaffaa
@@ -219,7 +219,7 @@ A(发起请求) --> B&#123;1. 通过<br>ActiveResources<br>获取资源&#125; --
 B --> |未命中|C&#123;2. 通过<br>MemoryCache<br>获取资源&#125; --> |命中|C1[缓存至<br>ActiveResources] --> B1;
 C --> |未命中|D&#123;3. 通过<br>DiskCache<br>获取资源&#125; --> |命中|D1[缓存至<br>MemoryCache] --> C1;
 D --> |未命中|E["4. 通过数据源(网络、文件等)<br>加载数据"] --> E1[缓存至<br>DiskCache] --> D1;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <h2 id="内存缓存"><a href="#内存缓存" class="headerlink" title="内存缓存"></a>内存缓存</h2><p>内存缓存主要靠三个部分组成：<strong>ActiveResources</strong>、<strong>MemoryCache</strong>和<strong>BitmapPool</strong>。</p>
 <h3 id="ActiveResources"><a href="#ActiveResources" class="headerlink" title="ActiveResources"></a>ActiveResources</h3><p>ActiveResources表示当前正在活动中的资源。ActiveResources通过一个<code>Map&lt;Key, ResourceWeakReference&gt;</code>来保存活动中的资源，其中的ResourceWeakReference就是资源数据，在构建这个ResourceWeakReference的时候必须传入一个ReferenceQueue用来检测资源是否被回收。</p>
 <blockquote>

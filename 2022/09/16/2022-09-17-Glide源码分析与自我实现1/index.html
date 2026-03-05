@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -209,20 +209,20 @@
 <p>阅读前请参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60425157">Glide 源码分析解读-基于最新版Glide 4.9.0</a>一文，该文章中，将Glide中各个部分的作用分析的非常好了。</p>
 <p>Glide几乎是现在做Android图片加载的最佳选择了。如此优秀的一个框架是如何实现的呢？如果让我们自己来实现该怎么做呢？我们就通过自己实现一个低配版Glide的方式，来探究Glide中是如何实现的。</p>
 <p>我们就称我们自己低配版Glide为<strong>Slide</strong>。那么Slide要实现哪些功能呢？简单来说，就是<strong>获取图片</strong>+<strong>界面显示</strong>。我们通过先构架大体框架，再分步丰富其中细节的方式，来构建Slide的整体结构。</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 flowchart LR;
 A[获取图片] --> C[Slide] --> B[界面显示];
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Glide</span><span class="token punctuation">.</span><span class="token keyword">with</span><span class="token punctuation">(</span>xxx<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span>iv<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这是Glide一个典型的最为简单的调用过程。那么在这个过程中发生了哪些事情呢？</p>
 <p>我们可以通过这个链式调用的返回值发现，有如下过程：</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 style A fill:#aaffcc
 style D fill:#ffaa99
 A(Glide) -->|"with(xxx)"| B(RequestManager) -->|"load(xxx)"| C(RequestBuilder) -->|"into(iv)"| D(Target);
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <h2 id="Glide-with-xxx-发生了什么事？"><a href="#Glide-with-xxx-发生了什么事？" class="headerlink" title="Glide.with(xxx)发生了什么事？"></a>Glide.with(xxx)发生了什么事？</h2><p>阅读源码发现，<code>Glide.with(xxx)</code>的最终实现类是<em>RequestManagerRetriever.java</em>类。继续跟踪，我们在这个类中，看到这样一个方法。</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@NonNull</span>
 <span class="token keyword">private</span> <span class="token class-name">RequestManager</span> <span class="token function">supportFragmentGet</span><span class="token punctuation">(</span>
@@ -441,11 +441,11 @@ A(Glide) -->|"with(xxx)"| B(RequestManager) -->|"load(xxx)"| C(RequestBuilder) -
 <h3 id="Engine"><a href="#Engine" class="headerlink" title="Engine"></a>Engine</h3><p>Engine不只是用于加载图片，而是一个任务执行核心引擎，它要执行的不只是请求远程图片的任务，包括解码任务等，它执行的实际上是一个个的job。</p>
 <p>跟踪上一阶段中的<code>engine.load</code>方法，来到是这个方法的关键部分——调用<code>waitForExistingOrStartNewJob</code>。</p>
 <p>在这个方法中，主要做了以下事情：</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph TD;
 A&#123;&#123;是否有一个job执行相同操作&#125;&#125; --> |有|B[为此job添加新的回调];
 A --> |无|C[添加并执行一个EngineJob];
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <h4 id="EngineJob-start-decodeJob"><a href="#EngineJob-start-decodeJob" class="headerlink" title="EngineJob.start(decodeJob)"></a>EngineJob.start(decodeJob)</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token class-name">DecodeJob</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">R</span><span class="token punctuation">></span></span> decodeJob<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>decodeJob <span class="token operator">=</span> decodeJob<span class="token punctuation">;</span>
   <span class="token class-name">GlideExecutor</span> executor <span class="token operator">=</span>
@@ -459,7 +459,7 @@ A --> |无|C[添加并执行一个EngineJob];
 </blockquote>
 <h4 id="DecodeJob"><a href="#DecodeJob" class="headerlink" title="DecodeJob"></a>DecodeJob</h4><p>DecodeJob是一个<em>Runnable</em>类，所以，我们查看其run方法。</p>
 <p>接下来的调用路径参考下图。</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph TD;
 subgraph DecodeJob;
 A(run) --> B[runWrapped] --> C[runGenerators] --> D[getNextGenerator];
@@ -470,7 +470,7 @@ end;
 subgraph HttpUrlFetcher
 F --> G[loadData] --> H[loadDataWithRedirects];
 end;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>经过这么长的调用链，我们终于来到了网络请求的部分，我们可以看到Glide原生使用的<em>HttpURLConnection</em>进行网络请求的。<strong>获取到InputStream后，在SourceGenerator中的cacheData方法进行缓存处理。</strong></p>
 <h4 id="获取到数据后的处理"><a href="#获取到数据后的处理" class="headerlink" title="获取到数据后的处理"></a>获取到数据后的处理</h4><p>通过<code>DataFetcherGenerator.FetcherReadyCallback</code>可以探知到数据获取成功或者失败，如果获取成功，则在<code>DecodeJob#onDataFetcherReady</code>中处理。关键代码如下：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onDataFetcherReady</span><span class="token punctuation">(</span>
@@ -491,7 +491,7 @@ end;
 <li>本地图片：本地存储设备上的图片；</li>
 <li>远端图片：我们服务器或者来自第三方服务器的图片，通过URL来获取。这就需要<strong>异步网络请求</strong>，请求结束以后，要<strong>缓存</strong>图片，避免重复请求远端图片，造成时间、网络的浪费。</li>
 </ol>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 A[Slide];
 B([1. 资源图片]) --> A;
@@ -499,7 +499,7 @@ C([2. 本地图片]) --> A;
 E&#123;缓存是否存在&#125; --> |是,交给Slide|A;
 E --> |否,网络请求|D([3. 远端图片]);
 D -.-> |获取到图片并缓存|E;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>那么接下来，要丰富的细节，就来到了<strong>网络请求</strong>和<strong>缓存</strong>了。</p>
 <h3 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h3><h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3>
     </div>

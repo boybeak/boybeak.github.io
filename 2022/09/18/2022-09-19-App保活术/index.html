@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -217,7 +217,7 @@
 <p>其单位为4kb，也就是内存1页大小。</p>
 <p>该值表示的是剩余内存大小，优先级为从高到低，比如当内存小于18432*4kb时，杀死对应的优先级的进程。</p>
 <p><img src="/assets/images/process_priority.jpg" alt="oom_adj"></p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph TD;
 style 关键优先级 fill:#5befb9
 style 高级优先级 fill:#6998c6
@@ -233,7 +233,7 @@ C --> D(后台进程);
 subgraph 低优先级
 D --> E(空进程);
 end
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>优先级从高到低依次是，<code>前台进程</code>、<code>可见进程</code>、<code>服务进程</code>、<code>后台进程</code>、<code>空进程</code>。</p>
 <p><strong>阈值有6个数，而进程有5种优先级，是如何对应呢？</strong></p>
 <p>实际上，第5个数是ContentProvider的阈值，其他的5个数与线程优先级对应。</p>

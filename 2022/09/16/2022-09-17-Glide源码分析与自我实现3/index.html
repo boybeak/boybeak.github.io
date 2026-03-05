@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -354,16 +354,16 @@ dependencies <span class="token punctuation">&#123;</span>
 <p>我们着重看decode方法，这里需要重点看的是，在构建<em>FrameSequenceDrawable</em>时候，传入了一个<em>BitmapProvider</em>对象，这就是提高Gif效率的关键，在这个<em>BitmapProvider</em>里面，我们通过BitmapPool，去寻找可用尺寸的Bitmap，通过<strong>池化</strong>的方式，减小了内存开销，增加里Bitmap利用率。</p>
 <p>接下来看，如何添加<code>asGifX</code>方法。我们都知道，传统的Glide调用方式如下图：</p>
 <p><code>Glide.with(itemView).asGif().load(item.source()).into(gifIV)</code></p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 A[Glide] -->|"with(xxx)"| B[RequestManager] -->|"asGif"| C[RequestBuilder];
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>而新的方式却不同，如下图：</p>
 <p><code>GlideApp.with(itemView).asGifX().load(item.source()).into(gifIV)</code></p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 A[GlideApp] -->|"with(xxx)"| B[GlideRequests]  -->|asGifX| C[GlideRequest];
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>这其中的<em>GlideRequest</em>和<em>GlideRequest</em>，同样都是生成的类，其中GlideRequests继承自RequestManager，GlideRequest继承自RequestBuilder。</p>
 <p>这两个类的生成，同样是**@GlideModule**的作用，但是<code>asGifX</code>这个方法是什么时候定义的呢？我们去查看<code>asGifX</code>这个方法的代码：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**

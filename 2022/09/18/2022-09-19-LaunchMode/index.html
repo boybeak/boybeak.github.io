@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -206,7 +206,7 @@
       <p>此文是阅读<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265946165">《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》</a>一文后的总结，视频地址<a href="https://link.zhihu.com/?target=https://www.bilibili.com/video/BV1CA41177Se/">Bilibili</a>、<a href="https://link.zhihu.com/?target=https://youtu.be/r4T9zkhpmII">Youtube</a>。</p>
 <p>演示代码：</p>
 <p>在正式讲解launchMode前，先要理解三个概念：<strong>ActivityStack</strong>, <strong>TaskRecord</strong>, <strong>ActivityRecord</strong>。</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 style TaskRecord-A fill:#aaddff;
 style TaskRecord-B fill:#aaddff;
@@ -220,7 +220,7 @@ C[ActivityRecord-3]
 D[ActivityRecord-4]
 end
 end
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>他们的一般结构是这样的。</p>
 <p>通过adb命令可以查看当前的ActivityStack、TaskRecord和ActivityRecord的结构。</p>
 <pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">adb shell dumpsys activity<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>

@@ -102,9 +102,9 @@
                   
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -218,7 +218,7 @@
 <p>比如有如下图示结构的任务栈:</p>
 </li>
 </ol>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 subgraph Task;
 D;
@@ -226,15 +226,15 @@ C;
 B;
 A;
 end;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>   此时D通过一个添加了<code>FLAG_ACTIVITY_CLEAR_TOP</code>的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：</p>
-<pre class="line-numbers language-language-mermaid"><code class="language-language-mermaid">
+<pre class=" language-language-mermaid"><code class="language-language-mermaid">
 graph LR;
 subgraph Task;
 B;
 A;
 end;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</code></pre>
 <p>   接下来就有两种情况了。</p>
 <p>   情况一：intent中<strong>没有</strong>同时设置<code>FLAG_ACTIVITY_SINGLE_TOP</code>，并且B的launchMode是默认值。</p>
 <p>   B会finish掉再re-create一个新的B’放在B的位置上。</p>
