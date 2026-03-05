@@ -423,8 +423,8 @@ body {
   
   .article-images.grid-9 {
     max-width: 80%;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(auto, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 1rem;
   }
 }
@@ -786,8 +786,8 @@ body.night-mode .article-content a:hover {
   
   .article-images.grid-9 {
     max-width: 80%;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(auto, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     gap: 1rem;
   }
 }
