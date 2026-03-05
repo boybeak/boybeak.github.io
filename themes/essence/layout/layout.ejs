@@ -48,7 +48,9 @@
       <div class="header-row">
         <h1 class="site-title">
           <a href="<%= config.root %>">
-            <% if (theme.custom.site_logo) { %>
+            <% if (config.theme_config && config.theme_config.custom && config.theme_config.custom.site_logo) { %>
+            <img src="<%= config.theme_config.custom.site_logo %>" alt="<%= config.title %>" style="height: 32px; vertical-align: middle; margin-right: 10px;">
+            <% } else if (theme.custom.site_logo) { %>
             <img src="<%= theme.custom.site_logo %>" alt="<%= config.title %>" style="height: 32px; vertical-align: middle; margin-right: 10px;">
             <% } %>
             <%= config.title %>
