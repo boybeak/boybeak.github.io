@@ -7,6 +7,16 @@
     if (str.length <= length) return str;
     return str.substring(0, length) + '...';
   }
+  
+  function getAllImages(content) {
+    if (!content) return [];
+    const imgMatches = content.match(/<img[^>]+src="([^"]+)"/g);
+    if (!imgMatches) return [];
+    return imgMatches.map(match => {
+      const srcMatch = match.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : null;
+    }).filter(Boolean);
+  }
 %>
 
 <div class="article-container">
@@ -37,6 +47,35 @@
       <p class="article-summary">
         <%= post.excerpt ? truncate(strip_html(post.excerpt), 150) : truncate(strip_html(post.content), 150) %>
       </p>
+      <% const images = getAllImages(post.excerpt || post.content); %>
+      <% if (images.length > 0) { %>
+        <% if (images.length === 1) { %>
+          <div class="article-images single-image">
+            <img src="<%= images[0] %>" alt="<%= post.title %>">
+          </div>
+        <% } else if (images.length <= 4) { %>
+          <div class="article-images grid-4">
+            <% images.forEach(function(img, index) { %>
+              <div class="image-item">
+                <img src="<%= img %>" alt="<%= post.title %> - 图片 <%= index + 1 %>">
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="article-images grid-9">
+            <% images.slice(0, 9).forEach(function(img, index) { %>
+              <div class="image-item">
+                <img src="<%= img %>" alt="<%= post.title %> - 图片 <%= index + 1 %>">
+                <% if (index === 8 && images.length > 9) { %>
+                  <div class="image-overlay">
+                    +<%= images.length - 9 %>
+                  </div>
+                <% } %>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+      <% } %>
     </article>
     <% }); %>
   </main>
