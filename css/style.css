@@ -406,15 +406,26 @@ body {
 
 @media (max-width: 768px) {
   .article-images {
-    max-width: 100%;
+    max-width: 80%;
+    gap: 1rem;
+  }
+  
+  .article-images.single-image img {
+    width: 50%;
+    max-height: 50vw;
   }
   
   .article-images.grid-4 {
-    max-width: 100%;
+    max-width: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   
   .article-images.grid-9 {
-    max-width: 100%;
+    max-width: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+    gap: 1rem;
   }
 }
 
@@ -754,6 +765,30 @@ body.night-mode .article-content a:hover {
   }
   .footer-links a {
     margin-left: 1rem;
+  }
+  
+  /* 图片布局移动端适配 */
+  .article-images {
+    max-width: 80%;
+    gap: 1rem;
+  }
+  
+  .article-images.single-image img {
+    width: 100%;
+    max-height: 80vw;
+  }
+  
+  .article-images.grid-4 {
+    max-width: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .article-images.grid-9 {
+    max-width: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+    gap: 1rem;
   }
 }
 
