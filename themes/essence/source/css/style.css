@@ -404,6 +404,20 @@ body {
   max-width: 66%;
 }
 
+@media (max-width: 768px) {
+  .article-images {
+    max-width: 100%;
+  }
+  
+  .article-images.grid-4 {
+    max-width: 100%;
+  }
+  
+  .article-images.grid-9 {
+    max-width: 100%;
+  }
+}
+
 .article-images.single-image img {
   width: 30%;
   max-height: 30vw;
