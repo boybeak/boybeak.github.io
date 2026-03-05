@@ -484,6 +484,28 @@ body {
   font-style: italic;
 }
 
+.article-content a {
+  color: #3498db;
+  text-decoration: none;
+  border-bottom: 1px solid #3498db;
+  transition: all 0.2s ease;
+}
+
+.article-content a:hover {
+  color: #2980b9;
+  border-bottom: 2px solid #2980b9;
+}
+
+body.night-mode .article-content a {
+  color: #3498db;
+  border-bottom: 1px solid #3498db;
+}
+
+body.night-mode .article-content a:hover {
+  color: #2980b9;
+  border-bottom: 2px solid #2980b9;
+}
+
 .article-footer {
   margin-top: 3rem;
   padding-top: 2rem;
