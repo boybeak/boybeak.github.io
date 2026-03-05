@@ -52,7 +52,7 @@ highlight:
   hljs: false
 prism_plugin:
   preprocess: true
-  line_number: true
+  line_number: false
   tab_replace: ''
   theme: 'okaidia'
   plugins:
