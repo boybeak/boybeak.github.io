@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -209,32 +209,32 @@
 <li>kotlin ?.的陷阱与缺陷</li>
 </ul>
 <h2 id="surface-has-already-been-released"><a href="#surface-has-already-been-released" class="headerlink" title="surface has already been released"></a>surface has already been released</h2><p><strong>场景</strong>：MediaPlayer做跨进程的视频播放发现的，由于有无画面的后台播放场景，所以，MediaPlayer的相关操作放在独立进程的Service中，通过跨进程的调度，进行相关媒体操作，包括设置用于展示画面的Surface，Surface是一个Parcable类，所以是可以通过跨进程传输的。<br><strong>归因</strong>：在播放进程中，用成员变量缓存了通过<code>setSurface</code>设置的surface变量，以便于从后台恢复前台播放时候，可以直接使用，而不需要再次传入surface参数。但是这样做是不可以的，会爆出<code>surface has already been released</code>的错误。<br>IPlayer.aidl如下：</p>
-<pre class="line-numbers language-aidl" data-language="aidl"><code class="language-aidl">interface IPlayer &#123;
+<pre class="language-aidl"><code class="language-aidl">interface IPlayer &#123;
     void setSurface(inout Surface surface);
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 <p>需要注意的是，此处surface的修饰符包括一个inout。这样设置，是为了适配IjkMediaPlayer切换全屏的场景。如果把这个修饰符改成<code>in</code>，则IjkMediaPlayer在通过<code>setSurface</code>多次修改surface时候，也会爆出<code>surface has already been released</code>这样的问题。</p>
 <h2 id="kotlin-的陷阱与缺陷"><a href="#kotlin-的陷阱与缺陷" class="headerlink" title="kotlin ?.的陷阱与缺陷"></a>kotlin ?.的陷阱与缺陷</h2><p><code>?.</code>是kotlin的空安全语法。相比Java的if语句判断，这样做要简洁的多，但是这里边有一种“陷阱”，这并不是kotlin本身的问题，而是使用者容易疏忽的问题。<br>展示逻辑的伪代码如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">方法A(回调) &#123;
+<pre class="language-none"><code class="language-none">方法A(回调) &#123;
     结果1 &#x3D; 动作1
     结果2 &#x3D; 动作2
     回调(结果1, 结果2)
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 <p>简单解释一下，一个<code>方法A</code>，带有一个Nullable的<code>回调</code>，需要执行<code>动作1</code>和<code>动作2</code>，分别返回了<code>结果1</code>和<code>结果2</code>，并且在<code>回调</code>中返回结果。<br>上述逻辑用kotlin实现如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">// 方案一</span>
-<span class="token keyword">fun</span> <span class="token function">action1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token operator">=</span> <span class="token number">1</span>
-<span class="token keyword">fun</span> <span class="token function">action2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token operator">=</span> <span class="token number">2</span>
-<span class="token keyword">fun</span> <span class="token function">methodA</span><span class="token punctuation">(</span>block<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>Int<span class="token punctuation">,</span> Int<span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">val</span> result1 <span class="token operator">=</span> <span class="token function">action1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">val</span> result2 <span class="token operator">=</span> <span class="token function">action2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    block<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>result1<span class="token punctuation">,</span> result2<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">// 方案一
+fun action1(): Int = 1
+fun action2(): Int = 2
+fun methodA(block: ((Int, Int) -> Unit)? = null) &#123;
+    val result1 = action1()
+    val result2 = action2()
+    block?.invoke(result1, result2)
+&#125;</code></pre>
 <p>或者</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">// 方案二</span>
-<span class="token keyword">fun</span> <span class="token function">action1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token operator">=</span> <span class="token number">1</span>
-<span class="token keyword">fun</span> <span class="token function">action2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token operator">=</span> <span class="token number">2</span>
-<span class="token keyword">fun</span> <span class="token function">methodA</span><span class="token punctuation">(</span>block<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>Int<span class="token punctuation">,</span> Int<span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    block<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span><span class="token function">action1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">action2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">// 方案二
+fun action1(): Int = 1
+fun action2(): Int = 2
+fun methodA(block: ((Int, Int) -> Unit)? = null) &#123;
+    block?.invoke(action1(), action2())
+&#125;</code></pre>
 <p>如果你选择了方案二，那么你就掉入”陷阱”了。<br>因为方法内执行的逻辑，不应该收到回调的影响。如果在<code>methodA</code>中传入了null作为参数，或者直接调用<code>methodA()</code>，这样参数<code>block</code>就为null，那么<code>方案二</code>是不等价于<code>方案一</code>的，我只是不需要知道方法的执行结果，不是让你不执行方法。</p>
 
     </div>

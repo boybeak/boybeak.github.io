@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -204,27 +204,27 @@
     </div>
     <div class="article-content">
       <p>边独立，边面试，两手都要抓，两手都要硬。</p>
-<h3 id="1-给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标"><a href="#1-给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标" class="headerlink" title="1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标"></a>1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标</h3><pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">findTwoSum</span><span class="token punctuation">(</span>array<span class="token operator">:</span> IntArray<span class="token punctuation">,</span> num<span class="token operator">:</span> Int<span class="token punctuation">)</span><span class="token operator">:</span> Pair<span class="token operator">&lt;</span>Int<span class="token punctuation">,</span> Int<span class="token operator">></span><span class="token operator">?</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 创建一个哈希表来存储数组中的数字及其索引</span>
-    <span class="token keyword">val</span> map <span class="token operator">=</span> mutableMapOf<span class="token operator">&lt;</span>Int<span class="token punctuation">,</span> Int<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<h3 id="1-给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标"><a href="#1-给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标" class="headerlink" title="1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标"></a>1. 给定数组array与一个数字num，要求从array中找出两个数，其和为num，并返回这两个数的下标</h3><pre class="language-kotlin"><code class="language-kotlin">fun findTwoSum(array: IntArray, num: Int): Pair&lt;Int, Int>? &#123;
+    // 创建一个哈希表来存储数组中的数字及其索引
+    val map = mutableMapOf&lt;Int, Int>()
 
-    <span class="token comment">// 遍历数组</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">in</span> array<span class="token punctuation">.</span>indices<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">val</span> complement <span class="token operator">=</span> num <span class="token operator">-</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    // 遍历数组
+    for (i in array.indices) &#123;
+        val complement = num - array[i]
 
-        <span class="token comment">// 检查哈希表中是否存在这个补数</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>map<span class="token punctuation">.</span><span class="token function">containsKey</span><span class="token punctuation">(</span>complement<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// 如果存在，返回这个数及其补数的索引</span>
-            <span class="token keyword">return</span> <span class="token function">Pair</span><span class="token punctuation">(</span>map<span class="token punctuation">[</span>complement<span class="token punctuation">]</span><span class="token operator">!!</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
+        // 检查哈希表中是否存在这个补数
+        if (map.containsKey(complement)) &#123;
+            // 如果存在，返回这个数及其补数的索引
+            return Pair(map[complement]!!, i)
+        &#125;
 
-        <span class="token comment">// 将当前数字及其索引存入哈希表</span>
-        map<span class="token punctuation">[</span>array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> i
-    <span class="token punctuation">&#125;</span>
+        // 将当前数字及其索引存入哈希表
+        map[array[i]] = i
+    &#125;
 
-    <span class="token comment">// 如果没有找到符合条件的数对，返回null</span>
-    <span class="token keyword">return</span> <span class="token keyword">null</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    // 如果没有找到符合条件的数对，返回null
+    return null
+&#125;</code></pre>
 <p><strong>解读：</strong></p>
 <ol>
 <li>创建一个map，在遍历的过程中，报错所有数字以及其对应的坐标，数字为键，坐标为值；</li>
@@ -272,113 +272,113 @@
 <h3 id="6-不同任务类型-IO密集型-计算密集型-任务，如何分配线程池策略？"><a href="#6-不同任务类型-IO密集型-计算密集型-任务，如何分配线程池策略？" class="headerlink" title="6. 不同任务类型(IO密集型&#x2F;计算密集型)任务，如何分配线程池策略？"></a>6. 不同任务类型(IO密集型&#x2F;计算密集型)任务，如何分配线程池策略？</h3><h4 id="IO密集型任务"><a href="#IO密集型任务" class="headerlink" title="IO密集型任务"></a>IO密集型任务</h4><p><strong>特点</strong><br>IO密集型任务主要涉及等待外部资源（如文件系统、网络请求、数据库操作等），因此大部分时间处于等待状态，而非消耗CPU。</p>
 <p><strong>策略</strong><br>对于IO密集型任务，可以使用较大的线程池，因为线程在等待IO操作完成时不会消耗大量CPU资源。</p>
 <p><strong>线程池配置</strong><br>通常，线程池的大小可以设置为CPU核心数的2倍或更多。一个常见的公式是：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">线程池大小 <span class="token operator">=</span> CPU核心数 * <span class="token number">2</span>
-或更大，根据实际情况调整。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-bash"><code class="language-bash">线程池大小 = CPU核心数 * 2
+或更大，根据实际情况调整。</code></pre>
 
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Executors</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ExecutorService</span></span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">IOIntensiveTaskExample</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">N_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
+public class IOIntensiveTaskExample &#123;
+    private static final int N_THREADS = Runtime.getRuntime().availableProcessors() * 2;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">ExecutorService</span> ioThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">N_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    public static void main(String[] args) &#123;
+        ExecutorService ioThreadPool = Executors.newFixedThreadPool(N_THREADS);
 
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            ioThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// 模拟IO操作</span>
-                <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        for (int i = 0; i &lt; 100; i++) &#123;
+            ioThreadPool.submit(() -> &#123;
+                // 模拟IO操作
+                performIOOperation();
+            &#125;);
+        &#125;
 
-        ioThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+        ioThreadPool.shutdown();
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// 模拟IO操作</span>
-            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    private static void performIOOperation() &#123;
+        try &#123;
+            // 模拟IO操作
+            Thread.sleep(1000);
+        &#125; catch (InterruptedException e) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+    &#125;
+&#125;</code></pre>
 
 <h4 id="计算密集型任务"><a href="#计算密集型任务" class="headerlink" title="计算密集型任务"></a>计算密集型任务</h4><p><strong>特点</strong><br>计算密集型任务主要消耗CPU资源，执行过程中几乎不涉及等待时间，因此可以充分利用CPU。</p>
 <p><strong>策略</strong><br>对于计算密集型任务，线程池的大小应设置为接近CPU核心数。过多的线程会导致频繁的上下文切换，反而降低性能。</p>
 <p><strong>线程池配置</strong><br>通常，线程池的大小可以设置为CPU核心数。一个常见的公式是：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">线程池大小 <span class="token operator">=</span> CPU核心数<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-bash"><code class="language-bash">线程池大小 = CPU核心数</code></pre>
 
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Executors</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ExecutorService</span></span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CPUIntensiveTaskExample</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">N_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+public class CPUIntensiveTaskExample &#123;
+    private static final int N_THREADS = Runtime.getRuntime().availableProcessors();
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">ExecutorService</span> cpuThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">N_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    public static void main(String[] args) &#123;
+        ExecutorService cpuThreadPool = Executors.newFixedThreadPool(N_THREADS);
 
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            cpuThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// 模拟计算操作</span>
-                <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        for (int i = 0; i &lt; 100; i++) &#123;
+            cpuThreadPool.submit(() -> &#123;
+                // 模拟计算操作
+                performCPUTask();
+            &#125;);
+        &#125;
 
-        cpuThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+        cpuThreadPool.shutdown();
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">// 模拟计算操作</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    private static void performCPUTask() &#123;
+        // 模拟计算操作
+        for (int i = 0; i &lt; 1000000; i++) &#123;
+            Math.pow(i, 2);
+        &#125;
+    &#125;
+&#125;</code></pre>
 <p><strong>混合任务</strong><br>在实际应用中，有些任务可能既包含IO操作又包含计算操作。这种情况下，可以考虑使用不同的线程池分别处理不同类型的任务，或者根据任务的主要特征选择适当的线程池配置。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">Executors</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span><span class="token class-name">ExecutorService</span></span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MixedTaskExample</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">IO_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> <span class="token constant">CPU_THREADS</span> <span class="token operator">=</span> <span class="token class-name">Runtime</span><span class="token punctuation">.</span><span class="token function">getRuntime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">availableProcessors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+public class MixedTaskExample &#123;
+    private static final int IO_THREADS = Runtime.getRuntime().availableProcessors() * 2;
+    private static final int CPU_THREADS = Runtime.getRuntime().availableProcessors();
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">ExecutorService</span> ioThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">IO_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">ExecutorService</span> cpuThreadPool <span class="token operator">=</span> <span class="token class-name">Executors</span><span class="token punctuation">.</span><span class="token function">newFixedThreadPool</span><span class="token punctuation">(</span><span class="token constant">CPU_THREADS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    public static void main(String[] args) &#123;
+        ExecutorService ioThreadPool = Executors.newFixedThreadPool(IO_THREADS);
+        ExecutorService cpuThreadPool = Executors.newFixedThreadPool(CPU_THREADS);
 
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            ioThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// 模拟IO操作</span>
-                <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        for (int i = 0; i &lt; 100; i++) &#123;
+            ioThreadPool.submit(() -> &#123;
+                // 模拟IO操作
+                performIOOperation();
+            &#125;);
 
-            cpuThreadPool<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// 模拟计算操作</span>
-                <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+            cpuThreadPool.submit(() -> &#123;
+                // 模拟计算操作
+                performCPUTask();
+            &#125;);
+        &#125;
 
-        ioThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cpuThreadPool<span class="token punctuation">.</span><span class="token function">shutdown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+        ioThreadPool.shutdown();
+        cpuThreadPool.shutdown();
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performIOOperation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// 模拟IO操作</span>
-            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+    private static void performIOOperation() &#123;
+        try &#123;
+            // 模拟IO操作
+            Thread.sleep(1000);
+        &#125; catch (InterruptedException e) &#123;
+            Thread.currentThread().interrupt();
+        &#125;
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">performCPUTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">// 模拟计算操作</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">1000000</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    private static void performCPUTask() &#123;
+        // 模拟计算操作
+        for (int i = 0; i &lt; 1000000; i++) &#123;
+            Math.pow(i, 2);
+        &#125;
+    &#125;
+&#125;</code></pre>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>IO密集型任务</strong>：使用较大的线程池，通常为CPU核心数的2倍或更多，以应对大量的IO等待时间。<br><strong>计算密集型任务</strong>：使用较小的线程池，接近CPU核心数，以充分利用CPU资源，避免过多的线程上下文切换。<br><strong>混合任务</strong>：根据任务的主要特征，分别使用不同的线程池处理IO操作和计算操作。<br>通过合理配置线程池，可以有效提高应用程序的性能和资源利用率。</p>
 
     </div>

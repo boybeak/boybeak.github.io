@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -206,35 +206,35 @@
       <p>最近开发了<a target="_blank" rel="noopener" href="https://github.com/boybeak/JustTodo">JustTodo</a>和<a target="_blank" rel="noopener" href="https://github.com/boybeak/DeskNote">DeskNote</a>两个macOS应用，都是启动入口在菜单栏的，通过菜单栏上图标点击，快速执行相关操作，这让我想起我开发第一款菜单栏app <a target="_blank" rel="noopener" href="https://github.com/boybeak/TranslatorDocs">Translator</a>时的痛苦。因为想使用最新的SwiftUI作为UI框架，但是此框架构建菜单栏app的资料很少，大多数都是生成一个简单菜单，而不是可以自定义的复杂界面，尤其是用swiftUI构建的界面。<br>为了解决这一痛点，在总结了<a target="_blank" rel="noopener" href="https://github.com/boybeak/JustTodo">JustTodo</a>和<a target="_blank" rel="noopener" href="https://github.com/boybeak/DeskNote">DeskNote</a>两个macOS应用开发经验后，决心自己做了一个菜单栏应用快捷库<a target="_blank" rel="noopener" href="https://github.com/boybeak/Tray">Tray</a>，方便以后使用。</p>
 <h2 id="一、引入"><a href="#一、引入" class="headerlink" title="一、引入"></a>一、引入</h2><p>在macOS项目中，点击<strong>File</strong> -&gt; <strong>Add Package Dependencies …</strong>，在包管理窗口的搜索框中，复制粘贴<code>https://github.com/boybeak/Tray.git</code>，待检索到库信息，点击<strong>Add Package</strong>按钮。</p>
 <h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><p>以SwiftUI应用为例，在代码入口处，声明一个<code>AppDelegate</code>.</p>
-<h3 id="2-1-初始化"><a href="#2-1-初始化" class="headerlink" title="2.1 初始化"></a>2.1 初始化</h3><pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token attribute atrule">@main</span>
-<span class="token keyword">struct</span> <span class="token class-name">DeskNoteApp</span><span class="token punctuation">:</span> <span class="token class-name">App</span> <span class="token punctuation">&#123;</span>
+<h3 id="2-1-初始化"><a href="#2-1-初始化" class="headerlink" title="2.1 初始化"></a>2.1 初始化</h3><pre class="language-swift"><code class="language-swift">@main
+struct DeskNoteApp: App &#123;
 
-    <span class="token attribute atrule">@NSApplicationDelegateAdaptor</span><span class="token punctuation">(</span><span class="token class-name">AppDelegate</span><span class="token punctuation">.</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token keyword">var</span> app<span class="token punctuation">:</span> <span class="token class-name">AppDelegate</span>
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var app: AppDelegate
 
-    <span class="token keyword">var</span> body<span class="token punctuation">:</span> <span class="token keyword">some</span> <span class="token class-name">Scene</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">Settings</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    var body: some Scene &#123;
+        Settings &#123;&#125;
+    &#125;
+&#125;</code></pre>
 <blockquote>
 <p>这里body中的<code>Settings &#123;&#125;</code>代码，是为了隐藏启动时的主窗口。</p>
 </blockquote>
 <p>然后创建AppDelegate类。</p>
-<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">class</span> <span class="token class-name">AppDelegate</span><span class="token punctuation">:</span> <span class="token class-name">NSObject</span><span class="token punctuation">,</span> <span class="token class-name">NSApplicationDelegate</span> <span class="token punctuation">&#123;</span>
+<pre class="language-swift"><code class="language-swift">class AppDelegate: NSObject, NSApplicationDelegate &#123;
 
-    <span class="token keyword">private</span> <span class="token keyword">var</span> tray<span class="token punctuation">:</span> <span class="token class-name">Tray</span><span class="token operator">!</span>
+    private var tray: Tray!
     
-    <span class="token keyword">func</span> <span class="token function-definition function">applicationDidFinishLaunching</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> notification<span class="token punctuation">:</span> <span class="token class-name">Notification</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    func applicationDidFinishLaunching(_ notification: Notification) &#123;
 
-        tray <span class="token operator">=</span> <span class="token class-name">Tray</span><span class="token punctuation">.</span><span class="token function">install</span><span class="token punctuation">(</span>named<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"TrayIcon"</span></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> tray <span class="token keyword">in</span> 
-            <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">configTray</span><span class="token punctuation">(</span>tray<span class="token punctuation">:</span> tray<span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        tray = Tray.install(named: "TrayIcon") &#123; tray in 
+            self.configTray(tray: tray)
+        &#125;
+    &#125;
+&#125;</code></pre>
 <p>引入相关的类Tray并声明我们的托盘管理对象<code>var tray: Tray</code>，并在<code>applicationDidFinishLaunching</code>中为改对象赋值，传入资源文件名称，或者使用<code>SF Symbols</code>也可以，只是参数名要改为systemSymbolName，如果有更多要求，也可以直接以icon为参数名，传入一个NSImage对象。<br>然后在闭包中配置tray.</p>
-<h3 id="2-2-配置托盘信息"><a href="#2-2-配置托盘信息" class="headerlink" title="2.2 配置托盘信息"></a>2.2 配置托盘信息</h3><pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">func</span> <span class="token function-definition function">configTray</span><span class="token punctuation">(</span>tray<span class="token punctuation">:</span> <span class="token class-name">Tray</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 配置左键弹出view</span>
-    tray<span class="token punctuation">.</span><span class="token function">setView</span><span class="token punctuation">(</span>content<span class="token punctuation">:</span> <span class="token class-name">ContentView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2-配置托盘信息"><a href="#2-2-配置托盘信息" class="headerlink" title="2.2 配置托盘信息"></a>2.2 配置托盘信息</h3><pre class="language-swift"><code class="language-swift">func configTray(tray: Tray) &#123;
+    // 配置左键弹出view
+    tray.setView(content: ContentView())
+&#125;</code></pre>
 <p>这里设置的是一个SwiftUI的View，你也可以设置NSView或者NSViewController，除了界面参数，还有其他三个可选参数：</p>
 <ol>
 <li>behavior: NSPopover的behavior，默认值为.transient，即点击窗口以外区域隐藏弹出界面；</li>
@@ -243,23 +243,23 @@
 </ol>
 <p>在JustTodo应用中，其效果如下图：<br><img src="/assets/images/just-todo.gif"></p>
 <p>到这里，主要的配置就完成了，如果你不想弹出一个NSPopover，你也可以接管托盘图标的左键事件。</p>
-<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift">tray<span class="token punctuation">.</span>setOnLeftClick <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token boolean">true</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="language-swift"><code class="language-swift">tray.setOnLeftClick &#123;
+    return true
+&#125;</code></pre>
 <p>返回true，表示事件完全处理，会阻止默认行为。默认行为就是弹出NSPopover，前提是设置了view。比如在DeskNote中，我接管了此事件，改为弹出笔记的编辑页面。<br><img src="/assets/images/dest-note.gif"><br>当然，同样你也可以为右键增加事件。</p>
-<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift">tray<span class="token punctuation">.</span>setOnRightClick <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token boolean">true</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="language-swift"><code class="language-swift">tray.setOnRightClick &#123;
+    return true
+&#125;</code></pre>
 <p>返回true，表示事件完成处理，阻止默认行为。默认行为是弹出菜单，前提是设置了菜单，正如下边代码。</p>
-<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">let</span> menu <span class="token operator">=</span> <span class="token class-name">NSMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="language-swift"><code class="language-swift">let menu = NSMenu()
         
-<span class="token keyword">let</span> newNoteMenuItem <span class="token operator">=</span> <span class="token class-name">NSMenuItem</span><span class="token punctuation">(</span>title<span class="token punctuation">:</span> <span class="token class-name">NSLocalizedString</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"Menu_item_new_note"</span></span><span class="token punctuation">,</span> comment<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">""</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span> action<span class="token punctuation">:</span> <span class="token other-directive property">#selector</span><span class="token punctuation">(</span>onNewNoteAction<span class="token punctuation">)</span><span class="token punctuation">,</span> keyEquivalent<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">""</span></span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> quitMenuItem <span class="token operator">=</span> <span class="token class-name">NSMenuItem</span><span class="token punctuation">(</span>title<span class="token punctuation">:</span> <span class="token class-name">NSLocalizedString</span><span class="token punctuation">(</span><span class="token string-literal"><span class="token string">"Menu_item_quit"</span></span><span class="token punctuation">,</span> comment<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">""</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span> action<span class="token punctuation">:</span> <span class="token other-directive property">#selector</span><span class="token punctuation">(</span>onQuitAction<span class="token punctuation">)</span><span class="token punctuation">,</span> keyEquivalent<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">""</span></span><span class="token punctuation">)</span>
+let newNoteMenuItem = NSMenuItem(title: NSLocalizedString("Menu_item_new_note", comment: ""), action: #selector(onNewNoteAction), keyEquivalent: "")
+let quitMenuItem = NSMenuItem(title: NSLocalizedString("Menu_item_quit", comment: ""), action: #selector(onQuitAction), keyEquivalent: "")
 
-menu<span class="token punctuation">.</span><span class="token function">addItem</span><span class="token punctuation">(</span>newNoteMenuItem<span class="token punctuation">)</span>
-menu<span class="token punctuation">.</span><span class="token function">addItem</span><span class="token punctuation">(</span>quitMenuItem<span class="token punctuation">)</span>
+menu.addItem(newNoteMenuItem)
+menu.addItem(quitMenuItem)
 
-tray<span class="token punctuation">.</span><span class="token function">setMenu</span><span class="token punctuation">(</span>menu<span class="token punctuation">:</span> menu<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+tray.setMenu(menu: menu)</code></pre>
 <p>效果如下：<br><img src="/assets/images/dest-note-right.gif"></p>
 <p>这就是一些基本的使用和配置步骤。接下来是一些相关的小建议。</p>
 <h2 id="三、建议"><a href="#三、建议" class="headerlink" title="三、建议"></a>三、建议</h2><h3 id="3-1-托盘图标尺寸"><a href="#3-1-托盘图标尺寸" class="headerlink" title="3.1 托盘图标尺寸"></a>3.1 托盘图标尺寸</h3><p>1x: 18<em>18<br>2x: 36</em>36<br>3x: 54*54</p>

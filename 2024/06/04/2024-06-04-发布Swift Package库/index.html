@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -210,39 +210,39 @@
 <p>该文章中涉及到的所有代码都在<a target="_blank" rel="noopener" href="https://github.com/boybeak/Tray">boybeak&#x2F;Tray</a></p>
 <h2 id="一、创建Github仓库"><a href="#一、创建Github仓库" class="headerlink" title="一、创建Github仓库"></a>一、创建Github仓库</h2><p>我们需要先创建一个Github仓库，我的仓库名称为Tray，将其clone到本地。</p>
 <h2 id="二、在仓库目录下，初始化一个Swift-Package。"><a href="#二、在仓库目录下，初始化一个Swift-Package。" class="headerlink" title="二、在仓库目录下，初始化一个Swift Package。"></a>二、在仓库目录下，初始化一个Swift Package。</h2><p>在Tray仓库目录下，执行以下脚本。</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Tray % swift package init <span class="token parameter variable">--type</span> library<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-bash"><code class="language-bash">Tray % swift package init --type library</code></pre>
 <p>该命令，会自动按照目录名称，初始化一个Swift Package，其目录如下：</p>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css">Tray
+<pre class="language-css"><code class="language-css">Tray
   - Package.swift
   - .gitignore
   - Sources/
     - Tray/Tray.swift
   - Tests/
-    - TrayTests/TrayTests.swift<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    - TrayTests/TrayTests.swift</code></pre>
 <p>其中，Package.swift为库的索引入口，当Xcode在按照Github链接查找库时，会以查到此文件为准则。其内容如下：</p>
-<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token comment">// swift-tools-version: 5.10</span>
-<span class="token comment">// The swift-tools-version declares the minimum version of Swift required to build this package.</span>
+<pre class="language-swift"><code class="language-swift">// swift-tools-version: 5.10
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
-<span class="token keyword">import</span> <span class="token class-name">PackageDescription</span>
+import PackageDescription
 
-<span class="token keyword">let</span> package <span class="token operator">=</span> <span class="token class-name">Package</span><span class="token punctuation">(</span>
-    name<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"Tray"</span></span><span class="token punctuation">,</span>
-    products<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        <span class="token comment">// Products define the executables and libraries a package produces, making them visible to other packages.</span>
-        <span class="token punctuation">.</span><span class="token function">library</span><span class="token punctuation">(</span>
-            name<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"Tray"</span></span><span class="token punctuation">,</span>
-            targets<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string-literal"><span class="token string">"Tray"</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    targets<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        <span class="token comment">// Targets are the basic building blocks of a package, defining a module or a test suite.</span>
-        <span class="token comment">// Targets can depend on other targets in this package and products from dependencies.</span>
-        <span class="token punctuation">.</span><span class="token function">target</span><span class="token punctuation">(</span>
-            name<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"Tray"</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">.</span><span class="token function">testTarget</span><span class="token punctuation">(</span>
-            name<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"TrayTests"</span></span><span class="token punctuation">,</span>
-            dependencies<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string-literal"><span class="token string">"Tray"</span></span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">]</span>
-<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+let package = Package(
+    name: "Tray",
+    products: [
+        // Products define the executables and libraries a package produces, making them visible to other packages.
+        .library(
+            name: "Tray",
+            targets: ["Tray"]),
+    ],
+    targets: [
+        // Targets are the basic building blocks of a package, defining a module or a test suite.
+        // Targets can depend on other targets in this package and products from dependencies.
+        .target(
+            name: "Tray"),
+        .testTarget(
+            name: "TrayTests",
+            dependencies: ["Tray"]),
+    ]
+)</code></pre>
 
 <h2 id="三、发布库"><a href="#三、发布库" class="headerlink" title="三、发布库"></a>三、发布库</h2><p>补充相关逻辑代码，提交&#x2F;推送到GitHub，便可以在其他库中使用。不需要特别的发布操作。<br>在正式发布前，也可以本地使用，创建一个新项目，在Xcode中，File -&gt; Add Package Denpendencies…，在弹出的管理窗口中，点击<strong>Add Local</strong>按钮，然后选择Tray文件夹，便可以本地使用，同时，你也可以在项目中，直接编辑该库的代码。</p>
 <p>提交代码到Github后，你可以把自己的库提交到<a target="_blank" rel="noopener" href="https://swiftpackageindex.com/">Swift Package Index</a>，方便他人查找。进入页面后，点击<strong>Add a package</strong>，进入新页面后，会有一个绿色的<strong>Add Package(s)<strong>按钮，此点击此按钮，会自动跳转到Swift Package Index的Github的issue页面，并会有一个提交模板，输入自己库的Github链接后，提issue，机器人会处理这个issue，并再提一个新的issue，点击链接到新的issue中，点击链接，对你的代码进行code review，注意勾选</strong>viewed</strong>复选框，完成code review后，机器人会自动处理接下来的流程。</p>

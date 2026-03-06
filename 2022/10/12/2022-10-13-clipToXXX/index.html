@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -207,24 +207,24 @@
 <span id="more"></span>
 <p><img src="/assets/images/playground.jpg" alt="playground"><br>简单说，就是子view的背景显示区域，不能超过父view的背景区域。</p>
 <h2 id="clipToOutline"><a href="#clipToOutline" class="headerlink" title="clipToOutline"></a>clipToOutline</h2><p>经过一番搜索尝试，终于查到，可以通过<code>clipToOutline</code> + <code>outlineProvider</code>来实现，说来惭愧，做了将近20年android开发，竟然到现在才知道这样的特性。<br>具体代码如下：</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FrameLayout</span>
-    <span class="token attr-name"><span class="token namespace">android:</span>id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@+id/togetherParent<span class="token punctuation">"</span></span>
-    <span class="token attr-name"><span class="token namespace">android:</span>layout_width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100dp<span class="token punctuation">"</span></span>
-    <span class="token attr-name"><span class="token namespace">android:</span>layout_height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100dp<span class="token punctuation">"</span></span>
-    <span class="token attr-name"><span class="token namespace">android:</span>layout_margin</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>8dp<span class="token punctuation">"</span></span>
-    <span class="token attr-name"><span class="token namespace">android:</span>background</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@drawable/bg_parent<span class="token punctuation">"</span></span>
-    <span class="token attr-name"><span class="token namespace">android:</span>clipToOutline</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
-    <span class="token attr-name"><span class="token namespace">android:</span>outlineProvider</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>background<span class="token punctuation">"</span></span>
-    <span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>View</span>
-        <span class="token attr-name"><span class="token namespace">android:</span>id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@+id/togetherChild<span class="token punctuation">"</span></span>
-        <span class="token attr-name"><span class="token namespace">android:</span>layout_width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100dp<span class="token punctuation">"</span></span>
-        <span class="token attr-name"><span class="token namespace">android:</span>layout_height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100dp<span class="token punctuation">"</span></span>
-        <span class="token attr-name"><span class="token namespace">android:</span>background</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@drawable/bg_child<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FrameLayout</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-markup"><code class="language-markup">&lt;FrameLayout
+    android:id="@+id/togetherParent"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/bg_parent"
+    android:clipToOutline="true"
+    android:outlineProvider="background"
+    >
+    &lt;View
+        android:id="@+id/togetherChild"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/bg_child"/>
+&lt;/FrameLayout></code></pre>
 <p>但是以上代码只可以在API Level 31及以上使用，要增大适用版本范围，可以用以下代码，在kotlin中实现：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">parent<span class="token punctuation">.</span>clipToOutline <span class="token operator">=</span> <span class="token boolean">true</span>
-parent<span class="token punctuation">.</span>outlineProvider <span class="token operator">=</span> ViewOutlineProvider<span class="token punctuation">.</span>BACKGROUND<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">parent.clipToOutline = true
+parent.outlineProvider = ViewOutlineProvider.BACKGROUND</code></pre>
 <p>kotlin中代码，就可以实现，低至API Level 21及以上使用。</p>
 <p>除了<code>clipToOutline</code>，我还发现了其他<code>clipToXXX</code>有关的API。</p>
 <h2 id="clipChildren"><a href="#clipChildren" class="headerlink" title="clipChildren"></a>clipChildren</h2>

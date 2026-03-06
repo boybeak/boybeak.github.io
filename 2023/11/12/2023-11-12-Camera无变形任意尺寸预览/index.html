@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -226,63 +226,63 @@
 <p>以上就是基本思路，是不是还是一头雾水？没关系，下面进行具体实现的讲解。</p>
 <h2 id="三、具体实现"><a href="#三、具体实现" class="headerlink" title="三、具体实现"></a>三、具体实现</h2><p>在上述的步骤中，第1步很简单，这里不再进行赘述，直接从步骤2开始。</p>
 <h3 id="3-1-通过Surface创建EGL环境"><a href="#3-1-通过Surface创建EGL环境" class="headerlink" title="3.1 通过Surface创建EGL环境"></a>3.1 通过Surface创建EGL环境</h3><p>一般代码示例如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> display<span class="token operator">:</span> EGLDisplay <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> EGL14<span class="token punctuation">.</span><span class="token function">eglGetDisplay</span><span class="token punctuation">(</span>EGL14<span class="token punctuation">.</span>EGL_DEFAULT_DISPLAY<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
-<span class="token keyword">private</span> <span class="token keyword">var</span> eglSurface<span class="token operator">:</span> EGLSurface<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
-<span class="token keyword">var</span> eglContext<span class="token operator">:</span> EGLContext<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
-    <span class="token keyword">private</span> <span class="token keyword">set</span>
-<span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">createEGL</span><span class="token punctuation">(</span>surface<span class="token operator">:</span> Surface<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">val</span> version <span class="token operator">=</span> <span class="token function">IntArray</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-    EGL14<span class="token punctuation">.</span><span class="token function">eglInitialize</span><span class="token punctuation">(</span>display<span class="token punctuation">,</span> version<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> version<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<pre class="language-kotlin"><code class="language-kotlin">private val display: EGLDisplay by lazy &#123; EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY) &#125;
+private var eglSurface: EGLSurface? = null
+var eglContext: EGLContext? = null
+    private set
+private fun createEGL(surface: Surface) &#123;
+    val version = IntArray(2)
+    EGL14.eglInitialize(display, version, 0, version, 1)
 
-    <span class="token keyword">val</span> attributes <span class="token operator">=</span> <span class="token function">intArrayOf</span><span class="token punctuation">(</span>
-        EGL14<span class="token punctuation">.</span>EGL_RED_SIZE<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span>
-        EGL14<span class="token punctuation">.</span>EGL_GREEN_SIZE<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span>
-        EGL14<span class="token punctuation">.</span>EGL_BLUE_SIZE<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span>
-        EGL14<span class="token punctuation">.</span>EGL_ALPHA_SIZE<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span>
-        EGL14<span class="token punctuation">.</span>EGL_RENDERABLE_TYPE<span class="token punctuation">,</span> EGL14<span class="token punctuation">.</span>EGL_OPENGL_ES2_BIT<span class="token punctuation">,</span>
-        EGL14<span class="token punctuation">.</span>EGL_NONE<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span>      <span class="token comment">// placeholder for recordable [@-3]</span>
-        EGL14<span class="token punctuation">.</span>EGL_NONE
-    <span class="token punctuation">)</span>
+    val attributes = intArrayOf(
+        EGL14.EGL_RED_SIZE, 8,
+        EGL14.EGL_GREEN_SIZE, 8,
+        EGL14.EGL_BLUE_SIZE, 8,
+        EGL14.EGL_ALPHA_SIZE, 8,
+        EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
+        EGL14.EGL_NONE, 0,      // placeholder for recordable [@-3]
+        EGL14.EGL_NONE
+    )
 
-    <span class="token keyword">val</span> configs <span class="token operator">=</span> arrayOfNulls<span class="token operator">&lt;</span>EGLConfig<span class="token operator">></span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token keyword">val</span> numConfigs <span class="token operator">=</span> <span class="token function">IntArray</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-    EGL14<span class="token punctuation">.</span><span class="token function">eglChooseConfig</span><span class="token punctuation">(</span>display<span class="token punctuation">,</span> attributes<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> configs<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span>
-        configs<span class="token punctuation">.</span>size<span class="token punctuation">,</span> numConfigs<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    val configs = arrayOfNulls&lt;EGLConfig>(1)
+    val numConfigs = IntArray(1)
+    EGL14.eglChooseConfig(display, attributes, 0, configs, 0,
+        configs.size, numConfigs, 0)
 
-    <span class="token keyword">val</span> config <span class="token operator">=</span> configs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    val config = configs[0]
 
-    eglSurface <span class="token operator">=</span> EGL14<span class="token punctuation">.</span><span class="token function">eglCreateWindowSurface</span><span class="token punctuation">(</span>
-        display<span class="token punctuation">,</span> config<span class="token punctuation">,</span> surface<span class="token punctuation">,</span> <span class="token function">intArrayOf</span><span class="token punctuation">(</span>
-            EGL14<span class="token punctuation">.</span>EGL_NONE
-        <span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span>
-    <span class="token punctuation">)</span>
+    eglSurface = EGL14.eglCreateWindowSurface(
+        display, config, surface, intArrayOf(
+            EGL14.EGL_NONE
+        ), 0
+    )
 
-    eglContext <span class="token operator">=</span> EGL14<span class="token punctuation">.</span><span class="token function">eglCreateContext</span><span class="token punctuation">(</span>
-        display<span class="token punctuation">,</span> config<span class="token punctuation">,</span> sharedContext <span class="token operator">?:</span> EGL14<span class="token punctuation">.</span>EGL_NO_CONTEXT<span class="token punctuation">,</span> <span class="token function">intArrayOf</span><span class="token punctuation">(</span>
-            EGL14<span class="token punctuation">.</span>EGL_CONTEXT_CLIENT_VERSION<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> EGL14<span class="token punctuation">.</span>EGL_NONE
-        <span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span>
-    <span class="token punctuation">)</span>
-    EGL14<span class="token punctuation">.</span><span class="token function">eglMakeCurrent</span><span class="token punctuation">(</span>display<span class="token punctuation">,</span> eglSurface<span class="token punctuation">,</span> eglSurface<span class="token punctuation">,</span> eglContext<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    eglContext = EGL14.eglCreateContext(
+        display, config, sharedContext ?: EGL14.EGL_NO_CONTEXT, intArrayOf(
+            EGL14.EGL_CONTEXT_CLIENT_VERSION, 2, EGL14.EGL_NONE
+        ), 0
+    )
+    EGL14.eglMakeCurrent(display, eglSurface, eglSurface, eglContext)
+&#125;</code></pre>
 <p>这里需要注意的是，这个方法调用需要在一个独立的线程中，最后一句代码是与当前线程绑定，相关的OpenGL的操作，只能在对应的线程中进行。<br>有了这个OpenGL环境以后，就可以创建对应的<code>SurfaceTexture</code>了，简单的代码如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> textureIds <span class="token operator">=</span> <span class="token function">IntArray</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-GLES20<span class="token punctuation">.</span><span class="token function">glGenTextures</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> textureIds<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token keyword">val</span> texture <span class="token operator">=</span> <span class="token function">SurfaceTexture</span><span class="token punctuation">(</span>textureIds<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">val textureIds = IntArray(1)
+GLES20.glGenTextures(1, textureIds, 0)
+val texture = SurfaceTexture(textureIds[0])</code></pre>
 <p>同样的，这里的代码也要运行在之前的创建EGL环境相同的线程之下，之后便可以将这里创建的<code>texture</code>设置给camera对象用于预览。</p>
 <h3 id="3-2-监听预览-消除形变-绘制画面"><a href="#3-2-监听预览-消除形变-绘制画面" class="headerlink" title="3.2 监听预览-消除形变-绘制画面"></a>3.2 监听预览-消除形变-绘制画面</h3><p>给上一步中创建的<code>texture</code>设置一个画面监听。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> matrix <span class="token operator">=</span> <span class="token function">FloatArray</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span>
-texture<span class="token punctuation">.</span><span class="token function">setOnFrameAvailableListener</span> <span class="token punctuation">&#123;</span>
-    queue <span class="token punctuation">&#123;</span>
-        texture<span class="token punctuation">.</span><span class="token function">updateTexImage</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        texture<span class="token punctuation">.</span><span class="token function">getTransformMatrix</span><span class="token punctuation">(</span>matrix<span class="token punctuation">)</span>
+<pre class="language-kotlin"><code class="language-kotlin">val matrix = FloatArray(16)
+texture.setOnFrameAvailableListener &#123;
+    queue &#123;
+        texture.updateTexImage()
+        texture.getTransformMatrix(matrix)
 
-        <span class="token function">drawFrame</span><span class="token punctuation">(</span>textureIds<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> matrix<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+        drawFrame(textureIds[0], matrix)
+    &#125;
+&#125;
 
-<span class="token keyword">fun</span> <span class="token function">drawFrame</span><span class="token punctuation">(</span>textureId<span class="token operator">:</span> Int<span class="token punctuation">,</span> matrix<span class="token operator">:</span> FloatArray<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// ....</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+fun drawFrame(textureId: Int, matrix: FloatArray) &#123;
+    // ....
+&#125;</code></pre>
 <p>简单解释一下这里代码：</p>
 <ol>
 <li>先创建一个浮点数组，用于接收预览画面的坐标数据，用于OpenGL绘制画面使用；</li>
@@ -291,30 +291,30 @@ texture<span class="token punctuation">.</span><span class="token function">setO
 <li>最后调用<code>getTransformMatrix</code>获取画面坐标数据，为之后的画面绘制做准备。</li>
 </ol>
 <p>接下来，便是执行画面的绘制，在画面绘制关键的一步就是消除形变，这里需要先获得camera对象的预览尺寸，从支持的预览尺寸中，挑选最佳匹配尺寸以及消除方形问题的相关代码，这里不再赘述，只提供消除形变的关键代码。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> inputSize<span class="token operator">:</span> Size <span class="token comment">// 相机输出的预览画面尺寸，因为要作为绘制的输入，所以称为inputSize，注意消除屏幕方向旋转的问题</span>
-<span class="token keyword">val</span> outputSize<span class="token operator">:</span> Size <span class="token comment">// 输出画面的尺寸</span>
-<span class="token keyword">val</span> viewport<span class="token operator">:</span> Rect <span class="token comment">// 计算出预览画面要消除形变，需要做的位置与尺寸变更</span>
+<pre class="language-kotlin"><code class="language-kotlin">val inputSize: Size // 相机输出的预览画面尺寸，因为要作为绘制的输入，所以称为inputSize，注意消除屏幕方向旋转的问题
+val outputSize: Size // 输出画面的尺寸
+val viewport: Rect // 计算出预览画面要消除形变，需要做的位置与尺寸变更
 
-<span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">calculateBestViewPort</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>inputSize<span class="token punctuation">.</span>isEmpty <span class="token operator">||</span> outputSize<span class="token punctuation">.</span>isEmpty<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span>
-    <span class="token punctuation">&#125;</span>
+private fun calculateBestViewPort() &#123;
+    if (inputSize.isEmpty || outputSize.isEmpty) &#123;
+        return
+    &#125;
 
-    <span class="token keyword">val</span> scale <span class="token operator">=</span> <span class="token function">max</span><span class="token punctuation">(</span>outputSize<span class="token punctuation">.</span>width<span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> inputSize<span class="token punctuation">.</span>width<span class="token punctuation">,</span> outputSize<span class="token punctuation">.</span>height<span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> inputSize<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
-    <span class="token keyword">val</span> srcWidth <span class="token operator">=</span> <span class="token punctuation">(</span>inputSize<span class="token punctuation">.</span>width <span class="token operator">*</span> scale<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">val</span> srcHeight <span class="token operator">=</span> <span class="token punctuation">(</span>inputSize<span class="token punctuation">.</span>height <span class="token operator">*</span> scale<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    val scale = max(outputSize.width.toFloat() / inputSize.width, outputSize.height.toFloat() / inputSize.height)
+    val srcWidth = (inputSize.width * scale).toInt()
+    val srcHeight = (inputSize.height * scale).toInt()
 
-    <span class="token keyword">val</span> left <span class="token operator">=</span> <span class="token punctuation">(</span>outputSize<span class="token punctuation">.</span>width <span class="token operator">-</span> srcWidth<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
-    <span class="token keyword">val</span> top <span class="token operator">=</span> <span class="token punctuation">(</span>outputSize<span class="token punctuation">.</span>height <span class="token operator">-</span> srcHeight<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
-    viewport<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span> top<span class="token punctuation">,</span> left <span class="token operator">+</span> srcWidth<span class="token punctuation">,</span> top <span class="token operator">+</span> srcHeight<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    val left = (outputSize.width - srcWidth) / 2
+    val top = (outputSize.height - srcHeight) / 2
+    viewport.set(left, top, left + srcWidth, top + srcHeight)
+&#125;</code></pre>
 <p>在绘制画面前，执行OpenGL的<code>glViewport</code>方法，就可以消除形变了。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">drawFrame</span><span class="token punctuation">(</span>textureId<span class="token operator">:</span> Int<span class="token punctuation">,</span> texMatrix<span class="token operator">:</span> FloatArray<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>viewport<span class="token punctuation">.</span>isEmpty<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        GLES20<span class="token punctuation">.</span><span class="token function">glViewport</span><span class="token punctuation">(</span>viewport<span class="token punctuation">.</span>left<span class="token punctuation">,</span> viewport<span class="token punctuation">.</span>top<span class="token punctuation">,</span> viewport<span class="token punctuation">.</span><span class="token function">width</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> viewport<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token comment">// 绘制画面代码有大量的OpenGL操作，具体不再赘述</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">fun drawFrame(textureId: Int, texMatrix: FloatArray?) &#123;
+    if (!viewport.isEmpty) &#123;
+        GLES20.glViewport(viewport.left, viewport.top, viewport.width(), viewport.height())
+    &#125;
+    // 绘制画面代码有大量的OpenGL操作，具体不再赘述
+&#125;</code></pre>
 
 <h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>到这里，主要的消除形变预览相机画面的主要逻辑流程，就基本结束了，重点是梳理思路，在具体的实践中，还是有很多细碎的问题的，就比如相机预览尺寸的选取与方向设置问题。</p>
 <p>另外，为这里只是为了说明逻辑，临时写了代码逻辑部分，实际项目中，我直接使用了<a target="_blank" rel="noopener" href="https://github.com/google/grafika">Grafika</a>项目中的egl包下代码，这个项目给了我很多灵感，真心推荐给各位看一下这个项目中的代码。</p>

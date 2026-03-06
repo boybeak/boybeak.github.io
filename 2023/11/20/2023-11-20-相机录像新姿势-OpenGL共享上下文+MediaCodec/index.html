@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -222,84 +222,84 @@
 <li>MediaCodec开始编码录制；</li>
 </ol>
 <h2 id="四、具体实现"><a href="#四、具体实现" class="headerlink" title="四、具体实现"></a>四、具体实现</h2><h3 id="4-1-实现OpenGL画面预览"><a href="#4-1-实现OpenGL画面预览" class="headerlink" title="4.1 实现OpenGL画面预览"></a>4.1 实现OpenGL画面预览</h3><p>这里我们通过已经封装好的PreviewSurface实现。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token keyword">open</span><span class="token punctuation">(</span>id<span class="token operator">:</span> Int<span class="token punctuation">,</span> surfaceView<span class="token operator">:</span> SurfaceView<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>id <span class="token operator">==</span> cameraId<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>camera <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
+<pre class="language-kotlin"><code class="language-kotlin">fun open(id: Int, surfaceView: SurfaceView) &#123;
+    if (id == cameraId) &#123;
+        return
+    &#125;
+    if (camera != null) &#123;
+        close()
+    &#125;
 
-    previewSurface <span class="token operator">=</span> <span class="token function">PreviewSurface</span><span class="token punctuation">(</span>surfaceView<span class="token punctuation">.</span>holder<span class="token punctuation">.</span>surface<span class="token punctuation">)</span>
-    previewSurfaceView <span class="token operator">=</span> surfaceView
-    previewSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">start</span> <span class="token punctuation">&#123;</span> surfaceTexture <span class="token operator">-></span>
-        previewSurfaceTexture <span class="token operator">=</span> surfaceTexture
+    previewSurface = PreviewSurface(surfaceView.holder.surface)
+    previewSurfaceView = surfaceView
+    previewSurface?.start &#123; surfaceTexture ->
+        previewSurfaceTexture = surfaceTexture
 
-        <span class="token keyword">val</span> previewSize <span class="token operator">=</span> <span class="token function">openCameraOnly</span><span class="token punctuation">(</span>id<span class="token punctuation">,</span> surfaceTexture<span class="token punctuation">)</span>
-        <span class="token keyword">when</span><span class="token punctuation">(</span>display<span class="token punctuation">.</span>rotation<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            Surface<span class="token punctuation">.</span>ROTATION_0<span class="token punctuation">,</span> Surface<span class="token punctuation">.</span>ROTATION_180 <span class="token operator">-></span> previewSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">setInputSize</span><span class="token punctuation">(</span>previewSize<span class="token punctuation">.</span>height<span class="token punctuation">,</span> previewSize<span class="token punctuation">.</span>width<span class="token punctuation">)</span>
-            Surface<span class="token punctuation">.</span>ROTATION_90<span class="token punctuation">,</span> Surface<span class="token punctuation">.</span>ROTATION_270 <span class="token operator">-></span> previewSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">setInputSize</span><span class="token punctuation">(</span>previewSize<span class="token punctuation">.</span>width<span class="token punctuation">,</span> previewSize<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        val previewSize = openCameraOnly(id, surfaceTexture)
+        when(display.rotation) &#123;
+            Surface.ROTATION_0, Surface.ROTATION_180 -> previewSurface?.setInputSize(previewSize.height, previewSize.width)
+            Surface.ROTATION_90, Surface.ROTATION_270 -> previewSurface?.setInputSize(previewSize.width, previewSize.height)
+        &#125;
+    &#125;
+&#125;</code></pre>
 <p><code>previewSurface</code>可以提供<code>SurfaceTexture</code>进行预览，同时也保存了OpenGL上下文。</p>
 <h3 id="4-2-MediaCodec创建Surface"><a href="#4-2-MediaCodec创建Surface" class="headerlink" title="4.2 MediaCodec创建Surface"></a>4.2 MediaCodec创建Surface</h3><p>我们的视频编码是通过<code>MediaCodec</code>实现的，之所以不直接用<code>MediaRecorder</code>实现，是因为<code>MediaRecorder</code>不支持录制期间翻转摄像头。</p>
 <p>一个简单的MediaCodec实现如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">videoCodec <span class="token operator">=</span> MediaCodec<span class="token punctuation">.</span><span class="token function">createEncoderByType</span><span class="token punctuation">(</span>MIME_TYPE<span class="token punctuation">)</span>
-<span class="token keyword">val</span> codecInfo <span class="token operator">=</span> videoCodec<span class="token operator">!!</span><span class="token punctuation">.</span>codecInfo
-<span class="token keyword">val</span> capabilities <span class="token operator">=</span> codecInfo<span class="token punctuation">.</span><span class="token function">getCapabilitiesForType</span><span class="token punctuation">(</span>MIME_TYPE<span class="token punctuation">)</span>
-<span class="token keyword">val</span> mediaFormat <span class="token operator">=</span> onConfig<span class="token punctuation">.</span><span class="token function">onConfig</span><span class="token punctuation">(</span>capabilities<span class="token punctuation">.</span>videoCapabilities<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toMediaFormat</span><span class="token punctuation">(</span>
+<pre class="language-kotlin"><code class="language-kotlin">videoCodec = MediaCodec.createEncoderByType(MIME_TYPE)
+val codecInfo = videoCodec!!.codecInfo
+val capabilities = codecInfo.getCapabilitiesForType(MIME_TYPE)
+val mediaFormat = onConfig.onConfig(capabilities.videoCapabilities).toMediaFormat(
     MIME_TYPE
-<span class="token punctuation">)</span>
-videoCodec<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span>mediaFormat<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> MediaCodec<span class="token punctuation">.</span>CONFIGURE_FLAG_ENCODE<span class="token punctuation">)</span>
+)
+videoCodec?.configure(mediaFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
 
-<span class="token keyword">val</span> inputSurface <span class="token operator">=</span> videoCodec<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">createInputSurface</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+val inputSurface = videoCodec?.createInputSurface()!!</code></pre>
 <p>这样，我们就获得了一个用于共享的surface。</p>
 <h3 id="4-3-创建共享OpenGL环境"><a href="#4-3-创建共享OpenGL环境" class="headerlink" title="4.3 创建共享OpenGL环境"></a>4.3 创建共享OpenGL环境</h3><p>以前两步中获得到OpenGL上下文与共享surface，创建一个新的共享OpenGL环境，这里我们已经封装成了<code>SharedSurface</code>，只要直接调用其attach方法即可直接共享预览Surface的画面。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> avEncoder <span class="token operator">=</span> <span class="token function">AVEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">private</span> <span class="token keyword">var</span> recordSurface<span class="token operator">:</span> SharedSurface<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
-<span class="token keyword">private</span> <span class="token keyword">val</span> timeSynchronizer <span class="token operator">=</span> <span class="token keyword">object</span> <span class="token operator">:</span> TimeSynchronizer <span class="token punctuation">&#123;</span>
+<pre class="language-kotlin"><code class="language-kotlin">private val avEncoder = AVEncoder()
+private var recordSurface: SharedSurface? = null
+private val timeSynchronizer = object : TimeSynchronizer &#123;
 
-    <span class="token keyword">private</span> <span class="token keyword">var</span> startAt <span class="token operator">=</span> <span class="token number">0L</span>
+    private var startAt = 0L
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        startAt <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1000</span>
-    <span class="token punctuation">&#125;</span>
+    override fun reset() &#123;
+        startAt = System.currentTimeMillis() * 1000
+    &#125;
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getTimestamp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Long <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">1000</span> <span class="token operator">-</span> startAt
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    override fun getTimestamp(): Long &#123;
+        return System.currentTimeMillis() * 1000 - startAt
+    &#125;
+&#125;
 
-<span class="token keyword">fun</span> <span class="token function">startRecord</span><span class="token punctuation">(</span>output<span class="token operator">:</span> File<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isRecording</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span>
-    <span class="token punctuation">&#125;</span>
-    avEncoder<span class="token punctuation">.</span><span class="token function">prepare</span><span class="token punctuation">(</span><span class="token function">SimpleAudioConfigAdapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">SimpleVideoConfigAdapter</span><span class="token punctuation">(</span><span class="token function">Size</span><span class="token punctuation">(</span>previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>width<span class="token punctuation">,</span> previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> timeSynchronizer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        avEncoder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>output<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> inputSurface <span class="token operator">-></span>
-            recordSurface <span class="token operator">=</span> <span class="token function">SharedSurface</span><span class="token punctuation">(</span>inputSurface<span class="token punctuation">)</span>
-            recordSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>previewSurface<span class="token operator">!!</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+fun startRecord(output: File) &#123;
+    if (isRecording()) &#123;
+        return
+    &#125;
+    avEncoder.prepare(SimpleAudioConfigAdapter(), SimpleVideoConfigAdapter(Size(previewSurfaceView!!.width, previewSurfaceView!!.height)), timeSynchronizer) &#123;
+        avEncoder.start(output) &#123; inputSurface ->
+            recordSurface = SharedSurface(inputSurface)
+            recordSurface?.attach(previewSurface!!)
+        &#125;
+    &#125;
+&#125;</code></pre>
 <p>上述代码中，<code>AVEncoder</code>为一个同时录制画面与声音的逻辑集合类，当开始录像时，会提供一个inputSurface对象，利用此对象，创建SharedSurface，就可以直接利用预览画面的共享纹理进行绘制，这些会绘制到共享surface上，MediaCodec会直接对画面进行编码。</p>
 <p>当然，这里会有很多MediaCodec相关的问题，这里的兼容性也是非常头疼的，需要处理高通&#x2F;海思&#x2F;联发科处理器的编码器的大量兼容性问题，但是这不是本文的重点。</p>
 <h3 id="4-4-编码录制"><a href="#4-4-编码录制" class="headerlink" title="4.4 编码录制"></a>4.4 编码录制</h3><p>这部分请直接参考代码吧</p>
 <h2 id="五、思路发散"><a href="#五、思路发散" class="headerlink" title="五、思路发散"></a>五、思路发散</h2><p>我们从录制上，可以看出，实际上连接预览与录制的，就是一个surface，只要有了surface，那我们就可以做很多操作了。比如拍照和扫码。</p>
 <p>当然，我们可以通过直接调用相机实例的接口进行拍照，只不过需要拍照后再做裁剪等操作，这里耗时不高。</p>
 <p>说一下拍照的逻辑，就是利用<code>ImageReader</code>，这种方式，就与Camera2的api差异不大了，简单代码实现如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">var</span> photoSurface<span class="token operator">:</span> SharedSurface<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
-<span class="token keyword">private</span> <span class="token keyword">val</span> photoHandler <span class="token operator">=</span> <span class="token operator">..</span><span class="token punctuation">.</span>
-<span class="token keyword">fun</span> <span class="token function">takePhoto</span><span class="token punctuation">(</span>callback<span class="token operator">:</span> <span class="token punctuation">(</span>Bitmap<span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">val</span> imageReader <span class="token operator">=</span> ImageReader<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span>previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>width<span class="token punctuation">,</span> previewSurfaceView<span class="token operator">!!</span><span class="token punctuation">.</span>height<span class="token punctuation">,</span> PixelFormat<span class="token punctuation">.</span>RGBA_8888<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    photoSurface <span class="token operator">=</span> <span class="token function">SharedSurface</span><span class="token punctuation">(</span>imageReader<span class="token punctuation">.</span>surface<span class="token punctuation">)</span>
-    imageReader<span class="token punctuation">.</span><span class="token function">setOnImageAvailableListener</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">val</span> image <span class="token operator">=</span> imageReader<span class="token punctuation">.</span><span class="token function">acquireNextImage</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token comment">// convert image to bitmap</span>
-        callback<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> photoHandler<span class="token punctuation">)</span>
-    photoSurface<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">attach</span><span class="token punctuation">(</span>previewSurface<span class="token operator">!!</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">private var photoSurface: SharedSurface? = null
+private val photoHandler = ...
+fun takePhoto(callback: (Bitmap) -> Unit) &#123;
+    val imageReader = ImageReader.newInstance(previewSurfaceView!!.width, previewSurfaceView!!.height, PixelFormat.RGBA_8888, 1)
+    photoSurface = SharedSurface(imageReader.surface)
+    imageReader.setOnImageAvailableListener(&#123;
+        val image = imageReader.acquireNextImage()
+        // convert image to bitmap
+        callback.invoke(bitmap)
+    &#125;, photoHandler)
+    photoSurface?.attach(previewSurface!!)
+&#125;</code></pre>
 <p>同样的，扫码功能也类似，不过这里要借助zxing这个二维码解析库，同时做一个RGBA的转换，因为当前方案下，ImageReader只允许PixelFormat.RGBA_8888的颜色编码，好处就是，可以比较容易实现扫码预览大小的自定义，并且在预览范围内的都可以扫到，不会出现以前那种预览区域与扫码感知区域不一致的问题。</p>
 <p>既然有Surface就可以连接预览画面，那实际上就可以做到边录像，边扫码，边拍照了，只要你的手机性能足够，更多的使用方式，你可以自由去发散。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>具体的代码可以参考我的<a target="_blank" rel="noopener" href="https://github.com/boybeak/iCamera">iCamera</a>，但是我的代码只是做简单的逻辑演示，并不能保证在所有机型上的兼容性，了解了基本思路后，你可以在此基础上做兼容性处理。</p>

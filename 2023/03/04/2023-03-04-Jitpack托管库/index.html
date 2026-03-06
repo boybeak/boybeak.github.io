@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -206,43 +206,43 @@
       <p>以前只是用过别人托管在Jitpack上的库，自己的库都是托管在MavenCentral上，但是MavenCentral使用起来，相比Jitpack还是有些麻烦。经过简单尝试和学习，了解了Jitpack的使用，做一下简单记录。</p>
 <p>我第一个托管在Jitpack上的库——<a target="_blank" rel="noopener" href="https://github.com/boybeak/J2V8Helper">J2V8Helper</a></p>
 <h2 id="Step-1-在library-module中使用maven-publish插件"><a href="#Step-1-在library-module中使用maven-publish插件" class="headerlink" title="Step 1: 在library module中使用maven-publish插件"></a>Step 1: 在library module中使用maven-publish插件</h2><p>在库目录下的build.gradle文件中，应用maven-publish插件，修改后的build.gradle文件入下：</p>
-<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">plugins <span class="token punctuation">&#123;</span>
-    id <span class="token string">'com.android.library'</span>
-    id <span class="token string">'org.jetbrains.kotlin.android'</span>
-    id <span class="token string">'maven-publish'</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">// Other code</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-groovy"><code class="language-groovy">plugins &#123;
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+&#125;
+// Other code</code></pre>
 
 <p>然后检查此插件是否引入成功，在AndroidStudio的右侧，Gradle面板中，library module下查看有无<code>publishing</code>的任务组。</p>
 <blockquote>
 <p>如果找不到，有可能是AndroidStudio配置的问题，在AndroidStudio的设置中，进入<strong>Experimental</strong>选项卡中，找到<strong>Gradle</strong>分组，找到<code>Only include test tasks in the Gradle task list generated during Gradle Sync</code>，如果勾选了，请不要勾选此选项。</p>
 </blockquote>
 <p>在library module下的build.gradle结尾，添加如下代码：</p>
-<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">afterEvaluate <span class="token punctuation">&#123;</span>
-    publishing <span class="token punctuation">&#123;</span>
-        publications <span class="token punctuation">&#123;</span>
-            <span class="token comment">// Creates a Maven publication called "release".</span>
-            <span class="token function">release</span><span class="token punctuation">(</span>MavenPublication<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// Applies the component for the release build variant.</span>
-                from components<span class="token punctuation">.</span>release
+<pre class="language-groovy"><code class="language-groovy">afterEvaluate &#123;
+    publishing &#123;
+        publications &#123;
+            // Creates a Maven publication called "release".
+            release(MavenPublication) &#123;
+                // Applies the component for the release build variant.
+                from components.release
 
-                <span class="token comment">// You can then customize attributes of the publication as shown below.</span>
-                groupId <span class="token operator">=</span> <span class="token string">'com.github.xyz'</span>
-                artifactId <span class="token operator">=</span> <span class="token string">'abc'</span>
-                version <span class="token operator">=</span> <span class="token string">'0.0.1'</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token comment">// Creates a Maven publication called “debug”.</span>
-            <span class="token function">debug</span><span class="token punctuation">(</span>MavenPublication<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// Applies the component for the debug build variant.</span>
-                from components<span class="token punctuation">.</span>debug
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.github.xyz'
+                artifactId = 'abc'
+                version = '0.0.1'
+            &#125;
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) &#123;
+                // Applies the component for the debug build variant.
+                from components.debug
 
-                groupId <span class="token operator">=</span> <span class="token string">'com.github.xyz'</span>
-                artifactId <span class="token operator">=</span> <span class="token string">'abc'</span>
-                version <span class="token operator">=</span> <span class="token string">'0.0.1'</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                groupId = 'com.github.xyz'
+                artifactId = 'abc'
+                version = '0.0.1'
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
 
 <blockquote>
 <p>需要注意的是，此配置，在Jitpack的编译中，并不会生效，Jitpack中你的库的引用，永远都是<code>com.github.&#123;你github用户名&#125;:&#123;此项目在gitHub上repository的名字&#125;:&#123;创建release的tag名字&#125;</code>。此处配置，只为检查你的maven-publish是否生效。</p>
@@ -253,8 +253,8 @@
 <p><img src="/assets/images/jitpack.png"></p>
 <p>点击Get it，然后等待编译结束，如果编译失败，会有日志记录，可以查看对应的日志来处理。</p>
 <p>需要注意的是，Jitpack默认的java版本为java8，如果你的Gradle版本比较高的话，比如我项目的Gradle版本为7.4.0，需要修改java版本，在项目的根目录下，创建一个jitpack.yml文件，增加配置脚本如下：</p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">jdk</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> openjdk11<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-yaml"><code class="language-yaml">jdk:
+  - openjdk11</code></pre>
 
 <p>Gradle版本7.4.0对应最低编译版本为java11，则我修改为openjdk11。</p>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://jitpack.io/docs/ANDROID/#create-your-release"><strong>Publish an Android Library</strong></a></p>

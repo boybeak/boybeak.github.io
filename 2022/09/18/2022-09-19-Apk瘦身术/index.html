@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -205,18 +205,18 @@
     <div class="article-content">
       <p>Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。</p>
 <h2 id="一、资源文件"><a href="#一、资源文件" class="headerlink" title="一、资源文件"></a>一、资源文件</h2><h3 id="1-1-删除无用资源文件"><a href="#1-1-删除无用资源文件" class="headerlink" title="1.1 删除无用资源文件"></a>1.1 删除无用资源文件</h3><h4 id="1-1-1-Lint工具"><a href="#1-1-1-Lint工具" class="headerlink" title="1.1.1 Lint工具"></a>1.1.1 Lint工具</h4><p>菜单 -&gt; Analyze -&gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除。</p>
-<h4 id="1-1-2-shrinkResources"><a href="#1-1-2-shrinkResources" class="headerlink" title="1.1.2 shrinkResources"></a>1.1.2 shrinkResources</h4><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">buildTypes <span class="token punctuation">&#123;</span>
-  release <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 不显示Log</span>
-    buildConfigField <span class="token interpolation-string"><span class="token string">"boolean"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"LOG_DEBUG"</span></span><span class="token punctuation">,</span> <span class="token interpolation-string"><span class="token string">"false"</span></span>
-    <span class="token comment">//混淆</span>
-    minifyEnabled <span class="token boolean">true</span>
-    <span class="token comment">// 移除无用的resource文件</span>
-    shrinkResources <span class="token boolean">true</span>
-    proguardFiles <span class="token function">getDefaultProguardFile</span><span class="token punctuation">(</span><span class="token string">'proguard-android.txt'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'proguard-rules.pro'</span>
-    signingConfig signingConfigs<span class="token punctuation">.</span>release
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="1-1-2-shrinkResources"><a href="#1-1-2-shrinkResources" class="headerlink" title="1.1.2 shrinkResources"></a>1.1.2 shrinkResources</h4><pre class="language-groovy"><code class="language-groovy">buildTypes &#123;
+  release &#123;
+    // 不显示Log
+    buildConfigField "boolean", "LOG_DEBUG", "false"
+    //混淆
+    minifyEnabled true
+    // 移除无用的resource文件
+    shrinkResources true
+    proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    signingConfig signingConfigs.release
+  &#125;
+&#125;</code></pre>
 
 <p>使用shrinkResources的前提是，打开混淆minifyEnabled，建议只在release版本开启，不然会使得编译速度变慢。</p>
 <h3 id="1-2-图标类资源图片矢量化"><a href="#1-2-图标类资源图片矢量化" class="headerlink" title="1.2 图标类资源图片矢量化"></a>1.2 图标类资源图片矢量化</h3><p>对于图标类资源，可以选择用vector-drawable来代替，通过AndroidStudio自带的转换工具可以将svg文件转换为vector-drawable文件。</p>
@@ -230,26 +230,26 @@
 <p>在Android studio中，在图片资源上右键可以转换为webp。详细参见<a target="_blank" rel="noopener" href="https://developer.android.com/studio/write/convert-webp">创建 WebP 图片</a>。</p>
 <h4 id="1-3-4-适当的压缩和尺寸"><a href="#1-3-4-适当的压缩和尺寸" class="headerlink" title="1.3.4 适当的压缩和尺寸"></a>1.3.4 适当的压缩和尺寸</h4><p>无论以上哪种格式图片，都可以通过选择合适的尺寸和适当的提高压缩率的方式，来进一步减少文件大小，进而减小apk文件的体积。</p>
 <h4 id="1-3-5-帧动画尽可能使用lottie"><a href="#1-3-5-帧动画尽可能使用lottie" class="headerlink" title="1.3.5 帧动画尽可能使用lottie"></a>1.3.5 帧动画尽可能使用lottie</h4><p><a target="_blank" rel="noopener" href="https://github.com/airbnb/lottie-android">Lottie</a>是Aribnb开源的动画库，通过json文件来进行展示动画，动画文件可以通过Adobe AE来制作。</p>
-<h3 id="1-4-有限国际化"><a href="#1-4-有限国际化" class="headerlink" title="1.4 有限国际化"></a>1.4 有限国际化</h3><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">android <span class="token punctuation">&#123;</span>
-  defaultConfig <span class="token punctuation">&#123;</span>
-    resConfigs <span class="token interpolation-string"><span class="token string">"zh"</span></span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-4-有限国际化"><a href="#1-4-有限国际化" class="headerlink" title="1.4 有限国际化"></a>1.4 有限国际化</h3><pre class="language-groovy"><code class="language-groovy">android &#123;
+  defaultConfig &#123;
+    resConfigs "zh"
+  &#125;
+&#125;</code></pre>
 
 <h3 id="1-5-第三方库中大尺寸的无用资源同名替换"><a href="#1-5-第三方库中大尺寸的无用资源同名替换" class="headerlink" title="1.5 第三方库中大尺寸的无用资源同名替换"></a>1.5 第三方库中大尺寸的无用资源同名替换</h3><p>如果在第三方类库中，存在用不到的图片资源文件，可以通过1x1像素的同名图片进行替换。</p>
 <h3 id="1-6-使用AndResGuard"><a href="#1-6-使用AndResGuard" class="headerlink" title="1.6 使用AndResGuard"></a>1.6 使用AndResGuard</h3><p><a target="_blank" rel="noopener" href="https://github.com/shwenzhang/AndResGuard">AndResGuard</a>，在gradle文件中就可以直接使用，非常方便。</p>
 <h2 id="二、源代码"><a href="#二、源代码" class="headerlink" title="二、源代码"></a>二、源代码</h2><h3 id="2-1-开启混淆"><a href="#2-1-开启混淆" class="headerlink" title="2.1 开启混淆"></a>2.1 开启混淆</h3><p>这是基本操作了，无需多言。</p>
 <h3 id="2-2-手动修改开源代码"><a href="#2-2-手动修改开源代码" class="headerlink" title="2.2 手动修改开源代码"></a>2.2 手动修改开源代码</h3><p>将开源代码中我们不需要的类或者方法等删除掉，但是这需要对开源代码非常了解，而且确保版本兼容性，将来开源库升级或者随着我们产品需求变更对开源库的要求也改变了，都会影响对开源库的修改，不建议使用。</p>
-<h2 id="三、第三方类库"><a href="#三、第三方类库" class="headerlink" title="三、第三方类库"></a>三、第三方类库</h2><h3 id="3-1-动态库"><a href="#3-1-动态库" class="headerlink" title="3.1 动态库"></a>3.1 动态库</h3><h4 id="3-1-1-删除非必要平台so库"><a href="#3-1-1-删除非必要平台so库" class="headerlink" title="3.1.1 删除非必要平台so库"></a>3.1.1 删除非必要平台so库</h4><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">ndk <span class="token punctuation">&#123;</span>
-  <span class="token comment">//设置支持的so库架构</span>
-  abiFilters <span class="token interpolation-string"><span class="token string">"armeabi-v7a"</span></span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="三、第三方类库"><a href="#三、第三方类库" class="headerlink" title="三、第三方类库"></a>三、第三方类库</h2><h3 id="3-1-动态库"><a href="#3-1-动态库" class="headerlink" title="3.1 动态库"></a>3.1 动态库</h3><h4 id="3-1-1-删除非必要平台so库"><a href="#3-1-1-删除非必要平台so库" class="headerlink" title="3.1.1 删除非必要平台so库"></a>3.1.1 删除非必要平台so库</h4><pre class="language-groovy"><code class="language-groovy">ndk &#123;
+  //设置支持的so库架构
+  abiFilters "armeabi-v7a"
+&#125;</code></pre>
 
 <p>基本上，对于手机来说，支持armeabi-v7a就足够了。</p>
 <h4 id="3-1-2-动态加载so库"><a href="#3-1-2-动态加载so库" class="headerlink" title="3.1.2 动态加载so库"></a>3.1.2 动态加载so库</h4><p>如果不是一启动应用就需要初始化的so库，完全可以在需要的时候再下载这个so文件，再通过以下代码进行加载。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>
-  <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">loadLibrary</span><span class="token punctuation">(</span><span class="token string">"path/to/lib.so"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">static &#123;
+  System.loadLibrary("path/to/lib.so");
+&#125;</code></pre>
 
 
 

@@ -71,9 +71,9 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
                   <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
                   
@@ -90,9 +90,9 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
                   <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
@@ -106,13 +106,13 @@
                   
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
                   <li><a href="/tags/Hexo/">Hexo</a></li>
                   
                   <li><a href="/tags/Jekyll/">Jekyll</a></li>
                   
                   <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
                   
                   <li><a href="/tags/Github/">Github</a></li>
                   
@@ -150,7 +150,7 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -158,7 +158,7 @@
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -166,7 +166,7 @@
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
               
             </a>
             
@@ -218,23 +218,21 @@
 <p>比如有如下图示结构的任务栈:</p>
 </li>
 </ol>
-<pre class=" language-language-mermaid"><code class="language-language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph LR;
 subgraph Task;
 D;
 C;
 B;
 A;
-end;
-</code></pre>
+end;</code></pre>
 <p>   此时D通过一个添加了<code>FLAG_ACTIVITY_CLEAR_TOP</code>的intent去启动了B类型Activity，则C、D执行onDestroy出栈（不会执行finish，触发onDestroy），现在B在栈顶，有如下图示：</p>
-<pre class=" language-language-mermaid"><code class="language-language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph LR;
 subgraph Task;
 B;
 A;
-end;
-</code></pre>
+end;</code></pre>
 <p>   接下来就有两种情况了。</p>
 <p>   情况一：intent中<strong>没有</strong>同时设置<code>FLAG_ACTIVITY_SINGLE_TOP</code>，并且B的launchMode是默认值。</p>
 <p>   B会finish掉再re-create一个新的B’放在B的位置上。</p>
