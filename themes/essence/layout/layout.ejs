@@ -110,7 +110,7 @@
             <% if (link.url) { %>
             <a href="<%= link.url.indexOf('mailto:') === 0 ? link.url : link.url %>" class="social-link" title="<%= link.name.charAt(0).toUpperCase() + link.name.slice(1) %>" <%= link.url.indexOf('mailto:') === 0 ? '' : 'target="_blank"' %>>
               <% if (link.icon && (link.icon.indexOf('/') > -1 || link.icon.indexOf('.') > -1)) { %>
-              <img src="<%= link.icon %>" alt="<%= link.name %>" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="<%= config.root %><%= link.icon %>" alt="<%= link.name %>" style="width: 24px; height: 24px; object-fit: contain;">
               <% } else { %>
               <span class="material-icons"><%= link.icon %></span>
               <% } %>
