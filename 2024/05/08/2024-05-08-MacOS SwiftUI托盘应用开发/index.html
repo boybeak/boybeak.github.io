@@ -71,11 +71,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +90,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/静态库/">静态库</a></li>
-                  
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -208,99 +208,99 @@
 <p>小声吐槽：swiftUI在macOS上的适配真的是很烂，相当多的组件可以说是不完善甚至是不可用的状态，似乎苹果也没有完善的意思，这已经是swift迭代到5.10了啊，竟然还有这么多问题存在。</p>
 </blockquote>
 <h2 id="方案一：NSApplicationDelegateAdaptor"><a href="#方案一：NSApplicationDelegateAdaptor" class="headerlink" title="方案一：NSApplicationDelegateAdaptor"></a>方案一：NSApplicationDelegateAdaptor</h2><p>这种方式，应该是从Objective-C时代承袭过来的，我没有做过Objective-C的应用，这只是我的猜测。<br>新建一个项目，通常会生成一个<code>XXXApp.swift</code>的文件，文件的内容如下：</p>
-<pre class="language-swift"><code class="language-swift">@main
-struct XXXApp: App &#123;
-    var body: some Scene &#123;
-        WindowGroup &#123;
-            ContentView()
-        &#125;
-    &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token attribute atrule">@main</span>
+<span class="token keyword">struct</span> <span class="token class-name">XXXApp</span><span class="token punctuation">:</span> <span class="token class-name">App</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> body<span class="token punctuation">:</span> <span class="token keyword">some</span> <span class="token class-name">Scene</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">WindowGroup</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">ContentView</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>我们要添加一行代码，变成如下这样：</p>
-<pre class="language-swift"><code class="language-swift">@main
-struct ByteCatApp: App &#123;
-    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    var body: some Scene &#123;
-        WindowGroup &#123;
-            ContentView()
-        &#125;
-    &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token attribute atrule">@main</span>
+<span class="token keyword">struct</span> <span class="token class-name">ByteCatApp</span><span class="token punctuation">:</span> <span class="token class-name">App</span> <span class="token punctuation">&#123;</span>
+    <span class="token attribute atrule">@NSApplicationDelegateAdaptor</span><span class="token punctuation">(</span><span class="token class-name">AppDelegate</span><span class="token punctuation">.</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token keyword">var</span> appDelegate
+    <span class="token keyword">var</span> body<span class="token punctuation">:</span> <span class="token keyword">some</span> <span class="token class-name">Scene</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">WindowGroup</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">ContentView</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>加入了<code>@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate</code>这一行，现在开始写<code>AppDelegate</code>的代码。</p>
-<pre class="language-swift"><code class="language-swift">class AppDelegate: NSObject, NSApplicationDelegate &#123;
-    var statusItem: NSStatusItem!
-    var popover: NSPopover!
+<pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token keyword">class</span> <span class="token class-name">AppDelegate</span><span class="token punctuation">:</span> <span class="token class-name">NSObject</span><span class="token punctuation">,</span> <span class="token class-name">NSApplicationDelegate</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> statusItem<span class="token punctuation">:</span> <span class="token class-name">NSStatusItem</span><span class="token operator">!</span>
+    <span class="token keyword">var</span> popover<span class="token punctuation">:</span> <span class="token class-name">NSPopover</span><span class="token operator">!</span>
     
-    override init() &#123;&#125;
+    <span class="token keyword">override</span> <span class="token keyword">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
     
-    func applicationDidFinishLaunching(_ notification: Notification) &#123;
-        setupStatusBarItem()
-        setupPopover()
-    &#125;
+    <span class="token keyword">func</span> <span class="token function-definition function">applicationDidFinishLaunching</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> notification<span class="token punctuation">:</span> <span class="token class-name">Notification</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">setupStatusBarItem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">setupPopover</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
     
-    func setupStatusBarItem() &#123;
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    <span class="token keyword">func</span> <span class="token function-definition function">setupStatusBarItem</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        statusItem <span class="token operator">=</span> <span class="token class-name">NSStatusBar</span><span class="token punctuation">.</span>system<span class="token punctuation">.</span><span class="token function">statusItem</span><span class="token punctuation">(</span>withLength<span class="token punctuation">:</span> <span class="token class-name">NSStatusItem</span><span class="token punctuation">.</span>squareLength<span class="token punctuation">)</span>
         
-        if let button = statusItem.button &#123;
-            let imageSize = NSSize(width: 22, height: 22)
-            button.image = NSImage(named: "TrayIcon")
-            button.image?.size = imageSize
-            button.action = #selector(togglePopover(_:))
-        &#125;
-    &#125;
+        <span class="token keyword">if</span> <span class="token keyword">let</span> button <span class="token operator">=</span> statusItem<span class="token punctuation">.</span>button <span class="token punctuation">&#123;</span>
+            <span class="token keyword">let</span> imageSize <span class="token operator">=</span> <span class="token class-name">NSSize</span><span class="token punctuation">(</span>width<span class="token punctuation">:</span> <span class="token number">22</span><span class="token punctuation">,</span> height<span class="token punctuation">:</span> <span class="token number">22</span><span class="token punctuation">)</span>
+            button<span class="token punctuation">.</span>image <span class="token operator">=</span> <span class="token class-name">NSImage</span><span class="token punctuation">(</span>named<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"TrayIcon"</span></span><span class="token punctuation">)</span>
+            button<span class="token punctuation">.</span>image<span class="token operator">?</span><span class="token punctuation">.</span>size <span class="token operator">=</span> imageSize
+            button<span class="token punctuation">.</span>action <span class="token operator">=</span> <span class="token other-directive property">#selector</span><span class="token punctuation">(</span><span class="token function">togglePopover</span><span class="token punctuation">(</span><span class="token omit keyword">_</span><span class="token punctuation">:</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
-    func setupPopover() &#123;
-        popover = NSPopover()
-        popover.behavior = .transient
-        popover.contentViewController = PopoverViewController().makeNSViewController()
-    &#125;
+    <span class="token keyword">func</span> <span class="token function-definition function">setupPopover</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        popover <span class="token operator">=</span> <span class="token class-name">NSPopover</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        popover<span class="token punctuation">.</span>behavior <span class="token operator">=</span> <span class="token punctuation">.</span>transient
+        popover<span class="token punctuation">.</span>contentViewController <span class="token operator">=</span> <span class="token class-name">PopoverViewController</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">makeNSViewController</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
     
-    @objc func togglePopover(_ sender: AnyObject?) &#123;
-        if popover.isShown &#123;
-            closePopover(sender)
-        &#125; else &#123;
-            showPopover(sender)
-        &#125;
-    &#125;
+    <span class="token attribute atrule">@objc</span> <span class="token keyword">func</span> <span class="token function-definition function">togglePopover</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> sender<span class="token punctuation">:</span> <span class="token class-name">AnyObject</span><span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> popover<span class="token punctuation">.</span>isShown <span class="token punctuation">&#123;</span>
+            <span class="token function">closePopover</span><span class="token punctuation">(</span>sender<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token function">showPopover</span><span class="token punctuation">(</span>sender<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
-    func showPopover(_ sender: AnyObject?) &#123;
-        if let button = statusItem.button &#123;
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: NSRectEdge.minY)
-        &#125;
-    &#125;
+    <span class="token keyword">func</span> <span class="token function-definition function">showPopover</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> sender<span class="token punctuation">:</span> <span class="token class-name">AnyObject</span><span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token keyword">let</span> button <span class="token operator">=</span> statusItem<span class="token punctuation">.</span>button <span class="token punctuation">&#123;</span>
+            popover<span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span>relativeTo<span class="token punctuation">:</span> button<span class="token punctuation">.</span>bounds<span class="token punctuation">,</span> of<span class="token punctuation">:</span> button<span class="token punctuation">,</span> preferredEdge<span class="token punctuation">:</span> <span class="token class-name">NSRectEdge</span><span class="token punctuation">.</span>minY<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
     
-    func closePopover(_ sender: AnyObject?) &#123;
-        popover.performClose(sender)
-    &#125;
+    <span class="token keyword">func</span> <span class="token function-definition function">closePopover</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> sender<span class="token punctuation">:</span> <span class="token class-name">AnyObject</span><span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        popover<span class="token punctuation">.</span><span class="token function">performClose</span><span class="token punctuation">(</span>sender<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
     
-&#125;
+<span class="token punctuation">&#125;</span>
 
-struct PopoverViewController: NSViewControllerRepresentable &#123;
-    func makeNSViewController(context: Context) -> NSViewController &#123;
-        return makeNSViewController()
-    &#125;
+<span class="token keyword">struct</span> <span class="token class-name">PopoverViewController</span><span class="token punctuation">:</span> <span class="token class-name">NSViewControllerRepresentable</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">func</span> <span class="token function-definition function">makeNSViewController</span><span class="token punctuation">(</span>context<span class="token punctuation">:</span> <span class="token class-name">Context</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token class-name">NSViewController</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token function">makeNSViewController</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
     
-    func makeNSViewController() -> NSViewController &#123;
-        let viewController = NSViewController()
-        viewController.view = NSHostingView(rootView: ContentView())
-        return viewController
-    &#125;
+    <span class="token keyword">func</span> <span class="token function-definition function">makeNSViewController</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token class-name">NSViewController</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> viewController <span class="token operator">=</span> <span class="token class-name">NSViewController</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        viewController<span class="token punctuation">.</span>view <span class="token operator">=</span> <span class="token class-name">NSHostingView</span><span class="token punctuation">(</span>rootView<span class="token punctuation">:</span> <span class="token class-name">ContentView</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> viewController
+    <span class="token punctuation">&#125;</span>
     
-    func updateNSViewController(_ nsViewController: NSViewController, context: Context) &#123;
-        // Update code if needed
-    &#125;
-&#125;</code></pre>
+    <span class="token keyword">func</span> <span class="token function-definition function">updateNSViewController</span><span class="token punctuation">(</span><span class="token omit keyword">_</span> nsViewController<span class="token punctuation">:</span> <span class="token class-name">NSViewController</span><span class="token punctuation">,</span> context<span class="token punctuation">:</span> <span class="token class-name">Context</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Update code if needed</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="方案二：MenuBarExtra"><a href="#方案二：MenuBarExtra" class="headerlink" title="方案二：MenuBarExtra"></a>方案二：MenuBarExtra</h2><pre class="language-swift"><code class="language-swift">@main
-struct XXXApp: App &#123;
-    var body: some Scene &#123;
-        return MenuBarExtra &#123;
-            ContentView()
-        &#125; label: &#123;
-            Image(systemName: "tray.2.fill")
-        &#125;.menuBarExtraStyle(.window)
-    &#125;
-&#125;</code></pre>
+<h2 id="方案二：MenuBarExtra"><a href="#方案二：MenuBarExtra" class="headerlink" title="方案二：MenuBarExtra"></a>方案二：MenuBarExtra</h2><pre class="line-numbers language-swift" data-language="swift"><code class="language-swift"><span class="token attribute atrule">@main</span>
+<span class="token keyword">struct</span> <span class="token class-name">XXXApp</span><span class="token punctuation">:</span> <span class="token class-name">App</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> body<span class="token punctuation">:</span> <span class="token keyword">some</span> <span class="token class-name">Scene</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token class-name">MenuBarExtra</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">ContentView</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> label<span class="token punctuation">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Image</span><span class="token punctuation">(</span>systemName<span class="token punctuation">:</span> <span class="token string-literal"><span class="token string">"tray.2.fill"</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">.</span><span class="token function">menuBarExtraStyle</span><span class="token punctuation">(</span><span class="token punctuation">.</span>window<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这个方案就是这么简单，几行代码就搞定，缺点是，弹出的窗口位置不可调整，也不会有一个三角形指向托盘图标的位置，而且窗口位置一直与托盘图标左对齐。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="List导致UI异常"><a href="#List导致UI异常" class="headerlink" title="List导致UI异常"></a>List导致UI异常</h3><p>方案一，当弹出窗口UI中包含了List组件，会使得弹出的窗口显示异常。<br>正常情况是这样的：<br><img src="/assets/images/normal_popover.png" alt="images&#x2F;normal_popover.png"><br>异常的情况如下：<br><img src="/assets/images/unnormal_popover.png" alt="images&#x2F;unnormal_popover.png"><br>代码的差别，只是把其中的红色布局换成了List组件而已，顶端的三角指向消失了，而且窗口整体上移了。</p>
 <h3 id="MenuBarExtra的显示不同"><a href="#MenuBarExtra的显示不同" class="headerlink" title="MenuBarExtra的显示不同"></a>MenuBarExtra的显示不同</h3><p>使用方案二，窗口弹出是这样的：<br><img src="/assets/images/menu_bar_extra.png" alt="images&#x2F;menu_bar_extra.png"><br>同样没有顶部三角指向，固定与托盘图标左对齐。</p>

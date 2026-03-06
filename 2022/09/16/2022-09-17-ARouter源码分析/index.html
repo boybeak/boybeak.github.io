@@ -71,11 +71,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +90,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/静态库/">静态库</a></li>
-                  
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -210,33 +210,33 @@
 <h2 id="主流程"><a href="#主流程" class="headerlink" title="主流程"></a>主流程</h2><h3 id="1-编译时"><a href="#1-编译时" class="headerlink" title="1. 编译时"></a>1. 编译时</h3><p>这部分主要涉及到的是路由路径表的构建，其实现原理是<strong>APT</strong>，即<strong>注解处理器</strong>。</p>
 <p>使用ARouter时候，需要在目标类上，通过**@Route<strong>注解进行标记，注解处理器处理的就是这个注解。打开源码路径下的<em>arouter-compiler</em>这个module，找到</strong>RouteProcessor**，这个类就是用来处理**@Route**注解的类。这里需要了解的知识，除了APT，还有java-poet，请自行了解这些。</p>
 <p>Processor类的入口方法是<em>process</em>方法，这个方法返回true，则这个处理器已经完成了自己的任务，不会被重复调用。其他比较重要的方法有<em>getSupportedSourceVersion</em>，<em>getSupportedAnnotationTypes</em>等。</p>
-<pre class="language-java"><code class="language-java">Set&lt;? extends Element> routeElements = roundEnv.getElementsAnnotatedWith(Route.class);</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Element</span><span class="token punctuation">></span></span> routeElements <span class="token operator">=</span> roundEnv<span class="token punctuation">.</span><span class="token function">getElementsAnnotatedWith</span><span class="token punctuation">(</span><span class="token class-name">Route</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>通过这个方法，获取所有被**@Route**标记的元素。</p>
 <p>获取到<em>routeElements</em>后，在<em>parseRoutes</em>方法进行处理。我们以最常用的Activity为例，进行分析。</p>
-<pre class="language-java"><code class="language-java">rootMap.clear();	//用来分类存储标记元素
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">rootMap<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//用来分类存储标记元素</span>
 
-// 用来检测元素是否为对应的类型，通过Types.isSubtype()方法来检测。
-TypeMirror type_Activity = elementUtils.getTypeElement(ACTIVITY).asType();
-TypeMirror type_Service = elementUtils.getTypeElement(SERVICE).asType();
-TypeMirror fragmentTm = elementUtils.getTypeElement(FRAGMENT).asType();
-TypeMirror fragmentTmV4 = elementUtils.getTypeElement(Consts.FRAGMENT_V4).asType();</code></pre>
+<span class="token comment">// 用来检测元素是否为对应的类型，通过Types.isSubtype()方法来检测。</span>
+<span class="token class-name">TypeMirror</span> type_Activity <span class="token operator">=</span> elementUtils<span class="token punctuation">.</span><span class="token function">getTypeElement</span><span class="token punctuation">(</span><span class="token constant">ACTIVITY</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">TypeMirror</span> type_Service <span class="token operator">=</span> elementUtils<span class="token punctuation">.</span><span class="token function">getTypeElement</span><span class="token punctuation">(</span><span class="token constant">SERVICE</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">TypeMirror</span> fragmentTm <span class="token operator">=</span> elementUtils<span class="token punctuation">.</span><span class="token function">getTypeElement</span><span class="token punctuation">(</span><span class="token constant">FRAGMENT</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">TypeMirror</span> fragmentTmV4 <span class="token operator">=</span> elementUtils<span class="token punctuation">.</span><span class="token function">getTypeElement</span><span class="token punctuation">(</span><span class="token class-name">Consts</span><span class="token punctuation">.</span><span class="token constant">FRAGMENT_V4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>最后将分类号的元素信息，存储在成员变量groupMap中去。</p>
-<pre class="language-java"><code class="language-java">private Map&lt;String, Set&lt;RouteMeta>> groupMap = new HashMap&lt;>();</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Set</span><span class="token punctuation">&lt;</span><span class="token class-name">RouteMeta</span><span class="token punctuation">></span><span class="token punctuation">></span></span> groupMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>然后再通过这个groupMap，借助java-poet，来生成真实的类。如下：</p>
-<pre class="language-java"><code class="language-java">public class ARouter$$Group$$test implements IRouteGroup &#123;
-  @Override
-  public void loadInto(Map&lt;String, RouteMeta> atlas) &#123;
-    atlas.put("/test/activity1", RouteMeta.build(RouteType.ACTIVITY, Test1Activity.class, "/test/activity1", "test", new java.util.HashMap&lt;String, Integer>()&#123;&#123;put("ser", 9); put("ch", 5); put("fl", 6); put("dou", 7); put("boy", 0); put("url", 8); put("pac", 10); put("obj", 11); put("name", 8); put("objList", 11); put("map", 11); put("age", 3); put("height", 3); &#125;&#125;, -1, -2147483648));
-    atlas.put("/test/activity2", RouteMeta.build(RouteType.ACTIVITY, Test2Activity.class, "/test/activity2", "test", new java.util.HashMap&lt;String, Integer>()&#123;&#123;put("key1", 8); &#125;&#125;, -1, -2147483648));
-    atlas.put("/test/activity3", RouteMeta.build(RouteType.ACTIVITY, Test3Activity.class, "/test/activity3", "test", new java.util.HashMap&lt;String, Integer>()&#123;&#123;put("name", 8); put("boy", 0); put("age", 3); &#125;&#125;, -1, -2147483648));
-    atlas.put("/test/activity4", RouteMeta.build(RouteType.ACTIVITY, Test4Activity.class, "/test/activity4", "test", null, -1, -2147483648));
-    atlas.put("/test/fragment", RouteMeta.build(RouteType.FRAGMENT, BlankFragment.class, "/test/fragment", "test", new java.util.HashMap&lt;String, Integer>()&#123;&#123;put("obj", 11); put("name", 8); &#125;&#125;, -1, -2147483648));
-    atlas.put("/test/webview", RouteMeta.build(RouteType.ACTIVITY, TestWebview.class, "/test/webview", "test", null, -1, -2147483648));
-  &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ARouter</span>$$<span class="token class-name">Group</span>$$test <span class="token keyword">implements</span> <span class="token class-name">IRouteGroup</span> <span class="token punctuation">&#123;</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">loadInto</span><span class="token punctuation">(</span><span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">></span></span> atlas<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    atlas<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"/test/activity1"</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">RouteType</span><span class="token punctuation">.</span><span class="token constant">ACTIVITY</span><span class="token punctuation">,</span> <span class="token class-name">Test1Activity</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"/test/activity1"</span><span class="token punctuation">,</span> <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"ser"</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"ch"</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"fl"</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"dou"</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"boy"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"url"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"pac"</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"obj"</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"objList"</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"map"</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"height"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    atlas<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"/test/activity2"</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">RouteType</span><span class="token punctuation">.</span><span class="token constant">ACTIVITY</span><span class="token punctuation">,</span> <span class="token class-name">Test2Activity</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"/test/activity2"</span><span class="token punctuation">,</span> <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"key1"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    atlas<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"/test/activity3"</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">RouteType</span><span class="token punctuation">.</span><span class="token constant">ACTIVITY</span><span class="token punctuation">,</span> <span class="token class-name">Test3Activity</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"/test/activity3"</span><span class="token punctuation">,</span> <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"boy"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    atlas<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"/test/activity4"</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">RouteType</span><span class="token punctuation">.</span><span class="token constant">ACTIVITY</span><span class="token punctuation">,</span> <span class="token class-name">Test4Activity</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"/test/activity4"</span><span class="token punctuation">,</span> <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    atlas<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"/test/fragment"</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">RouteType</span><span class="token punctuation">.</span><span class="token constant">FRAGMENT</span><span class="token punctuation">,</span> <span class="token class-name">BlankFragment</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"/test/fragment"</span><span class="token punctuation">,</span> <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"obj"</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    atlas<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"/test/webview"</span><span class="token punctuation">,</span> <span class="token class-name">RouteMeta</span><span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token class-name">RouteType</span><span class="token punctuation">.</span><span class="token constant">ACTIVITY</span><span class="token punctuation">,</span> <span class="token class-name">TestWebview</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">"/test/webview"</span><span class="token punctuation">,</span> <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2147483648</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -245,158 +245,158 @@ TypeMirror fragmentTmV4 = elementUtils.getTypeElement(Consts.FRAGMENT_V4).asType
 <p>如果你以官方demo程序验证这一步，需要将app&#x2F;build.gradle中的<code>apply plugin: &#39;com.alibaba.arouter&#39;</code>这一行代码注释掉。</p>
 </blockquote>
 <p>我们以<em>ARouter.init</em>方法为入口，实际上最终实现init流程的是LogisticsCenter类的<em>init</em>方法。</p>
-<pre class="language-java"><code class="language-java">public synchronized static void init(Context context, ThreadPoolExecutor tpe) throws HandlerException &#123;
-  ...
-  if (registerByPlugin) &#123;
-    //这是在辅助流程需要去讲的
-  	logger.info(TAG, "Load router map by arouter-auto-register plugin.");
-  &#125; else &#123;
-    Set&lt;String> routerMap;
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token class-name">Context</span> context<span class="token punctuation">,</span> <span class="token class-name">ThreadPoolExecutor</span> tpe<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">HandlerException</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>registerByPlugin<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//这是在辅助流程需要去讲的</span>
+  	logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"Load router map by arouter-auto-register plugin."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> routerMap<span class="token punctuation">;</span>
 
-    // It will rebuild router map every times when debuggable.
-    if (ARouter.debuggable() || PackageUtils.isNewVersion(context)) &#123;
-      logger.info(TAG, "Run with debug mode or new install, rebuild router map.");
-      // These class was generated by arouter-compiler.
-      routerMap = ClassUtils.getFileNameByPackageName(mContext, ROUTE_ROOT_PAKCAGE);
-      if (!routerMap.isEmpty()) &#123;
-        context.getSharedPreferences(AROUTER_SP_CACHE_KEY, Context.MODE_PRIVATE).edit().putStringSet(AROUTER_SP_KEY_MAP, routerMap).apply();
-      &#125;
+    <span class="token comment">// It will rebuild router map every times when debuggable.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">ARouter</span><span class="token punctuation">.</span><span class="token function">debuggable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token class-name">PackageUtils</span><span class="token punctuation">.</span><span class="token function">isNewVersion</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"Run with debug mode or new install, rebuild router map."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">// These class was generated by arouter-compiler.</span>
+      routerMap <span class="token operator">=</span> <span class="token class-name">ClassUtils</span><span class="token punctuation">.</span><span class="token function">getFileNameByPackageName</span><span class="token punctuation">(</span>mContext<span class="token punctuation">,</span> <span class="token constant">ROUTE_ROOT_PAKCAGE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>routerMap<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        context<span class="token punctuation">.</span><span class="token function">getSharedPreferences</span><span class="token punctuation">(</span><span class="token constant">AROUTER_SP_CACHE_KEY</span><span class="token punctuation">,</span> <span class="token class-name">Context</span><span class="token punctuation">.</span><span class="token constant">MODE_PRIVATE</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">edit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">putStringSet</span><span class="token punctuation">(</span><span class="token constant">AROUTER_SP_KEY_MAP</span><span class="token punctuation">,</span> routerMap<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
 
-      PackageUtils.updateVersion(context);    // Save new version name when router map update finishes.
-    &#125; else &#123;
-      logger.info(TAG, "Load router map from cache.");
-      routerMap = new HashSet&lt;>(context.getSharedPreferences(AROUTER_SP_CACHE_KEY, Context.MODE_PRIVATE).getStringSet(AROUTER_SP_KEY_MAP, new HashSet&lt;String>()));
-    &#125;
-  &#125;
-&#125;</code></pre>
+      <span class="token class-name">PackageUtils</span><span class="token punctuation">.</span><span class="token function">updateVersion</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// Save new version name when router map update finishes.</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"Load router map from cache."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      routerMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">getSharedPreferences</span><span class="token punctuation">(</span><span class="token constant">AROUTER_SP_CACHE_KEY</span><span class="token punctuation">,</span> <span class="token class-name">Context</span><span class="token punctuation">.</span><span class="token constant">MODE_PRIVATE</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getStringSet</span><span class="token punctuation">(</span><span class="token constant">AROUTER_SP_KEY_MAP</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这里需要着重看的是这一句：</p>
-<pre class="language-java"><code class="language-java">routerMap = ClassUtils.getFileNameByPackageName(mContext, ROUTE_ROOT_PAKCAGE);</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">routerMap <span class="token operator">=</span> <span class="token class-name">ClassUtils</span><span class="token punctuation">.</span><span class="token function">getFileNameByPackageName</span><span class="token punctuation">(</span>mContext<span class="token punctuation">,</span> <span class="token constant">ROUTE_ROOT_PAKCAGE</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>我们查看这个方法:</p>
-<pre class="language-java"><code class="language-java">public static Set&lt;String> getFileNameByPackageName(Context context, final String packageName) throws PackageManager.NameNotFoundException, IOException, InterruptedException &#123;
-  final Set&lt;String> classNames = new HashSet&lt;>();
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">getFileNameByPackageName</span><span class="token punctuation">(</span><span class="token class-name">Context</span> context<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token class-name">String</span> packageName<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">PackageManager<span class="token punctuation">.</span>NameNotFoundException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">InterruptedException</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">final</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> classNames <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  List&lt;String> paths = getSourcePaths(context);
-  final CountDownLatch parserCtl = new CountDownLatch(paths.size());
+  <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> paths <span class="token operator">=</span> <span class="token function">getSourcePaths</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">final</span> <span class="token class-name">CountDownLatch</span> parserCtl <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CountDownLatch</span><span class="token punctuation">(</span>paths<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  for (final String path : paths) &#123;
-    Log.v(TAG, "getFileNameByPackageName path=" + path);
-    DefaultPoolExecutor.getInstance().execute(new Runnable() &#123;
-      @Override
-      public void run() &#123;
-        DexFile dexfile = null;
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">String</span> path <span class="token operator">:</span> paths<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"getFileNameByPackageName path="</span> <span class="token operator">+</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">DefaultPoolExecutor</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token annotation punctuation">@Override</span>
+      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">DexFile</span> dexfile <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
 
-        try &#123;
-          if (path.endsWith(EXTRACTED_SUFFIX)) &#123;
-            //NOT use new DexFile(path), because it will throw "permission error in /data/dalvik-cache"
-            dexfile = DexFile.loadDex(path, path + ".tmp", 0);
-          &#125; else &#123;
-            dexfile = new DexFile(path);
-          &#125;
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">endsWith</span><span class="token punctuation">(</span><span class="token constant">EXTRACTED_SUFFIX</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">//NOT use new DexFile(path), because it will throw "permission error in /data/dalvik-cache"</span>
+            dexfile <span class="token operator">=</span> <span class="token class-name">DexFile</span><span class="token punctuation">.</span><span class="token function">loadDex</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> path <span class="token operator">+</span> <span class="token string">".tmp"</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            dexfile <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DexFile</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">&#125;</span>
 
-          Enumeration&lt;String> dexEntries = dexfile.entries();
-          while (dexEntries.hasMoreElements()) &#123;
-            String className = dexEntries.nextElement();
-            if (className.startsWith(packageName)) &#123;
-              Log.v(TAG, "find CLASS NAME " + className);
-              classNames.add(className);
-            &#125;
-          &#125;
-        &#125; catch (Throwable ignore) &#123;
-          Log.e("ARouter", "Scan map file in dex files made error.", ignore);
-        &#125; finally &#123;
-          if (null != dexfile) &#123;
-            try &#123;
-              dexfile.close();
-            &#125; catch (Throwable ignore) &#123;
-            &#125;
-          &#125;
+          <span class="token class-name">Enumeration</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> dexEntries <span class="token operator">=</span> dexfile<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">while</span> <span class="token punctuation">(</span>dexEntries<span class="token punctuation">.</span><span class="token function">hasMoreElements</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">String</span> className <span class="token operator">=</span> dexEntries<span class="token punctuation">.</span><span class="token function">nextElement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>className<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span>packageName<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+              <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"find CLASS NAME "</span> <span class="token operator">+</span> className<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              classNames<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>className<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> ignore<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">e</span><span class="token punctuation">(</span><span class="token string">"ARouter"</span><span class="token punctuation">,</span> <span class="token string">"Scan map file in dex files made error."</span><span class="token punctuation">,</span> ignore<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">finally</span> <span class="token punctuation">&#123;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">null</span> <span class="token operator">!=</span> dexfile<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+              dexfile<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> ignore<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">&#125;</span>
 
-          parserCtl.countDown();
-        &#125;
-      &#125;
-    &#125;);
-  &#125;
+          parserCtl<span class="token punctuation">.</span><span class="token function">countDown</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
 
-  parserCtl.await();
+  parserCtl<span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  Log.d(Consts.TAG, "Filter " + classNames.size() + " classes by packageName &lt;" + packageName + ">");
-  return classNames;
-&#125;</code></pre>
+  <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">d</span><span class="token punctuation">(</span><span class="token class-name">Consts</span><span class="token punctuation">.</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"Filter "</span> <span class="token operator">+</span> classNames<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">" classes by packageName &lt;"</span> <span class="token operator">+</span> packageName <span class="token operator">+</span> <span class="token string">">"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> classNames<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意其中的<em>getSourcePaths</em>方法，这是从代码目录，来获取所有代码目录，然后在</p>
 <p><em>getFileNameByPackageName</em>找出以<code>com.alibaba.android.arouter.routes</code>为开头包名的类，这些就是我们在步骤1中生成的辅助类。</p>
 <p>这个方法结束后，回到<em>LogisticsCenter#init</em>方法，接下来要做的就是，把加载到的辅助类，通过反射生成对象，再调用其<em>loadTo</em>方法，将路由路径表加载到Warehouse类中去，方便以后的查询。</p>
 <h2 id="辅助流程"><a href="#辅助流程" class="headerlink" title="辅助流程"></a>辅助流程</h2><p>在以上的流程中，有一个严重的问题，那就是执行<em>ARouter#init</em>方法的时间过长，以源码的demo为例，在InstantRun的情况下，OnePlus5T需要100多毫秒才能初始化完，这对于程序启动优化来说，是一个不可忽视的时间了。那么如何解决这个问题呢？</p>
-<pre class="language-bash"><code class="language-bash">MainActivity: init cost 134</code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">MainActivity: init cost <span class="token number">134</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这就是在上一步中，要求你注释掉的代码起作用了，将<code>apply plugin: &#39;com.alibaba.arouter&#39;</code>解除注释，让其发挥作用。</p>
 <p>这里需要关注的module是<code>arouter-gradle-plugin</code>。</p>
 <p>先来看一下，使用了<code>apply plugin: &#39;com.alibaba.arouter&#39;</code>的神奇效果。</p>
-<pre class="language-bash"><code class="language-bash">MainActivity: init cost 19</code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">MainActivity: init cost <span class="token number">19</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>通过优化，让<em>ARouter#init</em>消耗时间直接降低了一个数量级，那么<code>arouter-gradle-plugin</code>是怎么做到的呢？</p>
 <p>这需要你先了解一下[ASM](&#x2F;android&#x2F;ASM.md)。简单来说，这是一种字节码编程技术，通过修改编译后的字节码的方式，来对原始逻辑增强。</p>
 <p>我们再来看<em>ARouter#init</em>的最终实现类和方法<em>LogisticsCenter#init</em>：</p>
-<pre class="language-java"><code class="language-java">public synchronized static void init(Context context, ThreadPoolExecutor tpe) throws HandlerException &#123;
-  ....
-  try &#123;
-    long startInit = System.currentTimeMillis();
-    //billy.qi modified at 2017-12-06
-    //load by plugin first
-    loadRouterMap();
-    if (registerByPlugin) &#123;
-      logger.info(TAG, "Load router map by arouter-auto-register plugin.");
-    &#125; else &#123;
-      ....
-    &#125;
-    .....
-  &#125; catch (Exception e) &#123;
-    throw new HandlerException(TAG + "ARouter init logistics center exception! [" + e.getMessage() + "]");
-  &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token class-name">Context</span> context<span class="token punctuation">,</span> <span class="token class-name">ThreadPoolExecutor</span> tpe<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">HandlerException</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">long</span> startInit <span class="token operator">=</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//billy.qi modified at 2017-12-06</span>
+    <span class="token comment">//load by plugin first</span>
+    <span class="token function">loadRouterMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>registerByPlugin<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"Load router map by arouter-auto-register plugin."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">HandlerException</span><span class="token punctuation">(</span><span class="token constant">TAG</span> <span class="token operator">+</span> <span class="token string">"ARouter init logistics center exception! ["</span> <span class="token operator">+</span> e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们可以看到，当<code>registerByPlugin</code>为true的时候，则只是打印了一句日志，我们再看loadRouterMap()这个方法：</p>
-<pre class="language-java"><code class="language-java">private static void loadRouterMap() &#123;
-  registerByPlugin = false;
-  //auto generate register code by gradle plugin: arouter-auto-register
-  // looks like below:
-  // registerRouteRoot(new ARouter..Root..modulejava());
-  // registerRouteRoot(new ARouter..Root..modulekotlin());
-&#125;</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">loadRouterMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  registerByPlugin <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token comment">//auto generate register code by gradle plugin: arouter-auto-register</span>
+  <span class="token comment">// looks like below:</span>
+  <span class="token comment">// registerRouteRoot(new ARouter..Root..modulejava());</span>
+  <span class="token comment">// registerRouteRoot(new ARouter..Root..modulekotlin());</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这里的逻辑非常简单，到底在哪里去加载的路由路径表呢？我们看这个方法的注释，发现，这个方法是被<code>arouter-auto-register</code>自动生成的。</p>
 <p>我们打开<code>arouter-gradle-plugin/resources/META-INF/gradle-plugins</code>这个目录，可以看到，有一个<em>com.alibaba.arouter.properties</em>文件，查看其内容：</p>
-<pre class="language-properties"><code class="language-properties">implementation-class=com.alibaba.android.arouter.register.launch.PluginLaunch</code></pre>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">implementation-class</span><span class="token punctuation">=</span><span class="token value attr-value">com.alibaba.android.arouter.register.launch.PluginLaunch</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这个<em>PluginLaunch</em>便是此gradle plugin的入口类。查看此类：</p>
-<pre class="language-groovy"><code class="language-groovy">public class PluginLaunch implements Plugin&lt;Project> &#123;
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PluginLaunch</span> <span class="token keyword">implements</span> <span class="token class-name">Plugin</span><span class="token operator">&lt;</span>Project<span class="token operator">></span> <span class="token punctuation">&#123;</span>
 
-  @Override
-  public void apply(Project project) &#123;
-    def isApp = project.plugins.hasPlugin(AppPlugin)
-    //only application module needs this plugin to generate register code
-    if (isApp) &#123;
-      Logger.make(project)
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">apply</span><span class="token punctuation">(</span>Project project<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">def</span> isApp <span class="token operator">=</span> project<span class="token punctuation">.</span>plugins<span class="token punctuation">.</span><span class="token function">hasPlugin</span><span class="token punctuation">(</span>AppPlugin<span class="token punctuation">)</span>
+    <span class="token comment">//only application module needs this plugin to generate register code</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isApp<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      Logger<span class="token punctuation">.</span><span class="token function">make</span><span class="token punctuation">(</span>project<span class="token punctuation">)</span>
 
-      Logger.i('Project enable arouter-register plugin')
+      Logger<span class="token punctuation">.</span><span class="token function">i</span><span class="token punctuation">(</span><span class="token string">'Project enable arouter-register plugin'</span><span class="token punctuation">)</span>
 
-      def android = project.extensions.getByType(AppExtension)
-      def transformImpl = new RegisterTransform(project)
+      <span class="token keyword">def</span> android <span class="token operator">=</span> project<span class="token punctuation">.</span>extensions<span class="token punctuation">.</span><span class="token function">getByType</span><span class="token punctuation">(</span>AppExtension<span class="token punctuation">)</span>
+      <span class="token keyword">def</span> transformImpl <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RegisterTransform</span><span class="token punctuation">(</span>project<span class="token punctuation">)</span>
 
-      //init arouter-auto-register settings
-      ArrayList&lt;ScanSetting> list = new ArrayList&lt;>(3)
-      list.add(new ScanSetting('IRouteRoot'))
-      list.add(new ScanSetting('IInterceptorGroup'))
-      list.add(new ScanSetting('IProviderGroup'))
-      RegisterTransform.registerList = list
-      //register this plugin
-      android.registerTransform(transformImpl)
-    &#125;
-  &#125;
+      <span class="token comment">//init arouter-auto-register settings</span>
+      ArrayList<span class="token operator">&lt;</span>ScanSetting<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+      list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ScanSetting</span><span class="token punctuation">(</span><span class="token string">'IRouteRoot'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ScanSetting</span><span class="token punctuation">(</span><span class="token string">'IInterceptorGroup'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ScanSetting</span><span class="token punctuation">(</span><span class="token string">'IProviderGroup'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      RegisterTransform<span class="token punctuation">.</span>registerList <span class="token operator">=</span> list
+      <span class="token comment">//register this plugin</span>
+      android<span class="token punctuation">.</span><span class="token function">registerTransform</span><span class="token punctuation">(</span>transformImpl<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
 
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们查看其代码，可以发现，这里一共做了三件事：</p>
 <ol>
@@ -407,62 +407,62 @@ TypeMirror fragmentTmV4 = elementUtils.getTypeElement(Consts.FRAGMENT_V4).asType
 <p>接下来，就轮到<em>RegisterTransform</em>来执行了。</p>
 <p>Transform类，简单来说，就是可以在编译时，扫描所有的jar和class，包括引用类库中的。在扫描过程中，就可以借助<strong>ASM</strong>技术对目标类进行更改。</p>
 <p>我们看其入口方法<em>transform</em>：</p>
-<pre class="language-groovy"><code class="language-groovy">@Override
-void transform(Context context, Collection&lt;TransformInput> inputs, Collection&lt;TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException &#123;
-  inputs.each &#123; TransformInput input ->
-    // scan all jars
-    input.jarInputs.each &#123; JarInput jarInput ->
-      ...
-      if (ScanUtil.shouldProcessPreDexJar(src.absolutePath)) &#123;
-        ScanUtil.scanJar(src, dest)
-      &#125;
-      ...
-    &#125;
-  &#125;
-  input.directoryInputs.each &#123; DirectoryInput directoryInput ->
-    ...
-    directoryInput.file.eachFileRecurse &#123; File file ->
-      ...
-      if(file.isFile() &amp;&amp; ScanUtil.shouldProcessClass(path))&#123;
-        ScanUtil.scanClass(file)
-      &#125;
-    &#125;
-    ...
-  &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy"><span class="token annotation punctuation">@Override</span>
+<span class="token keyword">void</span> <span class="token function">transform</span><span class="token punctuation">(</span>Context context<span class="token punctuation">,</span> Collection<span class="token operator">&lt;</span>TransformInput<span class="token operator">></span> inputs<span class="token punctuation">,</span> Collection<span class="token operator">&lt;</span>TransformInput<span class="token operator">></span> referencedInputs<span class="token punctuation">,</span> TransformOutputProvider outputProvider<span class="token punctuation">,</span> <span class="token keyword">boolean</span> isIncremental<span class="token punctuation">)</span> <span class="token keyword">throws</span> IOException<span class="token punctuation">,</span> TransformException<span class="token punctuation">,</span> InterruptedException <span class="token punctuation">&#123;</span>
+  inputs<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span> TransformInput input <span class="token operator">-></span>
+    <span class="token comment">// scan all jars</span>
+    input<span class="token punctuation">.</span>jarInputs<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span> JarInput jarInput <span class="token operator">-></span>
+      <span class="token punctuation">...</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>ScanUtil<span class="token punctuation">.</span><span class="token function">shouldProcessPreDexJar</span><span class="token punctuation">(</span>src<span class="token punctuation">.</span>absolutePath<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        ScanUtil<span class="token punctuation">.</span><span class="token function">scanJar</span><span class="token punctuation">(</span>src<span class="token punctuation">,</span> dest<span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">...</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  input<span class="token punctuation">.</span>directoryInputs<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span> DirectoryInput directoryInput <span class="token operator">-></span>
+    <span class="token punctuation">...</span>
+    directoryInput<span class="token punctuation">.</span>file<span class="token punctuation">.</span>eachFileRecurse <span class="token punctuation">&#123;</span> File file <span class="token operator">-></span>
+      <span class="token punctuation">...</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">isFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> ScanUtil<span class="token punctuation">.</span><span class="token function">shouldProcessClass</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        ScanUtil<span class="token punctuation">.</span><span class="token function">scanClass</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">...</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>省去了一些细节，只保留了主线逻辑，我们可以看到，其扫描到的jar和class都经过了ScanUtils的方法来处理，我们继续跟踪下去，会发现，<em>scanJar</em>也是循环调用的<em>scanClass</em>，这样我们直接看<em>scanClass</em>方法：</p>
-<pre class="language-groovy"><code class="language-groovy">static void scanClass(InputStream inputStream) &#123;
-  ClassReader cr = new ClassReader(inputStream)
-  ClassWriter cw = new ClassWriter(cr, 0)
-  ScanClassVisitor cv = new ScanClassVisitor(Opcodes.ASM5, cw)
-  cr.accept(cv, ClassReader.EXPAND_FRAMES)
-  inputStream.close()
-&#125;
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">scanClass</span><span class="token punctuation">(</span>InputStream inputStream<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  ClassReader cr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">)</span>
+  ClassWriter cw <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassWriter</span><span class="token punctuation">(</span>cr<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+  ScanClassVisitor cv <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ScanClassVisitor</span><span class="token punctuation">(</span>Opcodes<span class="token punctuation">.</span>ASM5<span class="token punctuation">,</span> cw<span class="token punctuation">)</span>
+  cr<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>cv<span class="token punctuation">,</span> ClassReader<span class="token punctuation">.</span>EXPAND_FRAMES<span class="token punctuation">)</span>
+  inputStream<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
 
-static class ScanClassVisitor extends ClassVisitor &#123;
+<span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ScanClassVisitor</span> <span class="token keyword">extends</span> <span class="token class-name">ClassVisitor</span> <span class="token punctuation">&#123;</span>
 
-  ScanClassVisitor(int api, ClassVisitor cv) &#123;
-    super(api, cv)
-  &#125;
+  <span class="token function">ScanClassVisitor</span><span class="token punctuation">(</span><span class="token keyword">int</span> api<span class="token punctuation">,</span> ClassVisitor cv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>api<span class="token punctuation">,</span> cv<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
 
-  void visit(int version, int access, String name, String signature,
-             String superName, String[] interfaces) &#123;
-    super.visit(version, access, name, signature, superName, interfaces)
-    RegisterTransform.registerList.each &#123; ext ->
-      if (ext.interfaceName &amp;&amp; interfaces != null) &#123;
-        interfaces.each &#123; itName ->
-          if (itName == ext.interfaceName) &#123;
-            //fix repeated inject init code when Multi-channel packaging
-            if (!ext.classList.contains(name)) &#123;
-              ext.classList.add(name)
-            &#125;
-          &#125;
-        &#125;
-      &#125;
-    &#125;
-  &#125;
-&#125;</code></pre>
+  <span class="token keyword">void</span> <span class="token function">visit</span><span class="token punctuation">(</span><span class="token keyword">int</span> version<span class="token punctuation">,</span> <span class="token keyword">int</span> access<span class="token punctuation">,</span> String name<span class="token punctuation">,</span> String signature<span class="token punctuation">,</span>
+             String superName<span class="token punctuation">,</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">visit</span><span class="token punctuation">(</span>version<span class="token punctuation">,</span> access<span class="token punctuation">,</span> name<span class="token punctuation">,</span> signature<span class="token punctuation">,</span> superName<span class="token punctuation">,</span> interfaces<span class="token punctuation">)</span>
+    RegisterTransform<span class="token punctuation">.</span>registerList<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span> ext <span class="token operator">-></span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>ext<span class="token punctuation">.</span>interfaceName <span class="token operator">&amp;&amp;</span> interfaces <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        interfaces<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span> itName <span class="token operator">-></span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>itName <span class="token operator">==</span> ext<span class="token punctuation">.</span>interfaceName<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">//fix repeated inject init code when Multi-channel packaging</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ext<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+              ext<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这里就又涉及到了ASM的知识，ScanClassVisitor是访问某个类的内部结构。</p>
 <blockquote>
@@ -476,20 +476,20 @@ static class ScanClassVisitor extends ClassVisitor &#123;
 <p>在<em>ScanClassVisitor</em>中，并没有对类做修改，只是从遍历过的类中，把我们关心的类挑出来。那么，我们关心哪些类呢？</p>
 <p>在<em>PluginLaunch</em>类中，我们注册了三个<em>ScanSettings</em>类，分别是<strong>IRouteRoot</strong>、<strong>IInterceptorGroup</strong>和<strong>IProviderGroup</strong>，也就是说，我们把实现了这三个接口的类，挑出来，加入到各自对应的ScanSettings类中记录起来。这三个接口是不是很熟悉？就是通过APT生成的用来记录路由路径表的类。</p>
 <p>等收集好了这些记录的路径表信息后，就可以对<em>LogisticsCenter</em>通过ASM进行修改了。我们接着看<em>RegisterTransform#transform</em>方法中剩下的逻辑。</p>
-<pre class="language-groovy"><code class="language-groovy">if (fileContainsInitClass) &#123;
-  registerList.each &#123; ext ->
-    Logger.i('Insert register code to file ' + fileContainsInitClass.absolutePath)
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy"><span class="token keyword">if</span> <span class="token punctuation">(</span>fileContainsInitClass<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  registerList<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span> ext <span class="token operator">-></span>
+    Logger<span class="token punctuation">.</span><span class="token function">i</span><span class="token punctuation">(</span><span class="token string">'Insert register code to file '</span> <span class="token operator">+</span> fileContainsInitClass<span class="token punctuation">.</span>absolutePath<span class="token punctuation">)</span>
 
-    if (ext.classList.isEmpty()) &#123;
-      Logger.e("No class implements found for interface:" + ext.interfaceName)
-    &#125; else &#123;
-      ext.classList.each &#123;
-        Logger.i(it)
-      &#125;
-      RegisterCodeGenerator.insertInitCodeTo(ext)
-    &#125;
-  &#125;
-&#125;</code></pre>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ext<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      Logger<span class="token punctuation">.</span><span class="token function">e</span><span class="token punctuation">(</span><span class="token interpolation-string"><span class="token string">"No class implements found for interface:"</span></span> <span class="token operator">+</span> ext<span class="token punctuation">.</span>interfaceName<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      ext<span class="token punctuation">.</span>classList<span class="token punctuation">.</span>each <span class="token punctuation">&#123;</span>
+        Logger<span class="token punctuation">.</span><span class="token function">i</span><span class="token punctuation">(</span>it<span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+      RegisterCodeGenerator<span class="token punctuation">.</span><span class="token function">insertInitCodeTo</span><span class="token punctuation">(</span>ext<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意此处的insertInitCodeTo方法，这就是ASM修改的入口了。这里不对修改过程进行详细解释了。我们直接对比看<em>LogisticsCenter</em>修改前后关键代码的对比。</p>
 <p>在<em>app&#x2F;build</em>目录下，找到生成的apk文件，通过AndroidStudio来查看其中的class，找到关键<em>LogisticsCenter</em>关键方法<em>loadRouterMap</em>。</p>
@@ -497,71 +497,71 @@ static class ScanClassVisitor extends ClassVisitor &#123;
 <p>具体过程如下：</p>
 <p>app&#x2F;build&#x2F;outputs&#x2F;apk&#x2F;debug&#x2F;app-debug.apk -&gt; classes.dex(双击) -&gt; 找到<em>LogisticsCenter#loadRouterMap</em>方法 -&gt; 右键: show Bytecode。</p>
 </blockquote>
-<pre class="language-java"><code class="language-java">// 不使用apply plugin: 'com.alibaba.arouter'
-.method private static loadRouterMap()V
-    .registers 1
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 不使用apply plugin: 'com.alibaba.arouter'</span>
+<span class="token punctuation">.</span>method <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token function">loadRouterMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token class-name">V</span>
+    <span class="token punctuation">.</span>registers <span class="token number">1</span>
 
-    .line 64
-    const/4 v0, 0x0
+    <span class="token punctuation">.</span>line <span class="token number">64</span>
+    <span class="token keyword">const</span><span class="token operator">/</span><span class="token number">4</span> v0<span class="token punctuation">,</span> <span class="token number">0x0</span>
 
-    sput-boolean v0, Lcom/alibaba/android/arouter/core/LogisticsCenter;->registerByPlugin:Z
+    sput<span class="token operator">-</span><span class="token keyword">boolean</span> v0<span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span>registerByPlugin<span class="token operator">:</span><span class="token class-name">Z</span>
 
-    .line 69
-    return-void
-.end method</code></pre>
+    <span class="token punctuation">.</span>line <span class="token number">69</span>
+    <span class="token keyword">return</span><span class="token operator">-</span><span class="token keyword">void</span>
+<span class="token punctuation">.</span>end method<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="language-java"><code class="language-java">// 使用apply plugin: 'com.alibaba.arouter'
-.method private static loadRouterMap()V
-    .registers 1
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 使用apply plugin: 'com.alibaba.arouter'</span>
+<span class="token punctuation">.</span>method <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token function">loadRouterMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token class-name">V</span>
+    <span class="token punctuation">.</span>registers <span class="token number">1</span>
 
-    .line 64
-    const/4 v0, 0x0
+    <span class="token punctuation">.</span>line <span class="token number">64</span>
+    <span class="token keyword">const</span><span class="token operator">/</span><span class="token number">4</span> v0<span class="token punctuation">,</span> <span class="token number">0x0</span>
 
-    sput-boolean v0, Lcom/alibaba/android/arouter/core/LogisticsCenter;->registerByPlugin:Z
+    sput<span class="token operator">-</span><span class="token keyword">boolean</span> v0<span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span>registerByPlugin<span class="token operator">:</span><span class="token class-name">Z</span>
 
-    .line 69
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Root$$modulejava"
+    <span class="token punctuation">.</span>line <span class="token number">69</span>
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Root$$modulejava"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Root$$modulekotlin"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Root$$modulekotlin"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Root$$arouterapi"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Root$$arouterapi"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Root$$app"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Root$$app"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Interceptors$$modulejava"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Interceptors$$modulejava"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Interceptors$$app"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Interceptors$$app"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Providers$$modulejava"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Providers$$modulejava"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Providers$$modulekotlin"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Providers$$modulekotlin"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Providers$$arouterapi"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Providers$$arouterapi"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    const-string v0, "com.alibaba.android.arouter.routes.ARouter$$Providers$$app"
+    <span class="token keyword">const</span><span class="token operator">-</span>string v0<span class="token punctuation">,</span> <span class="token string">"com.alibaba.android.arouter.routes.ARouter$$Providers$$app"</span>
 
-    invoke-static &#123;v0&#125;, Lcom/alibaba/android/arouter/core/LogisticsCenter;->register(Ljava/lang/String;)V
+    invoke<span class="token operator">-</span><span class="token keyword">static</span> <span class="token punctuation">&#123;</span>v0<span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token class-name">Lcom</span><span class="token operator">/</span>alibaba<span class="token operator">/</span>android<span class="token operator">/</span>arouter<span class="token operator">/</span>core<span class="token operator">/</span><span class="token class-name">LogisticsCenter</span><span class="token punctuation">;</span><span class="token operator">-></span><span class="token function">register</span><span class="token punctuation">(</span><span class="token class-name">Ljava</span><span class="token operator">/</span>lang<span class="token operator">/</span><span class="token class-name">String</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token class-name">V</span>
 
-    return-void
-.end method</code></pre>
+    <span class="token keyword">return</span><span class="token operator">-</span><span class="token keyword">void</span>
+<span class="token punctuation">.</span>end method<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>对比发现，使用<code>apply plugin: &#39;com.alibaba.arouter&#39;</code>后，这个方法增加了很多代码，基本上就是在加载路由路径表。使用这个gradle插件的基本思想就是，将查找路由路径表的过程，从<strong>运行时</strong>提前到了<strong>编译时</strong>，这算是一种AOT(Ahead of time)思想。</p>
 <p>将最耗时的查找过程提前，也就解决了ARouter初始化时间过长的问题。</p>

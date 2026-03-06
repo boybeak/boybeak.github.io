@@ -71,11 +71,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +90,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/静态库/">静态库</a></li>
-                  
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -209,66 +209,66 @@
 <p>阅读本文前，请先阅读[《Jetpack之LiveData源码分析》](&#x2F;源码分析系列&#x2F;LiveEventBus源码分析.md)。因为<strong>LiveEventBus</strong>是基于<strong>LiveData</strong>构建的。</p>
 <p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/JeremyLiao/LiveEventBus">LiveEventBus</a></p>
 <p>典型用法如下：</p>
-<pre class="language-java"><code class="language-java">// 监听消息
-LiveEventBus
-	.get("some_key", String.class)
-	.observe(this, new Observer&lt;String>() &#123;
-	    @Override
-	    public void onChanged(@Nullable String s) &#123;
-	    &#125;
-	&#125;);</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 监听消息</span>
+<span class="token class-name">LiveEventBus</span>
+	<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"some_key"</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+	<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Observer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	    <span class="token annotation punctuation">@Override</span>
+	    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onChanged</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Nullable</span> <span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	    <span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="language-java"><code class="language-java">// 发送消息
-LiveEventBus
-	.get("some_key")
-	.post(some_value);</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">// 发送消息</span>
+<span class="token class-name">LiveEventBus</span>
+	<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">"some_key"</span><span class="token punctuation">)</span>
+	<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>some_value<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>其实，这三个方法就是最核心的，get、observe和post。通过get获取一个Observable对象，通过observe进行监听，通过post发送消息。我们就从这三个方法入手去分析其源码。</p>
 <h2 id="get方法分析"><a href="#get方法分析" class="headerlink" title="get方法分析"></a>get方法分析</h2><p>跟踪get方法，不难发现，是由<em>LiveEventBusCore</em>单例提供的with()方法返回的<em>Observable</em>，<em>LiveEventBusCore</em>中有一个名为bus的Map&lt;String, LiveEvent<Object>&gt;的成员变量，就是在这个变量中，以key - value的形式，保存了<em>Obserable</em>对象。observe方法与post方法都是由<em>Obserable</em>提供的。<em>Observable</em>是一个接口，它有一个唯一的实现类：<strong>LiveEvent</strong>。也就是说，observe方法与post方法的具体实现，都是由<em>LiveEvent</em>类提供。</p>
 <p>主要代码如下：</p>
 <p>##LiveEvent </p>
-<pre class="language-java"><code class="language-java">private class LiveEvent&lt;T> implements Observable&lt;T> &#123;
-  @NonNull
-  private final String key;
-  private final LifecycleLiveData&lt;T> liveData;	// 继承自MutableLiveData，实现生命周期感知
-  private final Map&lt;Observer, ObserverWrapper&lt;T>> observerMap = new HashMap&lt;>(); // 存储ObserverWrapper对象
-  private final Handler mainHandler = new Handler(Looper.getMainLooper()); // 便于切换到主线程
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">class</span> <span class="token class-name">LiveEvent</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token keyword">implements</span> <span class="token class-name">Observable</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token punctuation">&#123;</span>
+  <span class="token annotation punctuation">@NonNull</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">String</span> key<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">LifecycleLiveData</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> liveData<span class="token punctuation">;</span>	<span class="token comment">// 继承自MutableLiveData，实现生命周期感知</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Observer</span><span class="token punctuation">,</span> <span class="token class-name">ObserverWrapper</span><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span><span class="token punctuation">></span></span> observerMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 存储ObserverWrapper对象</span>
+  <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Handler</span> mainHandler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Handler</span><span class="token punctuation">(</span><span class="token class-name">Looper</span><span class="token punctuation">.</span><span class="token function">getMainLooper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 便于切换到主线程</span>
   
-  /**
+  <span class="token comment">/**
   * 进程内发送消息
   *
   * @param value 发送的消息
-  */
-  @Override
-  public void post(T value) &#123;
-    if (ThreadUtils.isMainThread()) &#123;
-      postInternal(value);
-    &#125; else &#123;
-      mainHandler.post(new PostValueTask(value));
-    &#125;
-  &#125;
+  */</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">post</span><span class="token punctuation">(</span><span class="token class-name">T</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">ThreadUtils</span><span class="token punctuation">.</span><span class="token function">isMainThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">postInternal</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      mainHandler<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">PostValueTask</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
   
-  /**
+  <span class="token comment">/**
   * 注册一个Observer，生命周期感知，自动取消订阅
   *
   * @param owner    LifecycleOwner
   * @param observer 观察者
-  */
-  @Override
-  public void observe(@NonNull final LifecycleOwner owner, @NonNull final Observer&lt;T> observer) &#123;
-    if (ThreadUtils.isMainThread()) &#123;
-      observeInternal(owner, observer);
-    &#125; else &#123;
-      mainHandler.post(new Runnable() &#123;
-        @Override
-        public void run() &#123;
-          observeInternal(owner, observer);
-        &#125;
-      &#125;);
-    &#125;
-  &#125;
+  */</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">observe</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token keyword">final</span> <span class="token class-name">LifecycleOwner</span> owner<span class="token punctuation">,</span> <span class="token annotation punctuation">@NonNull</span> <span class="token keyword">final</span> <span class="token class-name">Observer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> observer<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">ThreadUtils</span><span class="token punctuation">.</span><span class="token function">isMainThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token function">observeInternal</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      mainHandler<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          <span class="token function">observeInternal</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
   
-&#125;</code></pre>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><em>LiveEvent</em>中通过一个成员变量<code>Map&lt;Observer, ObserverWrapper&lt;T&gt;&gt; observerMap</code>来存储<em>ObserverWrapper</em>。</p>
 <p><em>ObserverWrapper</em>是<strong>LiveData</strong>库中的<em>Observer</em>类的子类，</p>

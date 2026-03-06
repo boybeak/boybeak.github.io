@@ -71,11 +71,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +90,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/静态库/">静态库</a></li>
-                  
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -208,15 +208,15 @@
 <p><strong>APT</strong>是<strong>Annotation Processing Tool</strong>的简称，即<strong>编译时注解处理器</strong>。它是一个javac的工具，在编译时，通过注解，按照规则自动生成相关代码的工具。</p>
 <p><strong>APT与Glide什么关系？</strong></p>
 <p>我们通常通过在build.gradle加入这样一段代码来引入Glide库。</p>
-<pre class="language-groovy"><code class="language-groovy">repositories &#123;
-  google()
-  jcenter()
-&#125;
+<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">repositories <span class="token punctuation">&#123;</span>
+  <span class="token function">google</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token function">jcenter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
 
-dependencies &#123;
-  implementation 'com.github.bumptech.glide:glide:4.11.0'
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-&#125;</code></pre>
+dependencies <span class="token punctuation">&#123;</span>
+  implementation <span class="token string">'com.github.bumptech.glide:glide:4.11.0'</span>
+  annotationProcessor <span class="token string">'com.github.bumptech.glide:compiler:4.11.0'</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这里有一个<code>annotationProcessor</code>，这就是对Glide提供的APT进行引用。我们查看Glide的源码结构，可以看到一个名为<em>annotation</em>的文件夹，这里就是与APT有关的部分。</p>
 <p><img src="/assets/images/glide_struct.jpg" alt="Glide Struct"></p>
@@ -231,42 +231,42 @@ dependencies &#123;
 <p><img src="/assets/images/gif_after_optimization.png" alt="优化后"></p>
 <p>我们可以看出，优化后，CPU和内存状况都好了很多，那么我们是怎么做的呢？这就需要用到谷歌官方的两个库——<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/external/giflib/+/refs/heads/master">giflib</a>和<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/ex/+/refs/heads/master/framesequence/">FrameSequence</a>，这两个库需要我们自己编译成.so文件，具体可以参考示例项目<a target="_blank" rel="noopener" href="https://github.com/boybeak/GifHelper">GifHelper</a>。</p>
 <p>我们查看GifHolder中的代码。</p>
-<pre class="language-kotlin"><code class="language-kotlin">class GifHolder(v: View) : AbsHolder&lt;GifItem>(v) &#123;
-	...
-  private val gifIV = view&lt;ImageView>(R.id.gifIV)
-  override fun onBind(item: GifItem, position: Int, absAdapter: AnyAdapter) &#123;
-    if (item.useGifX) &#123;
-      // 优化后的加载方式
-    	GlideApp.with(itemView).asGifX().load(item.source()).into(gifIV)
-    &#125; else &#123;
-      // 优化前的加载方式
-      Glide.with(itemView).asGif().load(item.source()).into(gifIV)
-    &#125;
-    ....
-  &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">GifHolder</span><span class="token punctuation">(</span>v<span class="token operator">:</span> View<span class="token punctuation">)</span> <span class="token operator">:</span> AbsHolder<span class="token operator">&lt;</span>GifItem<span class="token operator">></span><span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token operator">..</span><span class="token punctuation">.</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> gifIV <span class="token operator">=</span> view<span class="token operator">&lt;</span>ImageView<span class="token operator">></span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>gifIV<span class="token punctuation">)</span>
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onBind</span><span class="token punctuation">(</span>item<span class="token operator">:</span> GifItem<span class="token punctuation">,</span> position<span class="token operator">:</span> Int<span class="token punctuation">,</span> absAdapter<span class="token operator">:</span> AnyAdapter<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>item<span class="token punctuation">.</span>useGifX<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 优化后的加载方式</span>
+    	GlideApp<span class="token punctuation">.</span><span class="token function">with</span><span class="token punctuation">(</span>itemView<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asGifX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span>gifIV<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 优化前的加载方式</span>
+      Glide<span class="token punctuation">.</span><span class="token function">with</span><span class="token punctuation">(</span>itemView<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">asGif</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span><span class="token function">source</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span>gifIV<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token operator">..</span><span class="token operator">..</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们可以看到，加载后有这样一条语句：<code>GlideApp.with(itemView).asGifX().load(item.source()).into(gifIV)</code>，也许你会懵逼，哪里有GlideApp？哪里有asGifX()方法？我引入Glide后怎么没有看到这两个东西？这就涉及到了APT的内容了。想要看Glide官方文档的可以看<a target="_blank" rel="noopener" href="http://bumptech.github.io/glide/doc/configuration.html#glidemodule">这里</a>。</p>
 <p>一切的起因，要从**@GlideModule**这个注解说起，我们打开demo中的MyAppGlideModule类，可以看到这个类有一个@GlideModule注解。</p>
-<pre class="language-kotlin"><code class="language-kotlin">@GlideModule
-class MyAppGlideModule : AppGlideModule() &#123;
-  override fun registerComponents(context: Context, glide: Glide, registry: Registry) &#123;
-    super.registerComponents(context, glide, registry)
-    registry.append(Registry.BUCKET_GIF, InputStream::class.java,
-                    FrameSequenceDrawable::class.java, GifDecoder(glide.bitmapPool))
-  &#125;
-&#125;</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token annotation builtin">@GlideModule</span>
+<span class="token keyword">class</span> MyAppGlideModule <span class="token operator">:</span> <span class="token function">AppGlideModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">registerComponents</span><span class="token punctuation">(</span>context<span class="token operator">:</span> Context<span class="token punctuation">,</span> glide<span class="token operator">:</span> Glide<span class="token punctuation">,</span> registry<span class="token operator">:</span> Registry<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">registerComponents</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> glide<span class="token punctuation">,</span> registry<span class="token punctuation">)</span>
+    registry<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>Registry<span class="token punctuation">.</span>BUCKET_GIF<span class="token punctuation">,</span> InputStream<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">,</span>
+                    FrameSequenceDrawable<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">,</span> <span class="token function">GifDecoder</span><span class="token punctuation">(</span>glide<span class="token punctuation">.</span>bitmapPool<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们再点开这个注解的源码，如下：</p>
-<pre class="language-java"><code class="language-java">@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.CLASS)
-public @interface GlideModule &#123;
-  /**
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span><span class="token constant">TYPE</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span><span class="token constant">CLASS</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">GlideModule</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">/**
    * Returns the name of the class that will be used as a replacement for &#123;@code
    * com.bumptech.glide.Glide&#125; in Applications that depend on Glide's generated code.
-   */
-  String glideName() default "GlideApp";
-&#125;</code></pre>
+   */</span>
+  <span class="token class-name">String</span> <span class="token function">glideName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"GlideApp"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们现在看到“GlideApp”了，是glideName这个注解属性的默认值。我们来逐条分析一下这个注解类的相关信息：</p>
 <ul>
@@ -286,64 +286,64 @@ public @interface GlideModule &#123;
 <p>就是这个**@GlideModule**属性，为我们生成了GlideApp类，这其中的生成过程，我们稍后再说，先把Gif优化的流程说完。</p>
 <p>添加**@GlideModule**后，再次编译看，是否有了GlideApp这个类了。</p>
 <p>我们再来看<em>MyAppGlideModule</em>中的代码，<code>registry.append</code>方法，这是为Glide添加一种解析类型。</p>
-<pre class="language-java"><code class="language-java">/* 
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/* 
 * @param bucket 要添加的类型id.
 * @param dataClass 要从什么数据进行解析。 (&#123;@link java.io.InputStream&#125;, &#123;@link
 *     java.io.FileDescriptor&#125; etc).
 * @param resourceClass 要解析成什么数据。 (&#123;@link android.graphics.Bitmap&#125;,
 *     &#123;@link com.bumptech.glide.load.resource.gif.GifDrawable&#125; etc).
 * @param decoder 用什么解码器进行解析 &#123;@link ResourceDecoder&#125;。
-*/
-@NonNull
-public &lt;Data, TResource> Registry append(
-  @NonNull String bucket,
-  @NonNull Class&lt;Data> dataClass,
-  @NonNull Class&lt;TResource> resourceClass,
-  @NonNull ResourceDecoder&lt;Data, TResource> decoder) &#123;
-  decoderRegistry.append(bucket, decoder, dataClass, resourceClass);
-  return this;
-&#125;</code></pre>
+*/</span>
+<span class="token annotation punctuation">@NonNull</span>
+<span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Data</span><span class="token punctuation">,</span> <span class="token class-name">TResource</span><span class="token punctuation">></span></span> <span class="token class-name">Registry</span> <span class="token function">append</span><span class="token punctuation">(</span>
+  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">String</span> bucket<span class="token punctuation">,</span>
+  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Data</span><span class="token punctuation">></span></span> dataClass<span class="token punctuation">,</span>
+  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">TResource</span><span class="token punctuation">></span></span> resourceClass<span class="token punctuation">,</span>
+  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">ResourceDecoder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Data</span><span class="token punctuation">,</span> <span class="token class-name">TResource</span><span class="token punctuation">></span></span> decoder<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  decoderRegistry<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>bucket<span class="token punctuation">,</span> decoder<span class="token punctuation">,</span> dataClass<span class="token punctuation">,</span> resourceClass<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <p>接下来就要引入谷歌官方的两个类库了，<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/ex/+/android-9.0.0_r16/framesequence/">FrameSquence</a>和<a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/external/giflib/+/android-9.0.0_r16">giflib</a>。大家可以根据需要下载对应版本的库，不过这两个库的版本最好要对应。</p>
 <p>下载后需要编译，项目结构参考<a target="_blank" rel="noopener" href="https://github.com/boybeak/GifHelper">GifHelper</a>项目中的framesequence&#x2F;src&#x2F;main&#x2F;jni文件夹。注意，需要将FrameSequence_gif.h中的include部分进行修改。</p>
-<pre class="language-diff"><code class="language-diff">- #include "config.h"
-- #include "gif_lib.h"
-改成
-+ #include "giflib/config.h"
-+ #include "giflib/gif_lib.h"</code></pre>
+<pre class="line-numbers language-diff" data-language="diff"><code class="language-diff"><span class="token deleted-sign deleted"><span class="token prefix deleted">-</span><span class="token line"> #include "config.h"
+</span><span class="token prefix deleted">-</span><span class="token line"> #include "gif_lib.h"
+</span></span>改成
+<span class="token inserted-sign inserted"><span class="token prefix inserted">+</span><span class="token line"> #include "giflib/config.h"
+</span><span class="token prefix inserted">+</span><span class="token line"> #include "giflib/gif_lib.h"</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>然后执行ndk-build，则会在jni同级的目录下，生成一个libs文件夹，.so文件就在这里。</p>
 <p>接下来需要去自定义GifDecoder.java了，直接上代码：</p>
-<pre class="language-kotlin"><code class="language-kotlin">class GifDecoder(private val bmpPool: BitmapPool) : ResourceDecoder&lt;InputStream, FrameSequenceDrawable> &#123;
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">GifDecoder</span><span class="token punctuation">(</span><span class="token keyword">private</span> <span class="token keyword">val</span> bmpPool<span class="token operator">:</span> BitmapPool<span class="token punctuation">)</span> <span class="token operator">:</span> ResourceDecoder<span class="token operator">&lt;</span>InputStream<span class="token punctuation">,</span> FrameSequenceDrawable<span class="token operator">></span> <span class="token punctuation">&#123;</span>
 
-    private val headerParser = DefaultImageHeaderParser()
+    <span class="token keyword">private</span> <span class="token keyword">val</span> headerParser <span class="token operator">=</span> <span class="token function">DefaultImageHeaderParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    override fun handles(source: InputStream, options: Options): Boolean &#123;
-        return !(options.get(GifOptions.DISABLE_ANIMATION) ?: true)
-            &amp;&amp; headerParser.getType(source) == ImageHeaderParser.ImageType.GIF
-    &#125;
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">handles</span><span class="token punctuation">(</span>source<span class="token operator">:</span> InputStream<span class="token punctuation">,</span> options<span class="token operator">:</span> Options<span class="token punctuation">)</span><span class="token operator">:</span> Boolean <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token operator">!</span><span class="token punctuation">(</span>options<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>GifOptions<span class="token punctuation">.</span>DISABLE_ANIMATION<span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+            <span class="token operator">&amp;&amp;</span> headerParser<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span> <span class="token operator">==</span> ImageHeaderParser<span class="token punctuation">.</span>ImageType<span class="token punctuation">.</span>GIF
+    <span class="token punctuation">&#125;</span>
 
-    override fun decode(
-        source: InputStream,
-        width: Int,
-        height: Int,
-        options: Options
-    ): Resource&lt;FrameSequenceDrawable>? &#123;
-        val fs = FrameSequence.decodeStream(source)
-        val fsd = FrameSequenceDrawable(fs, object : FrameSequenceDrawable.BitmapProvider &#123;
-            override fun acquireBitmap(minWidth: Int, minHeight: Int): Bitmap &#123;
-                return bmpPool.get(minWidth, minHeight, Bitmap.Config.ARGB_8888)
-            &#125;
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">decode</span><span class="token punctuation">(</span>
+        source<span class="token operator">:</span> InputStream<span class="token punctuation">,</span>
+        width<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        height<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        options<span class="token operator">:</span> Options
+    <span class="token punctuation">)</span><span class="token operator">:</span> Resource<span class="token operator">&lt;</span>FrameSequenceDrawable<span class="token operator">></span><span class="token operator">?</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> fs <span class="token operator">=</span> FrameSequence<span class="token punctuation">.</span><span class="token function">decodeStream</span><span class="token punctuation">(</span>source<span class="token punctuation">)</span>
+        <span class="token keyword">val</span> fsd <span class="token operator">=</span> <span class="token function">FrameSequenceDrawable</span><span class="token punctuation">(</span>fs<span class="token punctuation">,</span> <span class="token keyword">object</span> <span class="token operator">:</span> FrameSequenceDrawable<span class="token punctuation">.</span><span class="token function">BitmapProvider</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">acquireBitmap</span><span class="token punctuation">(</span>minWidth<span class="token operator">:</span> Int<span class="token punctuation">,</span> minHeight<span class="token operator">:</span> Int<span class="token punctuation">)</span><span class="token operator">:</span> Bitmap <span class="token punctuation">&#123;</span>
+                <span class="token keyword">return</span> bmpPool<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>minWidth<span class="token punctuation">,</span> minHeight<span class="token punctuation">,</span> Bitmap<span class="token punctuation">.</span>Config<span class="token punctuation">.</span>ARGB_8888<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
 
-            override fun releaseBitmap(bitmap: Bitmap?) &#123;
-                bmpPool.put(bitmap)
-            &#125;
-        &#125;)
-        return GifResource(fsd)
-    &#125;
-&#125;</code></pre>
+            <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">releaseBitmap</span><span class="token punctuation">(</span>bitmap<span class="token operator">:</span> Bitmap<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                bmpPool<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token function">GifResource</span><span class="token punctuation">(</span>fsd<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这个类里只需要实现两个方法：<code>handles</code>和<code>decode</code>：</p>
 <ul>
@@ -354,78 +354,80 @@ public &lt;Data, TResource> Registry append(
 <p>我们着重看decode方法，这里需要重点看的是，在构建<em>FrameSequenceDrawable</em>时候，传入了一个<em>BitmapProvider</em>对象，这就是提高Gif效率的关键，在这个<em>BitmapProvider</em>里面，我们通过BitmapPool，去寻找可用尺寸的Bitmap，通过<strong>池化</strong>的方式，减小了内存开销，增加里Bitmap利用率。</p>
 <p>接下来看，如何添加<code>asGifX</code>方法。我们都知道，传统的Glide调用方式如下图：</p>
 <p><code>Glide.with(itemView).asGif().load(item.source()).into(gifIV)</code></p>
-<pre class="language-mermaid"><code class="language-mermaid">
+<pre><code class="language-mermaid">
 graph LR;
-A[Glide] --&gt;|&quot;with(xxx)&quot;| B[RequestManager] --&gt;|&quot;asGif&quot;| C[RequestBuilder];</code></pre>
+A[Glide] --&gt;|&quot;with(xxx)&quot;| B[RequestManager] --&gt;|&quot;asGif&quot;| C[RequestBuilder];
+</code></pre>
 <p>而新的方式却不同，如下图：</p>
 <p><code>GlideApp.with(itemView).asGifX().load(item.source()).into(gifIV)</code></p>
-<pre class="language-mermaid"><code class="language-mermaid">
+<pre><code class="language-mermaid">
 graph LR;
-A[GlideApp] --&gt;|&quot;with(xxx)&quot;| B[GlideRequests]  --&gt;|asGifX| C[GlideRequest];</code></pre>
+A[GlideApp] --&gt;|&quot;with(xxx)&quot;| B[GlideRequests]  --&gt;|asGifX| C[GlideRequest];
+</code></pre>
 <p>这其中的<em>GlideRequest</em>和<em>GlideRequest</em>，同样都是生成的类，其中GlideRequests继承自RequestManager，GlideRequest继承自RequestBuilder。</p>
 <p>这两个类的生成，同样是**@GlideModule**的作用，但是<code>asGifX</code>这个方法是什么时候定义的呢？我们去查看<code>asGifX</code>这个方法的代码：</p>
-<pre class="language-java"><code class="language-java">/**
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
 * @see GifExtension#asGifX(RequestBuilder)
-*/
-@NonNull
-@CheckResult
-public GlideRequest&lt;FrameSequenceDrawable> asGifX() &#123;
-  return (GlideRequest&lt;FrameSequenceDrawable>) GifExtension.asGifX(this.as(FrameSequenceDrawable.class));
-&#125;</code></pre>
+*/</span>
+<span class="token annotation punctuation">@NonNull</span>
+<span class="token annotation punctuation">@CheckResult</span>
+<span class="token keyword">public</span> <span class="token class-name">GlideRequest</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">></span></span> <span class="token function">asGifX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">GlideRequest</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">></span></span><span class="token punctuation">)</span> <span class="token class-name">GifExtension</span><span class="token punctuation">.</span><span class="token function">asGifX</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">as</span><span class="token punctuation">(</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>我们看到实际上这个类的具体实现，是依靠GifExtension类，我们去看这个类的代码：</p>
-<pre class="language-java"><code class="language-java">@GlideExtension
-public class GifExtension &#123;
-    @NonNull
-    @GlideType(FrameSequenceDrawable.class)
-    public static RequestBuilder&lt;FrameSequenceDrawable> asGifX(RequestBuilder&lt;FrameSequenceDrawable> requestBuilder) &#123;
-        return requestBuilder.apply(RequestOptions
-                .decodeTypeOf(FrameSequenceDrawable.class)
-                .lock());
-    &#125;
-    private GifExtension()&#123;&#125;
-&#125;</code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@GlideExtension</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GifExtension</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@NonNull</span>
+    <span class="token annotation punctuation">@GlideType</span><span class="token punctuation">(</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">RequestBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">></span></span> <span class="token function">asGifX</span><span class="token punctuation">(</span><span class="token class-name">RequestBuilder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">></span></span> requestBuilder<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> requestBuilder<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token class-name">RequestOptions</span>
+                <span class="token punctuation">.</span><span class="token function">decodeTypeOf</span><span class="token punctuation">(</span><span class="token class-name">FrameSequenceDrawable</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">private</span> <span class="token class-name">GifExtension</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这个类需要我们自己实现，并且需要标记**@GlideExtension**注解，又是注解的功劳。</p>
 <p>到此为止，Gif优化的主流程就全部讲完了，接下来就要看这两个注解——<strong>@GlideModule</strong>和**@GlideExtension**到底做了什么？</p>
 <h2 id="GlideModule和-GlideExtension"><a href="#GlideModule和-GlideExtension" class="headerlink" title="@GlideModule和@GlideExtension"></a>@GlideModule和@GlideExtension</h2><p>源码在Glide项目的annotation&#x2F;compiler内，这种APT项目的入口文件标记在src&#x2F;main&#x2F;resources&#x2F;META-INF&#x2F;gradle内，这其中有一个incremental.annotation.processors文件，我们查看其内容：</p>
-<pre class="language-none"><code class="language-none">com.bumptech.glide.annotation.compiler.GlideAnnotationProcessor,aggregating</code></pre>
+<pre class="line-numbers language-none"><code class="language-none">com.bumptech.glide.annotation.compiler.GlideAnnotationProcessor,aggregating<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>可以得知，程序入口在GlideAnnotationProcessor这个类，查看这个类的源码，我只提取了关键部分：</p>
-<pre class="language-java"><code class="language-java">public final class GlideAnnotationProcessor extends AbstractProcessor &#123;
-  ...
-  private LibraryModuleProcessor libraryModuleProcessor;
-  private AppModuleProcessor appModuleProcessor;
-  private boolean isGeneratedAppGlideModuleWritten;
-  private ExtensionProcessor extensionProcessor;
-  ...
-  @Override
-  public Set&lt;String> getSupportedAnnotationTypes() &#123;
-    Set&lt;String> result = new HashSet&lt;>();
-    result.addAll(libraryModuleProcessor.getSupportedAnnotationTypes());
-    result.addAll(extensionProcessor.getSupportedAnnotationTypes());
-    return result;
-  &#125;
-  @Override
-  public boolean process(Set&lt;? extends TypeElement> set, RoundEnvironment env) &#123;
-    processorUtil.process();
-    boolean newModulesWritten = libraryModuleProcessor.processModules(env);
-    boolean newExtensionWritten = extensionProcessor.processExtensions(env);
-    appModuleProcessor.processModules(set, env);
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">GlideAnnotationProcessor</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractProcessor</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token keyword">private</span> <span class="token class-name">LibraryModuleProcessor</span> libraryModuleProcessor<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> <span class="token class-name">AppModuleProcessor</span> appModuleProcessor<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> <span class="token keyword">boolean</span> isGeneratedAppGlideModuleWritten<span class="token punctuation">;</span>
+  <span class="token keyword">private</span> <span class="token class-name">ExtensionProcessor</span> extensionProcessor<span class="token punctuation">;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">getSupportedAnnotationTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashSet</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    result<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>libraryModuleProcessor<span class="token punctuation">.</span><span class="token function">getSupportedAnnotationTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    result<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>extensionProcessor<span class="token punctuation">.</span><span class="token function">getSupportedAnnotationTypes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token annotation punctuation">@Override</span>
+  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">TypeElement</span><span class="token punctuation">></span></span> set<span class="token punctuation">,</span> <span class="token class-name">RoundEnvironment</span> env<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    processorUtil<span class="token punctuation">.</span><span class="token function">process</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> newModulesWritten <span class="token operator">=</span> libraryModuleProcessor<span class="token punctuation">.</span><span class="token function">processModules</span><span class="token punctuation">(</span>env<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">boolean</span> newExtensionWritten <span class="token operator">=</span> extensionProcessor<span class="token punctuation">.</span><span class="token function">processExtensions</span><span class="token punctuation">(</span>env<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    appModuleProcessor<span class="token punctuation">.</span><span class="token function">processModules</span><span class="token punctuation">(</span>set<span class="token punctuation">,</span> env<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    if (newExtensionWritten || newModulesWritten) &#123;
-      if (isGeneratedAppGlideModuleWritten) &#123;
-        throw new IllegalStateException("Cannot process annotations after writing AppGlideModule");
-      &#125;
-      return false;
-    &#125;
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>newExtensionWritten <span class="token operator">||</span> newModulesWritten<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>isGeneratedAppGlideModuleWritten<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalStateException</span><span class="token punctuation">(</span><span class="token string">"Cannot process annotations after writing AppGlideModule"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
 
-    if (!isGeneratedAppGlideModuleWritten) &#123;
-      isGeneratedAppGlideModuleWritten = appModuleProcessor.maybeWriteAppModule();
-    &#125;
-    return false;
-  &#125;
-&#125;</code></pre>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isGeneratedAppGlideModuleWritten<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      isGeneratedAppGlideModuleWritten <span class="token operator">=</span> appModuleProcessor<span class="token punctuation">.</span><span class="token function">maybeWriteAppModule</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><code>getSupportedAnnotationTypes</code>方法中标记了，支持哪些注解的解析，其中<code>libraryModuleProcessor.getSupportedAnnotationTypes()</code>中返回了**@GlideModule**，<code>extensionProcessor.getSupportedAnnotationTypes()</code>中返回了**@GlideExtension**。</li>

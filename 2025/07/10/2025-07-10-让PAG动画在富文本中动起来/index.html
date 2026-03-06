@@ -71,11 +71,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +90,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/静态库/">静态库</a></li>
-                  
                   <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -212,133 +212,133 @@
 <p>Portable Animated Graphics 是一套完整的动效工作流解决方案。<br>目标是降低或消除动效相关的研发成本，能够一键将设计师在 AE（Adobe After Effects）中制作的动效内容导出成素材文件，并快速上线应用于几乎所有的主流平台。</p>
 </blockquote>
 <p>这是其<a target="_blank" rel="noopener" href="https://pag.io/">官网</a>的介绍。</p>
-<h3 id="1-1-PAG怎么使用？"><a href="#1-1-PAG怎么使用？" class="headerlink" title="1.1 PAG怎么使用？"></a>1.1 PAG怎么使用？</h3><pre class="language-groovy"><code class="language-groovy">implementation 'com.tencent.tav:libpag:libpag:4.4.25'</code></pre>
+<h3 id="1-1-PAG怎么使用？"><a href="#1-1-PAG怎么使用？" class="headerlink" title="1.1 PAG怎么使用？"></a>1.1 PAG怎么使用？</h3><pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">implementation <span class="token string">'com.tencent.tav:libpag:libpag:4.4.25'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<pre class="language-markup"><code class="language-markup">&lt;org.libpag.PAGImageView
-    android:id="@+id/pagImageView"
-    android:layout_width="240dp"
-    android:layout_height="240dp"
-    /></code></pre>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>org.libpag.PAGImageView</span>
+    <span class="token attr-name"><span class="token namespace">android:</span>id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@+id/pagImageView<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">android:</span>layout_width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>240dp<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">android:</span>layout_height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>240dp<span class="token punctuation">"</span></span>
+    <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="language-kotlin"><code class="language-kotlin">pagImageView.path = "assets://live_follow.pag"
-pagImageView.setRepeatCount(-1)
-pagImageView.play()</code></pre>
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">pagImageView<span class="token punctuation">.</span>path <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"assets://live_follow.pag"</span></span>
+pagImageView<span class="token punctuation">.</span><span class="token function">setRepeatCount</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+pagImageView<span class="token punctuation">.</span><span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>运行效果可参考文章开头的动图中位于上方的控件效果。</p>
 <p>基本使用是不是很简单？但是很遗憾的是，这些并不能直接在富文本中使用。</p>
 <h2 id="二、如何让PAG动画在富文本中动起来？"><a href="#二、如何让PAG动画在富文本中动起来？" class="headerlink" title="二、如何让PAG动画在富文本中动起来？"></a>二、如何让PAG动画在富文本中动起来？</h2><p>富文本，在Android中就是Spannable那一套东西，而在富文本中展示图像，就需要ImageSpan。我们的思路就是，让ImageSpan可以对接Pag动画。</p>
-<pre class="language-kotlin"><code class="language-kotlin">class PAGSpan(activity: Activity, onUpdate: (() -> Unit)? = null) : ImageSpan(PAGDrawable(activity, onUpdate)) &#123;
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">PAGSpan</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">,</span> onUpdate<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">ImageSpan</span><span class="token punctuation">(</span><span class="token function">PAGDrawable</span><span class="token punctuation">(</span>activity<span class="token punctuation">,</span> onUpdate<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-    companion object &#123;
-        private const val TAG = "PAGSpan"
-    &#125;
+    <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> TAG <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"PAGSpan"</span></span>
+    <span class="token punctuation">&#125;</span>
 
-    var path: String?
-        get() = pagDrawable.path
-        set(value) &#123;
-            pagDrawable.path = value
-        &#125;
-    val pagDrawable: PAGDrawable
-        get() = drawable as PAGDrawable
+    <span class="token keyword">var</span> path<span class="token operator">:</span> String<span class="token operator">?</span>
+        <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> pagDrawable<span class="token punctuation">.</span>path
+        <span class="token keyword">set</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            pagDrawable<span class="token punctuation">.</span>path <span class="token operator">=</span> value
+        <span class="token punctuation">&#125;</span>
+    <span class="token keyword">val</span> pagDrawable<span class="token operator">:</span> PAGDrawable
+        <span class="token keyword">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> drawable <span class="token keyword">as</span> PAGDrawable
 
-    override fun getSize(
-        paint: Paint,
-        text: CharSequence?,
-        start: Int,
-        end: Int,
-        fm: Paint.FontMetricsInt?
-    ): Int &#123;
-        val width = (paint.measureText(text, start, end) + 0.5f).toInt()
-        pagDrawable.setBounds(0, 0, width, paint.textSize.toInt())
-        return width
-    &#125;
-&#125;</code></pre>
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getSize</span><span class="token punctuation">(</span>
+        paint<span class="token operator">:</span> Paint<span class="token punctuation">,</span>
+        text<span class="token operator">:</span> CharSequence<span class="token operator">?</span><span class="token punctuation">,</span>
+        start<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        end<span class="token operator">:</span> Int<span class="token punctuation">,</span>
+        fm<span class="token operator">:</span> Paint<span class="token punctuation">.</span>FontMetricsInt<span class="token operator">?</span>
+    <span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> width <span class="token operator">=</span> <span class="token punctuation">(</span>paint<span class="token punctuation">.</span><span class="token function">measureText</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> start<span class="token punctuation">,</span> end<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">0.5f</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        pagDrawable<span class="token punctuation">.</span><span class="token function">setBounds</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> paint<span class="token punctuation">.</span>textSize<span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> width
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>只要把这个PAGSapn塞入SpannableString就可以展示一个PAG动画了，当然，还需要PAGDrawable的支持。</p>
-<pre class="language-kotlin"><code class="language-kotlin">class PAGDrawable(activity: Activity, private val onUpdate: (() -> Unit)? = null) : Drawable(), PAGDrawableManager.OnPAGDrawCallback &#123;
+<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">PAGDrawable</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">,</span> <span class="token keyword">private</span> <span class="token keyword">val</span> onUpdate<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-></span> Unit<span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">Drawable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> PAGDrawableManager<span class="token punctuation">.</span><span class="token function">OnPAGDrawCallback</span> <span class="token punctuation">&#123;</span>
 
-    companion object &#123;
-        private const val TAG = "PAGDrawable"
-    &#125;
+    <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">private</span> <span class="token keyword">const</span> <span class="token keyword">val</span> TAG <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"PAGDrawable"</span></span>
+    <span class="token punctuation">&#125;</span>
 
-    private var activityRef = WeakReference&lt;Activity>(activity)
-    private var bitmapRef: WeakReference&lt;Bitmap>? = null
-    var path: String? = null
-        set(value) &#123;
-            val oldValue = field
-            field = value
-            if (oldValue != null) &#123;
-                stop()
-            &#125;
-            if (value != null) &#123;
-                start()
-            &#125; else &#123;
-                stop()
-            &#125;
-        &#125;
+    <span class="token keyword">private</span> <span class="token keyword">var</span> activityRef <span class="token operator">=</span> WeakReference<span class="token operator">&lt;</span>Activity<span class="token operator">></span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token keyword">var</span> bitmapRef<span class="token operator">:</span> WeakReference<span class="token operator">&lt;</span>Bitmap<span class="token operator">></span><span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token keyword">var</span> path<span class="token operator">:</span> String<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+        <span class="token keyword">set</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> oldValue <span class="token operator">=</span> field
+            field <span class="token operator">=</span> value
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>oldValue <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
 
-    private val srcRect by lazy &#123; Rect() &#125;
-    private val dstRect by lazy &#123; Rect() &#125;
+    <span class="token keyword">private</span> <span class="token keyword">val</span> srcRect <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">Rect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+    <span class="token keyword">private</span> <span class="token keyword">val</span> dstRect <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">Rect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
 
-    fun start() &#123;
-        val p = path ?: throw IllegalStateException("set path value before call start")
-        val activity = activityRef.get() ?: return
-        PAGDrawableManager.obtain(activity).register(p, this)
-    &#125;
-    fun stop() &#123;
-        val p = path ?: return
-        val activity = activityRef.get() ?: return
-        PAGDrawableManager.obtain(activity).unregister(p, this)
-    &#125;
+    <span class="token keyword">fun</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> p <span class="token operator">=</span> path <span class="token operator">?:</span> <span class="token keyword">throw</span> <span class="token function">IllegalStateException</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"set path value before call start"</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> activity <span class="token operator">=</span> activityRef<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token keyword">return</span>
+        PAGDrawableManager<span class="token punctuation">.</span><span class="token function">obtain</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">fun</span> <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> p <span class="token operator">=</span> path <span class="token operator">?:</span> <span class="token keyword">return</span>
+        <span class="token keyword">val</span> activity <span class="token operator">=</span> activityRef<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token keyword">return</span>
+        PAGDrawableManager<span class="token punctuation">.</span><span class="token function">obtain</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unregister</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
-    override fun draw(canvas: Canvas) &#123;
-        val bitmap = bitmapRef?.get() ?: return
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">draw</span><span class="token punctuation">(</span>canvas<span class="token operator">:</span> Canvas<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> bitmap <span class="token operator">=</span> bitmapRef<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token keyword">return</span>
 
-        // 获取原始尺寸和目标尺寸
-        val srcWidth = bitmap.width.toFloat()
-        val srcHeight = bitmap.height.toFloat()
-        val dstWidth = bounds.width().toFloat()
-        val dstHeight = bounds.height().toFloat()
+        <span class="token comment">// 获取原始尺寸和目标尺寸</span>
+        <span class="token keyword">val</span> srcWidth <span class="token operator">=</span> bitmap<span class="token punctuation">.</span>width<span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> srcHeight <span class="token operator">=</span> bitmap<span class="token punctuation">.</span>height<span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> dstWidth <span class="token operator">=</span> bounds<span class="token punctuation">.</span><span class="token function">width</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">val</span> dstHeight <span class="token operator">=</span> bounds<span class="token punctuation">.</span><span class="token function">height</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFloat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-        // 计算缩放比例（取宽度和高度比例中较小的）
-        val scale = min(dstWidth / srcWidth, dstHeight / srcHeight)
+        <span class="token comment">// 计算缩放比例（取宽度和高度比例中较小的）</span>
+        <span class="token keyword">val</span> scale <span class="token operator">=</span> <span class="token function">min</span><span class="token punctuation">(</span>dstWidth <span class="token operator">/</span> srcWidth<span class="token punctuation">,</span> dstHeight <span class="token operator">/</span> srcHeight<span class="token punctuation">)</span>
 
-        // 计算缩放后尺寸
-        val scaledWidth = srcWidth * scale
-        val scaledHeight = srcHeight * scale
+        <span class="token comment">// 计算缩放后尺寸</span>
+        <span class="token keyword">val</span> scaledWidth <span class="token operator">=</span> srcWidth <span class="token operator">*</span> scale
+        <span class="token keyword">val</span> scaledHeight <span class="token operator">=</span> srcHeight <span class="token operator">*</span> scale
 
-        // 计算居中位置
-        val left = (dstWidth - scaledWidth) / 2
-        val top = (dstHeight - scaledHeight) / 2
+        <span class="token comment">// 计算居中位置</span>
+        <span class="token keyword">val</span> left <span class="token operator">=</span> <span class="token punctuation">(</span>dstWidth <span class="token operator">-</span> scaledWidth<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
+        <span class="token keyword">val</span> top <span class="token operator">=</span> <span class="token punctuation">(</span>dstHeight <span class="token operator">-</span> scaledHeight<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span>
 
-        // 设置源矩形（完整原始图片）
-        srcRect.set(0, 0, bitmap.width, bitmap.height)
+        <span class="token comment">// 设置源矩形（完整原始图片）</span>
+        srcRect<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> bitmap<span class="token punctuation">.</span>width<span class="token punctuation">,</span> bitmap<span class="token punctuation">.</span>height<span class="token punctuation">)</span>
 
-        // 创建目标矩形（保持比例并居中）
-        dstRect.set(
-            left.toInt(),
-            top.toInt(),
-            (left + scaledWidth).toInt(),
-            (top + scaledHeight).toInt()
-        )
-        canvas.drawBitmap(bitmap, srcRect, dstRect, null)
+        <span class="token comment">// 创建目标矩形（保持比例并居中）</span>
+        dstRect<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>
+            left<span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            top<span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">(</span>left <span class="token operator">+</span> scaledWidth<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">(</span>top <span class="token operator">+</span> scaledHeight<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+        canvas<span class="token punctuation">.</span><span class="token function">drawBitmap</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">,</span> srcRect<span class="token punctuation">,</span> dstRect<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span>
 
-        onUpdate?.invoke()
-    &#125;
+        onUpdate<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
-    override fun onDraw(bitmap: Bitmap) &#123;
-        bitmapRef = WeakReference(bitmap)
-        invalidateSelf()
-    &#125;
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onDraw</span><span class="token punctuation">(</span>bitmap<span class="token operator">:</span> Bitmap<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        bitmapRef <span class="token operator">=</span> <span class="token function">WeakReference</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span>
+        <span class="token function">invalidateSelf</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
-    override fun setAlpha(alpha: Int) &#123;&#125;
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">setAlpha</span><span class="token punctuation">(</span>alpha<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
 
-    override fun setColorFilter(colorFilter: ColorFilter?) &#123;&#125;
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">setColorFilter</span><span class="token punctuation">(</span>colorFilter<span class="token operator">:</span> ColorFilter<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
 
-    @Deprecated("Deprecated in Java")
-    override fun getOpacity(): Int &#123;
-        return PixelFormat.TRANSLUCENT
-    &#125;
-&#125;</code></pre>
+    <span class="token annotation builtin">@Deprecated</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"Deprecated in Java"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">getOpacity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Int <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> PixelFormat<span class="token punctuation">.</span>TRANSLUCENT
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>在PAGDrawable中，主要是靠<code>PAGDrawableManager</code>控制动画播放，而PAGDrawableManager中，主要是维护了依托于PAGImageView的刷新回调分发，当创建了一个PAGDrawable时，会根据绑定的pag资源路径，进行创建或者查找一个PAGImageView，并将其放置在当前activity的屏幕窗口之外的位置，让其一直播放，并进行刷新事件的订阅，刷新事</p>
 <p><strong>注意，这并不是一个严肃的实现方式，只是一种迫于无奈之下的奇技淫巧，可改进空间可能很大，只是提供一种思路。</strong></p>
