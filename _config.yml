@@ -56,7 +56,6 @@ prism_plugin:
   tab_replace: ''
   theme: 'okaidia'
   plugins:
-    - 'line-numbers'
     - 'copy-to-clipboard'
   prompt:
     before: ''
