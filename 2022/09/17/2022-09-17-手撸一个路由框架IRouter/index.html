@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -209,23 +213,23 @@
 <li>对startActivityForResult支持不够友好：按照传统方式，在onActivityResult中处理，比较分散。</li>
 </ol>
 <p>基于以上问题，闲来无事，手撸一个自己的路由框架<a target="_blank" rel="noopener" href="https://github.com/boybeak/Routerfit">IRouter</a>，基本使用方式如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">interface</span> IRouterService <span class="token punctuation">&#123;</span>
-    <span class="token annotation builtin">@RouteTo</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"topic/detail"</span></span><span class="token punctuation">)</span>
-    <span class="token keyword">fun</span> <span class="token function">topicDetail</span><span class="token punctuation">(</span><span class="token annotation builtin">@Key</span><span class="token punctuation">(</span><span class="token string-literal singleline"><span class="token string">"topic"</span></span><span class="token punctuation">)</span> topic<span class="token operator">:</span> Topic<span class="token punctuation">)</span><span class="token operator">:</span> Navigator
-<span class="token punctuation">&#125;</span>
+<pre class="language-kotlin"><code class="language-kotlin">interface IRouterService &#123;
+    @RouteTo("topic/detail")
+    fun topicDetail(@Key("topic") topic: Topic): Navigator
+&#125;
 
-<span class="token keyword">val</span> iRouter <span class="token operator">=</span> IRouter<span class="token punctuation">.</span><span class="token function">Builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">isDebug</span><span class="token punctuation">(</span>BuildConfig<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">errorActivity</span><span class="token punctuation">(</span>ErrorActivity<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>IRouterService<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">)</span>
+val iRouter = IRouter.Builder()
+    .isDebug(BuildConfig.DEBUG)
+    .errorActivity(ErrorActivity::class.java)
+    .build()
+    .create(IRouterService::class.java)
 
-iRouter<span class="token punctuation">.</span><span class="token function">topicDetail</span><span class="token punctuation">(</span>topic<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">startActivity</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token label symbol">@MainActivity</span><span class="token punctuation">)</span>
+iRouter.topicDetail(topic).startActivity(this@MainActivity)
 
-<span class="token comment">// OR</span>
+// OR
 
-iRouter<span class="token punctuation">.</span><span class="token function">topicDetail</span><span class="token punctuation">(</span>topic<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">startActivityForResult</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> requestCode<span class="token punctuation">,</span> resultCode<span class="token punctuation">,</span> <span class="token keyword">data</span> <span class="token operator">-></span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+iRouter.topicDetail(topic).startActivityForResult(this, 100) &#123; requestCode, resultCode, data ->
+&#125;</code></pre>
 
 <p>具体的配置方式请参考<a target="_blank" rel="noopener" href="https://github.com/boybeak/Routerfit">IRouter</a>，本文主要是解析源码。</p>
 <p>如此调用方式，很像是Retrofit的方式，打开一个activity就像请求一个api一样。从这里可以体现出解决了上述的两个痛点：</p>
@@ -237,38 +241,38 @@ iRouter<span class="token punctuation">.</span><span class="token function">topi
 <p>与<a target="_blank" rel="noopener" href="https://boybeak.github.io/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E7%B3%BB%E5%88%97/ARouter%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90.html">ARouter源码分析</a>这篇文章一样，我们分析时候要按照时态去分析这个框架在<strong>运行时</strong>和<strong>编译时</strong>做的事情。</p>
 <h2 id="运行时"><a href="#运行时" class="headerlink" title="运行时"></a>运行时</h2><p>其实从上述调用的方式，有过热门开源框架源码阅读经验的，都能猜出个大概。</p>
 <p>先从<strong>IRouter</strong>这个类创建<em>IRouterService</em>实例说起。使用过Retrofit的同学都知道，创建一个接口类，通过注解标注方法，不用提供具体的实现流程，就能完成网络请求。其实这并不难，这是通过动态代理实现的。我们来看IRouter.create的代码：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token class-name">T</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> tClass<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token class-name">T</span><span class="token punctuation">)</span> <span class="token class-name">Proxy</span><span class="token punctuation">.</span><span class="token function">newProxyInstance</span><span class="token punctuation">(</span>tClass<span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Class</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span>tClass<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token keyword">new</span> <span class="token class-name">InvocationHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">invoke</span><span class="token punctuation">(</span><span class="token class-name">Object</span> proxy<span class="token punctuation">,</span> <span class="token class-name">Method</span> method<span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Throwable</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> <span class="token function">parseMethod</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">public &lt;T> T create(Class&lt;T> tClass) &#123;
+  return (T) Proxy.newProxyInstance(tClass.getClassLoader(), new Class[]&#123;tClass&#125;,
+    new InvocationHandler() &#123;
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable &#123;
+            return parseMethod(method, args);
+        &#125;
+    &#125;);
+&#125;</code></pre>
 
 <p>通过动态代理，我们创建了一个<em>IRouterService</em>的实现类，这个类在调用相关方法的时候，比如<em>topicDetail</em>这个方法，都会经由<em>InvocationHandler</em>的<em>invoke</em>方法来代理完成。</p>
 <p>接下来，从invoke中调用了parseMethod方法，这个方法比较简单，主要是用于解析方法注解和参数注解，取出其中的值，比如跳转路径path和参数的key - value键值对，<strong>通过path查询出相对应的Activity的class</strong>，这些值最终汇总起来，返回一个Navigator对象，这个就是真正要执行跳转的地方。</p>
 <p>上面提到<em>通过path查询出Activity对应的class</em>，既然要查询，肯定要事先存储后才能被查询到。这就涉及到<strong>编译时</strong>做的工作了。</p>
 <h2 id="编译时"><a href="#编译时" class="headerlink" title="编译时"></a>编译时</h2><h3 id="一、APT部分"><a href="#一、APT部分" class="headerlink" title="一、APT部分"></a>一、APT部分</h3><p>其实读过其他一些开源框架的人对这部分一定不会陌生。</p>
 <p>这部分工作与ARouter类似，就是通过**@RoutePath**注解标记目标Activity，然后再通过注解处理器来获取到path - activity.class的对应关系，将这个对应关系，生成成一个类，我们查看一个生成的类的示例如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>github<span class="token punctuation">.</span>boybeak<span class="token punctuation">.</span>irouter<span class="token punctuation">.</span>loader</span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">package com.github.boybeak.irouter.loader;
 
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">com<span class="token punctuation">.</span>github<span class="token punctuation">.</span>boybeak<span class="token punctuation">.</span>irouter<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">BaseLoader</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">Override</span></span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token import"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">String</span></span><span class="token punctuation">;</span>
+import com.github.boybeak.irouter.core.BaseLoader;
+import java.lang.Override;
+import java.lang.String;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">V2ex</span>$<span class="token class-name">Topic</span>$<span class="token class-name">Loader</span> <span class="token keyword">extends</span> <span class="token class-name">BaseLoader</span> <span class="token punctuation">&#123;</span>
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getHeader</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token string">"topic"</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
+public class V2ex$Topic$Loader extends BaseLoader &#123;
+  @Override
+  public String getHeader() &#123;
+    return "topic";
+  &#125;
 
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">loadIntoMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">load</span><span class="token punctuation">(</span><span class="token string">"detail"</span><span class="token punctuation">,</span> <span class="token class-name"><span class="token namespace">com<span class="token punctuation">.</span>v2ex<span class="token punctuation">.</span>activity<span class="token punctuation">.</span></span>TopicActivity</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  @Override
+  public void loadIntoMap() &#123;
+    load("detail", com.v2ex.activity.TopicActivity.class);
+  &#125;
+&#125;</code></pre>
 
 <p>这些所有生成的类在一个包名<code>com.github.boybeak.irouter.loader</code>底下，这很重要，因为我们要在接下来的过程，通过这个包名去筛选生成的loader类。</p>
 <p>理解这部分，需要对APT(注解处理器)和java poet比较了解。</p>
@@ -277,107 +281,107 @@ iRouter<span class="token punctuation">.</span><span class="token function">topi
 <p>这部分，其实我就是参考了ARouter的做法，改成了自己的一些逻辑。</p>
 <p>接下来我们要编写的是一个gradle plugin，我们主要是利用其中的<strong>Transform</strong>工具，官方解释在<a target="_blank" rel="noopener" href="https://developer.android.com/reference/tools/gradle-api/7.0/com/android/build/api/transform/Transform">这里</a>，其作用就是在编译时，会挨个遍历我们的源码、类库、jar包等。附上一个教程<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903891138674696">Gradle 学习之 Android 插件的 Transform API</a>。</p>
 <p>Path - activity.class的对应关系是通过<strong>LoaderManager</strong>来查询的，我们看一下这个类的代码：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name">LoaderManager</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">LoaderManager</span> sManager <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">LoaderManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">public final class LoaderManager &#123;
+    private static final LoaderManager sManager = new LoaderManager();
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">LoaderManager</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> sManager<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public static LoaderManager getInstance() &#123;
+        return sManager;
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">DelegateLoader</span><span class="token punctuation">></span></span> loadersMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token keyword">boolean</span> isInitialized <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    private final Map&lt;String, DelegateLoader> loadersMap = new HashMap&lt;>();
+    private boolean isInitialized = false;
 
-    <span class="token keyword">private</span> <span class="token class-name">LoaderManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    private LoaderManager() &#123;
+        init();
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>isInitialized<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        isInitialized <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    private void init() &#123;
+        if (isInitialized) &#123;
+            return;
+        &#125;
+        load();
+        isInitialized = true;
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">load</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token punctuation">&#125;</span>
+    private void load() &#123;
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">loadInto</span><span class="token punctuation">(</span><span class="token class-name">BaseLoader</span> loader<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span> header <span class="token operator">=</span> loader<span class="token punctuation">.</span><span class="token function">getHeader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token function">obtainLoader</span><span class="token punctuation">(</span>header<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mergeOtherLoaders</span><span class="token punctuation">(</span>loader<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    private void loadInto(BaseLoader loader) &#123;
+        String header = loader.getHeader();
+        obtainLoader(header).mergeOtherLoaders(loader);
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token class-name">DelegateLoader</span> <span class="token function">obtainLoader</span><span class="token punctuation">(</span><span class="token class-name">String</span> header<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">DelegateLoader</span> delegateLoader <span class="token operator">=</span> loadersMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>header<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>delegateLoader <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            delegateLoader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DelegateLoader</span><span class="token punctuation">(</span>header<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            loadersMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>header<span class="token punctuation">,</span> delegateLoader<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> delegateLoader<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    private DelegateLoader obtainLoader(String header) &#123;
+        DelegateLoader delegateLoader = loadersMap.get(header);
+        if (delegateLoader == null) &#123;
+            delegateLoader = new DelegateLoader(header);
+            loadersMap.put(header, delegateLoader);
+        &#125;
+        return delegateLoader;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token class-name">String</span> path<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> segments <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">final</span> <span class="token class-name">String</span> header <span class="token operator">=</span> segments<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">final</span> <span class="token class-name">String</span> tail <span class="token operator">=</span> segments<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> loadersMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>header<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTargetClass</span><span class="token punctuation">(</span>tail<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Class&lt;?> get(String path) &#123;
+        String[] segments = path.split("/");
+        final String header = segments[0];
+        final String tail = segments[1];
+        return loadersMap.get(header).getTargetClass(tail);
+    &#125;
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 
 <p>我们需要注意其中的一个方法——<code>load</code>，我们看到，这个类在构建方法里调用了init方法，init里又调用了load方法，但是这个load方法却是留白的。这样调用有什么用呢？</p>
 <p>其实这个留白方法是我们为ASM留的一个修改的入口。</p>
-<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">apply plugin<span class="token punctuation">:</span> <span class="token string">'i-router-register'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-groovy"><code class="language-groovy">apply plugin: 'i-router-register'</code></pre>
 
 <p>在app.gradle中，使用这个插件，我们的transform就能顺利运行起来发挥作用了。</p>
 <p>我们需要查看一下RegisterTransform的代码了：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RegisterTransform</span> <span class="token keyword">extends</span> <span class="token class-name">Transform</span> <span class="token punctuation">&#123;</span>
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">transform</span><span class="token punctuation">(</span><span class="token class-name">TransformInvocation</span> transformInvocation<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">TransformException</span><span class="token punctuation">,</span> <span class="token class-name">InterruptedException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">transform</span><span class="token punctuation">(</span>transformInvocation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">public class RegisterTransform extends Transform &#123;
+  @Override
+  public void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException &#123;
+    super.transform(transformInvocation);
 
-    scanner<span class="token punctuation">.</span><span class="token function">scan</span><span class="token punctuation">(</span>transformInvocation<span class="token punctuation">,</span> <span class="token punctuation">(</span>loaderManagerJar<span class="token punctuation">,</span> loaderManagerEntryName<span class="token punctuation">,</span> loaders<span class="token punctuation">)</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">Asm</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">generateCode</span><span class="token punctuation">(</span>loaderManagerJar<span class="token punctuation">,</span> loaderManagerEntryName<span class="token punctuation">,</span> loaders<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    scanner.scan(transformInvocation, (loaderManagerJar, loaderManagerEntryName, loaders) -> &#123;
+      Asm.getInstance().generateCode(loaderManagerJar, loaderManagerEntryName, loaders);
+    &#125;);
+  &#125;
+&#125;</code></pre>
 
 <p>这里使用了Scanner来扫描TransformInvocation类，Scanner是我们自定义的类，主要作用就是通过包名和类名，查找我们的loader类和LoaderManager所在的jar包。我们查看其scan方法：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">TransformInput</span> input <span class="token operator">:</span> transformInvocation<span class="token punctuation">.</span><span class="token function">getInputs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">JarInput</span> jarInput <span class="token operator">:</span> input<span class="token punctuation">.</span><span class="token function">getJarInputs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 这里处理第三方类库，引用的module和jar文件</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">DirectoryInput</span> directoryInput <span class="token operator">:</span> input<span class="token punctuation">.</span><span class="token function">getDirectoryInputs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// 这里处理应用了这个plugin的module的相关class文件</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-onScanFinish<span class="token punctuation">.</span><span class="token function">onScanFinish</span><span class="token punctuation">(</span>loaderManagerJar<span class="token punctuation">,</span> loaderManagerEntryName<span class="token punctuation">,</span> loaderClzList<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">for (TransformInput input : transformInvocation.getInputs()) &#123;
+  for (JarInput jarInput : input.getJarInputs()) &#123;
+    // 这里处理第三方类库，引用的module和jar文件
+  &#125;
+  for (DirectoryInput directoryInput : input.getDirectoryInputs()) &#123;
+    // 这里处理应用了这个plugin的module的相关class文件
+  &#125;
+&#125;
+onScanFinish.onScanFinish(loaderManagerJar, loaderManagerEntryName, loaderClzList);</code></pre>
 
 <p>通过回调，我们将查找到的loader类和LoaderManager所在jar返回给transform，并交由我们的asm工具来处理。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ASM</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">HackMethodVisitor</span> <span class="token keyword">extends</span> <span class="token class-name">MethodVisitor</span> <span class="token punctuation">&#123;</span>
+<pre class="language-java"><code class="language-java">public class ASM &#123;
+  private static class HackMethodVisitor extends MethodVisitor &#123;
 
-    <span class="token keyword">private</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> loaders <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    private List&lt;String> loaders = null;
 
-    <span class="token keyword">public</span> <span class="token class-name">HackMethodVisitor</span><span class="token punctuation">(</span><span class="token keyword">int</span> api<span class="token punctuation">,</span> <span class="token class-name">MethodVisitor</span> methodVisitor<span class="token punctuation">,</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> loaders<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">super</span><span class="token punctuation">(</span>api<span class="token punctuation">,</span> methodVisitor<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span>loaders <span class="token operator">=</span> loaders<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public HackMethodVisitor(int api, MethodVisitor methodVisitor, List&lt;String> loaders) &#123;
+      super(api, methodVisitor);
+      this.loaders = loaders;
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitInsn</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> loader <span class="token operator">:</span> loaders<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        mv<span class="token punctuation">.</span><span class="token function">visitVarInsn</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ALOAD</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        mv<span class="token punctuation">.</span><span class="token function">visitTypeInsn</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">NEW</span><span class="token punctuation">,</span> loader<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        mv<span class="token punctuation">.</span><span class="token function">visitInsn</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">DUP</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">INVOKESPECIAL</span><span class="token punctuation">,</span> loader<span class="token punctuation">,</span> <span class="token string">"&lt;init>"</span><span class="token punctuation">,</span> <span class="token string">"()V"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">INVOKESPECIAL</span><span class="token punctuation">,</span> <span class="token string">"com/github/boybeak/irouter/core/LoaderManager"</span><span class="token punctuation">,</span> <span class="token string">"loadInto"</span><span class="token punctuation">,</span> <span class="token string">"(Lcom/github/boybeak/irouter/core/BaseLoader;)V"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
+    @Override
+    public void visitInsn(int opcode) &#123;
+      for (String loader : loaders) &#123;
+        mv.visitVarInsn(Opcodes.ALOAD, 0);
+        mv.visitTypeInsn(Opcodes.NEW, loader);
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, loader, "&lt;init>", "()V", false);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/github/boybeak/irouter/core/LoaderManager", "loadInto", "(Lcom/github/boybeak/irouter/core/BaseLoader;)V", false);
+      &#125;
 
-      <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">visitInsn</span><span class="token punctuation">(</span>opcode<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      super.visitInsn(opcode);
+    &#125;
+  &#125;
+&#125;</code></pre>
 
 <p>主要的修改逻辑就在HackMethodVisitor这个类中，注意其中的visitInsn方法，这就是ASM真正发挥作用的地方，这里的逻辑就是为loadInto方法添加加载loader的代码。</p>
 <p>以demo中的v2ex为例，修改后的代码load代码如下：</p>

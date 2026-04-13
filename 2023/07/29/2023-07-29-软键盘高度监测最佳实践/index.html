@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -206,125 +210,125 @@
       <p>最近终于总结出最佳的软键盘高度监测方案了，特此分享出来。<br>源码在此：<a target="_blank" rel="noopener" href="https://gist.github.com/boybeak/62ab557ace8a9763f12803b82f274df5">KeyboardObserver.kt</a></p>
 <h2 id="视觉效果"><a href="#视觉效果" class="headerlink" title="视觉效果"></a>视觉效果</h2><p>当开启showDebug时候，可以看到这样的可视化的键盘高度监测。<br><img src="/assets/images/keyboard-height.gif" alt="showcase"></p>
 <h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>简单来说，这里说通过两个PopupWindow来实现的键盘高度测量。一个用于测量<strong>当前屏幕状态可绘制区域的最大高度</strong>，一个用于跟随键盘移动，进而通过高度差，算出键盘的高度。我们这里将前者称为RulerPopWin, 后者称为CursorPopWin。他们的代码分别如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">// RulerPopWin</span>
-<span class="token keyword">private</span> <span class="token keyword">val</span> rulerPopWin <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">makeRulerPopWin</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
-<span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">makeRulerPopWin</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">PopupWindow</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
-    contentView <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">TextView</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
-            background <span class="token operator">=</span> <span class="token function">GradientDrawable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setStroke</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">.</span>dp<span class="token punctuation">,</span> Color<span class="token punctuation">.</span>LTGRAY<span class="token punctuation">)</span>
-            <span class="token punctuation">&#125;</span>
-            gravity <span class="token operator">=</span> Gravity<span class="token punctuation">.</span>BOTTOM <span class="token operator">or</span> Gravity<span class="token punctuation">.</span>CENTER_HORIZONTAL
-            <span class="token function">setTextColor</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>RED<span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-       <span class="token function">View</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token function">setBackgroundDrawable</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
-    width <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token number">80</span><span class="token punctuation">.</span>dp <span class="token keyword">else</span> <span class="token number">1</span>
-    height <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>MATCH_PARENT
-    elevation <span class="token operator">=</span> <span class="token number">0F</span>
+<pre class="language-kotlin"><code class="language-kotlin">// RulerPopWin
+private val rulerPopWin by lazy &#123; makeRulerPopWin(activity) &#125;
+private fun makeRulerPopWin(activity: Activity) = PopupWindow(activity).apply &#123;
+    contentView = if (showDebug) &#123;
+        TextView(activity).apply &#123;
+            background = GradientDrawable().apply &#123;
+                this.setStroke(1.dp, Color.LTGRAY)
+            &#125;
+            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            setTextColor(Color.RED)
+        &#125;
+    &#125; else &#123;
+       View(activity)
+    &#125;
+    setBackgroundDrawable(null)
+    width = if (showDebug) 80.dp else 1
+    height = WindowManager.LayoutParams.MATCH_PARENT
+    elevation = 0F
 
-    isFocusable <span class="token operator">=</span> <span class="token boolean">false</span>
-    isTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
-    isOutsideTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    isFocusable = false
+    isTouchable = false
+    isOutsideTouchable = false
+&#125;</code></pre>
 
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">// CursorPopWin</span>
-<span class="token keyword">private</span> <span class="token keyword">val</span> cursorPopWin <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">makeCursorPopWin</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
-<span class="token keyword">private</span> <span class="token keyword">fun</span> <span class="token function">makeCursorPopWin</span><span class="token punctuation">(</span>activity<span class="token operator">:</span> Activity<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">PopupWindow</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
-    contentView <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">FrameLayout</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
-            <span class="token function">addView</span><span class="token punctuation">(</span>
-                <span class="token function">View</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">apply</span> <span class="token punctuation">&#123;</span>
-                    background <span class="token operator">=</span> <span class="token function">ColorDrawable</span><span class="token punctuation">(</span>Color<span class="token punctuation">.</span>RED<span class="token punctuation">)</span>
-                <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-                FrameLayout<span class="token punctuation">.</span><span class="token function">LayoutParams</span><span class="token punctuation">(</span>
-                    FrameLayout<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>MATCH_PARENT<span class="token punctuation">,</span>
-                    <span class="token number">1</span><span class="token punctuation">.</span>dp<span class="token punctuation">,</span>
-                    Gravity<span class="token punctuation">.</span>BOTTOM
-                <span class="token punctuation">)</span>
-            <span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">View</span><span class="token punctuation">(</span>activity<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token function">setBackgroundDrawable</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
+<pre class="language-kotlin"><code class="language-kotlin">// CursorPopWin
+private val cursorPopWin by lazy &#123; makeCursorPopWin(activity) &#125;
+private fun makeCursorPopWin(activity: Activity) = PopupWindow(activity).apply &#123;
+    contentView = if (showDebug) &#123;
+        FrameLayout(activity).apply &#123;
+            addView(
+                View(activity).apply &#123;
+                    background = ColorDrawable(Color.RED)
+                &#125;,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    1.dp,
+                    Gravity.BOTTOM
+                )
+            )
+        &#125;
+    &#125; else &#123;
+        View(activity)
+    &#125;
+    setBackgroundDrawable(null)
 
-    width <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token number">80</span><span class="token punctuation">.</span>dp <span class="token keyword">else</span> <span class="token number">1</span>
-    height <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>MATCH_PARENT
-    elevation <span class="token operator">=</span> <span class="token number">0F</span>
+    width = if (showDebug) 80.dp else 1
+    height = WindowManager.LayoutParams.MATCH_PARENT
+    elevation = 0F
 
-    softInputMode <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>SOFT_INPUT_ADJUST_RESIZE
-    inputMethodMode <span class="token operator">=</span> PopupWindow<span class="token punctuation">.</span>INPUT_METHOD_NEEDED
+    softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+    inputMethodMode = PopupWindow.INPUT_METHOD_NEEDED
 
-    isFocusable <span class="token operator">=</span> <span class="token boolean">false</span>
-    isTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
-    isOutsideTouchable <span class="token operator">=</span> <span class="token boolean">false</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    isFocusable = false
+    isTouchable = false
+    isOutsideTouchable = false
+&#125;</code></pre>
 
 <p>这两个PopupWindow，除了contentView不同以外，还有两个属性不同，cursorPopWin多了两个属性</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">softInputMode <span class="token operator">=</span> WindowManager<span class="token punctuation">.</span>LayoutParams<span class="token punctuation">.</span>SOFT_INPUT_ADJUST_RESIZE
-inputMethodMode <span class="token operator">=</span> PopupWindow<span class="token punctuation">.</span>INPUT_METHOD_NEEDED<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+inputMethodMode = PopupWindow.INPUT_METHOD_NEEDED</code></pre>
 
 <p>这两个属性，使得cursorPopWin高度会随着软键盘的弹出而变化。</p>
 <p>当开启监听时，为<strong>cursorPopWin.contentView</strong>设置一个OnLayoutChangeListener，用于监听其布局变化。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">watch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>cursorPopWin<span class="token punctuation">.</span>isShowing<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        cursorPopWin<span class="token punctuation">.</span><span class="token function">showAtLocation</span><span class="token punctuation">(</span>decorView<span class="token punctuation">,</span> Gravity<span class="token punctuation">.</span>BOTTOM <span class="token operator">or</span> Gravity<span class="token punctuation">.</span>END<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-        cursorPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">addOnLayoutChangeListener</span><span class="token punctuation">(</span>cursorLayoutChangeListener<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">fun watch() &#123;
+    if (!cursorPopWin.isShowing) &#123;
+        cursorPopWin.showAtLocation(decorView, Gravity.BOTTOM or Gravity.END, 0, 0)
+        cursorPopWin.contentView.addOnLayoutChangeListener(cursorLayoutChangeListener)
+    &#125;
+&#125;</code></pre>
 
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> cursorLayoutChangeListener <span class="token operator">=</span> OnLayoutChangeListener <span class="token punctuation">&#123;</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _<span class="token punctuation">,</span> _ <span class="token operator">-></span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>rulerPopWin<span class="token punctuation">.</span>isShowing<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        rulerPopWin<span class="token punctuation">.</span><span class="token function">dismiss</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-    rulerPopWin<span class="token punctuation">.</span><span class="token function">showAtLocation</span><span class="token punctuation">(</span>decorView<span class="token punctuation">,</span> Gravity<span class="token punctuation">.</span>BOTTOM <span class="token operator">or</span> Gravity<span class="token punctuation">.</span>END<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-    rulerPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">addOnLayoutChangeListener</span><span class="token punctuation">(</span>rulerLayoutChangeListener<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">private val cursorLayoutChangeListener = OnLayoutChangeListener &#123; _, _, _, _, _, _, _, _, _ ->
+    if (rulerPopWin.isShowing) &#123;
+        rulerPopWin.dismiss()
+    &#125;
+    rulerPopWin.showAtLocation(decorView, Gravity.BOTTOM or Gravity.END, 0, 0)
+    rulerPopWin.contentView.addOnLayoutChangeListener(rulerLayoutChangeListener)
+&#125;</code></pre>
 
 <p>在cursorLayoutChangeListener中，监听到cursotPopWin的变化后，再显示rulerPopWin。为什么要这么做呢？</p>
 <blockquote>
 <p>因为在实践中，软键盘的变化，触发了onLayoutChange方法，如果是在这之前就把rulerPopWin显示出来，在某些机型或者系统版本中，也会出现rulerPopWin跟随键盘改变尺寸的情况。所以要将rulerPopWin显示在键盘弹出之后。</p>
 </blockquote>
 <p>真实的键盘高度监听，实际上说在rulerLayoutChangeListener中。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> rulerLayoutChangeListener <span class="token operator">=</span> <span class="token keyword">object</span> <span class="token operator">:</span> OnLayoutChangeListener <span class="token punctuation">&#123;</span>
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onLayoutChange</span><span class="token punctuation">(</span>
-        v<span class="token operator">:</span> View<span class="token operator">?</span><span class="token punctuation">,</span>
-        left<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        top<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        right<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        bottom<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        oldLeft<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        oldTop<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        oldRight<span class="token operator">:</span> Int<span class="token punctuation">,</span>
-        oldBottom<span class="token operator">:</span> Int
-    <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        rulerPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">removeOnLayoutChangeListener</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span>
-        rulerPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">getGlobalVisibleRect</span><span class="token punctuation">(</span>rulerRect<span class="token punctuation">)</span>
-        cursorPopWin<span class="token punctuation">.</span>contentView<span class="token punctuation">.</span><span class="token function">getGlobalVisibleRect</span><span class="token punctuation">(</span>cursorRect<span class="token punctuation">)</span>
+<pre class="language-kotlin"><code class="language-kotlin">private val rulerLayoutChangeListener = object : OnLayoutChangeListener &#123;
+    override fun onLayoutChange(
+        v: View?,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+        oldLeft: Int,
+        oldTop: Int,
+        oldRight: Int,
+        oldBottom: Int
+    ) &#123;
+        rulerPopWin.contentView.removeOnLayoutChangeListener(this)
+        rulerPopWin.contentView.getGlobalVisibleRect(rulerRect)
+        cursorPopWin.contentView.getGlobalVisibleRect(cursorRect)
 
-        <span class="token keyword">val</span> keyboardHeight <span class="token operator">=</span> rulerRect<span class="token punctuation">.</span>bottom <span class="token operator">-</span> cursorRect<span class="token punctuation">.</span>bottom
+        val keyboardHeight = rulerRect.bottom - cursorRect.bottom
 
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>callbacks<span class="token punctuation">.</span><span class="token function">isNotEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">val</span> cbs <span class="token operator">=</span> ArrayList<span class="token operator">&lt;</span>Callback<span class="token operator">></span><span class="token punctuation">(</span>callbacks<span class="token punctuation">)</span>
-            cbs<span class="token punctuation">.</span><span class="token function">forEach</span> <span class="token punctuation">&#123;</span>
-                it<span class="token punctuation">.</span><span class="token function">onKeyboardHeightChanged</span><span class="token punctuation">(</span>keyboardHeight<span class="token punctuation">)</span>
-            <span class="token punctuation">&#125;</span>
-            cbs<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
+        if (callbacks.isNotEmpty()) &#123;
+            val cbs = ArrayList&lt;Callback>(callbacks)
+            cbs.forEach &#123;
+                it.onKeyboardHeightChanged(keyboardHeight)
+            &#125;
+            cbs.clear()
+        &#125;
 
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>showDebug<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token punctuation">(</span>v <span class="token keyword">as</span> TextView<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">run</span> <span class="token punctuation">&#123;</span>
+        if (showDebug) &#123;
+            (v as TextView).run &#123;
 
-                text <span class="token operator">=</span> <span class="token string-literal singleline"><span class="token string">"</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">keyboardHeight</span></span><span class="token string">"</span></span>
-                <span class="token function">setPadding</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token function">max</span><span class="token punctuation">(</span>keyboardHeight <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>lineHeight<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+                text = "$keyboardHeight"
+                setPadding(0, 0, 0, max(keyboardHeight - this.lineHeight, 0))
+            &#125;
+        &#125;
+    &#125;
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 
 <p>OK，这就是全部关键逻辑了。</p>
 <h2 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><ol>

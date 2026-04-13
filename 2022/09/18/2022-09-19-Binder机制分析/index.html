@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -255,8 +259,8 @@
 <p>当一个任务（进程）执行系统调用而陷入内核代码中执行时，称进程处于<strong>内核运行态（内核态）</strong>。此时处理器处于特权级最高的（0级）内核代码中执行。当进程处于内核态时，执行的内核代码会使用当前进程的内核栈。每个进程都有自己的内核栈。</p>
 <p>当进程在执行用户自己的代码的时候，我们称其处于<strong>用户运行态（用户态）</strong>。此时处理器在特权级最低的（3级）用户代码中运行。</p>
 <p>系统调用主要通过如下两个函数来实现：</p>
-<pre class="line-numbers language-none"><code class="language-none">copy_from_user() &#x2F;&#x2F;将数据从用户空间拷贝到内核空间
-copy_to_user() &#x2F;&#x2F;将数据从内核空间拷贝到用户空间<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-none"><code class="language-none">copy_from_user() &#x2F;&#x2F;将数据从用户空间拷贝到内核空间
+copy_to_user() &#x2F;&#x2F;将数据从内核空间拷贝到用户空间</code></pre>
 
 
 
@@ -332,19 +336,19 @@ copy_to_user() &#x2F;&#x2F;将数据从内核空间拷贝到用户空间<span ar
 <p>代码中有两个module: <strong>withAIDL</strong>和<strong>noAIDL</strong>，分别演示了使用AIDL的方式和不使用ADIL的方式进行Binder IPC。</p>
 <p><strong>NoAIDL</strong>相比<strong>WithAIDL</strong>有一个优点，就是可以在对应的<code>IInterface</code>文件中，添加一些自定义的代码，比如添加log代码；由于AIDL的方式是自动生成的代码，所以这些自定义代码是没法添加到对应的<code>IInterface</code>文件中。</p>
 <p>我们重点关注<strong>noAIDL</strong></p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token comment">//INoAIDL.kt</span>
-<span class="token keyword">interface</span> INoAIDL <span class="token operator">:</span> IInterface <span class="token punctuation">&#123;</span>
-  <span class="token keyword">fun</span> <span class="token function">sayHi</span><span class="token punctuation">(</span>name<span class="token operator">:</span> String<span class="token punctuation">)</span>
-  <span class="token keyword">fun</span> <span class="token function">showObjN</span><span class="token punctuation">(</span>objN<span class="token operator">:</span> ObjN<span class="token punctuation">)</span><span class="token operator">:</span> ObjN<span class="token operator">?</span>
+<pre class="language-kotlin"><code class="language-kotlin">//INoAIDL.kt
+interface INoAIDL : IInterface &#123;
+  fun sayHi(name: String)
+  fun showObjN(objN: ObjN): ObjN?
 
-  <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">val</span> TAG <span class="token operator">=</span> INoAIDL<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">.</span>simpleName
-    <span class="token keyword">private</span> <span class="token keyword">val</span> DESCRIPTOR <span class="token operator">=</span> INoAIDL<span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">.</span>java<span class="token punctuation">.</span>name
+  companion object &#123;
+    private val TAG = INoAIDL::class.java.simpleName
+    private val DESCRIPTOR = INoAIDL::class.java.name
 
-    <span class="token keyword">abstract</span> <span class="token keyword">class</span> Stub <span class="token operator">:</span> <span class="token function">Binder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> INoAIDL <span class="token punctuation">&#123;</span><span class="token operator">..</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
-    <span class="token keyword">class</span> <span class="token function">Proxy</span><span class="token punctuation">(</span><span class="token keyword">private</span> <span class="token keyword">val</span> remote<span class="token operator">:</span> IBinder<span class="token punctuation">)</span> <span class="token operator">:</span> INoAIDL <span class="token punctuation">&#123;</span><span class="token operator">..</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    abstract class Stub : Binder(), INoAIDL &#123;...&#125;
+    class Proxy(private val remote: IBinder) : INoAIDL &#123;...&#125;
+  &#125;
+&#125;</code></pre>
 
 <p><code>INoAIDL.kt</code>文件的大体结构如上代码，我们可以看到，在这个<code>IInterface</code>类中：</p>
 <ul>
@@ -352,92 +356,92 @@ copy_to_user() &#x2F;&#x2F;将数据从内核空间拷贝到用户空间<span ar
 <li>两个静态类——一个Stub类和一个Proxy类。</li>
 </ul>
 <p><strong>Stub类</strong></p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">abstract</span> <span class="token keyword">class</span> Stub <span class="token operator">:</span> <span class="token function">Binder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> INoAIDL <span class="token punctuation">&#123;</span>
+<pre class="language-kotlin"><code class="language-kotlin">abstract class Stub : Binder(), INoAIDL &#123;
 
-  <span class="token keyword">companion</span> <span class="token keyword">object</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> <span class="token keyword">val</span> TRANSACTION_sayHi <span class="token operator">=</span> IBinder<span class="token punctuation">.</span>FIRST_CALL_TRANSACTION <span class="token operator">+</span> <span class="token number">0</span>
-    <span class="token keyword">const</span> <span class="token keyword">val</span> TRANSACTION_showObjN <span class="token operator">=</span> IBinder<span class="token punctuation">.</span>FIRST_CALL_TRANSACTION <span class="token operator">+</span> <span class="token number">1</span>
+  companion object &#123;
+    const val TRANSACTION_sayHi = IBinder.FIRST_CALL_TRANSACTION + 0
+    const val TRANSACTION_showObjN = IBinder.FIRST_CALL_TRANSACTION + 1
 
-    <span class="token keyword">fun</span> <span class="token function">asInterface</span><span class="token punctuation">(</span>binder<span class="token operator">:</span> IBinder<span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator">:</span> INoAIDL<span class="token operator">?</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>binder <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token keyword">null</span>
-      <span class="token punctuation">&#125;</span>
-      <span class="token keyword">val</span> iin <span class="token operator">=</span> binder<span class="token punctuation">.</span><span class="token function">queryLocalInterface</span><span class="token punctuation">(</span>DESCRIPTOR<span class="token punctuation">)</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>iin <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> iin <span class="token keyword">is</span> INoAIDL<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"Client and Server in the same Process"</span></span><span class="token punctuation">)</span>
-        <span class="token keyword">return</span> iin
-      <span class="token punctuation">&#125;</span>
-      Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"Client and Server in different Processes"</span></span><span class="token punctuation">)</span>
-      <span class="token keyword">return</span> <span class="token function">Proxy</span><span class="token punctuation">(</span>binder<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
+    fun asInterface(binder: IBinder?): INoAIDL? &#123;
+      if (binder == null) &#123;
+        return null
+      &#125;
+      val iin = binder.queryLocalInterface(DESCRIPTOR)
+      if (iin != null &amp;&amp; iin is INoAIDL) &#123;
+        Log.v(TAG, "Client and Server in the same Process")
+        return iin
+      &#125;
+      Log.v(TAG, "Client and Server in different Processes")
+      return Proxy(binder)
+    &#125;
+  &#125;
 
-  <span class="token keyword">init</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">attachInterface</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> DESCRIPTOR<span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
+  init &#123;
+    attachInterface(this, DESCRIPTOR)
+  &#125;
 
-  <span class="token keyword">final</span> <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">attachInterface</span><span class="token punctuation">(</span>owner<span class="token operator">:</span> IInterface<span class="token operator">?</span><span class="token punctuation">,</span> descriptor<span class="token operator">:</span> String<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">attachInterface</span><span class="token punctuation">(</span>owner<span class="token punctuation">,</span> descriptor<span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
+  final override fun attachInterface(owner: IInterface?, descriptor: String?) &#123;
+    super.attachInterface(owner, descriptor)
+  &#125;
 
-  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onTransact</span><span class="token punctuation">(</span>code<span class="token operator">:</span> Int<span class="token punctuation">,</span> <span class="token keyword">data</span><span class="token operator">:</span> Parcel<span class="token punctuation">,</span> reply<span class="token operator">:</span> Parcel<span class="token operator">?</span><span class="token punctuation">,</span> flags<span class="token operator">:</span> Int<span class="token punctuation">)</span><span class="token operator">:</span> Boolean <span class="token punctuation">&#123;</span>
-    <span class="token keyword">val</span> descriptor <span class="token operator">=</span> DESCRIPTOR
-    <span class="token keyword">return</span> <span class="token keyword">when</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      INTERFACE_TRANSACTION <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-        reply<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">writeString</span><span class="token punctuation">(</span>descriptor<span class="token punctuation">)</span>
-        <span class="token boolean">true</span>
-      <span class="token punctuation">&#125;</span>
-      TRANSACTION_sayHi <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">data</span><span class="token punctuation">.</span><span class="token function">enforceInterface</span><span class="token punctuation">(</span>descriptor<span class="token punctuation">)</span>
-        <span class="token keyword">val</span> name <span class="token operator">=</span> <span class="token keyword">data</span><span class="token punctuation">.</span><span class="token function">readString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?:</span> <span class="token string-literal singleline"><span class="token string">""</span></span>
-        <span class="token function">sayHi</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
-        reply<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">writeNoException</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token boolean">true</span>
-      <span class="token punctuation">&#125;</span>
-      TRANSACTION_showObjN <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">data</span><span class="token punctuation">.</span><span class="token function">enforceInterface</span><span class="token punctuation">(</span>descriptor<span class="token punctuation">)</span>
-        <span class="token keyword">var</span> objN<span class="token operator">:</span> ObjN<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">!=</span> <span class="token keyword">data</span><span class="token punctuation">.</span><span class="token function">readInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-          objN <span class="token operator">=</span> ObjN<span class="token punctuation">.</span>CREATOR<span class="token punctuation">.</span><span class="token function">createFromParcel</span><span class="token punctuation">(</span><span class="token keyword">data</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">val</span> _result <span class="token operator">=</span> <span class="token function">showObjN</span><span class="token punctuation">(</span>objN<span class="token operator">!!</span><span class="token punctuation">)</span>
-        reply<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">writeNoException</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>_result <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-          reply<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">writeInt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-          _result<span class="token punctuation">.</span><span class="token function">writeToParcel</span><span class="token punctuation">(</span>reply<span class="token punctuation">,</span> Parcelable<span class="token punctuation">.</span>PARCELABLE_WRITE_RETURN_VALUE<span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-          reply<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">writeInt</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token boolean">true</span>
-      <span class="token punctuation">&#125;</span>
-      <span class="token keyword">else</span> <span class="token operator">-></span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onTransact</span><span class="token punctuation">(</span>code<span class="token punctuation">,</span> <span class="token keyword">data</span><span class="token punctuation">,</span> reply<span class="token punctuation">,</span> flags<span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
+  override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean &#123;
+    val descriptor = DESCRIPTOR
+    return when(code) &#123;
+      INTERFACE_TRANSACTION -> &#123;
+        reply?.writeString(descriptor)
+        true
+      &#125;
+      TRANSACTION_sayHi -> &#123;
+        data.enforceInterface(descriptor)
+        val name = data.readString() ?: ""
+        sayHi(name)
+        reply?.writeNoException()
+        true
+      &#125;
+      TRANSACTION_showObjN -> &#123;
+        data.enforceInterface(descriptor)
+        var objN: ObjN? = null
+        if (0 != data.readInt()) &#123;
+          objN = ObjN.CREATOR.createFromParcel(data)
+        &#125;
+        val _result = showObjN(objN!!)
+        reply?.writeNoException()
+        if (_result != null) &#123;
+          reply?.writeInt(1)
+          _result.writeToParcel(reply, Parcelable.PARCELABLE_WRITE_RETURN_VALUE)
+        &#125; else &#123;
+          reply?.writeInt(0)
+        &#125;
+        true
+      &#125;
+      else -> &#123;
+        super.onTransact(code, data, reply, flags)
+      &#125;
+    &#125;
+  &#125;
 
-  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">asBinder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> IBinder <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  override fun asBinder(): IBinder &#123;
+    return this
+  &#125;
+&#125;</code></pre>
 
 <p>在Manifest文件中我们定义对应Service</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>service</span>
-  <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>.NoAIDLService<span class="token punctuation">"</span></span>
-  <span class="token attr-name"><span class="token namespace">android:</span>enabled</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
-  <span class="token attr-name"><span class="token namespace">android:</span>exported</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
-  <span class="token punctuation">/></span></span>
-  <span class="token comment">&lt;!--android:process=":noAIDL"--></span>
-	<span class="token comment">&lt;!--把上述属性设置到service中，则是在不同进程中运行--></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-markup"><code class="language-markup">&lt;service
+  android:name=".NoAIDLService"
+  android:enabled="true"
+  android:exported="true"
+  />
+  &lt;!--android:process=":noAIDL"-->
+	&lt;!--把上述属性设置到service中，则是在不同进程中运行--></code></pre>
 
 <p>我们重点关注<code>asInterface</code>方法，在这个方法中，有一个代码片段：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> iin <span class="token operator">=</span> binder<span class="token punctuation">.</span><span class="token function">queryLocalInterface</span><span class="token punctuation">(</span>DESCRIPTOR<span class="token punctuation">)</span>
-<span class="token keyword">if</span> <span class="token punctuation">(</span>iin <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> iin <span class="token keyword">is</span> INoAIDL<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"Client and Server in the same Process"</span></span><span class="token punctuation">)</span>
-  <span class="token keyword">return</span> iin
-<span class="token punctuation">&#125;</span>
-Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"Client and Server in different Processes"</span></span><span class="token punctuation">)</span>
-<span class="token keyword">return</span> <span class="token function">Proxy</span><span class="token punctuation">(</span>binder<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">val iin = binder.queryLocalInterface(DESCRIPTOR)
+if (iin != null &amp;&amp; iin is INoAIDL) &#123;
+	Log.v(TAG, "Client and Server in the same Process")
+  return iin
+&#125;
+Log.v(TAG, "Client and Server in different Processes")
+return Proxy(binder)</code></pre>
 
 <p>通过这样的代码来进行Client和Server是否在不同进程的判断。</p>
 <ul>
@@ -445,82 +449,82 @@ Log<span class="token punctuation">.</span><span class="token function">v</span>
 <li>不同进程：构造一个<code>Proxy</code>类返回。</li>
 </ul>
 <p>MainActivity去bind一个Service，Service返回一个Binder。我们打印一下日志。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> NoAIDLService <span class="token operator">:</span> <span class="token function">Service</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onBind</span><span class="token punctuation">(</span>intent<span class="token operator">:</span> Intent<span class="token punctuation">)</span><span class="token operator">:</span> IBinder <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> binder<span class="token punctuation">.</span><span class="token function">also</span> <span class="token punctuation">&#123;</span>
-      Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"onBind=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">it</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">class NoAIDLService : Service() &#123;
+  override fun onBind(intent: Intent): IBinder &#123;
+    return binder.also &#123;
+      Log.v(TAG, "onBind=$it")
+    &#125;
+  &#125;
+&#125;</code></pre>
 
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">var</span> noAIDL<span class="token operator">:</span> INoAIDL<span class="token operator">?</span> <span class="token operator">=</span> <span class="token keyword">null</span>
-<span class="token keyword">private</span> <span class="token keyword">val</span> noConnection <span class="token operator">=</span> <span class="token keyword">object</span> <span class="token operator">:</span> ServiceConnection <span class="token punctuation">&#123;</span>
-  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onServiceConnected</span><span class="token punctuation">(</span>name<span class="token operator">:</span> ComponentName<span class="token operator">?</span><span class="token punctuation">,</span> service<span class="token operator">:</span> IBinder<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    service <span class="token operator">?:</span> <span class="token keyword">return</span>
-    Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"onServiceConnected service=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">service</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-    noAIDL <span class="token operator">=</span> INoAIDL<span class="token punctuation">.</span>Companion<span class="token punctuation">.</span>Stub<span class="token punctuation">.</span><span class="token function">asInterface</span><span class="token punctuation">(</span>service<span class="token punctuation">)</span>
-    Toast<span class="token punctuation">.</span><span class="token function">makeText</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token label symbol">@MainActivity</span><span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"connected to NoAIDLService"</span></span><span class="token punctuation">,</span> Toast<span class="token punctuation">.</span>LENGTH_SHORT<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"onServiceConnected noAIDL=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token expression">noAIDL</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">private var noAIDL: INoAIDL? = null
+private val noConnection = object : ServiceConnection &#123;
+  override fun onServiceConnected(name: ComponentName?, service: IBinder?) &#123;
+    service ?: return
+    Log.v(TAG, "onServiceConnected service=$service")
+    noAIDL = INoAIDL.Companion.Stub.asInterface(service)
+    Toast.makeText(this@MainActivity, "connected to NoAIDLService", Toast.LENGTH_SHORT).show()
+    Log.v(TAG, "onServiceConnected noAIDL=$&#123;noAIDL&#125;")
+  &#125;
+&#125;
+</code></pre>
 
 <p>当Client与Server在相同进程，有如下日志：</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; NoAIDLService
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; NoAIDLService
 onBind&#x3D;com.github.boybeak.noaidl.NoAIDLService$binder$1@84abbdc
 
 &#x2F;&#x2F; MainActivity
 onServiceConnected service&#x3D;com.github.boybeak.noaidl.NoAIDLService$binder$1@84abbdc
-noAIDL&#x3D;com.github.boybeak.noaidl.NoAIDLService$binder$1@84abbdc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+noAIDL&#x3D;com.github.boybeak.noaidl.NoAIDLService$binder$1@84abbdc</code></pre>
 
 <p>当Client与Server在不同进程，有如下日志：</p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; NoAIDLService
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; NoAIDLService
 onBind&#x3D;com.github.boybeak.noaidl.NoAIDLService$binder$1@2d32060
 
 &#x2F;&#x2F; MainActivity
 onServiceConnected service&#x3D;android.os.BinderProxy@99b42f6
-noAIDL&#x3D;com.github.boybeak.noaidl.INoAIDL$Companion$Proxy@67e8964<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+noAIDL&#x3D;com.github.boybeak.noaidl.INoAIDL$Companion$Proxy@67e8964</code></pre>
 
 <p>我们看到，当Client与Server在相同进程时候，Service的<code>onBind</code>方法返回的是什么，MainActivity接收到的就是什么；而当Client与Server在不同进程的时候，则返回的是Binder驱动传递给我们的对象，通过这个对象，我们创造一个 Proxy代理对象。</p>
 <p>我们接下来重点关注<code>showObjN</code>方法。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">private</span> <span class="token keyword">val</span> binder <span class="token operator">=</span> <span class="token keyword">object</span> <span class="token operator">:</span> INoAIDL<span class="token punctuation">.</span>Companion<span class="token punctuation">.</span><span class="token function">Stub</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">showObjN</span><span class="token punctuation">(</span>objN<span class="token operator">:</span> ObjN<span class="token punctuation">)</span><span class="token operator">:</span> ObjN<span class="token operator">?</span> <span class="token punctuation">&#123;</span>
-    Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"showObjN objN=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">objN</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span> objN
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">private val binder = object : INoAIDL.Companion.Stub() &#123;
+  override fun showObjN(objN: ObjN): ObjN? &#123;
+    Log.v(TAG, "showObjN objN=$objN")
+    return objN
+  &#125;
+&#125;</code></pre>
 
 <p>这个方法中，直接返回传入的参数。</p>
 <p>调用的地方这样来写：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">fun</span> <span class="token function">showObjN</span><span class="token punctuation">(</span>v<span class="token operator">:</span> View<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>noAIDL <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    Toast<span class="token punctuation">.</span><span class="token function">makeText</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"Click NOAIDL button first"</span></span><span class="token punctuation">,</span> Toast<span class="token punctuation">.</span>LENGTH_SHORT<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">return</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">val</span> objN <span class="token operator">=</span> <span class="token function">ObjN</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"showObjN objN=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">objN</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-  <span class="token keyword">val</span> returnObjN <span class="token operator">=</span> noAIDL<span class="token operator">?</span><span class="token punctuation">.</span><span class="token function">showObjN</span><span class="token punctuation">(</span>objN<span class="token punctuation">)</span>
-  Log<span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"showObjN returnObjW=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">returnObjN</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">fun showObjN(v: View) &#123;
+  if (noAIDL == null) &#123;
+    Toast.makeText(this, "Click NOAIDL button first", Toast.LENGTH_SHORT).show()
+    return
+  &#125;
+  val objN = ObjN()
+  Log.v(TAG, "showObjN objN=$objN")
+  val returnObjN = noAIDL?.showObjN(objN)
+  Log.v(TAG, "showObjN returnObjW=$returnObjN")
+&#125;</code></pre>
 
 <p>我们来看打印的<code>objN</code>日志。</p>
 <p><strong>相同进程情况下：</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; Client进程
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; Client进程
 com.github.boybeak.binder V&#x2F;MainActivity: showObjN objN&#x3D;com.github.boybeak.noaidl.ObjN@4c7d499
 com.github.boybeak.binder V&#x2F;MainActivity: showObjN returnObjW&#x3D;com.github.boybeak.noaidl.ObjN@4c7d499
 
 &#x2F;&#x2F; Server进程
-com.github.boybeak.binder V&#x2F;NoAIDLService: showObjN objN&#x3D;com.github.boybeak.noaidl.ObjN@4c7d499<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+com.github.boybeak.binder V&#x2F;NoAIDLService: showObjN objN&#x3D;com.github.boybeak.noaidl.ObjN@4c7d499</code></pre>
 
 
 
 <p><strong>不同进程情况下：</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; Client进程
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; Client进程
 com.github.boybeak.binder V&#x2F;MainActivity: showObjN objN&#x3D;com.github.boybeak.noaidl.ObjN@5ab3a61
 com.github.boybeak.binder V&#x2F;MainActivity: showObjN returnObjW&#x3D;com.github.boybeak.noaidl.ObjN@db79986
 
 &#x2F;&#x2F; Server进程
-com.github.boybeak.binder V&#x2F;NoAIDLService: showObjN objN&#x3D;com.github.boybeak.noaidl.ObjN@1c5381d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+com.github.boybeak.binder V&#x2F;NoAIDLService: showObjN objN&#x3D;com.github.boybeak.noaidl.ObjN@1c5381d</code></pre>
 
 
 

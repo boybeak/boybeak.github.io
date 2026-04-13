@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -220,21 +224,21 @@
 <li>XML：提供一个适配器将XML和SAX-comliant转化成字节码结构，可以允许使用XSLT去定义字节码转化</li>
 </ul>
 <h3 id="二-Core-API-介绍"><a href="#二-Core-API-介绍" class="headerlink" title="二. Core API 介绍"></a>二. Core API 介绍</h3><h4 id="2-1-ClassVisitor-抽象类"><a href="#2-1-ClassVisitor-抽象类" class="headerlink" title="2.1 ClassVisitor 抽象类"></a>2.1 ClassVisitor 抽象类</h4><p>如下所示，在 ClassVisitor 中提供了和类结构同名的一些方法，这些方法会对类中相应的部分进行操作，而且是有顺序的：visit [ visitSource ] [ visitOuterClass ] ( visitAnnotation | visitAttribute )* (visitInnerClass | visitField | visitMethod )* visitEnd</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">ClassVisitor</span> <span class="token punctuation">&#123;</span>
+<pre class="language-java"><code class="language-java">public abstract class ClassVisitor &#123;
 
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+        ......
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visit</span><span class="token punctuation">(</span><span class="token keyword">int</span> version<span class="token punctuation">,</span> <span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">String</span> superName<span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> interfaces<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitSource</span><span class="token punctuation">(</span><span class="token class-name">String</span> source<span class="token punctuation">,</span> <span class="token class-name">String</span> debug<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitOuterClass</span><span class="token punctuation">(</span><span class="token class-name">String</span> owner<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitAnnotation</span><span class="token punctuation">(</span><span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">boolean</span> visible<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token class-name">AnnotationVisitor</span> <span class="token function">visitTypeAnnotation</span><span class="token punctuation">(</span><span class="token keyword">int</span> typeRef<span class="token punctuation">,</span> <span class="token class-name">TypePath</span> typePath<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token keyword">boolean</span> visible<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitAttribute</span><span class="token punctuation">(</span><span class="token class-name">Attribute</span> attr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitInnerClass</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> outerName<span class="token punctuation">,</span> <span class="token class-name">String</span> innerName<span class="token punctuation">,</span> <span class="token keyword">int</span> access<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token class-name">FieldVisitor</span> <span class="token function">visitField</span><span class="token punctuation">(</span><span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">Object</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token class-name">MethodVisitor</span> <span class="token function">visitMethod</span><span class="token punctuation">(</span><span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> exceptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces);
+    public void visitSource(String source, String debug);
+    public void visitOuterClass(String owner, String name, String desc);
+    public AnnotationVisitor visitAnnotation(String desc, boolean visible);
+    public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String desc, boolean visible);
+    public void visitAttribute(Attribute attr);
+    public void visitInnerClass(String name, String outerName, String innerName, int access);
+    public FieldVisitor visitField(int access, String name, String desc, String signature, Object value);
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions);
+    public void visitEnd();
+&#125;</code></pre>
 
 <ol>
 <li>void visit(int version, int access, String name, String signature, String superName, String[] interfaces)<br> 该方法是当扫描类时第一个调用的方法，主要用于类声明使用。下面是对方法中各个参数的示意：visit( 类版本 , 修饰符 , 类名 , 泛型信息 , 继承的父类 , 实现的接口)</li>
@@ -262,136 +266,136 @@
 <li>需要事件过滤器 ClassVisitor。在调用 ClassVisitor 的某些方法时会产生一个新的 XXXVisitor 对象，当我们需要修改对应的内容时只要实现自己的 XXXVisitor 并返回就可以了</li>
 </ol>
 <h3 id="三-示例"><a href="#三-示例" class="headerlink" title="三. 示例"></a>三. 示例</h3><h4 id="3-1-修改类中方法的字节码"><a href="#3-1-修改类中方法的字节码" class="headerlink" title="3.1 修改类中方法的字节码"></a>3.1 修改类中方法的字节码</h4><p>假如现在我们有一个 HelloWorld 类，如下</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lijiankun24<span class="token punctuation">.</span>asmpractice<span class="token punctuation">.</span>demo</span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">package com.lijiankun24.asmpractice.demo;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloWorld</span> <span class="token punctuation">&#123;</span>
+public class HelloWorld &#123;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">2</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public void sayHello() &#123;
+        try &#123;
+            Thread.sleep(2 * 1000);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;</code></pre>
 
 <p>通过 <code>javac HelloWorld.java</code> 和 <code>javap -verbose HelloWorld.class</code> 可以查看到 sayName() 方法的字节码如下所示：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  descriptor<span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>V
-  flags<span class="token operator">:</span> ACC_PUBLIC
-  Code<span class="token operator">:</span>
-    stack<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> locals<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> args_size<span class="token operator">=</span><span class="token number">1</span>
-       <span class="token number">0</span><span class="token operator">:</span> ldc2_w        #<span class="token number">2</span>                  <span class="token comment">// long 2000l</span>
-       <span class="token number">3</span><span class="token operator">:</span> invokestatic  #<span class="token number">4</span>                  <span class="token comment">// Method java/lang/Thread.sleep:(J)V</span>
-       <span class="token number">6</span><span class="token operator">:</span> <span class="token keyword">goto</span>          <span class="token number">14</span>
-       <span class="token number">9</span><span class="token operator">:</span> astore_1
-      <span class="token number">10</span><span class="token operator">:</span> aload_1
-      <span class="token number">11</span><span class="token operator">:</span> invokevirtual #<span class="token number">6</span>                  <span class="token comment">// Method java/lang/InterruptedException.printStackTrace:()V</span>
-      <span class="token number">14</span><span class="token operator">:</span> <span class="token keyword">return</span>
-    Exception table<span class="token operator">:</span>
+<pre class="language-cpp"><code class="language-cpp">public void sayHello();
+  descriptor: ()V
+  flags: ACC_PUBLIC
+  Code:
+    stack=2, locals=2, args_size=1
+       0: ldc2_w        #2                  // long 2000l
+       3: invokestatic  #4                  // Method java/lang/Thread.sleep:(J)V
+       6: goto          14
+       9: astore_1
+      10: aload_1
+      11: invokevirtual #6                  // Method java/lang/InterruptedException.printStackTrace:()V
+      14: return
+    Exception table:
        from    to  target type
-           <span class="token number">0</span>     <span class="token number">6</span>     <span class="token number">9</span>   Class java<span class="token operator">/</span>lang<span class="token operator">/</span>InterruptedException
-    LineNumberTable<span class="token operator">:</span>
-      line <span class="token number">5</span><span class="token operator">:</span> <span class="token number">0</span>
-      line <span class="token number">8</span><span class="token operator">:</span> <span class="token number">6</span>
-      line <span class="token number">6</span><span class="token operator">:</span> <span class="token number">9</span>
-      line <span class="token number">7</span><span class="token operator">:</span> <span class="token number">10</span>
-      line <span class="token number">9</span><span class="token operator">:</span> <span class="token number">14</span>
-    StackMapTable<span class="token operator">:</span> number_of_entries <span class="token operator">=</span> <span class="token number">2</span>
-      frame_type <span class="token operator">=</span> <span class="token number">73</span> <span class="token comment">/* same_locals_1_stack_item */</span>
-        stack <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token keyword">class</span> <span class="token class-name">java</span><span class="token operator">/</span>lang<span class="token operator">/</span>InterruptedException <span class="token punctuation">]</span>
-      frame_type <span class="token operator">=</span> <span class="token number">4</span> <span class="token comment">/* same */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+           0     6     9   Class java/lang/InterruptedException
+    LineNumberTable:
+      line 5: 0
+      line 8: 6
+      line 6: 9
+      line 7: 10
+      line 9: 14
+    StackMapTable: number_of_entries = 2
+      frame_type = 73 /* same_locals_1_stack_item */
+        stack = [ class java/lang/InterruptedException ]
+      frame_type = 4 /* same */</code></pre>
 
 <p>我们通过 ASM 修改 HelloWorld.class 字节码文件，实现统计方法执行时间的功能</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CostTime</span> <span class="token punctuation">&#123;</span>
+<pre class="language-java"><code class="language-java">public class CostTime &#123;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">redefinePersonClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public static void main(String[] args) &#123;
+        redefinePersonClass();
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">redefinePersonClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span> className <span class="token operator">=</span> <span class="token string">"com.lijiankun24.asmpractice.demo.HelloWorld"</span><span class="token punctuation">;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">InputStream</span> inputStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token string">"/Users/lijiankun/Desktop/HelloWorld.class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">ClassReader</span> reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">)</span><span class="token punctuation">;</span>                               <span class="token comment">// 1. 创建 ClassReader 读入 .class 文件到内存中</span>
-            <span class="token class-name">ClassWriter</span> writer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassWriter</span><span class="token punctuation">(</span>reader<span class="token punctuation">,</span> <span class="token class-name">ClassWriter</span><span class="token punctuation">.</span><span class="token constant">COMPUTE_MAXS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                 <span class="token comment">// 2. 创建 ClassWriter 对象，将操作之后的字节码的字节数组回写</span>
-            <span class="token class-name">ClassVisitor</span> change <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ChangeVisitor</span><span class="token punctuation">(</span>writer<span class="token punctuation">)</span><span class="token punctuation">;</span>                                        <span class="token comment">// 3. 创建自定义的 ClassVisitor 对象</span>
-            reader<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>change<span class="token punctuation">,</span> <span class="token class-name">ClassReader</span><span class="token punctuation">.</span><span class="token constant">EXPAND_FRAMES</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                                       <span class="token comment">// 4. 将 ClassVisitor 对象传入 ClassReader 中</span>
+    private static void redefinePersonClass() &#123;
+        String className = "com.lijiankun24.asmpractice.demo.HelloWorld";
+        try &#123;
+            InputStream inputStream = new FileInputStream("/Users/lijiankun/Desktop/HelloWorld.class");
+            ClassReader reader = new ClassReader(inputStream);                               // 1. 创建 ClassReader 读入 .class 文件到内存中
+            ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS);                 // 2. 创建 ClassWriter 对象，将操作之后的字节码的字节数组回写
+            ClassVisitor change = new ChangeVisitor(writer);                                        // 3. 创建自定义的 ClassVisitor 对象
+            reader.accept(change, ClassReader.EXPAND_FRAMES);                                       // 4. 将 ClassVisitor 对象传入 ClassReader 中
 
-            <span class="token class-name">Class</span> clazz <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">defineClass</span><span class="token punctuation">(</span>className<span class="token punctuation">,</span> writer<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">Object</span> personObj <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">Method</span> nameMethod <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"sayHello"</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            nameMethod<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>personObj<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Success!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> code <span class="token operator">=</span> writer<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                                                               <span class="token comment">// 获取修改后的 class 文件对应的字节数组</span>
-            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-                <span class="token class-name">FileOutputStream</span> fos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileOutputStream</span><span class="token punctuation">(</span><span class="token string">"/Users/lijiankun/Desktop/HelloWorld2.class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// 将二进制流写到本地磁盘上</span>
-                fos<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                fos<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Failure!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+            Class clazz = new MyClassLoader().defineClass(className, writer.toByteArray());
+            Object personObj = clazz.newInstance();
+            Method nameMethod = clazz.getDeclaredMethod("sayHello", null);
+            nameMethod.invoke(personObj, null);
+            System.out.println("Success!");
+            byte[] code = writer.toByteArray();                                                               // 获取修改后的 class 文件对应的字节数组
+            try &#123;
+                FileOutputStream fos = new FileOutputStream("/Users/lijiankun/Desktop/HelloWorld2.class");    // 将二进制流写到本地磁盘上
+                fos.write(code);
+                fos.close();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+            System.out.println("Failure!");
+        &#125;
+    &#125;
 
-    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ChangeVisitor</span> <span class="token keyword">extends</span> <span class="token class-name">ClassVisitor</span> <span class="token punctuation">&#123;</span>
+    static class ChangeVisitor extends ClassVisitor &#123;
 
-        <span class="token class-name">ChangeVisitor</span><span class="token punctuation">(</span><span class="token class-name">ClassVisitor</span> classVisitor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ASM5</span><span class="token punctuation">,</span> classVisitor<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        ChangeVisitor(ClassVisitor classVisitor) &#123;
+            super(Opcodes.ASM5, classVisitor);
+        &#125;
 
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">public</span> <span class="token class-name">MethodVisitor</span> <span class="token function">visitMethod</span><span class="token punctuation">(</span><span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> exceptions<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">MethodVisitor</span> methodVisitor <span class="token operator">=</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">visitMethod</span><span class="token punctuation">(</span>access<span class="token punctuation">,</span> name<span class="token punctuation">,</span> desc<span class="token punctuation">,</span> signature<span class="token punctuation">,</span> exceptions<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>name<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"&lt;init>"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">return</span> methodVisitor<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ChangeAdapter</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ASM4</span><span class="token punctuation">,</span> methodVisitor<span class="token punctuation">,</span> access<span class="token punctuation">,</span> name<span class="token punctuation">,</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+        @Override
+        public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) &#123;
+            MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
+            if (name.equals("&lt;init>")) &#123;
+                return methodVisitor;
+            &#125;
+            return new ChangeAdapter(Opcodes.ASM4, methodVisitor, access, name, desc);
+        &#125;
+    &#125;
 
-    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ChangeAdapter</span> <span class="token keyword">extends</span> <span class="token class-name">AdviceAdapter</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">private</span> <span class="token keyword">int</span> startTimeId <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    static class ChangeAdapter extends AdviceAdapter &#123;
+        private int startTimeId = -1;
 
-        <span class="token keyword">private</span> <span class="token class-name">String</span> methodName <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        private String methodName = null;
 
-        <span class="token class-name">ChangeAdapter</span><span class="token punctuation">(</span><span class="token keyword">int</span> api<span class="token punctuation">,</span> <span class="token class-name">MethodVisitor</span> mv<span class="token punctuation">,</span> <span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">super</span><span class="token punctuation">(</span>api<span class="token punctuation">,</span> mv<span class="token punctuation">,</span> access<span class="token punctuation">,</span> name<span class="token punctuation">,</span> desc<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            methodName <span class="token operator">=</span> name<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        ChangeAdapter(int api, MethodVisitor mv, int access, String name, String desc) &#123;
+            super(api, mv, access, name, desc);
+            methodName = name;
+        &#125;
 
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onMethodEnter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onMethodEnter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            startTimeId <span class="token operator">=</span> <span class="token function">newLocal</span><span class="token punctuation">(</span><span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token constant">LONG_TYPE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKESTATIC</span><span class="token punctuation">,</span> <span class="token string">"java/lang/System"</span><span class="token punctuation">,</span> <span class="token string">"currentTimeMillis"</span><span class="token punctuation">,</span> <span class="token string">"()J"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitIntInsn</span><span class="token punctuation">(</span><span class="token constant">LSTORE</span><span class="token punctuation">,</span> startTimeId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        @Override
+        protected void onMethodEnter() &#123;
+            super.onMethodEnter();
+            startTimeId = newLocal(Type.LONG_TYPE);
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+            mv.visitIntInsn(LSTORE, startTimeId);
+        &#125;
 
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onMethodExit</span><span class="token punctuation">(</span><span class="token keyword">int</span> opcode<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onMethodExit</span><span class="token punctuation">(</span>opcode<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> durationId <span class="token operator">=</span> <span class="token function">newLocal</span><span class="token punctuation">(</span><span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token constant">LONG_TYPE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKESTATIC</span><span class="token punctuation">,</span> <span class="token string">"java/lang/System"</span><span class="token punctuation">,</span> <span class="token string">"currentTimeMillis"</span><span class="token punctuation">,</span> <span class="token string">"()J"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitVarInsn</span><span class="token punctuation">(</span><span class="token constant">LLOAD</span><span class="token punctuation">,</span> startTimeId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitInsn</span><span class="token punctuation">(</span><span class="token constant">LSUB</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitVarInsn</span><span class="token punctuation">(</span><span class="token constant">LSTORE</span><span class="token punctuation">,</span> durationId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitFieldInsn</span><span class="token punctuation">(</span><span class="token constant">GETSTATIC</span><span class="token punctuation">,</span> <span class="token string">"java/lang/System"</span><span class="token punctuation">,</span> <span class="token string">"out"</span><span class="token punctuation">,</span> <span class="token string">"Ljava/io/PrintStream;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitTypeInsn</span><span class="token punctuation">(</span><span class="token constant">NEW</span><span class="token punctuation">,</span> <span class="token string">"java/lang/StringBuilder"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitInsn</span><span class="token punctuation">(</span><span class="token constant">DUP</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKESPECIAL</span><span class="token punctuation">,</span> <span class="token string">"java/lang/StringBuilder"</span><span class="token punctuation">,</span> <span class="token string">"&lt;init>"</span><span class="token punctuation">,</span> <span class="token string">"()V"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitLdcInsn</span><span class="token punctuation">(</span><span class="token string">"The cost time of "</span> <span class="token operator">+</span> methodName <span class="token operator">+</span> <span class="token string">" is "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKEVIRTUAL</span><span class="token punctuation">,</span> <span class="token string">"java/lang/StringBuilder"</span><span class="token punctuation">,</span> <span class="token string">"append"</span><span class="token punctuation">,</span> <span class="token string">"(Ljava/lang/String;)Ljava/lang/StringBuilder;"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitVarInsn</span><span class="token punctuation">(</span><span class="token constant">LLOAD</span><span class="token punctuation">,</span> durationId<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKEVIRTUAL</span><span class="token punctuation">,</span> <span class="token string">"java/lang/StringBuilder"</span><span class="token punctuation">,</span> <span class="token string">"append"</span><span class="token punctuation">,</span> <span class="token string">"(J)Ljava/lang/StringBuilder;"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKEVIRTUAL</span><span class="token punctuation">,</span> <span class="token string">"java/lang/StringBuilder"</span><span class="token punctuation">,</span> <span class="token string">"toString"</span><span class="token punctuation">,</span> <span class="token string">"()Ljava/lang/String;"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            mv<span class="token punctuation">.</span><span class="token function">visitMethodInsn</span><span class="token punctuation">(</span><span class="token constant">INVOKEVIRTUAL</span><span class="token punctuation">,</span> <span class="token string">"java/io/PrintStream"</span><span class="token punctuation">,</span> <span class="token string">"println"</span><span class="token punctuation">,</span> <span class="token string">"(Ljava/lang/String;)V"</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        @Override
+        protected void onMethodExit(int opcode) &#123;
+            super.onMethodExit(opcode);
+            int durationId = newLocal(Type.LONG_TYPE);
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
+            mv.visitVarInsn(LLOAD, startTimeId);
+            mv.visitInsn(LSUB);
+            mv.visitVarInsn(LSTORE, durationId);
+            mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+            mv.visitInsn(DUP);
+            mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "&lt;init>", "()V", false);
+            mv.visitLdcInsn("The cost time of " + methodName + " is ");
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+            mv.visitVarInsn(LLOAD, durationId);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+            mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+        &#125;
+    &#125;
+&#125;</code></pre>
 
 <p>执行结果如下图所示</p>
 <p><img src="/assets/images/4179925-32ee7bd0974a4679.webp" alt="img"></p>
@@ -401,10 +405,10 @@
 <p>Class1.png</p>
 <h4 id="3-2-修改类中属性的字节码"><a href="#3-2-修改类中属性的字节码" class="headerlink" title="3.2 修改类中属性的字节码"></a>3.2 修改类中属性的字节码</h4><p>这一节中我们将展示一下如何使用 Core API 对类中的属性进行操作。</p>
 <p>假如说，现在有一个 Person.java 类如下所示：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">int</span> sex<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">public class Person &#123;
+    public String name;
+    public int sex;
+&#125;</code></pre>
 
 <p>我们想为这个类，添加一个 ‘public int age’ 的属性该怎么添加呢？我们会面对两个问题：</p>
 <ol>
@@ -420,69 +424,69 @@
 </ol>
 <p>在上面三个步骤中，可以操作的就是 ClassVisitor 了。ClassVisitor 接口提供了和类结构同名的一些方法，这些方法可以对相应的类结构进行操作。</p>
 <p>在使用 ClassVisitor 添加类属性的时候，只需要添加一句话就可以了：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">classVisitor<span class="token punctuation">.</span><span class="token function">visitField</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ACC_PUBLIC</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token function">getDescriptor</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">classVisitor.visitField(Opcodes.ACC_PUBLIC, "age", Type.getDescriptor(int.class), null, null);</code></pre>
 
 <p><img src="/assets/images/4179925-8c703df0b005aae7.webp" alt="img"></p>
 <p>visitField.png</p>
 <h5 id="3-2-2-添加属性的时机"><a href="#3-2-2-添加属性的时机" class="headerlink" title="3.2.2 添加属性的时机"></a>3.2.2 添加属性的时机</h5><p>我们先暂且在 ClassVisitor 的 visitEnd() 方法中写入上面的代码，如下所示</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Transform</span> <span class="token keyword">extends</span> <span class="token class-name">ClassVisitor</span> <span class="token punctuation">&#123;</span>  
+<pre class="language-java"><code class="language-java">public class Transform extends ClassVisitor &#123;  
 
-    <span class="token keyword">public</span> <span class="token class-name">Transform</span><span class="token punctuation">(</span><span class="token class-name">ClassVisitor</span> cv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
-        <span class="token keyword">super</span><span class="token punctuation">(</span>cv<span class="token punctuation">)</span><span class="token punctuation">;</span>  
-    <span class="token punctuation">&#125;</span>  
+    public Transform(ClassVisitor cv) &#123;  
+        super(cv);  
+    &#125;  
 
-    <span class="token annotation punctuation">@Override</span>  
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">visitEnd</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
-        cv<span class="token punctuation">.</span><span class="token function">visitField</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ACC_PUBLIC</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token function">getDescriptor</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
-    <span class="token punctuation">&#125;</span>  
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Override  
+    public void visitEnd() &#123;  
+        cv.visitField(Opcodes.ACC_PUBLIC, "age", Type.getDescriptor(int.class), null, null);  
+    &#125;  
+&#125;</code></pre>
 
 <p>我们写如下的测试类，测试一下</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FieldPractice</span> <span class="token punctuation">&#123;</span>
+<pre class="language-java"><code class="language-java">public class FieldPractice &#123;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">addAgeField</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public static void main(String[] args) &#123;
+        addAgeField();
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">addAgeField</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">InputStream</span> inputStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token string">"/Users/lijiankun/Desktop/Person.class"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">ClassReader</span> reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassReader</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    private static void addAgeField() &#123;
+        try &#123;
+            InputStream inputStream = new FileInputStream("/Users/lijiankun/Desktop/Person.class");
+            ClassReader reader = new ClassReader(inputStream);
 
-            <span class="token class-name">ClassWriter</span> writer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ClassWriter</span><span class="token punctuation">(</span><span class="token class-name">ClassWriter</span><span class="token punctuation">.</span><span class="token constant">COMPUTE_MAXS</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-            <span class="token class-name">ClassVisitor</span> visitor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Transform</span><span class="token punctuation">(</span>writer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            reader<span class="token punctuation">.</span><span class="token function">accept</span><span class="token punctuation">(</span>visitor<span class="token punctuation">,</span> <span class="token class-name">ClassReader</span><span class="token punctuation">.</span><span class="token constant">SKIP_DEBUG</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ClassVisitor visitor = new Transform(writer);
+            reader.accept(visitor, ClassReader.SKIP_DEBUG);
 
-            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> classFile <span class="token operator">=</span> writer<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">MyClassLoader</span> classLoader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">Class</span> clazz <span class="token operator">=</span> classLoader<span class="token punctuation">.</span><span class="token function">defineClass</span><span class="token punctuation">(</span><span class="token string">"Person"</span><span class="token punctuation">,</span> classFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">Object</span> obj <span class="token operator">=</span> clazz<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            byte[] classFile = writer.toByteArray();
+            MyClassLoader classLoader = new MyClassLoader();
+            Class clazz = classLoader.defineClass("Person", classFile);
+            Object obj = clazz.newInstance();
 
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>clazz<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//----(1)</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>clazz<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//----(2)</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+            System.out.println(clazz.getDeclaredField("name").get(obj)); //----(1)
+            System.out.println(clazz.getDeclaredField("age").get(obj));  //----(2)
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;</code></pre>
 
 <p>其输出入下所示：</p>
 <p><img src="/assets/images/4179925-a718d240e05a2198.webp" alt="img"></p>
 <p>visitFieldResult.png</p>
 <p>那如果我们尝试在 ClassVisitor#visitField() 方法中添加属性可以吗？我们可以修改 Transform 测试一下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Transform</span> <span class="token keyword">extends</span> <span class="token class-name">ClassVisitor</span> <span class="token punctuation">&#123;</span>
+<pre class="language-java"><code class="language-java">public class Transform extends ClassVisitor &#123;
 
-    <span class="token class-name">Transform</span><span class="token punctuation">(</span><span class="token class-name">ClassVisitor</span> classVisitor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ASM5</span><span class="token punctuation">,</span> classVisitor<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    Transform(ClassVisitor classVisitor) &#123;
+        super(Opcodes.ASM5, classVisitor);
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token class-name">FieldVisitor</span> <span class="token function">visitField</span><span class="token punctuation">(</span><span class="token keyword">int</span> access<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">String</span> desc<span class="token punctuation">,</span> <span class="token class-name">String</span> signature<span class="token punctuation">,</span> <span class="token class-name">Object</span> value<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        cv<span class="token punctuation">.</span><span class="token function">visitField</span><span class="token punctuation">(</span><span class="token class-name">Opcodes</span><span class="token punctuation">.</span><span class="token constant">ACC_PUBLIC</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">,</span> <span class="token class-name">Type</span><span class="token punctuation">.</span><span class="token function">getDescriptor</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">visitField</span><span class="token punctuation">(</span>access<span class="token punctuation">,</span> name<span class="token punctuation">,</span> desc<span class="token punctuation">,</span> signature<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Override
+    public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) &#123;
+        cv.visitField(Opcodes.ACC_PUBLIC, "age", Type.getDescriptor(int.class), null, null);
+        return super.visitField(access, name, desc, signature, value);
+    &#125;
+&#125;</code></pre>
 
 <p>还是使用上面的测试代码测试一下，会有如下的测试结果</p>
 <p><img src="/assets/images/4179925-e2e730e41623be28.webp" alt="img"></p>
@@ -491,28 +495,28 @@
 <p>分析 ClassVisitor#visitField() 方法可得知，只要访问类中的一个属性，visitField() 方法就会被调用一次，在 Person 类中有两个属性，所以 visitField() 方法就会被调用两次，也就添加了两次 ‘public int age’ 属性，就报了上述的错误，而 visitEnd() 方法只有在最后才会被调用且只调用一次，所以在 visitEnd() 方法中是添加属性的最佳时机</p>
 <h4 id="3-3-ASMifier"><a href="#3-3-ASMifier" class="headerlink" title="3.3 ASMifier"></a>3.3 ASMifier</h4><p>可能有人会问，我刚开始学，上面例子中那些 ASM 的代码我还不会写，怎么办呢？ASM 官方为我们提供了 <a target="_blank" rel="noopener" href="https://asm.ow2.io/#Q10">ASMifier</a>，可以帮助我们生成这些晦涩难懂的 ASM 代码。</p>
 <p>比如，我想通过 ASM 实现统计一个方法的执行时间，该怎么做呢？一般会有如下的代码：</p>
-<pre class="line-numbers language-csharp" data-language="csharp"><code class="language-csharp">package com<span class="token punctuation">.</span>lijiankun24<span class="token punctuation">.</span>classpractice<span class="token punctuation">;</span>
+<pre class="language-csharp"><code class="language-csharp">package com.lijiankun24.classpractice;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Demo</span> <span class="token punctuation">&#123;</span>
+public class Demo &#123;
 
-    <span class="token keyword">public</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">costTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name"><span class="token keyword">long</span></span> startTime <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">// ......</span>
-        <span class="token class-name"><span class="token keyword">long</span></span> duration <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> startTime<span class="token punctuation">;</span>
-        System<span class="token punctuation">.</span><span class="token keyword">out</span><span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"The cost time of this method is "</span> <span class="token operator">+</span> duration <span class="token operator">+</span> <span class="token string">" ms"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public void costTime() &#123;
+        long startTime = System.currentTimeMillis();
+        // ......
+        long duration = System.currentTimeMillis() - startTime;
+        System.out.println("The cost time of this method is " + duration + " ms");
+    &#125;
+&#125;</code></pre>
 
 <p>那上面这段代码对应的 ASM 代码是什么呢？我们可以通过以下两个步骤，使用 ASMifier 自动生成：</p>
 <ol>
 <li>通过 <code>javac</code> 编译该 <code>Demo.java</code> 文件生成对应的 <code>Demo.class</code> 文件，如下所示</li>
 </ol>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css">javac Demo.java<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-css"><code class="language-css">javac Demo.java</code></pre>
 
 <ol>
 <li>通过 ASMifier 自动生成对应的 ASM 代码。首先需要在<a target="_blank" rel="noopener" href="https://asm.ow2.io/#Q10">ASM官网</a> 下载 <code>asm-all.jar</code> 库，我下载的是最新的 <code>asm-all-5.2.jar</code>，然后使用如下命令，即可生成</li>
 </ol>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">java <span class="token operator">-</span>classpath asm<span class="token operator">-</span>all<span class="token operator">-</span><span class="token number">5.2</span><span class="token punctuation">.</span>jar <span class="token class-name"><span class="token namespace">org<span class="token punctuation">.</span>objectweb<span class="token punctuation">.</span>asm<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>ASMifier</span> <span class="token class-name">Demo</span><span class="token punctuation">.</span><span class="token keyword">class</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">java -classpath asm-all-5.2.jar org.objectweb.asm.util.ASMifier Demo.class</code></pre>
 
 <p>截图如下：</p>
 <p><img src="/assets/images/4179925-0cc8712718f08ea0.webp" alt="img"></p>

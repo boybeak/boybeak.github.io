@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -206,29 +210,29 @@
       <p>这里用于总结一些在工作中发现的调试技巧。</p>
 <h2 id="Handler是否繁忙？"><a href="#Handler是否繁忙？" class="headerlink" title="Handler是否繁忙？"></a>Handler是否繁忙？</h2><p>这一技巧来自于最近工作中，做子线程渲染时，发现有卡顿、手势操作延迟过大的情况，而渲染的子线程是一个HandlerThread，为了判断此线程是否有大量耗时操作，探索出一些技巧。</p>
 <h3 id="判断HandlerThread是否繁忙"><a href="#判断HandlerThread是否繁忙" class="headerlink" title="判断HandlerThread是否繁忙"></a>判断HandlerThread是否繁忙</h3><p>可以通过对应的Handler执行一个post操作，在看其中执行的延迟，代码如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">val</span> handler <span class="token operator">=</span> <span class="token function">Handler</span><span class="token punctuation">(</span>renderThread<span class="token punctuation">.</span>looper<span class="token punctuation">)</span>
-<span class="token keyword">val</span> postAt <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-handler<span class="token punctuation">.</span><span class="token function">post</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">val</span> delay <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> postAt
-    Log<span class="token punctuation">.</span><span class="token function">d</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"renderThread.delay=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">delay</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-kotlin"><code class="language-kotlin">val handler = Handler(renderThread.looper)
+val postAt = System.currentTimeMillis()
+handler.post &#123;
+    val delay = System.currentTimeMillis() - postAt
+    Log.d(TAG, "renderThread.delay=$delay")
+&#125;</code></pre>
 
 <p>在正常情况下，<code>delay</code>的值是很小的，大概率为0，但是，如果renderThread异常繁忙，则这个值会很大，说明等了很久来轮到一个需要立马执行的操作执行到，具体这个阈值怎么来定，要看你的实际场景，一般做ui渲染的话，超过17ms就可以认为是比较耗时了。<br>这个操作可以定时执行用于检测是否繁忙，也可以用于在怀疑的操作后添加此行为，判断是否是之前的操作耗时过长引起了操作延迟过大。</p>
 <h3 id="如何找到导致繁忙的操作？"><a href="#如何找到导致繁忙的操作？" class="headerlink" title="如何找到导致繁忙的操作？"></a>如何找到导致繁忙的操作？</h3><p>上述操作，一般是用于常规检测和重点怀疑，如果要做“普筛”，则需要通过代理的方式。方法如下：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> <span class="token function">DebugThread</span><span class="token punctuation">(</span><span class="token keyword">val</span> task<span class="token operator">:</span> Runnable<span class="token punctuation">,</span> <span class="token keyword">val</span> postDelayed<span class="token operator">:</span> Long<span class="token punctuation">)</span> <span class="token operator">:</span>  Runnable <span class="token punctuation">&#123;</span>
+<pre class="language-kotlin"><code class="language-kotlin">class DebugThread(val task: Runnable, val postDelayed: Long) :  Runnable &#123;
 
-    <span class="token keyword">private</span> <span class="token keyword">val</span> pendingRunAt <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> postDelayed
+    private val pendingRunAt = System.currentTimeMillis() + postDelayed
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">val</span> now <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        task<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token keyword">val</span> cost <span class="token operator">=</span> System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> now
-        <span class="token keyword">val</span> delay <span class="token operator">=</span> now <span class="token operator">-</span> pendingRunAt
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>delay <span class="token operator">&lt;</span> <span class="token number">10</span> <span class="token operator">&amp;&amp;</span> cost <span class="token operator">></span> <span class="token number">160</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            Log<span class="token punctuation">.</span><span class="token function">w</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"Oops!!!"</span></span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    override fun run() &#123;
+        val now = System.currentTimeMillis()
+        task.run()
+        val cost = System.currentTimeMillis() - now
+        val delay = now - pendingRunAt
+        if (delay &lt; 10 &amp;&amp; cost > 160) &#123;
+            Log.w(TAG, "Oops!!!")
+        &#125;
+    &#125;
+&#125;</code></pre>
 
 <p>需要将所有<code>handler.post</code>与<code>handler.postDelayed</code>中的Runnable换成上面的代理类，在代理类中观察是否有耗时操作，一般<code>delay</code>比较小，说明此操作前没有耗时操作导致当前操作延迟，而<code>cost</code>值比较大，说明会引起之后操作延迟过大，可以在打印出具体的<code>delay</code>与<code>cost</code>值进行操作前后比较。<br>不过这种方式的缺点是不够灵活，需要将大量的，甚至是所有的post操作进行代理。</p>
 

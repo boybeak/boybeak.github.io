@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -204,7 +208,7 @@
     </div>
     <div class="article-content">
       <p>AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。</p>
-<h2 id="系统启动流程"><a href="#系统启动流程" class="headerlink" title="系统启动流程"></a>系统启动流程</h2><pre><code class="language-mermaid">
+<h2 id="系统启动流程"><a href="#系统启动流程" class="headerlink" title="系统启动流程"></a>系统启动流程</h2><pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
     style A fill:#fff
     style F fill:#5befb9
@@ -213,8 +217,7 @@ graph TD;
     B --&gt; C(&quot;init(pid=1)/C++ Framework Native&quot;);
     C --&gt; D(Zygote/Android Runtime);
     D --&gt; E(System Server/Java Framework);
-    E --&gt; F(Apps);
-</code></pre>
+    E --&gt; F(Apps);</code></pre>
 <blockquote>
 <p><strong>面试题：一个应用启动，为什么不从init进程或者SystemServer进程fork，而是从Zygote进程fork。</strong></p>
 <p><em>Zygote作为一个孵化器，可以提前加载一些资源，这样fork时给予<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48147304">Copy-on-Write</a>机制创建的其他进程能够直接利用这些资源，而不用重新加载。比如system_server就可以直接使用Zygote中的JNI函数、共享库、常用的类以及主题资源。</em></p>
@@ -223,15 +226,14 @@ graph TD;
 <p>在POSIX标准中，fork行为是这样的：赋值整个用户空间的数据（通常使用copy-on-write的策略，所以可以实现速度很快）以及所有系统对象，然后仅复制当前线程到子进程。这里：所有父进程中别的线程，到了子进程都是突然蒸发掉的。</p>
 <p>对于锁来说，从OS看，每个锁都有一个所有者，即最后依次lock它的线程。假设这样一个环境，在fork之前，有一个子线程lock了某个锁，获得了对锁的所有权，fork以后，在子进程中，所有的额外线程都人间蒸发了，而锁却被正常赋值了，在子进程看来，这个锁没有主人，所以没有任何人可以对它解锁，当子进程中的某个线程想lock这个锁时候，不再有任何手段可以解开了，程序发生死锁。</p>
 </blockquote>
-<h2 id="Zygote集成启动"><a href="#Zygote集成启动" class="headerlink" title="Zygote集成启动"></a>Zygote集成启动</h2><pre><code class="language-mermaid">
+<h2 id="Zygote集成启动"><a href="#Zygote集成启动" class="headerlink" title="Zygote集成启动"></a>Zygote集成启动</h2><pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
     A[&quot;init.cpp - main()&quot;] --&gt; B[解析init.zygote.rc];
     B --&gt; C[&quot;启动main类型服务 do_class_start()&quot;];
     C --&gt; D[&quot;启动zygote服务 start()&quot;];
     D --&gt; E[&quot;创建Zygote进程 fork()&quot;];
-    E --&gt; |execv|F[&quot;app_main.cpp - main()&quot;];
-</code></pre>
-<h2 id="System-Server进程启动"><a href="#System-Server进程启动" class="headerlink" title="System Server进程启动"></a>System Server进程启动</h2><pre><code class="language-mermaid">
+    E --&gt; |execv|F[&quot;app_main.cpp - main()&quot;];</code></pre>
+<h2 id="System-Server进程启动"><a href="#System-Server进程启动" class="headerlink" title="System Server进程启动"></a>System Server进程启动</h2><pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
     A[&quot;app_main.cpp - main()&quot;] --&gt; B[&quot;AndroidRuntime.start()&quot;];
     B --&gt; C[&quot;startVM()&quot;];
@@ -240,14 +242,13 @@ graph TD;
     E --&gt; F[&quot;registerZygoteSocket()&quot;];
     F --&gt; G[&quot;preload&quot;];
     G --&gt; H[&quot;startSystemServer&quot;];
-    H --&gt; I[&quot;runSelectLoop&quot;];
-</code></pre>
+    H --&gt; I[&quot;runSelectLoop&quot;];</code></pre>
 <p><a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/services/java/com/android/server/SystemServer.java">SystemServer.java</a></p>
 <h2 id="AMS启动流程"><a href="#AMS启动流程" class="headerlink" title="AMS启动流程"></a>AMS启动流程</h2><p><a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/am/ActivityManagerService.java">ActivityManagerService.java</a></p>
 <p>在SystemServer的<code>startBootstrapServices</code>方法中，开始了AMS的启动。</p>
 <h3 id="AMS启动过程中做了哪些事？"><a href="#AMS启动过程中做了哪些事？" class="headerlink" title="AMS启动过程中做了哪些事？"></a>AMS启动过程中做了哪些事？</h3><p>与<code>adb shell dumpsys</code>相关的一些process服务，比如<code>meminfo</code>、<code>gfxinfo</code>、<code>dbinfo</code>等，具体请参考<code>setSystemProcess</code>方法。</p>
 <h2 id="Activity启动流程"><a href="#Activity启动流程" class="headerlink" title="Activity启动流程"></a>Activity启动流程</h2><p>ActivityStactSupervisor</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 flowchart LR;
 A[ActivityStactSupervisor] --&gt; B[mHomeStack];
 A --&gt; C[mFocusedStack];
@@ -264,25 +265,23 @@ subgraph ActivityStack[&quot;ActivityStack&quot;]
   end
 end
 B --&gt; ActivityStack;
-C --&gt; ActivityStack;
-</code></pre>
+C --&gt; ActivityStack;</code></pre>
 <p>Activity启动简图</p>
 <blockquote>
 <p>面试题：Zygote为什么不采用Binder机制进行IPC通信。</p>
 <p>Binder机制中存在Binder线程池，是多线程的，如果Zygote采用Binder的话，就存在了上面说的fork多线程死锁问题了。其实严格来说，Binder机制不一定要多线程，所谓的Binder线程只不过是在循环读取Binder驱动消息而已，只注册一个Binder线程也是可以工作的，比如ServiceManager，实际上Zygote尽管没有采用Binder机制，它也不是单线程的，但它在fork前主动停止了其他线程，fork后重新启动了。</p>
 </blockquote>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
   A([Launcher]) --&gt; B&#123;&quot;SystemServer - AMS&lt;br&gt;(app是否启动)&quot;&#125;;
   B --&gt; |否, 请求创建app进程|C[Zygote];
   B -.-&gt; |&quot;是, 1. ActivityManager.getService()&quot;|D(App):::app;
   C --&gt;|fork| D
   D --&gt;|&quot;2. mgr.attachApplication(mAppThread, startSeq)&quot;| B;
-	classDef app fill:#5befb9
-</code></pre>
+	classDef app fill:#5befb9</code></pre>
 <p>Activity启动细节图</p>
 <p><strong>Launcher到AMS阶段</strong></p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 sequenceDiagram
 	participant A as Launcher
 	participant B as Activity
@@ -294,10 +293,9 @@ sequenceDiagram
 	B --&gt; B: startActivityForResult
 	B -&gt;&gt; C: execStartActivity
 	C -&gt;&gt; D: startActivity
-	D -&gt;&gt; E: startActivity
-</code></pre>
+	D -&gt;&gt; E: startActivity</code></pre>
 <p><strong>AMS到ApplicationThread阶段</strong></p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 sequenceDiagram
 	participant A as AMS
 	participant B as ActivityStart
@@ -309,8 +307,7 @@ sequenceDiagram
 	B -&gt;&gt; B: startActivityLocked
 	B -&gt;&gt; B: startActivity
 	B -&gt;&gt; B: startActivityUnchecked
-	B -&gt;&gt; C: startSpecificActivityLocked
-</code></pre>
+	B -&gt;&gt; C: startSpecificActivityLocked</code></pre>
 <p><strong>ApplicationThread到Activity</strong></p>
 
     </div>

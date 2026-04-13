@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -211,80 +215,79 @@
 <p>缓存模块是Glide中非常重要的部分，Glide图片加载的高效性，几乎有一半功劳都在这里了。</p>
 <p>一般来说，Glide有三级缓存，就是<strong>内存缓存</strong>、<strong>磁盘缓存</strong>和<strong>网络缓存</strong>。</p>
 <p>先来看缓存流程图，如下：</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
 style A fill:#99ccff
 style B1 fill:#aaffaa
 A(发起请求) --&gt; B&#123;1. 通过&lt;br&gt;ActiveResources&lt;br&gt;获取资源&#125; --&gt; |命中|B1([加载完成]);
 B --&gt; |未命中|C&#123;2. 通过&lt;br&gt;MemoryCache&lt;br&gt;获取资源&#125; --&gt; |命中|C1[缓存至&lt;br&gt;ActiveResources] --&gt; B1;
 C --&gt; |未命中|D&#123;3. 通过&lt;br&gt;DiskCache&lt;br&gt;获取资源&#125; --&gt; |命中|D1[缓存至&lt;br&gt;MemoryCache] --&gt; C1;
-D --&gt; |未命中|E[&quot;4. 通过数据源(网络、文件等)&lt;br&gt;加载数据&quot;] --&gt; E1[缓存至&lt;br&gt;DiskCache] --&gt; D1;
-</code></pre>
+D --&gt; |未命中|E[&quot;4. 通过数据源(网络、文件等)&lt;br&gt;加载数据&quot;] --&gt; E1[缓存至&lt;br&gt;DiskCache] --&gt; D1;</code></pre>
 <h2 id="内存缓存"><a href="#内存缓存" class="headerlink" title="内存缓存"></a>内存缓存</h2><p>内存缓存主要靠三个部分组成：<strong>ActiveResources</strong>、<strong>MemoryCache</strong>和<strong>BitmapPool</strong>。</p>
 <h3 id="ActiveResources"><a href="#ActiveResources" class="headerlink" title="ActiveResources"></a>ActiveResources</h3><p>ActiveResources表示当前正在活动中的资源。ActiveResources通过一个<code>Map&lt;Key, ResourceWeakReference&gt;</code>来保存活动中的资源，其中的ResourceWeakReference就是资源数据，在构建这个ResourceWeakReference的时候必须传入一个ReferenceQueue用来检测资源是否被回收。</p>
 <blockquote>
 <p><strong>Q1：如何探知WeakReference中的值被回收了呢？</strong></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">ReferenceQueue</span> queue <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">;</span>
-<span class="token class-name">WeakReference</span> wr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakReference</span><span class="token punctuation">(</span>value<span class="token punctuation">,</span> queue<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">ReferenceQueue queue = ...;
+WeakReference wr = new WeakReference(value, queue);</code></pre>
 
 <p>当构建WeakReference的时候，如果传入了queue参数，则在value被回收的时候，wr会被加入到queue中去，这样，通过检测queue中是否有值，就可以探知value是否被回收了。</p>
 </blockquote>
 <p>那么，在何时去探知ReferenceQueue中的值呢？我们查看ActiveResources的关键代码：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/*构造方法中，通过monitorClearedResourcesExecutor执行了cleanReferenceQueue()方法。
-*/</span>
-<span class="token class-name">ActiveResources</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> isActiveResourceRetentionAllowed<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">this</span><span class="token punctuation">(</span>
-    isActiveResourceRetentionAllowed<span class="token punctuation">,</span>
-    <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>concurrent<span class="token punctuation">.</span></span>Executors</span><span class="token punctuation">.</span><span class="token function">newSingleThreadExecutor</span><span class="token punctuation">(</span>
-      <span class="token keyword">new</span> <span class="token class-name">ThreadFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token annotation punctuation">@Override</span>
-        <span class="token keyword">public</span> <span class="token class-name">Thread</span> <span class="token function">newThread</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token keyword">final</span> <span class="token class-name">Runnable</span> r<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-          <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>
-            <span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-              <span class="token annotation punctuation">@Override</span>
-              <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token class-name">Process</span><span class="token punctuation">.</span><span class="token function">setThreadPriority</span><span class="token punctuation">(</span><span class="token class-name">Process</span><span class="token punctuation">.</span><span class="token constant">THREAD_PRIORITY_BACKGROUND</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                r<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-              <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-            <span class="token string">"glide-active-resources"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+<pre class="language-java"><code class="language-java">/*构造方法中，通过monitorClearedResourcesExecutor执行了cleanReferenceQueue()方法。
+*/
+ActiveResources(boolean isActiveResourceRetentionAllowed) &#123;
+  this(
+    isActiveResourceRetentionAllowed,
+    java.util.concurrent.Executors.newSingleThreadExecutor(
+      new ThreadFactory() &#123;
+        @Override
+        public Thread newThread(@NonNull final Runnable r) &#123;
+          return new Thread(
+            new Runnable() &#123;
+              @Override
+              public void run() &#123;
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                r.run();
+              &#125;
+            &#125;,
+            "glide-active-resources");
+        &#125;
+      &#125;));
+&#125;
 
-<span class="token annotation punctuation">@VisibleForTesting</span>
-<span class="token class-name">ActiveResources</span><span class="token punctuation">(</span>
-  <span class="token keyword">boolean</span> isActiveResourceRetentionAllowed<span class="token punctuation">,</span> <span class="token class-name">Executor</span> monitorClearedResourcesExecutor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>isActiveResourceRetentionAllowed <span class="token operator">=</span> isActiveResourceRetentionAllowed<span class="token punctuation">;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>monitorClearedResourcesExecutor <span class="token operator">=</span> monitorClearedResourcesExecutor<span class="token punctuation">;</span>
+@VisibleForTesting
+ActiveResources(
+  boolean isActiveResourceRetentionAllowed, Executor monitorClearedResourcesExecutor) &#123;
+  this.isActiveResourceRetentionAllowed = isActiveResourceRetentionAllowed;
+  this.monitorClearedResourcesExecutor = monitorClearedResourcesExecutor;
 
-  monitorClearedResourcesExecutor<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>
-    <span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token annotation punctuation">@Override</span>
-      <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token function">cleanReferenceQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
+  monitorClearedResourcesExecutor.execute(
+    new Runnable() &#123;
+      @Override
+      public void run() &#123;
+        cleanReferenceQueue();
+      &#125;
+    &#125;);
+&#125;
 
 
-<span class="token keyword">void</span> <span class="token function">cleanReferenceQueue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>isShutdown<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">ResourceWeakReference</span> ref <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">ResourceWeakReference</span><span class="token punctuation">)</span> resourceReferenceQueue<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token function">cleanupActiveReference</span><span class="token punctuation">(</span>ref<span class="token punctuation">)</span><span class="token punctuation">;</span>
+void cleanReferenceQueue() &#123;
+  while (!isShutdown) &#123;
+    try &#123;
+      ResourceWeakReference ref = (ResourceWeakReference) resourceReferenceQueue.remove();
+      cleanupActiveReference(ref);
 
-      <span class="token comment">// This section for testing only.</span>
-      <span class="token class-name">DequeuedResourceCallback</span> current <span class="token operator">=</span> cb<span class="token punctuation">;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>current <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        current<span class="token punctuation">.</span><span class="token function">onResourceDequeued</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
-      <span class="token comment">// End for testing only.</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interrupt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      // This section for testing only.
+      DequeuedResourceCallback current = cb;
+      if (current != null) &#123;
+        current.onResourceDequeued();
+      &#125;
+      // End for testing only.
+    &#125; catch (InterruptedException e) &#123;
+      Thread.currentThread().interrupt();
+    &#125;
+  &#125;
+&#125;</code></pre>
 
 <p>我们通过代码可以看出，<code>cleanReferenceQueue</code>是一个靠<code>isShutdown</code>变量控制的<strong>死循环</strong>方法，这个方法执行在一个优先级为<code>THREAD_PRIORITY_BACKGROUND</code>的线程上。</p>
 <blockquote>
@@ -296,15 +299,15 @@ D --&gt; |未命中|E[&quot;4. 通过数据源(网络、文件等)&lt;br&gt;加�
 </blockquote>
 <p><strong>那么被回收了的资源去哪里了呢？</strong></p>
 <p>我们查看<code>cleanupActiveReference</code>方法，得知，通过<em>ResourceListener#onResourceReleased</em>回调，交给了<strong>Engine</strong>来处理，我们查看Engine的onResourceReleased方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onResourceReleased</span><span class="token punctuation">(</span><span class="token class-name">Key</span> cacheKey<span class="token punctuation">,</span> <span class="token class-name">EngineResource</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> resource<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  activeResources<span class="token punctuation">.</span><span class="token function">deactivate</span><span class="token punctuation">(</span>cacheKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>resource<span class="token punctuation">.</span><span class="token function">isMemoryCacheable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>cacheKey<span class="token punctuation">,</span> resource<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-    resourceRecycler<span class="token punctuation">.</span><span class="token function">recycle</span><span class="token punctuation">(</span>resource<span class="token punctuation">,</span> <span class="token comment">/*forceNextFrame=*/</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">@Override
+public void onResourceReleased(Key cacheKey, EngineResource&lt;?> resource) &#123;
+  activeResources.deactivate(cacheKey);
+  if (resource.isMemoryCacheable()) &#123;
+    cache.put(cacheKey, resource);
+  &#125; else &#123;
+    resourceRecycler.recycle(resource, /*forceNextFrame=*/ false);
+  &#125;
+&#125;</code></pre>
 
 <p>从这里我们发现，这里出现了两种情况：</p>
 <ol>
@@ -313,90 +316,90 @@ D --&gt; |未命中|E[&quot;4. 通过数据源(网络、文件等)&lt;br&gt;加�
 </ol>
 <p>在开始MemoryCache和BitmapPool前，需要先了解一下<strong>MemorySizeCalculator</strong>这个类，这个类是用来计算 BitmapPool 、ArrayPool 以及 MemoryCache <strong>大小</strong>的。</p>
 <h3 id="MemoryCache"><a href="#MemoryCache" class="headerlink" title="MemoryCache"></a>MemoryCache</h3><p>MemoryCache的具体实现类是LruResourceCache，而实际的逻辑方法，都在其父类LruCache中，以put方法为例。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Nullable</span>
-<span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token class-name">Y</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">T</span> key<span class="token punctuation">,</span> <span class="token annotation punctuation">@Nullable</span> <span class="token class-name">Y</span> item<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">final</span> <span class="token keyword">int</span> itemSize <span class="token operator">=</span> <span class="token function">getSize</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>itemSize <span class="token operator">>=</span> maxSize<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">onItemEvicted</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
+<pre class="language-java"><code class="language-java">@Nullable
+public synchronized Y put(@NonNull T key, @Nullable Y item) &#123;
+  final int itemSize = getSize(item);
+  if (itemSize >= maxSize) &#123;
+    onItemEvicted(key, item);
+    return null;
+  &#125;
 
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>item <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    currentSize <span class="token operator">+=</span> itemSize<span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token annotation punctuation">@Nullable</span> <span class="token class-name">Entry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Y</span><span class="token punctuation">></span></span> old <span class="token operator">=</span> cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> item <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token keyword">null</span> <span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Entry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>item<span class="token punctuation">,</span> itemSize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>old <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    currentSize <span class="token operator">-=</span> old<span class="token punctuation">.</span>size<span class="token punctuation">;</span>
+  if (item != null) &#123;
+    currentSize += itemSize;
+  &#125;
+  @Nullable Entry&lt;Y> old = cache.put(key, item == null ? null : new Entry&lt;>(item, itemSize));
+  if (old != null) &#123;
+    currentSize -= old.size;
 
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>old<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token function">onItemEvicted</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> old<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token function">evict</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    if (!old.value.equals(item)) &#123;
+      onItemEvicted(key, old.value);
+    &#125;
+  &#125;
+  evict();
 
-  <span class="token keyword">return</span> old <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">?</span> old<span class="token punctuation">.</span>value <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  return old != null ? old.value : null;
+&#125;</code></pre>
 
 <p>当有一个新的item被put进去以后，会替换出一个老的值old，如果old非为空，则需要将当前容量减去old的大小，如果old并非新的item，则需要通过onItemEvicted进行回调，通知有老值被**“驱逐”<strong>了。最后还要执行一次evict方法，按照LRU算法，将超出maxSize的item</strong>“驱逐”**出去，以确保在maxSize范围内。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">protected</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">trimToSize</span><span class="token punctuation">(</span><span class="token keyword">long</span> size<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token class-name">Map<span class="token punctuation">.</span>Entry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token class-name">Entry</span><span class="token punctuation">&lt;</span><span class="token class-name">Y</span><span class="token punctuation">></span><span class="token punctuation">></span></span> last<span class="token punctuation">;</span>
-  <span class="token class-name">Iterator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Map<span class="token punctuation">.</span>Entry</span><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">,</span> <span class="token class-name">Entry</span><span class="token punctuation">&lt;</span><span class="token class-name">Y</span><span class="token punctuation">></span><span class="token punctuation">></span><span class="token punctuation">></span></span> cacheIterator<span class="token punctuation">;</span>
-  <span class="token keyword">while</span> <span class="token punctuation">(</span>currentSize <span class="token operator">></span> size<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    cacheIterator <span class="token operator">=</span> cache<span class="token punctuation">.</span><span class="token function">entrySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">iterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    last <span class="token operator">=</span> cacheIterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">final</span> <span class="token class-name">Entry</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Y</span><span class="token punctuation">></span></span> toRemove <span class="token operator">=</span> last<span class="token punctuation">.</span><span class="token function">getValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    currentSize <span class="token operator">-=</span> toRemove<span class="token punctuation">.</span>size<span class="token punctuation">;</span>
-    <span class="token keyword">final</span> <span class="token class-name">T</span> key <span class="token operator">=</span> last<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    cacheIterator<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">onItemEvicted</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> toRemove<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+<pre class="language-java"><code class="language-java">protected synchronized void trimToSize(long size) &#123;
+  Map.Entry&lt;T, Entry&lt;Y>> last;
+  Iterator&lt;Map.Entry&lt;T, Entry&lt;Y>>> cacheIterator;
+  while (currentSize > size) &#123;
+    cacheIterator = cache.entrySet().iterator();
+    last = cacheIterator.next();
+    final Entry&lt;Y> toRemove = last.getValue();
+    currentSize -= toRemove.size;
+    final T key = last.getKey();
+    cacheIterator.remove();
+    onItemEvicted(key, toRemove.value);
+  &#125;
+&#125;
 
-<span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">evict</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token function">trimToSize</span><span class="token punctuation">(</span>maxSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+private void evict() &#123;
+  trimToSize(maxSize);
+&#125;</code></pre>
 
 <p>被**”驱逐”*<em>的值去哪里了呢？我们查看</em>MemoryCache<em>类的源码，可以知道是通过</em>ResourceRemovedListener<em>回调给了</em>Engine*，在<em>Engine</em>中我们查看<em>onResourceRemoved</em>方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onResourceRemoved</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token keyword">final</span> <span class="token class-name">Resource</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> resource<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token comment">// Avoid deadlock with RequestManagers when recycling triggers recursive clear() calls.</span>
-  <span class="token comment">// See b/145519760.</span>
-  resourceRecycler<span class="token punctuation">.</span><span class="token function">recycle</span><span class="token punctuation">(</span>resource<span class="token punctuation">,</span> <span class="token comment">/*forceNextFrame=*/</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">@Override
+public void onResourceRemoved(@NonNull final Resource&lt;?> resource) &#123;
+  // Avoid deadlock with RequestManagers when recycling triggers recursive clear() calls.
+  // See b/145519760.
+  resourceRecycler.recycle(resource, /*forceNextFrame=*/ true);
+&#125;</code></pre>
 
 <p>我们可以看到，这里同样是通过resourceRecycler进行了回收。在这里，则是交给resource自己的recycle()方法来处理，比如，<em>BitmapResource</em>是交给了<em>BitmapPool</em>进行处理。</p>
 <h3 id="BitmapPool"><a href="#BitmapPool" class="headerlink" title="BitmapPool"></a>BitmapPool</h3><p>这里是专门用来存放被回收的Bitmap的，其中<strong>BitmapDrawableResource</strong>、<strong>BitmapResource</strong>都持有一个<strong>BitmapPool</strong>变量，在执行recycle()方法时候，调用*BitmapPool#put()*方法。我们来看一下这个BitmapPool的默认实现类<strong>LruBitmapPool</strong>的方法实现。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
-<span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">put</span><span class="token punctuation">(</span><span class="token class-name">Bitmap</span> bitmap<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>bitmap <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NullPointerException</span><span class="token punctuation">(</span><span class="token string">"Bitmap must not be null"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>bitmap<span class="token punctuation">.</span><span class="token function">isRecycled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalStateException</span><span class="token punctuation">(</span><span class="token string">"Cannot pool recycled bitmap"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>bitmap<span class="token punctuation">.</span><span class="token function">isMutable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-      <span class="token operator">||</span> strategy<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span> <span class="token operator">></span> maxSize
-      <span class="token operator">||</span> <span class="token operator">!</span>allowedConfigs<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">.</span><span class="token function">getConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">isLoggable</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token constant">VERBOSE</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span>
-        <span class="token constant">TAG</span><span class="token punctuation">,</span>
-        <span class="token string">"Reject bitmap from pool"</span>
-        <span class="token operator">+</span> <span class="token string">", bitmap: "</span>
-        <span class="token operator">+</span> strategy<span class="token punctuation">.</span><span class="token function">logBitmap</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span>
-        <span class="token operator">+</span> <span class="token string">", is mutable: "</span>
-        <span class="token operator">+</span> bitmap<span class="token punctuation">.</span><span class="token function">isMutable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token operator">+</span> <span class="token string">", is allowed config: "</span>
-        <span class="token operator">+</span> allowedConfigs<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">.</span><span class="token function">getConfig</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    bitmap<span class="token punctuation">.</span><span class="token function">recycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">return</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
+<pre class="language-java"><code class="language-java">@Override
+public synchronized void put(Bitmap bitmap) &#123;
+  if (bitmap == null) &#123;
+    throw new NullPointerException("Bitmap must not be null");
+  &#125;
+  if (bitmap.isRecycled()) &#123;
+    throw new IllegalStateException("Cannot pool recycled bitmap");
+  &#125;
+  if (!bitmap.isMutable()
+      || strategy.getSize(bitmap) > maxSize
+      || !allowedConfigs.contains(bitmap.getConfig())) &#123;
+    if (Log.isLoggable(TAG, Log.VERBOSE)) &#123;
+      Log.v(
+        TAG,
+        "Reject bitmap from pool"
+        + ", bitmap: "
+        + strategy.logBitmap(bitmap)
+        + ", is mutable: "
+        + bitmap.isMutable()
+        + ", is allowed config: "
+        + allowedConfigs.contains(bitmap.getConfig()));
+    &#125;
+    bitmap.recycle();
+    return;
+  &#125;
 
-  <span class="token keyword">final</span> <span class="token keyword">int</span> size <span class="token operator">=</span> strategy<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  strategy<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  tracker<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  final int size = strategy.getSize(bitmap);
+  strategy.put(bitmap);
+  tracker.add(bitmap);
+	...
+&#125;</code></pre>
 
 <p>这里我们可以看出，当Bitmap在三种情况下是不会被BitmapPool缓存起来的：</p>
 <ol>
@@ -407,17 +410,17 @@ D --&gt; |未命中|E[&quot;4. 通过数据源(网络、文件等)&lt;br&gt;加�
 <p>在这种情况，bitmap就被直接recycle掉，而不是放入缓存等待下次使用。</p>
 <p>如果不满足这三种情况，则会被strategy缓存起来，等待下次使用。</p>
 <p>我们再看LruBitmapPool#get()方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
-<span class="token annotation punctuation">@NonNull</span>
-<span class="token keyword">public</span> <span class="token class-name">Bitmap</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> width<span class="token punctuation">,</span> <span class="token keyword">int</span> height<span class="token punctuation">,</span> <span class="token class-name">Bitmap<span class="token punctuation">.</span>Config</span> config<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token class-name">Bitmap</span> result <span class="token operator">=</span> <span class="token function">getDirtyOrNull</span><span class="token punctuation">(</span>width<span class="token punctuation">,</span> height<span class="token punctuation">,</span> config<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    result<span class="token punctuation">.</span><span class="token function">eraseColor</span><span class="token punctuation">(</span><span class="token class-name">Color</span><span class="token punctuation">.</span><span class="token constant">TRANSPARENT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-    result <span class="token operator">=</span> <span class="token function">createBitmap</span><span class="token punctuation">(</span>width<span class="token punctuation">,</span> height<span class="token punctuation">,</span> config<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">@Override
+@NonNull
+public Bitmap get(int width, int height, Bitmap.Config config) &#123;
+  Bitmap result = getDirtyOrNull(width, height, config);
+  if (result != null) &#123;
+    result.eraseColor(Color.TRANSPARENT);
+  &#125; else &#123;
+    result = createBitmap(width, height, config);
+  &#125;
+  return result;
+&#125;</code></pre>
 
 <p>我们可以看到，当能够查询到符合条件的Bitmap的时候，会先通过eraseColor方法，将其变成透明图片，然后再交给调用者来使用；如果查询不到，则创建一个新图交给调用者来使用。</p>
 <blockquote>
@@ -427,108 +430,108 @@ D --&gt; |未命中|E[&quot;4. 通过数据源(网络、文件等)&lt;br&gt;加�
 <p>在LruArrayPool中，通过groupedMap来缓存数据，而缓存数据的byte字节数是通过<strong>ArrayAdapterInterface</strong>来计算的，ArrayAdapterInterface是一个接口，实现类有两个：<strong>IntegerArrayAdapter</strong>和<strong>ByteArrayAdapter</strong>，分别对应缓存int[].class和byte[].class。</p>
 <p>StreamGifDecoder和StreamBitmapDecoder都有一个ArrayPool成员。解码过程中需要用到byte[]，但不是直接new byte[]，而是调用<code>ArrayPool.get()</code>从对象池中拿，用完了归还。</p>
 <h2 id="DiskCache"><a href="#DiskCache" class="headerlink" title="DiskCache"></a>DiskCache</h2><p>在上一章[Glide源码分析与自我实现(一)——数据加载主流程](&#x2F;源码分析系列&#x2F;Glide源码分析与自我实现2.md)中，提到过数据加载的主流程，其中一个非常重要的类是 <strong>DecodeJob</strong>，在这个类的<code>getNextGenerator</code>方法中，返回的<strong>SourceGenerator</strong>会用来加载远程数据，但是这个方法不止返回这一个<strong>DataFetcherGenerator</strong>类，这是一个通过条件判断，返回不同DataFetcherGenerator类的方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">DataFetcherGenerator</span> <span class="token function">getNextGenerator</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">switch</span> <span class="token punctuation">(</span>stage<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">case</span> <span class="token constant">RESOURCE_CACHE</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ResourceCacheGenerator</span><span class="token punctuation">(</span>decodeHelper<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token constant">DATA_CACHE</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">DataCacheGenerator</span><span class="token punctuation">(</span>decodeHelper<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token constant">SOURCE</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SourceGenerator</span><span class="token punctuation">(</span>decodeHelper<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token constant">FINISHED</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-    <span class="token keyword">default</span><span class="token operator">:</span>
-      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalStateException</span><span class="token punctuation">(</span><span class="token string">"Unrecognized stage: "</span> <span class="token operator">+</span> stage<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">private DataFetcherGenerator getNextGenerator() &#123;
+  switch (stage) &#123;
+    case RESOURCE_CACHE:
+      return new ResourceCacheGenerator(decodeHelper, this);
+    case DATA_CACHE:
+      return new DataCacheGenerator(decodeHelper, this);
+    case SOURCE:
+      return new SourceGenerator(decodeHelper, this);
+    case FINISHED:
+      return null;
+    default:
+      throw new IllegalStateException("Unrecognized stage: " + stage);
+  &#125;
+&#125;</code></pre>
 
 <p>实际上，这是依次递进的<strong>有限状态机</strong>设计模式，当一个获取数据请求到来时候，此时是默认状态INITIALIZE，然后通过<code>getNextStage</code>方法判断下一个状态是什么，再按照新的状态获取DataFetcherGenerator，然后随着任务的执行，不断改变状态。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token class-name">Stage</span> <span class="token function">getNextStage</span><span class="token punctuation">(</span><span class="token class-name">Stage</span> current<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">switch</span> <span class="token punctuation">(</span>current<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">case</span> <span class="token constant">INITIALIZE</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> diskCacheStrategy<span class="token punctuation">.</span><span class="token function">decodeCachedResource</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token operator">?</span> <span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">RESOURCE_CACHE</span>
-        <span class="token operator">:</span> <span class="token function">getNextStage</span><span class="token punctuation">(</span><span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">RESOURCE_CACHE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token constant">RESOURCE_CACHE</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> diskCacheStrategy<span class="token punctuation">.</span><span class="token function">decodeCachedData</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token operator">?</span> <span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">DATA_CACHE</span>
-        <span class="token operator">:</span> <span class="token function">getNextStage</span><span class="token punctuation">(</span><span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">DATA_CACHE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token constant">DATA_CACHE</span><span class="token operator">:</span>
-      <span class="token comment">// Skip loading from source if the user opted to only retrieve the resource from cache.</span>
-      <span class="token keyword">return</span> onlyRetrieveFromCache <span class="token operator">?</span> <span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">FINISHED</span> <span class="token operator">:</span> <span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">SOURCE</span><span class="token punctuation">;</span>
-    <span class="token keyword">case</span> <span class="token constant">SOURCE</span><span class="token operator">:</span>
-    <span class="token keyword">case</span> <span class="token constant">FINISHED</span><span class="token operator">:</span>
-      <span class="token keyword">return</span> <span class="token class-name">Stage</span><span class="token punctuation">.</span><span class="token constant">FINISHED</span><span class="token punctuation">;</span>
-    <span class="token keyword">default</span><span class="token operator">:</span>
-      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Unrecognized stage: "</span> <span class="token operator">+</span> current<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">private Stage getNextStage(Stage current) &#123;
+  switch (current) &#123;
+    case INITIALIZE:
+      return diskCacheStrategy.decodeCachedResource()
+        ? Stage.RESOURCE_CACHE
+        : getNextStage(Stage.RESOURCE_CACHE);
+    case RESOURCE_CACHE:
+      return diskCacheStrategy.decodeCachedData()
+        ? Stage.DATA_CACHE
+        : getNextStage(Stage.DATA_CACHE);
+    case DATA_CACHE:
+      // Skip loading from source if the user opted to only retrieve the resource from cache.
+      return onlyRetrieveFromCache ? Stage.FINISHED : Stage.SOURCE;
+    case SOURCE:
+    case FINISHED:
+      return Stage.FINISHED;
+    default:
+      throw new IllegalArgumentException("Unrecognized stage: " + current);
+  &#125;
+&#125;</code></pre>
 
 <p>其状态变更顺序为INITIALIZE -&gt; RESOURCE_CACHE -&gt; DATA_CACHE -&gt; SOURCE，代表着ResourceCacheGenerator、DataCacheGenerator和SourceGenerator，当从ResourceCahce中拿不到数据，则向DataCacheGenerator请求数据，如果还是拿不到，则通过SourceGenerator去请求数据了。</p>
 <p>在这个过程中，SourceGenerator向DiskCache中写入数据，ResourceCacheGenerator和DataCacheGenerator从DiskCache中读取数据。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">ResourceCacheGenerator</span> <span class="token keyword">implements</span> <span class="token class-name">DataFetcherGenerator</span><span class="token punctuation">,</span>
+<pre class="language-java"><code class="language-java">class ResourceCacheGenerator implements DataFetcherGenerator,
 
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">startNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-      currentKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ResourceCacheKey</span><span class="token punctuation">(</span>sourceId<span class="token punctuation">,</span> helper<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> helper<span class="token punctuation">.</span><span class="token function">getWidth</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-          helper<span class="token punctuation">.</span><span class="token function">getHeight</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> transformation<span class="token punctuation">,</span> resourceClass<span class="token punctuation">,</span> helper<span class="token punctuation">.</span><span class="token function">getOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      cacheFile <span class="token operator">=</span> helper<span class="token punctuation">.</span><span class="token function">getDiskCache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>currentKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>cacheFile <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>sourceKey <span class="token operator">=</span> sourceId<span class="token punctuation">;</span>
-        modelLoaders <span class="token operator">=</span> helper<span class="token punctuation">.</span><span class="token function">getModelLoaders</span><span class="token punctuation">(</span>cacheFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        modelLoaderIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+  @Override
+  public boolean startNext() &#123;
+      ...
+      currentKey = new ResourceCacheKey(sourceId, helper.getSignature(), helper.getWidth(),
+          helper.getHeight(), transformation, resourceClass, helper.getOptions());
+      cacheFile = helper.getDiskCache().get(currentKey);
+      if (cacheFile != null) &#123;
+        this.sourceKey = sourceId;
+        modelLoaders = helper.getModelLoaders(cacheFile);
+        modelLoaderIndex = 0;
+      &#125;
+    &#125;
+  &#125;
+&#125;
 
-<span class="token keyword">class</span> <span class="token class-name">DataCacheGenerator</span> <span class="token keyword">implements</span> <span class="token class-name">DataFetcherGenerator</span><span class="token punctuation">,</span>
+class DataCacheGenerator implements DataFetcherGenerator,
 
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">startNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>modelLoaders <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">||</span> <span class="token operator">!</span><span class="token function">hasNextModelLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-      <span class="token class-name">Key</span> sourceId <span class="token operator">=</span> cacheKeys<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>sourceIdIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token class-name">Key</span> originalKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DataCacheKey</span><span class="token punctuation">(</span>sourceId<span class="token punctuation">,</span> helper<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      cacheFile <span class="token operator">=</span> helper<span class="token punctuation">.</span><span class="token function">getDiskCache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>originalKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>cacheFile <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>sourceKey <span class="token operator">=</span> sourceId<span class="token punctuation">;</span>
-        modelLoaders <span class="token operator">=</span> helper<span class="token punctuation">.</span><span class="token function">getModelLoaders</span><span class="token punctuation">(</span>cacheFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        modelLoaderIndex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+  @Override
+  public boolean startNext() &#123;
+    while (modelLoaders == null || !hasNextModelLoader()) &#123;
+      ...
+      Key sourceId = cacheKeys.get(sourceIdIndex);
+      Key originalKey = new DataCacheKey(sourceId, helper.getSignature());
+      cacheFile = helper.getDiskCache().get(originalKey);
+      if (cacheFile != null) &#123;
+        this.sourceKey = sourceId;
+        modelLoaders = helper.getModelLoaders(cacheFile);
+        modelLoaderIndex = 0;
+      &#125;
+    &#125;
+&#125;
 
-<span class="token keyword">class</span> <span class="token class-name">SourceGenerator</span> <span class="token keyword">implements</span> <span class="token class-name">DataFetcherGenerator</span> <span class="token punctuation">&#123;</span>
+class SourceGenerator implements DataFetcherGenerator &#123;
 
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">startNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>dataToCache <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">Object</span> data <span class="token operator">=</span> dataToCache<span class="token punctuation">;</span>
-      dataToCache <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-      <span class="token function">cacheData</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-  <span class="token punctuation">&#125;</span>
+  @Override
+  public boolean startNext() &#123;
+    if (dataToCache != null) &#123;
+      Object data = dataToCache;
+      dataToCache = null;
+      cacheData(data);
+    &#125;
+    ...
+  &#125;
 
-  <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">cacheData</span><span class="token punctuation">(</span><span class="token class-name">Object</span> dataToCache<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">long</span> startTime <span class="token operator">=</span> <span class="token class-name">LogTime</span><span class="token punctuation">.</span><span class="token function">getLogTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">Encoder</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> encoder <span class="token operator">=</span> helper<span class="token punctuation">.</span><span class="token function">getSourceEncoder</span><span class="token punctuation">(</span>dataToCache<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token class-name">DataCacheWriter</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> writer <span class="token operator">=</span>
-          <span class="token keyword">new</span> <span class="token class-name">DataCacheWriter</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>encoder<span class="token punctuation">,</span> dataToCache<span class="token punctuation">,</span> helper<span class="token punctuation">.</span><span class="token function">getOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      originalKey <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DataCacheKey</span><span class="token punctuation">(</span>loadData<span class="token punctuation">.</span>sourceKey<span class="token punctuation">,</span> helper<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      helper<span class="token punctuation">.</span><span class="token function">getDiskCache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>originalKey<span class="token punctuation">,</span> writer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">finally</span> <span class="token punctuation">&#123;</span>
-      loadData<span class="token punctuation">.</span>fetcher<span class="token punctuation">.</span><span class="token function">cleanup</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+  private void cacheData(Object dataToCache) &#123;
+    long startTime = LogTime.getLogTime();
+    try &#123;
+      Encoder&lt;Object> encoder = helper.getSourceEncoder(dataToCache);
+      DataCacheWriter&lt;Object> writer =
+          new DataCacheWriter&lt;>(encoder, dataToCache, helper.getOptions());
+      originalKey = new DataCacheKey(loadData.sourceKey, helper.getSignature());
+      helper.getDiskCache().put(originalKey, writer);
+      ...
+    &#125; finally &#123;
+      loadData.fetcher.cleanup();
+    &#125;
 
-    sourceCacheGenerator <span class="token operator">=</span>
-        <span class="token keyword">new</span> <span class="token class-name">DataCacheGenerator</span><span class="token punctuation">(</span><span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">singletonList</span><span class="token punctuation">(</span>loadData<span class="token punctuation">.</span>sourceKey<span class="token punctuation">)</span><span class="token punctuation">,</span> helper<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    sourceCacheGenerator =
+        new DataCacheGenerator(Collections.singletonList(loadData.sourceKey), helper, this);
+  &#125;
+&#125;</code></pre>
 
 <p>DiskCache的默认实现类是<strong>DiskLruCacheWrapper</strong>，其内部通过<strong>DiskLruCache</strong>来管理磁盘缓存。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到现在，Glide主要部分已经分析的差不多了，实际上这个优秀的框架可挖的地方还有很多，比如通过[APT来实现很好的扩展](&#x2F;源码分析系列&#x2F;Glide源码分析与自我实现3.md)，框架中涉及多种涉及模式等。</p>

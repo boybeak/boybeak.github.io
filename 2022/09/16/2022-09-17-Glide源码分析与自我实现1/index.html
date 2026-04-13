@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -209,54 +213,52 @@
 <p>阅读前请参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60425157">Glide 源码分析解读-基于最新版Glide 4.9.0</a>一文，该文章中，将Glide中各个部分的作用分析的非常好了。</p>
 <p>Glide几乎是现在做Android图片加载的最佳选择了。如此优秀的一个框架是如何实现的呢？如果让我们自己来实现该怎么做呢？我们就通过自己实现一个低配版Glide的方式，来探究Glide中是如何实现的。</p>
 <p>我们就称我们自己低配版Glide为<strong>Slide</strong>。那么Slide要实现哪些功能呢？简单来说，就是<strong>获取图片</strong>+<strong>界面显示</strong>。我们通过先构架大体框架，再分步丰富其中细节的方式，来构建Slide的整体结构。</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 flowchart LR;
-A[获取图片] --&gt; C[Slide] --&gt; B[界面显示];
-</code></pre>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Glide</span><span class="token punctuation">.</span><span class="token keyword">with</span><span class="token punctuation">(</span>xxx<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span>iv<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+A[获取图片] --&gt; C[Slide] --&gt; B[界面显示];</code></pre>
+<pre class="language-java"><code class="language-java">Glide.with(xxx).load(url).into(iv);</code></pre>
 
 <p>这是Glide一个典型的最为简单的调用过程。那么在这个过程中发生了哪些事情呢？</p>
 <p>我们可以通过这个链式调用的返回值发现，有如下过程：</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph LR;
 style A fill:#aaffcc
 style D fill:#ffaa99
-A(Glide) --&gt;|&quot;with(xxx)&quot;| B(RequestManager) --&gt;|&quot;load(xxx)&quot;| C(RequestBuilder) --&gt;|&quot;into(iv)&quot;| D(Target);
-</code></pre>
+A(Glide) --&gt;|&quot;with(xxx)&quot;| B(RequestManager) --&gt;|&quot;load(xxx)&quot;| C(RequestBuilder) --&gt;|&quot;into(iv)&quot;| D(Target);</code></pre>
 <h2 id="Glide-with-xxx-发生了什么事？"><a href="#Glide-with-xxx-发生了什么事？" class="headerlink" title="Glide.with(xxx)发生了什么事？"></a>Glide.with(xxx)发生了什么事？</h2><p>阅读源码发现，<code>Glide.with(xxx)</code>的最终实现类是<em>RequestManagerRetriever.java</em>类。继续跟踪，我们在这个类中，看到这样一个方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@NonNull</span>
-<span class="token keyword">private</span> <span class="token class-name">RequestManager</span> <span class="token function">supportFragmentGet</span><span class="token punctuation">(</span>
-  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Context</span> context<span class="token punctuation">,</span>
-  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">FragmentManager</span> fm<span class="token punctuation">,</span>
-  <span class="token annotation punctuation">@Nullable</span> <span class="token class-name">Fragment</span> parentHint<span class="token punctuation">,</span>
-  <span class="token keyword">boolean</span> isParentVisible<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token class-name">SupportRequestManagerFragment</span> current <span class="token operator">=</span> <span class="token function">getSupportRequestManagerFragment</span><span class="token punctuation">(</span>fm<span class="token punctuation">,</span> parentHint<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token class-name">RequestManager</span> requestManager <span class="token operator">=</span> current<span class="token punctuation">.</span><span class="token function">getRequestManager</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="language-java"><code class="language-java">@NonNull
+private RequestManager supportFragmentGet(
+  @NonNull Context context,
+  @NonNull FragmentManager fm,
+  @Nullable Fragment parentHint,
+  boolean isParentVisible) &#123;
+  SupportRequestManagerFragment current = getSupportRequestManagerFragment(fm, parentHint);
+  RequestManager requestManager = current.getRequestManager();
 
-  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  .....
 
-    <span class="token keyword">return</span> requestManager<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    return requestManager;
+&#125;</code></pre>
 
 <p>重点关注这个getSupportRequestManagerFragment方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//getSupportRequestManagerFragment</span>
-<span class="token annotation punctuation">@NonNull</span>
-<span class="token keyword">private</span> <span class="token class-name">SupportRequestManagerFragment</span> <span class="token function">getSupportRequestManagerFragment</span><span class="token punctuation">(</span>
-  <span class="token annotation punctuation">@NonNull</span> <span class="token keyword">final</span> <span class="token class-name">FragmentManager</span> fm<span class="token punctuation">,</span> <span class="token annotation punctuation">@Nullable</span> <span class="token class-name">Fragment</span> parentHint<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token class-name">SupportRequestManagerFragment</span> current <span class="token operator">=</span>
-    <span class="token punctuation">(</span><span class="token class-name">SupportRequestManagerFragment</span><span class="token punctuation">)</span> fm<span class="token punctuation">.</span><span class="token function">findFragmentByTag</span><span class="token punctuation">(</span><span class="token constant">FRAGMENT_TAG</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>current <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    current <span class="token operator">=</span> pendingSupportRequestManagerFragments<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>fm<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>current <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      current <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SupportRequestManagerFragment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      current<span class="token punctuation">.</span><span class="token function">setParentFragmentHint</span><span class="token punctuation">(</span>parentHint<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      pendingSupportRequestManagerFragments<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>fm<span class="token punctuation">,</span> current<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      fm<span class="token punctuation">.</span><span class="token function">beginTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>current<span class="token punctuation">,</span> <span class="token constant">FRAGMENT_TAG</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">commitAllowingStateLoss</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      handler<span class="token punctuation">.</span><span class="token function">obtainMessage</span><span class="token punctuation">(</span><span class="token constant">ID_REMOVE_SUPPORT_FRAGMENT_MANAGER</span><span class="token punctuation">,</span> fm<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sendToTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">return</span> current<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">//getSupportRequestManagerFragment
+@NonNull
+private SupportRequestManagerFragment getSupportRequestManagerFragment(
+  @NonNull final FragmentManager fm, @Nullable Fragment parentHint) &#123;
+  SupportRequestManagerFragment current =
+    (SupportRequestManagerFragment) fm.findFragmentByTag(FRAGMENT_TAG);
+  if (current == null) &#123;
+    current = pendingSupportRequestManagerFragments.get(fm);
+    if (current == null) &#123;
+      current = new SupportRequestManagerFragment();
+      current.setParentFragmentHint(parentHint);
+      pendingSupportRequestManagerFragments.put(fm, current);
+      fm.beginTransaction().add(current, FRAGMENT_TAG).commitAllowingStateLoss();
+      handler.obtainMessage(ID_REMOVE_SUPPORT_FRAGMENT_MANAGER, fm).sendToTarget();
+    &#125;
+  &#125;
+  return current;
+&#125;</code></pre>
 
 <p>其实，这里是一个Glide检测到界面生命周期的关键了。<strong>Glide就是通过像当前Activity添加一个一个无UI的Fragment来探测生命周期的</strong>。</p>
 <blockquote>
@@ -268,40 +270,40 @@ A(Glide) --&gt;|&quot;with(xxx)&quot;| B(RequestManager) --&gt;|&quot;load(xxx)&
 <p>这个方法，返回的是<em>RequestBuilder</em>这个类，看名字就知道，这是一个构建者模式中的Builder类，主要是在添加各种配置项，比如RequestOptions、RequestListener等。</p>
 <h2 id="RequestBuilder-into-iv-发生了什么？"><a href="#RequestBuilder-into-iv-发生了什么？" class="headerlink" title="RequestBuilder.into(iv)发生了什么？"></a>RequestBuilder.into(iv)发生了什么？</h2><p>其实，这里才是真正开始触发发起请求的地方。</p>
 <h3 id="RequestBuilder"><a href="#RequestBuilder" class="headerlink" title="RequestBuilder"></a>RequestBuilder</h3><p>我们把<code>into(ImageView)</code>方法作为入口，一路跟踪，可以发现最终的实现是如下方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Y</span> <span class="token keyword">extends</span> <span class="token class-name">Target</span><span class="token punctuation">&lt;</span><span class="token class-name">TranscodeType</span><span class="token punctuation">></span><span class="token punctuation">></span></span> <span class="token class-name">Y</span> <span class="token function">into</span><span class="token punctuation">(</span>
-  <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Y</span> target<span class="token punctuation">,</span>
-  <span class="token annotation punctuation">@Nullable</span> <span class="token class-name">RequestListener</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">TranscodeType</span><span class="token punctuation">></span></span> targetListener<span class="token punctuation">,</span>
-  <span class="token class-name">BaseRequestOptions</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> options<span class="token punctuation">,</span>
-  <span class="token class-name">Executor</span> callbackExecutor<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token class-name">Preconditions</span><span class="token punctuation">.</span><span class="token function">checkNotNull</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isModelSet<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"You must call #load() before calling #into()"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
+<pre class="language-java"><code class="language-java">private &lt;Y extends Target&lt;TranscodeType>> Y into(
+  @NonNull Y target,
+  @Nullable RequestListener&lt;TranscodeType> targetListener,
+  BaseRequestOptions&lt;?> options,
+  Executor callbackExecutor) &#123;
+  Preconditions.checkNotNull(target);
+  if (!isModelSet) &#123;
+    throw new IllegalArgumentException("You must call #load() before calling #into()");
+  &#125;
 
-  <span class="token class-name">Request</span> request <span class="token operator">=</span> <span class="token function">buildRequest</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> targetListener<span class="token punctuation">,</span> options<span class="token punctuation">,</span> callbackExecutor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Request request = buildRequest(target, targetListener, options, callbackExecutor);
 
-  <span class="token class-name">Request</span> previous <span class="token operator">=</span> target<span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">isEquivalentTo</span><span class="token punctuation">(</span>previous<span class="token punctuation">)</span>
-      <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">isSkipMemoryCacheWithCompletePreviousRequest</span><span class="token punctuation">(</span>options<span class="token punctuation">,</span> previous<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// If the request is completed, beginning again will ensure the result is re-delivered,</span>
-    <span class="token comment">// triggering RequestListeners and Targets. If the request is failed, beginning again will</span>
-    <span class="token comment">// restart the request, giving it another chance to complete. If the request is already</span>
-    <span class="token comment">// running, we can let it continue running without interruption.</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token class-name">Preconditions</span><span class="token punctuation">.</span><span class="token function">checkNotNull</span><span class="token punctuation">(</span>previous<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isRunning</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token comment">// Use the previous request rather than the new one to allow for optimizations like skipping</span>
-      <span class="token comment">// setting placeholders, tracking and un-tracking Targets, and obtaining View dimensions</span>
-      <span class="token comment">// that are done in the individual Request.</span>
-      previous<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">return</span> target<span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
+  Request previous = target.getRequest();
+  if (request.isEquivalentTo(previous)
+      &amp;&amp; !isSkipMemoryCacheWithCompletePreviousRequest(options, previous)) &#123;
+    // If the request is completed, beginning again will ensure the result is re-delivered,
+    // triggering RequestListeners and Targets. If the request is failed, beginning again will
+    // restart the request, giving it another chance to complete. If the request is already
+    // running, we can let it continue running without interruption.
+    if (!Preconditions.checkNotNull(previous).isRunning()) &#123;
+      // Use the previous request rather than the new one to allow for optimizations like skipping
+      // setting placeholders, tracking and un-tracking Targets, and obtaining View dimensions
+      // that are done in the individual Request.
+      previous.begin();
+    &#125;
+    return target;
+  &#125;
 
-  requestManager<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  target<span class="token punctuation">.</span><span class="token function">setRequest</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  requestManager<span class="token punctuation">.</span><span class="token function">track</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  requestManager.clear(target);
+  target.setRequest(request);
+  requestManager.track(target, request);
 
-  <span class="token keyword">return</span> target<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  return target;
+&#125;</code></pre>
 
 <p>这个方法主要是做了以下事情：</p>
 <ol>
@@ -309,33 +311,33 @@ A(Glide) --&gt;|&quot;with(xxx)&quot;| B(RequestManager) --&gt;|&quot;load(xxx)&
 <li>如果没有一个request在处理此请求，则对target做一些清理操作，与之前的请求解绑，为当前target设置新的请求，然后requestManager开始追踪这个请求。</li>
 </ol>
 <p>接下来我们就按照<code>requestManager.track(target, request)</code>这段代码继续追踪。来到RequestManager的track方法。</p>
-<h3 id="RequestManager"><a href="#RequestManager" class="headerlink" title="RequestManager"></a>RequestManager</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">track</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Target</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> target<span class="token punctuation">,</span> <span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Request</span> request<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  targetTracker<span class="token punctuation">.</span><span class="token function">track</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  requestTracker<span class="token punctuation">.</span><span class="token function">runRequest</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="RequestManager"><a href="#RequestManager" class="headerlink" title="RequestManager"></a>RequestManager</h3><pre class="language-java"><code class="language-java">synchronized void track(@NonNull Target&lt;?> target, @NonNull Request request) &#123;
+  targetTracker.track(target);
+  requestTracker.runRequest(request);
+&#125;</code></pre>
 
 <p>这个方法很简单，只有两个方法。</p>
-<h4 id="TargetTracker"><a href="#TargetTracker" class="headerlink" title="TargetTracker"></a>TargetTracker</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Target</span><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span><span class="token punctuation">></span></span> targets <span class="token operator">=</span>
-      <span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">newSetFromMap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WeakHashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Target</span><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span><span class="token punctuation">,</span> <span class="token class-name">Boolean</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h4 id="TargetTracker"><a href="#TargetTracker" class="headerlink" title="TargetTracker"></a>TargetTracker</h4><pre class="language-java"><code class="language-java">private final Set&lt;Target&lt;?>> targets =
+      Collections.newSetFromMap(new WeakHashMap&lt;Target&lt;?>, Boolean>());
 
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">track</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Target</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> target<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  targets<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public void track(@NonNull Target&lt;?> target) &#123;
+  targets.add(target);
+&#125;</code></pre>
 
 <p>这里把一个target存放在WeakHashMap中，因为target是与生命周期有关的东西，比如ImageView对应的<strong>ImageViewTarget</strong>，所以这么做是为了防止内存泄漏。</p>
-<h4 id="RequestTracker"><a href="#RequestTracker" class="headerlink" title="RequestTracker"></a>RequestTracker</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/** Starts tracking the given request. */</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">runRequest</span><span class="token punctuation">(</span><span class="token annotation punctuation">@NonNull</span> <span class="token class-name">Request</span> request<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  requests<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isPaused<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    request<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-    request<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">isLoggable</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token constant">VERBOSE</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">v</span><span class="token punctuation">(</span><span class="token constant">TAG</span><span class="token punctuation">,</span> <span class="token string">"Paused, delaying request"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    pendingRequests<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="RequestTracker"><a href="#RequestTracker" class="headerlink" title="RequestTracker"></a>RequestTracker</h4><pre class="language-java"><code class="language-java">/** Starts tracking the given request. */
+public void runRequest(@NonNull Request request) &#123;
+  requests.add(request);
+  if (!isPaused) &#123;
+    request.begin();
+  &#125; else &#123;
+    request.clear();
+    if (Log.isLoggable(TAG, Log.VERBOSE)) &#123;
+      Log.v(TAG, "Paused, delaying request");
+    &#125;
+    pendingRequests.add(request);
+  &#125;
+&#125;</code></pre>
 
 <p>这里是将暂停的request加入到pendingRequests中去，如果不是暂停的request，则调用其begin方法。</p>
 <p>我们查看<em>Request</em>类的子类，可以看到下图。</p>
@@ -347,58 +349,58 @@ A(Glide) --&gt;|&quot;with(xxx)&quot;| B(RequestManager) --&gt;|&quot;load(xxx)&
 <li><strong>SingleRequest:</strong> 这才是用来加载目标图片的request。</li>
 </ol>
 <p>我们重点去看SingleRequest的begin方法。</p>
-<h3 id="SingleRequest"><a href="#SingleRequest" class="headerlink" title="SingleRequest"></a>SingleRequest</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>requestLock<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">assertNotCallingCallbacks</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    stateVerifier<span class="token punctuation">.</span><span class="token function">throwIfRecycled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    startTime <span class="token operator">=</span> <span class="token class-name">LogTime</span><span class="token punctuation">.</span><span class="token function">getLogTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>model <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Util</span><span class="token punctuation">.</span><span class="token function">isValidDimensions</span><span class="token punctuation">(</span>overrideWidth<span class="token punctuation">,</span> overrideHeight<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        width <span class="token operator">=</span> overrideWidth<span class="token punctuation">;</span>
-        height <span class="token operator">=</span> overrideHeight<span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
-      <span class="token comment">// Only log at more verbose log levels if the user has set a fallback drawable, because</span>
-      <span class="token comment">// fallback Drawables indicate the user expects null models occasionally.</span>
-      <span class="token keyword">int</span> logLevel <span class="token operator">=</span> <span class="token function">getFallbackDrawable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token constant">WARN</span> <span class="token operator">:</span> <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token constant">DEBUG</span><span class="token punctuation">;</span>
-      <span class="token function">onLoadFailed</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">GlideException</span><span class="token punctuation">(</span><span class="token string">"Received null model"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> logLevel<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+<h3 id="SingleRequest"><a href="#SingleRequest" class="headerlink" title="SingleRequest"></a>SingleRequest</h3><pre class="language-java"><code class="language-java">public void begin() &#123;
+  synchronized (requestLock) &#123;
+    assertNotCallingCallbacks();
+    stateVerifier.throwIfRecycled();
+    startTime = LogTime.getLogTime();
+    if (model == null) &#123;
+      if (Util.isValidDimensions(overrideWidth, overrideHeight)) &#123;
+        width = overrideWidth;
+        height = overrideHeight;
+      &#125;
+      // Only log at more verbose log levels if the user has set a fallback drawable, because
+      // fallback Drawables indicate the user expects null models occasionally.
+      int logLevel = getFallbackDrawable() == null ? Log.WARN : Log.DEBUG;
+      onLoadFailed(new GlideException("Received null model"), logLevel);
+      return;
+    &#125;
 
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>status <span class="token operator">==</span> <span class="token class-name">Status</span><span class="token punctuation">.</span><span class="token constant">RUNNING</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span><span class="token string">"Cannot restart a running request"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    if (status == Status.RUNNING) &#123;
+      throw new IllegalArgumentException("Cannot restart a running request");
+    &#125;
 
-    <span class="token comment">// If we're restarted after we're complete (usually via something like a notifyDataSetChanged</span>
-    <span class="token comment">// that starts an identical request into the same Target or View), we can simply use the</span>
-    <span class="token comment">// resource and size we retrieved the last time around and skip obtaining a new size, starting</span>
-    <span class="token comment">// a new load etc. This does mean that users who want to restart a load because they expect</span>
-    <span class="token comment">// that the view size has changed will need to explicitly clear the View or Target before</span>
-    <span class="token comment">// starting the new load.</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>status <span class="token operator">==</span> <span class="token class-name">Status</span><span class="token punctuation">.</span><span class="token constant">COMPLETE</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token function">onResourceReady</span><span class="token punctuation">(</span>
-        resource<span class="token punctuation">,</span> <span class="token class-name">DataSource</span><span class="token punctuation">.</span><span class="token constant">MEMORY_CACHE</span><span class="token punctuation">,</span> <span class="token comment">/* isLoadedFromAlternateCacheKey= */</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    // If we're restarted after we're complete (usually via something like a notifyDataSetChanged
+    // that starts an identical request into the same Target or View), we can simply use the
+    // resource and size we retrieved the last time around and skip obtaining a new size, starting
+    // a new load etc. This does mean that users who want to restart a load because they expect
+    // that the view size has changed will need to explicitly clear the View or Target before
+    // starting the new load.
+    if (status == Status.COMPLETE) &#123;
+      onResourceReady(
+        resource, DataSource.MEMORY_CACHE, /* isLoadedFromAlternateCacheKey= */ false);
+      return;
+    &#125;
 
-    <span class="token comment">// Restarts for requests that are neither complete nor running can be treated as new requests</span>
-    <span class="token comment">// and can run again from the beginning.</span>
+    // Restarts for requests that are neither complete nor running can be treated as new requests
+    // and can run again from the beginning.
 
-    status <span class="token operator">=</span> <span class="token class-name">Status</span><span class="token punctuation">.</span><span class="token constant">WAITING_FOR_SIZE</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Util</span><span class="token punctuation">.</span><span class="token function">isValidDimensions</span><span class="token punctuation">(</span>overrideWidth<span class="token punctuation">,</span> overrideHeight<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token function">onSizeReady</span><span class="token punctuation">(</span>overrideWidth<span class="token punctuation">,</span> overrideHeight<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-      target<span class="token punctuation">.</span><span class="token function">getSize</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    status = Status.WAITING_FOR_SIZE;
+    if (Util.isValidDimensions(overrideWidth, overrideHeight)) &#123;
+      onSizeReady(overrideWidth, overrideHeight);
+    &#125; else &#123;
+      target.getSize(this);
+    &#125;
 
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>status <span class="token operator">==</span> <span class="token class-name">Status</span><span class="token punctuation">.</span><span class="token constant">RUNNING</span> <span class="token operator">||</span> status <span class="token operator">==</span> <span class="token class-name">Status</span><span class="token punctuation">.</span><span class="token constant">WAITING_FOR_SIZE</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;&amp;</span> <span class="token function">canNotifyStatusChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      target<span class="token punctuation">.</span><span class="token function">onLoadStarted</span><span class="token punctuation">(</span><span class="token function">getPlaceholderDrawable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token constant">IS_VERBOSE_LOGGABLE</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token function">logV</span><span class="token punctuation">(</span><span class="token string">"finished run method in "</span> <span class="token operator">+</span> <span class="token class-name">LogTime</span><span class="token punctuation">.</span><span class="token function">getElapsedMillis</span><span class="token punctuation">(</span>startTime<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    if ((status == Status.RUNNING || status == Status.WAITING_FOR_SIZE)
+        &amp;&amp; canNotifyStatusChanged()) &#123;
+      target.onLoadStarted(getPlaceholderDrawable());
+    &#125;
+    if (IS_VERBOSE_LOGGABLE) &#123;
+      logV("finished run method in " + LogTime.getElapsedMillis(startTime));
+    &#125;
+  &#125;
+&#125;</code></pre>
 
 <p>代码虽长，但是结构简单。主要做了以下事情：</p>
 <ol>
@@ -410,48 +412,47 @@ A(Glide) --&gt;|&quot;with(xxx)&quot;| B(RequestManager) --&gt;|&quot;load(xxx)&
 <li>接下来回调<code>onLoadStarted</code>方法，并且显示加载过程状态。</li>
 </ol>
 <p>我们着重看网络请求那个分支，也就是<code>onSizeReady</code>方法。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
-<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onSizeReady</span><span class="token punctuation">(</span><span class="token keyword">int</span> width<span class="token punctuation">,</span> <span class="token keyword">int</span> height<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-	loadStatus <span class="token operator">=</span> engine<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>
-    glideContext<span class="token punctuation">,</span>
-    model<span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>width<span class="token punctuation">,</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>height<span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getResourceClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    transcodeClass<span class="token punctuation">,</span>
-    priority<span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getDiskCacheStrategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getTransformations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">isTransformationRequired</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">isScaleOnlyOrNoTransform</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">isMemoryCacheable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getUseUnlimitedSourceGeneratorsPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getUseAnimationPool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    requestOptions<span class="token punctuation">.</span><span class="token function">getOnlyRetrieveFromCache</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token keyword">this</span><span class="token punctuation">,</span>
+<pre class="language-java"><code class="language-java">@Override
+public void onSizeReady(int width, int height) &#123;
+  ......
+	loadStatus = engine.load(
+    glideContext,
+    model,
+    requestOptions.getSignature(),
+    this.width,
+    this.height,
+    requestOptions.getResourceClass(),
+    transcodeClass,
+    priority,
+    requestOptions.getDiskCacheStrategy(),
+    requestOptions.getTransformations(),
+    requestOptions.isTransformationRequired(),
+    requestOptions.isScaleOnlyOrNoTransform(),
+    requestOptions.getOptions(),
+    requestOptions.isMemoryCacheable(),
+    requestOptions.getUseUnlimitedSourceGeneratorsPool(),
+    requestOptions.getUseAnimationPool(),
+    requestOptions.getOnlyRetrieveFromCache(),
+    this,
     callbackExecutor
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  );
+  ...
+&#125;</code></pre>
 
 <p>关键代码来了！这个<code>engine</code>就是Glide的核心。这个engine是在Glide初始化时候生成的一个实例。</p>
 <h3 id="Engine"><a href="#Engine" class="headerlink" title="Engine"></a>Engine</h3><p>Engine不只是用于加载图片，而是一个任务执行核心引擎，它要执行的不只是请求远程图片的任务，包括解码任务等，它执行的实际上是一个个的job。</p>
 <p>跟踪上一阶段中的<code>engine.load</code>方法，来到是这个方法的关键部分——调用<code>waitForExistingOrStartNewJob</code>。</p>
 <p>在这个方法中，主要做了以下事情：</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
 A&#123;&#123;是否有一个job执行相同操作&#125;&#125; --&gt; |有|B[为此job添加新的回调];
-A --&gt; |无|C[添加并执行一个EngineJob];
-</code></pre>
-<h4 id="EngineJob-start-decodeJob"><a href="#EngineJob-start-decodeJob" class="headerlink" title="EngineJob.start(decodeJob)"></a>EngineJob.start(decodeJob)</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token class-name">DecodeJob</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">R</span><span class="token punctuation">></span></span> decodeJob<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>decodeJob <span class="token operator">=</span> decodeJob<span class="token punctuation">;</span>
-  <span class="token class-name">GlideExecutor</span> executor <span class="token operator">=</span>
-    decodeJob<span class="token punctuation">.</span><span class="token function">willDecodeFromCache</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span> diskCacheExecutor <span class="token operator">:</span> <span class="token function">getActiveSourceExecutor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  executor<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>decodeJob<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+A --&gt; |无|C[添加并执行一个EngineJob];</code></pre>
+<h4 id="EngineJob-start-decodeJob"><a href="#EngineJob-start-decodeJob" class="headerlink" title="EngineJob.start(decodeJob)"></a>EngineJob.start(decodeJob)</h4><pre class="language-java"><code class="language-java">public synchronized void start(DecodeJob&lt;R> decodeJob) &#123;
+  this.decodeJob = decodeJob;
+  GlideExecutor executor =
+    decodeJob.willDecodeFromCache() ? diskCacheExecutor : getActiveSourceExecutor();
+  executor.execute(decodeJob);
+&#125;</code></pre>
 
 <p>这里执行的是decodeJob。</p>
 <blockquote>
@@ -459,7 +460,7 @@ A --&gt; |无|C[添加并执行一个EngineJob];
 </blockquote>
 <h4 id="DecodeJob"><a href="#DecodeJob" class="headerlink" title="DecodeJob"></a>DecodeJob</h4><p>DecodeJob是一个<em>Runnable</em>类，所以，我们查看其run方法。</p>
 <p>接下来的调用路径参考下图。</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
 subgraph DecodeJob;
 A(run) --&gt; B[runWrapped] --&gt; C[runGenerators] --&gt; D[getNextGenerator];
@@ -469,20 +470,19 @@ D --&gt; E[startNext] --&gt; F[startNextLoad];
 end;
 subgraph HttpUrlFetcher
 F --&gt; G[loadData] --&gt; H[loadDataWithRedirects];
-end;
-</code></pre>
+end;</code></pre>
 <p>经过这么长的调用链，我们终于来到了网络请求的部分，我们可以看到Glide原生使用的<em>HttpURLConnection</em>进行网络请求的。<strong>获取到InputStream后，在SourceGenerator中的cacheData方法进行缓存处理。</strong></p>
 <h4 id="获取到数据后的处理"><a href="#获取到数据后的处理" class="headerlink" title="获取到数据后的处理"></a>获取到数据后的处理</h4><p>通过<code>DataFetcherGenerator.FetcherReadyCallback</code>可以探知到数据获取成功或者失败，如果获取成功，则在<code>DecodeJob#onDataFetcherReady</code>中处理。关键代码如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onDataFetcherReady</span><span class="token punctuation">(</span>
-      <span class="token class-name">Key</span> sourceKey<span class="token punctuation">,</span> <span class="token class-name">Object</span> data<span class="token punctuation">,</span> <span class="token class-name">DataFetcher</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span><span class="token punctuation">></span></span> fetcher<span class="token punctuation">,</span> <span class="token class-name">DataSource</span> dataSource<span class="token punctuation">,</span> <span class="token class-name">Key</span> attemptedKey<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> currentThread<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    runReason <span class="token operator">=</span> <span class="token class-name">RunReason</span><span class="token punctuation">.</span><span class="token constant">DECODE_DATA</span><span class="token punctuation">;</span>
-    callback<span class="token punctuation">.</span><span class="token function">reschedule</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">public void onDataFetcherReady(
+      Key sourceKey, Object data, DataFetcher&lt;?> fetcher, DataSource dataSource, Key attemptedKey) &#123;
+  .....
+  if (Thread.currentThread() != currentThread) &#123;
+    runReason = RunReason.DECODE_DATA;
+    callback.reschedule(this);
+  &#125; else &#123;
+    .....
+  &#125;
+&#125;</code></pre>
 
 <p>更改任务状态，重新执行此任务，则重新执行到<code>getNextGenerator</code>方法，此时则会返回<strong>DataCacheGenerator</strong>来处理从Disk缓存加载的任务。</p>
 <h2 id="获取图片"><a href="#获取图片" class="headerlink" title="获取图片"></a>获取图片</h2><p>首先，图片来源有哪些？</p>
@@ -491,15 +491,14 @@ end;
 <li>本地图片：本地存储设备上的图片；</li>
 <li>远端图片：我们服务器或者来自第三方服务器的图片，通过URL来获取。这就需要<strong>异步网络请求</strong>，请求结束以后，要<strong>缓存</strong>图片，避免重复请求远端图片，造成时间、网络的浪费。</li>
 </ol>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph LR;
 A[Slide];
 B([1. 资源图片]) --&gt; A;
 C([2. 本地图片]) --&gt; A;
 E&#123;缓存是否存在&#125; --&gt; |是,交给Slide|A;
 E --&gt; |否,网络请求|D([3. 远端图片]);
-D -.-&gt; |获取到图片并缓存|E;
-</code></pre>
+D -.-&gt; |获取到图片并缓存|E;</code></pre>
 <p>那么接下来，要丰富的细节，就来到了<strong>网络请求</strong>和<strong>缓存</strong>了。</p>
 <h3 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h3><h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3>
     </div>

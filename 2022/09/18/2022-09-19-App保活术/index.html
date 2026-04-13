@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -208,16 +212,16 @@
 <p><strong>如何判断内存不足？</strong></p>
 <p>判断的阈值在不同手机上是不一样的，一旦低于该阈值，系统就会杀死对应优先级的进程。</p>
 <p>在adb shell下，通过如下命令来查看阈值：</p>
-<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">cat</span> <span class="token operator">/</span>sys/module/lowmemorykiller/parameters/minfree<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-powershell"><code class="language-powershell">cat /sys/module/lowmemorykiller/parameters/minfree</code></pre>
 
 <p><em>注意: 这可能需要root手机。</em></p>
 <p>返回的结果如下示例：</p>
-<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">18432<span class="token punctuation">,</span> 23040<span class="token punctuation">,</span> 27648<span class="token punctuation">,</span> 32256<span class="token punctuation">,</span> 55296<span class="token punctuation">,</span> 80640<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-powershell"><code class="language-powershell">18432, 23040, 27648, 32256, 55296, 80640</code></pre>
 
 <p>其单位为4kb，也就是内存1页大小。</p>
 <p>该值表示的是剩余内存大小，优先级为从高到低，比如当内存小于18432*4kb时，杀死对应的优先级的进程。</p>
 <p><img src="/assets/images/process_priority.jpg" alt="oom_adj"></p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph TD;
 style 关键优先级 fill:#5befb9
 style 高级优先级 fill:#6998c6
@@ -232,13 +236,12 @@ end
 C --&gt; D(后台进程);
 subgraph 低优先级
 D --&gt; E(空进程);
-end
-</code></pre>
+end</code></pre>
 <p>优先级从高到低依次是，<code>前台进程</code>、<code>可见进程</code>、<code>服务进程</code>、<code>后台进程</code>、<code>空进程</code>。</p>
 <p><strong>阈值有6个数，而进程有5种优先级，是如何对应呢？</strong></p>
 <p>实际上，第5个数是ContentProvider的阈值，其他的5个数与线程优先级对应。</p>
 <p><strong>如何判断线程的优先级？</strong></p>
-<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">cat</span> <span class="token operator">/</span>proc/&lt;pid><span class="token operator">/</span>oom_adj<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-powershell"><code class="language-powershell">cat /proc/&lt;pid>/oom_adj</code></pre>
 
 <blockquote>
 <p>其中的<pid>应替换为对应的<strong>进程ID</strong>，从logcat中可以查看对应的pid。</p>
@@ -248,28 +251,28 @@ end
 <h2 id="1像素保活"><a href="#1像素保活" class="headerlink" title="1像素保活"></a>1像素保活</h2><p>监听锁屏广播，当屏幕关闭，偷偷创建一个1像素的activity，当屏幕开启，关闭掉这个1像素activity。</p>
 <p>关键代码如下:</p>
 <p><code>ScreenObserverService.java</code></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//创建后台service，监听屏幕事件。</span>
-<span class="token class-name">IntentFilter</span> filter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IntentFilter</span><span class="token punctuation">(</span><span class="token class-name">Intent</span><span class="token punctuation">.</span><span class="token constant">ACTION_SCREEN_ON</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-filter<span class="token punctuation">.</span><span class="token function">addAction</span><span class="token punctuation">(</span><span class="token class-name">Intent</span><span class="token punctuation">.</span><span class="token constant">ACTION_SCREEN_OFF</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">registerReceiver</span><span class="token punctuation">(</span>theReceiver<span class="token punctuation">,</span> filter<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment">//别忘了在service结束时候，注销掉这个receiver。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">//创建后台service，监听屏幕事件。
+IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+filter.addAction(Intent.ACTION_SCREEN_OFF);
+registerReceiver(theReceiver, filter);
+//别忘了在service结束时候，注销掉这个receiver。</code></pre>
 
 <p><code>OnePixelActivity.java</code></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Window</span> window <span class="token operator">=</span> <span class="token function">getWindow</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-window<span class="token punctuation">.</span><span class="token function">setGravity</span><span class="token punctuation">(</span><span class="token class-name">Gravity</span><span class="token punctuation">.</span><span class="token constant">START</span> <span class="token operator">|</span> <span class="token class-name">Gravity</span><span class="token punctuation">.</span><span class="token constant">TOP</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token class-name">WindowManager<span class="token punctuation">.</span>LayoutParams</span> params <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">getAttributes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-params<span class="token punctuation">.</span>width <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-params<span class="token punctuation">.</span>height <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-params<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-params<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-window<span class="token punctuation">.</span><span class="token function">setAttributes</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-java"><code class="language-java">Window window = getWindow();
+window.setGravity(Gravity.START | Gravity.TOP);
+WindowManager.LayoutParams params = window.getAttributes();
+params.width = 1;
+params.height = 1;
+params.x = 0;
+params.y = 0;
+window.setAttributes(params);</code></pre>
 
 <p>别忘了在Manifest文件中，为这个activity设置一个透明主题。</p>
-<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>activity</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>.onepixel.OnePixelActivity<span class="token punctuation">"</span></span>
-            <span class="token attr-name"><span class="token namespace">android:</span>excludeFromRecents</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
-            <span class="token attr-name"><span class="token namespace">android:</span>taskAffinity</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>com.github.boybeak.livestock.onepixel<span class="token punctuation">"</span></span>
-            <span class="token attr-name"><span class="token namespace">android:</span>theme</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@style/OnePixelTheme<span class="token punctuation">"</span></span>
-            <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-markup"><code class="language-markup">&lt;activity android:name=".onepixel.OnePixelActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.github.boybeak.livestock.onepixel"
+            android:theme="@style/OnePixelTheme"
+            /></code></pre>
 
 <blockquote>
 <p>android:excludeFromRecents&#x3D;”true” &#x2F;&#x2F;不会出现在任务管理器中</p>
@@ -287,22 +290,22 @@ window<span class="token punctuation">.</span><span class="token function">setAt
 <h2 id="前台服务"><a href="#前台服务" class="headerlink" title="前台服务"></a>前台服务</h2><p>这一方案就是利用一个前台服务，配合Notification，来达到保活。弊端就是，当你的应用没有Notification需求的时候，对于一些敏感用户来说，这就容易引起方案。如下图。</p>
 <p><img src="/assets/images/forground_service.png" alt="forground_service"></p>
 <p>所以当你的应用是音乐类播放器，可以将这个通知作为音乐播放控制来使用，但是如果你的应用没有这样的需求，就会引起敏感用户注意，反而有可能被手动杀死甚至卸载。在Android8.0以前，可以通过如下方案消除这个无意义的敏感通知。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OuterService</span> <span class="token keyword">extends</span> <span class="token class-name">Service</span> <span class="token punctuation">&#123;</span>
-  <span class="token annotation punctuation">@Override</span>
-  <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">startForground</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Notification</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">startService</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Intent</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token class-name">InnerService</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
+<pre class="language-java"><code class="language-java">public class OuterService extends Service &#123;
+  @Override
+  public void onCreate() &#123;
+    startForground(1, new Notification());
+    startService(new Intent(this, InnerService.class));
+  &#125;
   
-  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">InnerService</span> <span class="token keyword">extends</span> <span class="token class-name">Service</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-      <span class="token function">startForground</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Notification</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token function">stopSelf</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span>
+  public static class InnerService extends Service &#123;
+    @Override
+    public void onCreate() &#123;
+      startForground(1, new Notification());
+      stopSelf();
+    &#125;
+  &#125;
   
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;</code></pre>
 
 <p>这是利用系统漏洞来消除的这个通知，但是在Android8.0以后，同一个ID下，不允许重复创建前台服务，所以使用该方法需要判断版本。</p>
 <h2 id="系统广播拉活"><a href="#系统广播拉活" class="headerlink" title="系统广播拉活"></a>系统广播拉活</h2><p><strong>系统拉活</strong></p>

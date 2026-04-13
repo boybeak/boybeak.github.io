@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -206,7 +210,7 @@
       <p>此文是阅读<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265946165">《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》</a>一文后的总结，视频地址<a href="https://link.zhihu.com/?target=https://www.bilibili.com/video/BV1CA41177Se/">Bilibili</a>、<a href="https://link.zhihu.com/?target=https://youtu.be/r4T9zkhpmII">Youtube</a>。</p>
 <p>演示代码：</p>
 <p>在正式讲解launchMode前，先要理解三个概念：<strong>ActivityStack</strong>, <strong>TaskRecord</strong>, <strong>ActivityRecord</strong>。</p>
-<pre><code class="language-mermaid">
+<pre class="language-mermaid"><code class="language-mermaid">
 graph LR;
 style TaskRecord-A fill:#aaddff;
 style TaskRecord-B fill:#aaddff;
@@ -219,27 +223,26 @@ subgraph TaskRecord-B
 C[ActivityRecord-3]
 D[ActivityRecord-4]
 end
-end
-</code></pre>
+end</code></pre>
 <p>他们的一般结构是这样的。</p>
 <p>通过adb命令可以查看当前的ActivityStack、TaskRecord和ActivityRecord的结构。</p>
-<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">adb shell dumpsys activity<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="language-powershell"><code class="language-powershell">adb shell dumpsys activity</code></pre>
 
 <p>结果如下(搜索<code>ACTIVITY MANAGER STARTER (dumpsys activity containers)</code>)：</p>
-<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<pre class="language-powershell"><code class="language-powershell">...
 
-ACTIVITY MANAGER STARTER <span class="token punctuation">(</span>dumpsys activity containers<span class="token punctuation">)</span>
-com<span class="token punctuation">.</span>android<span class="token punctuation">.</span>server<span class="token punctuation">.</span>am<span class="token punctuation">.</span>ActivityStackSupervisor@299f1c5 <span class="token function">type</span>=undefined mode=fullscreen
-  <span class="token comment">#0 ActivityDisplay=&#123;0 numStacks=2&#125; type=undefined mode=fullscreen</span>
-   <span class="token comment">#1 ActivityStack&#123;694271a stackId=0 type=home mode=fullscreen visible=true translucent=false, 1 tasks&#125; type=home mode=fullscreen</span>
-    <span class="token comment">#0 TaskRecord&#123;e42980e #2 I=com.android.launcher3/.Launcher U=0 StackId=0 sz=1&#125; type=home mode=fullscreen</span>
-     <span class="token comment">#0 ActivityRecord&#123;5efeaf4 u0 com.android.launcher3/.Launcher t2&#125; type=home mode=fullscreen</span>
-   <span class="token comment">#0 ActivityStack&#123;91ac24b stackId=1 type=standard mode=fullscreen visible=false translucent=true, 1 tasks&#125; type=standard mode=fullscreen</span>
-    <span class="token comment">#0 TaskRecord&#123;583322f #72 A=com.github.boybeak.hellolaunchmode U=0 StackId=1 sz=1&#125; type=standard mode=fullscreen</span>
-     <span class="token comment">#0 ActivityRecord&#123;a126ec8 u0 com.github.boybeak.hellolaunchmode/.MainActivity t72&#125; type=standard mode=fullscreen</span>
+ACTIVITY MANAGER STARTER (dumpsys activity containers)
+com.android.server.am.ActivityStackSupervisor@299f1c5 type=undefined mode=fullscreen
+  #0 ActivityDisplay=&#123;0 numStacks=2&#125; type=undefined mode=fullscreen
+   #1 ActivityStack&#123;694271a stackId=0 type=home mode=fullscreen visible=true translucent=false, 1 tasks&#125; type=home mode=fullscreen
+    #0 TaskRecord&#123;e42980e #2 I=com.android.launcher3/.Launcher U=0 StackId=0 sz=1&#125; type=home mode=fullscreen
+     #0 ActivityRecord&#123;5efeaf4 u0 com.android.launcher3/.Launcher t2&#125; type=home mode=fullscreen
+   #0 ActivityStack&#123;91ac24b stackId=1 type=standard mode=fullscreen visible=false translucent=true, 1 tasks&#125; type=standard mode=fullscreen
+    #0 TaskRecord&#123;583322f #72 A=com.github.boybeak.hellolaunchmode U=0 StackId=1 sz=1&#125; type=standard mode=fullscreen
+     #0 ActivityRecord&#123;a126ec8 u0 com.github.boybeak.hellolaunchmode/.MainActivity t72&#125; type=standard mode=fullscreen
 
 
-<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+...</code></pre>
 
 <p>我们可以看到，此时有两个ActivityStack，索引为0的ActivityStack中，有一个TaskRecord，这个TaskRecord里有一个ActivityRecord，就是我们实验App的MainActivity；索引为1的ActivityStack为我们的Home界面。</p>
 <h2 id="四种launchMode的一般行为"><a href="#四种launchMode的一般行为" class="headerlink" title="四种launchMode的一般行为"></a>四种launchMode的一般行为</h2><p>LaunchMode共有4个值可以选择：<strong>Standard</strong>、<strong>SingleTop</strong>、<strong>SingleTask</strong>、<strong>SingleInstance</strong>。接下来将分开讲这4个值的作用，实际上，由于Activity的跳转会涉及到两个Activity，比如ActivityA -&gt; ActivityB，ActivityB的跳转行为模式，不止受到自己launchMode的影响，还会受到ActivityA的launchMode的影响。除此以外，还会有其他属性的影响，比如<code>taskAffinity</code>、<code>allowTaskReparenting</code>、<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/manifest/activity-element#dlmode"><code>documentLaunchMode</code></a>等。</p>

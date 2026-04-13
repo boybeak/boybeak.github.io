@@ -43,7 +43,8 @@
       gtag('config', 'G-6JFG91EQ3M');
     </script>
     
-<meta name="generator" content="Hexo 7.3.0"><link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+<link rel="stylesheet" href="/css/prism-okaidia.css" type="text/css"></head>
 <body>
   <div class="container">
     <header class="site-header">
@@ -71,11 +72,11 @@
                   
                   <li><a href="/categories/Android技巧/">Android技巧</a></li>
                   
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
                   
                   <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
                   
                   <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
                   
@@ -90,21 +91,21 @@
                   
                   <li><a href="/tags/Android/">Android</a></li>
                   
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
                   <li><a href="/tags/Kotlin/">Kotlin</a></li>
                   
                   <li><a href="/tags/Translator/">Translator</a></li>
                   
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
                   
                   <li><a href="/tags/Camera/">Camera</a></li>
                   
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
                   <li><a href="/tags/macOS/">macOS</a></li>
                   
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
                   <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
                   
                   <li><a href="/tags/面试/">面试</a></li>
                   
@@ -172,6 +173,9 @@
             
             
             
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
           </div>
         </div>
       </div>
@@ -208,64 +212,64 @@
 
 <p><img src="/assets/images/skb-global.gif" alt="gif"></p>
 <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><p>该库托管于<strong>jitpack</strong>，所以在使用前，请先引入<strong>jitpack</strong>。</p>
-<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">dependencyResolutionManagement <span class="token punctuation">&#123;</span>
-    repositoriesMode<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>RepositoriesMode<span class="token punctuation">.</span>FAIL_ON_PROJECT_REPOS<span class="token punctuation">)</span>
-    repositories <span class="token punctuation">&#123;</span>
-        <span class="token function">mavenCentral</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        maven <span class="token punctuation">&#123;</span> url <span class="token string">'https://jitpack.io'</span> <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="language-groovy"><code class="language-groovy">dependencyResolutionManagement &#123;
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories &#123;
+        mavenCentral()
+        maven &#123; url 'https://jitpack.io' &#125;
+    &#125;
+&#125;</code></pre>
 <p>然后添加依赖。</p>
-<pre class="line-numbers language-groovy" data-language="groovy"><code class="language-groovy">dependencies <span class="token punctuation">&#123;</span>
-    implementation <span class="token string">'com.github.boybeak:skb-global:Tag'</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="language-groovy"><code class="language-groovy">dependencies &#123;
+    implementation 'com.github.boybeak:skb-global:Tag'
+&#125;</code></pre>
 <p>最新版本为：<img src="https://jitpack.io/v/boybeak/skb-global.svg" alt="version"></p>
 <h2 id="二、使用"><a href="#二、使用" class="headerlink" title="二、使用"></a>二、使用</h2><p>有两种使用方式：<strong>全局</strong>和<strong>局部</strong>。</p>
 <h3 id="2-1-全局使用"><a href="#2-1-全局使用" class="headerlink" title="2.1 全局使用"></a>2.1 全局使用</h3><p>在使用前，需要先在Application中初始化<code>SoftKeyboardGlobal</code>。</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> App <span class="token operator">:</span> <span class="token function">Application</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<pre class="language-kotlin"><code class="language-kotlin">class App : Application() &#123;
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        SoftKeyboardGlobal<span class="token punctuation">.</span><span class="token function">install</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    override fun onCreate() &#123;
+        super.onCreate()
+        SoftKeyboardGlobal.install(this, true)
+    &#125;
+&#125;</code></pre>
 <blockquote>
 <p>其中，第二个参数传入<code>true</code>，可以在UI界面显示一个高度指示器。</p>
 </blockquote>
 <p>然后，在你应用中的任意位置，可以监听键盘的状态与高度，如下方式：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin">SoftKeyboardGlobal<span class="token punctuation">.</span><span class="token function">addSoftKeyboardCallback</span><span class="token punctuation">(</span><span class="token keyword">object</span> <span class="token operator">:</span> SoftKeyboardGlobal<span class="token punctuation">.</span><span class="token function">SoftKeyboardCallback</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onOpen</span><span class="token punctuation">(</span>height<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Log<span class="token punctuation">.</span><span class="token function">d</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"onOpen height=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">height</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
+<pre class="language-kotlin"><code class="language-kotlin">SoftKeyboardGlobal.addSoftKeyboardCallback(object : SoftKeyboardGlobal.SoftKeyboardCallback &#123;
+    override fun onOpen(height: Int) &#123;
+        Log.d(TAG, "onOpen height=$height")
+    &#125;
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onClose</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Log<span class="token punctuation">.</span><span class="token function">d</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"onClose"</span></span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
+    override fun onClose() &#123;
+        Log.d(TAG, "onClose")
+    &#125;
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onHeightChanged</span><span class="token punctuation">(</span>height<span class="token operator">:</span> Int<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        Log<span class="token punctuation">.</span><span class="token function">d</span><span class="token punctuation">(</span>TAG<span class="token punctuation">,</span> <span class="token string-literal singleline"><span class="token string">"onHeightChanged height=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$</span><span class="token expression">height</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    override fun onHeightChanged(height: Int) &#123;
+        Log.d(TAG, "onHeightChanged height=$height")
+    &#125;
+&#125;)</code></pre>
 
 <h3 id="2-2-局部使用"><a href="#2-2-局部使用" class="headerlink" title="2.2 局部使用"></a>2.2 局部使用</h3><p>你可以在任意<code>Activity</code>, <code>Fragment</code>或者<code>View</code>中使用这种方式，只要能获取到<code>Activity</code>实例。以<code>Activity</code>为例，如下方式：</p>
-<pre class="line-numbers language-kotlin" data-language="kotlin"><code class="language-kotlin"><span class="token keyword">class</span> MainActivity <span class="token operator">:</span> <span class="token function">AppCompatActivity</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<pre class="language-kotlin"><code class="language-kotlin">class MainActivity : AppCompatActivity() &#123;
 
-    <span class="token keyword">private</span> <span class="token keyword">val</span> observer <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> KeyboardObserver<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
-    <span class="token keyword">private</span> <span class="token keyword">val</span> switchBtn<span class="token operator">:</span> SwitchCompat <span class="token keyword">by</span> lazy <span class="token punctuation">&#123;</span> <span class="token function">findViewById</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>id<span class="token punctuation">.</span>switchBtn<span class="token punctuation">)</span> <span class="token punctuation">&#125;</span>
+    private val observer by lazy &#123; KeyboardObserver.create(this, true) &#125;
+    private val switchBtn: SwitchCompat by lazy &#123; findViewById(R.id.switchBtn) &#125;
 
-    <span class="token keyword">override</span> <span class="token keyword">fun</span> <span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token operator">:</span> Bundle<span class="token operator">?</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span>
-        <span class="token function">setContentView</span><span class="token punctuation">(</span>R<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_main<span class="token punctuation">)</span>
+    override fun onCreate(savedInstanceState: Bundle?) &#123;
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        switchBtn<span class="token punctuation">.</span><span class="token function">setOnCheckedChangeListener</span> <span class="token punctuation">&#123;</span> buttonView<span class="token punctuation">,</span> isChecked <span class="token operator">-></span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>isChecked<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                observer<span class="token punctuation">.</span><span class="token function">watch</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-                observer<span class="token punctuation">.</span><span class="token function">unwatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        switchBtn.setOnCheckedChangeListener &#123; buttonView, isChecked ->
+            if (isChecked) &#123;
+                observer.watch()
+            &#125; else &#123;
+                observer.unwatch()
+            &#125;
+        &#125;
+    &#125;
+&#125;</code></pre>
 <p>同样的，在创建<code>KeyboardObserver</code>时，第二个参数传入<code>true</code>可以显示一个键盘高度指示器，方便调试。</p>
 <h2 id="三、原理分析"><a href="#三、原理分析" class="headerlink" title="三、原理分析"></a>三、原理分析</h2><p>该方案是在多年开发过程中，实践出来的最佳的方案。以前的旧方案，实现方式如下：</p>
 <ol>
