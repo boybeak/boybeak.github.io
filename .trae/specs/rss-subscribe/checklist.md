@@ -1,0 +1,5 @@
+- [x] 检查package.json是否包含hexo-generator-feed依赖
+- [x] 检查_config.yml是否配置了feed选项
+- [x] 检查主题模板是否添加了RSS订阅链接
+- [x] 执行hexo generate验证atom.xml生成
+- [x] 启动本地服务器验证RSS链接可访问

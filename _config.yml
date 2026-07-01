@@ -50,16 +50,7 @@ highlight:
   tab_replace: ''
   wrap: true
   hljs: false
-prism_plugin:
-  preprocess: true
-  line_number: false
-  tab_replace: ''
-  theme: 'okaidia'
-  plugins:
-    - 'copy-to-clipboard'
-  prompt:
-    before: ''
-    after: ''
+
 
 # Marked
 marked:
