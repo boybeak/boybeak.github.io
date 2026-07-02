@@ -1,0 +1,110 @@
+<% 
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+
+  function getAllImages(content) {
+    var images = [];
+    var regex = /<img[^>]+src="([^">]+)"/g;
+    var match;
+    while ((match = regex.exec(content)) !== null) {
+      images.push(match[1]);
+    }
+    return images;
+  }
+  
+  function categorizePost(title) {
+    // Simple heuristic: tech keywords → 技术, life keywords → 生活
+    const techKeywords = ['源码', '分析', 'J2V8', 'Binder', 'Glide', 'Activity', 'ASM', 'Jetpack', 'LiveData', 'Lifecycle', 'ARouter', 'LeakCanary', 'AMS', 'MediaCodec', 'OpenGL', 'SwiftUI', 'MacOS', 'Swift', 'Package', 'Kotlin', 'Native', 'Jitpack', 'Apk', 'PAG', '算法', '代码', '数据库', '框架', '架构', '编译', '编译原理', '性能', '优化', '路由', 'LaunchMode', 'clipTo', '软键盘', 'Camera', '相机', '录像', '托盘', '菜单栏', '绑定', 'SDK', '库', '发布', '静态库', 'Maven', '调试', 'bug', 'Bitmap', 'BannerDog', 'Banner'];
+    const lifeKeywords = ['面试', '要饭', '难忘', '写了一个', '开发', 'JustTodo', 'Translator', 'AOD', 'Volume', 'Tray', 'BannerDog', '生活', '感悟', '心得', '对', '做错', '做对了'];
+    
+    let techScore = 0, lifeScore = 0;
+    for (const kw of techKeywords) {
+      if (title.includes(kw)) techScore++;
+    }
+    for (const kw of lifeKeywords) {
+      if (title.includes(kw)) lifeScore++;
+    }
+    if (techScore > lifeScore) return '技术';
+    if (lifeScore > techScore) return '生活';
+    return '';
+  }
+%>
+
+<% const posts = page.posts; %>
+
+<div class="author-block">
+  <% if (theme.custom.author_avatar) { %>
+  <a href="<%= config.root %>about" class="author-avatar">
+    <img src="<%= theme.custom.author_avatar %>" alt="<%= theme.custom.author_name %>">
+  </a>
+  <% } %>
+  <div class="author-text">
+    <a href="<%= config.root %>about" class="author-name"><%= theme.custom.author_name %></a>
+    <p class="author-bio"><%= theme.custom.author_bio %></p>
+  </div>
+</div>
+
+<div class="post-list">
+  <% posts.forEach(function(post) { %>
+  <article class="post-item">
+    <div class="post-head">
+      <h2 class="post-title">
+        <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+      </h2>
+      <div class="post-meta">
+        <time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+        <% const cat = categorizePost(post.title); %>
+        <% if (cat) { %>
+          <span class="post-meta-sep">/</span>
+          <span class="post-kind post-kind-<%= cat === '技术' ? 'tech' : 'life' %>"><%= cat %></span>
+        <% } %>
+      </div>
+    </div>
+    <p class="post-excerpt"><%= post.excerpt ? truncate(strip_html(post.excerpt), 200) : truncate(strip_html(post.content), 200) %></p>
+    <% var images = getAllImages(post.excerpt || post.content); %>
+    <% if (images.length > 0) { %>
+    <a href="<%- url_for(post.path) %>" class="post-thumb">
+      <img src="<%= images[0] %>" alt="<%= post.title %>" loading="lazy">
+    </a>
+    <% } %>
+    <% if ((post.categories && post.categories.length > 0) || (post.tags && post.tags.length > 0)) { %>
+    <div class="post-taxes">
+      <% if (post.categories && post.categories.length > 0) { %>
+        <% post.categories.forEach(function(cat) { %>
+          <a href="<%- url_for(cat.path) %>" class="taxe-cat"><%= cat.name %></a>
+        <% }); %>
+      <% } %>
+      <% if (post.tags && post.tags.length > 0) { %>
+        <% post.tags.slice(0, 4).forEach(function(tag) { %>
+          <a href="<%- url_for(tag.path) %>" class="taxe-tag">#<%= tag.name %></a>
+        <% }); %>
+      <% } %>
+    </div>
+    <% } %>
+  </article>
+  <% }); %>
+</div>
+
+<% if (page.total > 1) { %>
+<nav class="pagination">
+  <% if (page.prev) { %>
+    <a href="<%- url_for(page.prev_link) %>" class="page-arrow">&larr; 上一页</a>
+  <% } else { %>
+    <span class="page-arrow disabled">&larr; 上一页</span>
+  <% } %>
+  
+  <span class="page-info"><%= page.current %> / <%= page.total %></span>
+  
+  <% if (page.next) { %>
+    <a href="<%- url_for(page.next_link) %>" class="page-arrow">下一页 &rarr;</a>
+  <% } else { %>
+    <span class="page-arrow disabled">下一页 &rarr;</span>
+  <% } %>
+</nav>
+<% } %>

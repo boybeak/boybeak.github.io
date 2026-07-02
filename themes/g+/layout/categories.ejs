@@ -1,0 +1,11 @@
+<main class="page-single">
+  <h1 class="page-heading">分类</h1>
+  <div class="card-list">
+    <% site.categories.each(function(category) { %>
+    <a href="<%= config.root %><%= category.path %>" class="card cat-card">
+      <h2 class="cat-card-name"><%= category.name %></h2>
+      <span class="cat-card-count"><%= category.length %> 篇</span>
+    </a>
+    <% }) %>
+  </div>
+</main>

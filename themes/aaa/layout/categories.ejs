@@ -1,0 +1,13 @@
+<div class="page-container">
+  <h1 class="page-title">分类</h1>
+  <div class="category-list">
+    <% site.categories.each(function(category) { %>
+    <div class="category-row">
+      <h2 class="category-name">
+        <a href="<%= config.root %><%= category.path %>"><%= category.name %></a>
+      </h2>
+      <span class="category-count"><%= category.length %> 篇</span>
+    </div>
+    <% }) %>
+  </div>
+</div>

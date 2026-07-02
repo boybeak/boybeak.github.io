@@ -1,0 +1,47 @@
+<% 
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+%>
+
+<main class="page-single">
+  <h1 class="page-heading">分类：<%= page.category %></h1>
+  <p class="page-subtitle"><%= page.posts.length %> 篇文章</p>
+
+  <div class="masonry">
+    <% page.posts.forEach(function(post) { %>
+    <article class="card post-card">
+      <div class="post-card-body">
+        <h3 class="post-card-title">
+          <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+        </h3>
+        <div class="post-card-meta">
+          <time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+        </div>
+        <p class="post-card-excerpt"><%= post.excerpt ? truncate(strip_html(post.excerpt), 120) : truncate(strip_html(post.content), 120) %></p>
+      </div>
+    </article>
+    <% }); %>
+  </div>
+
+  <% if (page.total > 1) { %>
+  <nav class="pagination">
+    <% if (page.prev) { %>
+      <a href="<%- url_for(page.prev_link) %>" class="pag-btn">&larr; 上一页</a>
+    <% } else { %>
+      <span class="pag-btn disabled">&larr; 上一页</span>
+    <% } %>
+    <span class="pag-info"><%= page.current %> / <%= page.total %></span>
+    <% if (page.next) { %>
+      <a href="<%- url_for(page.next_link) %>" class="pag-btn">下一页 &rarr;</a>
+    <% } else { %>
+      <span class="pag-btn disabled">下一页 &rarr;</span>
+    <% } %>
+  </nav>
+  <% } %>
+</main>

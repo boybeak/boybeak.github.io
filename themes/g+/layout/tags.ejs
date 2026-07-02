@@ -1,0 +1,11 @@
+<main class="page-single">
+  <h1 class="page-heading">标签</h1>
+  <div class="tag-cloud">
+    <% site.tags.each(function(tag) { %>
+    <a href="<%= config.root %><%= tag.path %>" class="tag-chip" style="font-size: <%= 0.8 + Math.min(tag.length * 0.06, 0.8) %>rem;">
+      <%= tag.name %>
+      <span class="tag-chip-count"><%= tag.length %></span>
+    </a>
+    <% }) %>
+  </div>
+</main>

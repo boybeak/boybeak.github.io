@@ -1,0 +1,110 @@
+<% 
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+
+  function getAllImages(content) {
+    if (!content) return [];
+    const imgMatches = content.match(/<img[^>]+src="([^"]+)"/g);
+    if (!imgMatches) return [];
+    return imgMatches.map(match => {
+      const srcMatch = match.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : null;
+    }).filter(Boolean);
+  }
+
+  var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  var posts = page.posts;
+  var currentMonth = '';
+%>
+
+<div class="masonry">
+  <!-- 作者卡片（仅首页第一页显示） -->
+  <% if (page.current === 1 || !page.current) { %>
+  <div class="card author-card">
+    <div class="author-card-bg"></div>
+    <div class="author-card-body">
+      <% if (theme.custom.author_avatar) { %>
+      <img class="author-avatar" src="<%= theme.custom.author_avatar %>" alt="<%= theme.custom.author_name %>" width="72" height="72">
+      <% } else { %>
+      <div class="author-avatar author-avatar-fallback"><%= (theme.custom.author_name || 'B').charAt(0) %></div>
+      <% } %>
+      <h2 class="author-name"><%= theme.custom.author_name %></h2>
+      <p class="author-bio"><%= theme.custom.author_bio %></p>
+      <div class="author-links">
+        <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+        <% theme.custom.social_links.forEach(function(link) { %>
+        <% if (link.url) { %>
+        <a href="<%= link.url %>" class="author-link" target="_blank" rel="noopener"><%= link.name %></a>
+        <% } %>
+        <% }); %>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <!-- 文章卡片 -->
+  <% posts.forEach(function(post, index) { %>
+    <% var postMonth = date(post.date, 'YYYY年M月'); %>
+    
+    <!-- 月份分隔卡片 -->
+    <% if (postMonth !== currentMonth) { %>
+      <% currentMonth = postMonth; %>
+      <div class="card time-card">
+        <span class="time-label"><%= currentMonth %></span>
+      </div>
+    <% } %>
+
+    <article class="card post-card">
+      <% var images = getAllImages(post.excerpt || post.content); %>
+      <% if (images.length > 0) { %>
+      <div class="post-card-image">
+        <img src="<%= images[0] %>" alt="<%= post.title %>" loading="lazy">
+      </div>
+      <% } %>
+      <div class="post-card-body">
+        <h3 class="post-card-title">
+          <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+        </h3>
+        <div class="post-card-meta">
+          <time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'MM.DD') %></time>
+          <% if (post.categories && post.categories.length > 0) { %>
+            <% post.categories.forEach(function(cat) { %>
+              <a href="<%- url_for(cat.path) %>" class="post-card-cat"><%= cat.name %></a>
+            <% }); %>
+          <% } %>
+        </div>
+        <p class="post-card-excerpt"><%= post.excerpt ? truncate(strip_html(post.excerpt), 120) : truncate(strip_html(post.content), 120) %></p>
+        <% if (post.tags && post.tags.length > 0) { %>
+        <div class="post-card-tags">
+          <% post.tags.slice(0, 3).forEach(function(tag) { %>
+            <a href="<%- url_for(tag.path) %>" class="post-card-tag"><%= tag.name %></a>
+          <% }); %>
+        </div>
+        <% } %>
+      </div>
+    </article>
+  <% }); %>
+</div>
+
+<% if (page.total > 1) { %>
+<div class="infinite-scroll-status">
+  <% if (page.next) { %>
+  <a href="<%- url_for(page.next_link) %>" class="next-page-link" style="display:none;"></a>
+  <div class="scroll-sentinel" id="scrollSentinel"></div>
+  <% } %>
+  <div class="scroll-loader" id="scrollLoader" style="display:none;">
+    <div class="loader-spinner"></div>
+    <span class="loader-text">加载更多...</span>
+  </div>
+  <div class="scroll-end" id="scrollEnd" style="display:none;">
+    <span class="scroll-end-text">—— 已加载全部文章 ——</span>
+  </div>
+</div>
+<% } %>

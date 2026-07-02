@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= page.title %> <%= config.title %></title>
+    <% if (theme.custom.favicon) { %>
+    <link rel="icon" type="image/png" href="<%= theme.custom.favicon %>">
+    <% } %>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <%- css('css/style.css') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.min.css" id="prism-theme">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+
+    <% if (theme.seo.googleSiteVerification) { %>
+    <meta name="google-site-verification" content="<%= theme.seo.googleSiteVerification %>" />
+    <% } %>
+    <% if (theme.seo.bingSiteVerification) { %>
+    <meta name="msvalidate.01" content="<%= theme.seo.bingSiteVerification %>" />
+    <% } %>
+    <% if (theme.seo.googleAnalytics) { %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.seo.googleAnalytics %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<%= theme.seo.googleAnalytics %>');
+    </script>
+    <% } %>
+</head>
+<body>
+  <!-- Top App Bar -->
+  <header class="app-bar">
+    <div class="app-bar-inner">
+      <div class="app-bar-left">
+        <a href="<%= config.root %>" class="app-bar-title">
+          <span class="app-bar-logo">B</span>
+          <span class="app-bar-name"><%= config.title %></span>
+        </a>
+      </div>
+      <nav class="app-bar-nav">
+        <a href="<%= config.root %>" class="app-bar-link active">首页</a>
+        <a href="<%= config.root %>categories" class="app-bar-link">分类</a>
+        <a href="<%= config.root %>tags" class="app-bar-link">标签</a>
+        <a href="<%= config.root %>about" class="app-bar-link">关于</a>
+      </nav>
+      <div class="app-bar-actions">
+        <button class="icon-btn theme-toggle-btn" id="themeToggle" aria-label="切换主题">
+          <span class="material-icons-outlined">dark_mode</span>
+        </button>
+        <a href="<%= config.root %>atom.xml" class="icon-btn" aria-label="RSS">
+          <span class="material-icons-outlined">rss_feed</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <%- body %>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-text">© <%= date(new Date(), 'YYYY') %> <%= config.title %></span>
+      <span class="footer-sep">·</span>
+      <span class="footer-quote"><%= theme.custom.footer_quote %></span>
+    </div>
+  </footer>
+
+  <%- js('js/main.js') %>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+</body>
+</html>

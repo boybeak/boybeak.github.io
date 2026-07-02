@@ -1,0 +1,55 @@
+<% 
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+%>
+
+<div class="page-container">
+  <h1 class="page-title">🏷️ 标签：<%= page.tag %></h1>
+  <p class="page-desc"><%= page.posts.length %> 篇文章</p>
+  
+  <div class="post-list">
+    <% page.posts.forEach(function(post) { %>
+    <article class="post-item">
+      <div class="post-head">
+        <h2 class="post-title">
+          <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+        </h2>
+        <div class="post-meta">
+          <time datetime="<%= date(post.date, 'YYYY-MM-DD') %>">📅 <%= date(post.date, 'YYYY.MM.DD') %></time>
+          <% if (post.categories && post.categories.length > 0) { %>
+            <span class="post-meta-sep">/</span>
+            <% post.categories.forEach(function(category) { %>
+              <a href="<%- url_for(category.path) %>" class="post-cat">📂 <%= category.name %></a>
+            <% }); %>
+          <% } %>
+        </div>
+      </div>
+      <p class="post-excerpt"><%= post.excerpt ? truncate(strip_html(post.excerpt), 200) : truncate(strip_html(post.content), 200) %></p>
+    </article>
+    <% }); %>
+  </div>
+
+  <% if (page.total > 1) { %>
+  <nav class="pagination">
+    <% if (page.prev) { %>
+      <a href="<%- url_for(page.prev_link) %>" class="page-arrow">◀ 上一页</a>
+    <% } else { %>
+      <span class="page-arrow disabled">◀ 上一页</span>
+    <% } %>
+    
+    <span class="page-info"><%= page.current %> / <%= page.total %></span>
+    
+    <% if (page.next) { %>
+      <a href="<%- url_for(page.next_link) %>" class="page-arrow">下一页 ▶</a>
+    <% } else { %>
+      <span class="page-arrow disabled">下一页 ▶</span>
+    <% } %>
+  </nav>
+  <% } %>
+</div>

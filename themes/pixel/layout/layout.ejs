@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= page.title %> | <%= config.title %></title>
+    <% if (theme.custom.favicon) { %>
+    <link rel="icon" type="image/png" href="<%= theme.custom.favicon %>">
+    <% } %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <%- css('css/style.css') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css" id="prism-theme">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+
+    <% if (theme.seo.googleSiteVerification) { %>
+    <meta name="google-site-verification" content="<%= theme.seo.googleSiteVerification %>" />
+    <% } %>
+
+    <% if (theme.seo.bingSiteVerification) { %>
+    <meta name="msvalidate.01" content="<%= theme.seo.bingSiteVerification %>" />
+    <% } %>
+
+    <% if (theme.seo.googleAnalytics) { %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.seo.googleAnalytics %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<%= theme.seo.googleAnalytics %>');
+    </script>
+    <% } %>
+</head>
+<body>
+  <!-- Scanline overlay for CRT effect -->
+  <div class="scanlines"></div>
+  <div class="noise"></div>
+
+  <div class="site-wrapper">
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="site-branding">
+          <a href="<%= config.root %>" class="site-logo">
+            <pre class="logo-ascii">
+ __   ___    ____  __  __  __  __  ___   ____ 
+|  | |   \  |    ||  ||  ||  ||  ||   \ |    |
+|  | |    \  |  | |  ||  ||  ||  ||    \ |  | 
+|__| |  |  | |  | |  ||  ||  ||  ||  |  ||  | 
+ __  |  |  | |  | |  ||  ||  ||  ||  |  ||  | 
+|  | |  |  | |  | |  ||  ||  ||  ||  |  ||  | 
+|__| |__|__| |__| |__||__||__||__||__|__||__| 
+            </pre>
+            <span class="site-title"><%= config.title %></span>
+          </a>
+          <p class="site-tagline"><%= theme.custom.site_quote %></p>
+        </div>
+
+        <nav class="site-nav">
+          <a href="<%= config.root %>" class="nav-link">[POSTS]</a>
+          <a href="<%= config.root %>categories" class="nav-link">[CATS]</a>
+          <a href="<%= config.root %>tags" class="nav-link">[TAGS]</a>
+          <a href="<%= config.root %>about" class="nav-link">[ABOUT]</a>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式">
+            <span class="toggle-icon">[*]</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="site-main">
+      <%- body %>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <span>© <%= date(new Date(), 'YYYY') %> <%= config.title %></span>
+          <span class="footer-dot">|</span>
+          <span class="footer-quote"><%= theme.custom.footer_quote %></span>
+        </div>
+        <div class="footer-right">
+          <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+          <% theme.custom.social_links.forEach(function(link) { %>
+          <% if (link.url) { %>
+          <a href="<%= link.url %>" class="footer-social-link" target="_blank" rel="noopener"><%= link.name %></a>
+          <% } %>
+          <% }); %>
+          <% } %>
+          <a href="<%= config.root %>atom.xml" class="footer-social-link">[rss]</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <%- js('js/main.js') %>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+</body>
+</html>

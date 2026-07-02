@@ -1,0 +1,24 @@
+<div class="page-container">
+  <h1 class="page-title">[ ABOUT ]</h1>
+  <div class="about-content">
+    <div class="about-intro">
+      <p>/// PLAYER: <strong>boybeak</strong></p>
+      <p>/// CLASS: SOFTWARE ENGINEER</p>
+      <p>/// SKILLS: Android · iOS/macOS · Kotlin · Swift · Java</p>
+      <p>/// MISSION: 用代码记录技术与生活</p>
+    </div>
+
+    <div class="about-links">
+      <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+      <% theme.custom.social_links.forEach(function(link) { %>
+      <% if (link.url) { %>
+      <a href="<%= link.url %>" class="about-link" target="_blank" rel="noopener">
+        <%= link.name %>
+        <span class="about-link-arrow">>></span>
+      </a>
+      <% } %>
+      <% }); %>
+      <% } %>
+    </div>
+  </div>
+</div>

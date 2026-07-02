@@ -1,0 +1,35 @@
+name: Zen
+description: 简约 · 通透 · 聚焦内容
+author: boybeak
+version: 1.0.0
+
+menu:
+  Home: /
+  About: /about
+
+# 自定义配置
+custom:
+  site_subtitle: 技术分享 · 生活感悟
+  site_quote: 内容为本，无关浮华
+  favicon: /favicon.png
+  author_name: boybeak
+  author_bio: 热爱技术，记录生活
+  author_avatar: https://avatars.githubusercontent.com/u/6696502?v=4
+  footer_quote: "少即是多"
+  posts_per_page: 10
+  social_links:
+    - name: github
+      url: https://github.com/boybeak
+      icon: github
+    - name: twitter
+      url: https://x.com/BeakInAir
+      icon: twitter
+    - name: email
+      url: mailto:boybeak@gmail.com
+      icon: mail
+
+# SEO 配置
+seo:
+  googleAnalytics: G-6JFG91EQ3M
+  googleSiteVerification: Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI
+  bingSiteVerification: FF63C4E8F966AF567DA7288160196C79

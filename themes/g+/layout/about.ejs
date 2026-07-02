@@ -1,0 +1,23 @@
+<main class="page-single">
+  <h1 class="page-heading">关于</h1>
+  <div class="card about-card-full">
+    <div class="about-card-body">
+      <p>欢迎，我是 <strong>boybeak</strong>，一名热爱技术的开发者。</p>
+      <p>这个博客记录了我的技术分析、项目实践与生活感悟。</p>
+      <p>技术方向涵盖 Android、iOS/macOS、Kotlin、Swift、Java 等。</p>
+      <p>如果你有任何想法或建议，欢迎通过以下方式联系我：</p>
+    </div>
+    <div class="about-links">
+      <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+      <% theme.custom.social_links.forEach(function(link) { %>
+      <% if (link.url) { %>
+      <a href="<%= link.url %>" class="about-link-chip" target="_blank" rel="noopener">
+        <span class="material-icons-outlined">open_in_new</span>
+        <%= link.name %>
+      </a>
+      <% } %>
+      <% }); %>
+      <% } %>
+    </div>
+  </div>
+</main>
