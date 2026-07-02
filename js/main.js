@@ -1,40 +1,38 @@
 (function() {
-  const toggleBtn = document.getElementById('themeToggle');
-  const body = document.body;
-  const prismThemeLink = document.getElementById('prism-theme');
-  const STORAGE_KEY = 'theme-preference';
-  const PRISM_LIGHT_THEME = 'https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css';
-  const PRISM_DARK_THEME = 'https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.min.css';
+  'use strict';
+  var toggleBtn = document.getElementById('themeToggle');
+  var body = document.body;
+  var prismLink = document.getElementById('prism-theme');
+  var KEY = 'red-theme';
+  var L = 'https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css';
+  var D = 'https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-tomorrow.min.css';
 
-  const savedTheme = localStorage.getItem(STORAGE_KEY);
-  if (savedTheme === 'night') {
-    body.classList.add('night-mode');
-    if (prismThemeLink) {
-      prismThemeLink.href = PRISM_DARK_THEME;
-    }
-  } else {
-    if (prismThemeLink) {
-      prismThemeLink.href = PRISM_LIGHT_THEME;
-    }
+  var saved = localStorage.getItem(KEY);
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (saved === 'dark' || (!saved && prefersDark)) {
+    body.classList.add('dark');
+    if (prismLink) prismLink.href = D;
   }
 
   function toggleTheme() {
-    if (body.classList.contains('night-mode')) {
-      body.classList.remove('night-mode');
-      localStorage.setItem(STORAGE_KEY, 'day');
-      if (prismThemeLink) {
-        prismThemeLink.href = PRISM_LIGHT_THEME;
-      }
+    if (body.classList.contains('dark')) {
+      body.classList.remove('dark');
+      localStorage.setItem(KEY, 'light');
+      if (prismLink) prismLink.href = L;
     } else {
-      body.classList.add('night-mode');
-      localStorage.setItem(STORAGE_KEY, 'night');
-      if (prismThemeLink) {
-        prismThemeLink.href = PRISM_DARK_THEME;
-      }
+      body.classList.add('dark');
+      localStorage.setItem(KEY, 'dark');
+      if (prismLink) prismLink.href = D;
     }
   }
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', toggleTheme);
-  }
+  if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    if (!localStorage.getItem(KEY)) {
+      if (e.matches) { body.classList.add('dark'); if (prismLink) prismLink.href = D; }
+      else { body.classList.remove('dark'); if (prismLink) prismLink.href = L; }
+    }
+  });
 })();
