@@ -7,13 +7,15 @@
     
     <link rel="icon" type="image/png" href="/assets/icons/favicon-32x32.png">
     
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css" id="prism-theme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.min.css" id="prism-theme">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
       mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
       document.addEventListener('DOMContentLoaded', function() {
         const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
         codeBlocks.forEach(function(block) {
@@ -24,15 +26,15 @@
         });
       });
     </script>
-
+    
     
     <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
     
-
+    
     
     <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
     
-
+    
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
     <script>
@@ -45,498 +47,653 @@
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
 </head>
 <body>
-  <div class="site-wrapper">
+  <div class="container">
     <header class="site-header">
-      <div class="header-inner">
-        <div class="site-branding">
-          <a href="/" class="site-logo">
-            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="3"/>
-              <line x1="12" y1="2" x2="12" y2="6"/>
-              <line x1="12" y1="18" x2="12" y2="22"/>
-              <line x1="2" y1="12" x2="6" y2="12"/>
-              <line x1="18" y1="12" x2="22" y2="12"/>
-              <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
-              <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
-              <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
-              <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
-            </svg>
-            <span class="site-title">Boybeak</span>
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-96x96.png" alt="Boybeak" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
           </a>
-          <p class="site-tagline">内容为本，无关浮华</p>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="/categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="/categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="/categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="/tags/Android/">Android</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="/tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="/tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="/tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="/tags/Github/">Github</a></li>
+                  
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
+                  <li><a href="/tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="/tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="/tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
         </div>
-
-        <nav class="site-nav">
-          <a href="/" class="nav-link">文章</a>
-          <a href="/categories" class="nav-link">分类</a>
-          <a href="/tags" class="nav-link">标签</a>
-          <a href="/about" class="nav-link">关于</a>
-          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式">
-            <span class="toggle-icon"></span>
-          </button>
-        </nav>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              
+            </a>
+            
+            
+            
+            <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
+              
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              
+            </a>
+            
+            
+            
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
-    <main class="site-main">
-      
+    
 
 
 
-<div class="author-block">
+<main class="article-list">
   
-  <a href="/about" class="author-avatar">
-    <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak">
-  </a>
-  
-  <div class="author-text">
-    <a href="/about" class="author-name">boybeak</a>
-    <p class="author-bio">热爱技术，记录生活</p>
-  </div>
-</div>
-
-<div class="post-list">
-  
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/22/2022-09-23-Kotlin%20Native/">Kotlin Native从初识到放弃</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-23">2022.09.23</time>
-        
-        
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
-        
-      </div>
-    </div>
-    <p class="post-excerpt">此贴用于记录对Kotlin Native从初识到放弃的过程，因为还不清楚这一平台的开发能力上限多高，不排除用的好，会一直用下去。以下Kotlin Native会用KN来代替。
-开始首先，下载IDEA，我这里用的是社区版，社区版已经足以应对大多数情况了。然后，新建一个KN的项目。IDE会自动生成hello world代码，直接点运行，如果工具栏的运行按钮没有可执行的配置，那就直接在Main.kt文件...</p>
-    
-    
-    <a href="/2022/09/22/2022-09-23-Kotlin%20Native/" class="post-thumb">
-      <img src="/assets/images/kotlin-native-starter.jpg" alt="Kotlin Native从初识到放弃" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/22/2022-09-23-Kotlin%20Native/">Kotlin Native从初识到放弃</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-23">
+        2022.09.23
+      </time>
       
         
-          <a href="/categories/Kotlin-Native/" class="taxe-cat">Kotlin Native</a>
+          <a href="/categories/Kotlin-Native/" class="article-category">Kotlin Native</a>
         
       
       
         
-          <a href="/tags/Kotlin/" class="taxe-tag">#Kotlin</a>
+          <a href="/tags/Kotlin/" class="article-tag">Kotlin</a>
         
       
     </div>
+    <p class="article-summary">
+      此贴用于记录对Kotlin Native从初识到放弃的过程，因为还不清楚这一平台的开发能力上限多高，不排除用的好，会一直用下去。以下Kotlin Native会用KN来代替。
+开始首先，下载IDEA，我这里用的是社区版，社区版已经足以应对大多数情况了。然后，新建一个KN的项目。IDE会自动生成hel...
+    </p>
+    
+    
+      
+        <div class="article-images grid-4">
+          
+            <div class="image-item">
+              <img src="/assets/images/kotlin-native-starter.jpg" alt="Kotlin Native从初识到放弃 - 图片 1">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/xcode-select.jpg" alt="Kotlin Native从初识到放弃 - 图片 2">
+            </div>
+          
+        </div>
+      
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/21/2022-09-22-%E9%9A%BE%E5%BF%98%E7%9A%84bug/">难忘的bug</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-22">2022.09.22</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/21/2022-09-22-%E9%9A%BE%E5%BF%98%E7%9A%84bug/">难忘的bug</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-22">
+        2022.09.22
+      </time>
+      
         
+          <a href="/categories/%E9%99%B7%E9%98%B1%E4%B8%8E%E7%BC%BA%E9%99%B7/" class="article-category">陷阱与缺陷</a>
         
-      </div>
+      
+      
+        
+          <a href="/tags/%E9%99%B7%E9%98%B1%E4%B8%8E%E7%BC%BA%E9%99%B7/" class="article-tag">陷阱与缺陷</a>
+        
+      
     </div>
-    <p class="post-excerpt">此贴是为了记录日常开发过程中，遇到的一些让人难忘的bug。
+    <p class="article-summary">
+      此贴是为了记录日常开发过程中，遇到的一些让人难忘的bug。
 
 MediaPlayer: surface has already been released
 kotlin ?.的陷阱与缺陷
 
-surface has already been released场景：MediaPlayer做跨进程的视频播放发现的，由于有无画面的后台播放场景，所以，MediaPlayer的相关操作放在独立进程的Servi...</p>
+surface has already been released场景：MediaPlayer做跨进程的视频播...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/%E9%99%B7%E9%98%B1%E4%B8%8E%E7%BC%BA%E9%99%B7/" class="taxe-cat">陷阱与缺陷</a>
-        
-      
-      
-        
-          <a href="/tags/%E9%99%B7%E9%98%B1%E4%B8%8E%E7%BC%BA%E9%99%B7/" class="taxe-tag">#陷阱与缺陷</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/19/2022-09-19-Intent.FLAG_ACTIVITY_XXX%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/">Intent.FLAG_ACTIVITY_***解密</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
-        
-        
-      </div>
-    </div>
-    <p class="post-excerpt">最好先看这一篇[Launch Mode](&amp;#x2F;android&amp;#x2F;LaunchMode.html)。
-我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY_SINGLE_TOP四个flag进行讲解。
-FLAG_ACTIVITY_NEW_TASK：
-
-通过...</p>
-    
-    
-    
-    <div class="post-taxes">
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/19/2022-09-19-Intent.FLAG_ACTIVITY_XXX%E5%88%B0%E5%BA%95%E8%83%BD%E5%B9%B2%E5%95%A5/">Intent.FLAG_ACTIVITY_***解密</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
       
         
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
       
       
         
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
+          <a href="/tags/Android/" class="article-tag">Android</a>
         
       
     </div>
+    <p class="article-summary">
+      最好先看这一篇[Launch Mode](&amp;#x2F;android&amp;#x2F;LaunchMode.html)。
+我们将重点针对FLAG_ACTIVITY_NEW_TASK、FLAG_ACTIVITY_CLEAR_TASK、FLAG_ACTIVITY_CLEAR_TOP、FLAG_ACTIVITY...
+    </p>
+    
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/19/2022-09-19-Mavencentral/">发布Android库到MavenCentral教程</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/19/2022-09-19-Mavencentral/">发布Android库到MavenCentral教程</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2022年2月21号以前，连库的解析服务也停止，所以，把以前的库或者未来的新库替换到MavenCentral是当务之急了。
+    <p class="article-summary">
+      JCenter已经宣布，即将在2020年5月1日，停止新的库的提交，在2022年2月21号以前，连库的解析服务也停止，所以，把以前的库或者未来的新库替换到MavenCentral是当务之急了。
 我参考的教程来自以下两篇文章：
-Publishing your first Android library to MavenCentral
-Android库发布到Maven Central全攻略
-Demo项...</p>
+Publishing your first Android library...
+    </p>
     
     
-    <a href="/2022/09/19/2022-09-19-Mavencentral/" class="post-thumb">
-      <img src="/assets/images/mc_create.jpg" alt="发布Android库到MavenCentral教程" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
       
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
+        <div class="article-images grid-9">
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_create.jpg" alt="发布Android库到MavenCentral教程 - 图片 1">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_replay.jpg" alt="发布Android库到MavenCentral教程 - 图片 2">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_resolved.jpg" alt="发布Android库到MavenCentral教程 - 图片 3">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_pwd.png" alt="发布Android库到MavenCentral教程 - 图片 4">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_cer_push.png" alt="发布Android库到MavenCentral教程 - 图片 5">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_build_push.jpg" alt="发布Android库到MavenCentral教程 - 图片 6">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/mc_publish.jpg" alt="发布Android库到MavenCentral教程 - 图片 7">
+              
+            </div>
+          
+        </div>
       
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-LaunchMode/">LaunchMode</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-LaunchMode/">LaunchMode</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">此文是阅读《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》一文后的总结，视频地址Bilibili、Youtube。
+    <p class="article-summary">
+      此文是阅读《Android 面试黑洞——当我按下 Home 键再切回来，会发生什么？》一文后的总结，视频地址Bilibili、Youtube。
 演示代码：
 在正式讲解launchMode前，先要理解三个概念：ActivityStack, TaskRecord, ActivityRecord。
 
-graph LR;
-style TaskRecord-A fill:#aaddff;
-style Tas...</p>
+gr...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-Binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/">Binder机制分析</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-Binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/">Binder机制分析</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">参考文章：写给 Android 应用工程师的 Binder 原理剖析
+    <p class="article-summary">
+      参考文章：写给 Android 应用工程师的 Binder 原理剖析
 实验代码：TheBinder
-Binder机制可以说是Android的核心。提到Binder，可能会让你想到，通过bindService与Service进行通信(也可能是跨进程的通信)，实际上，Android中Binder的使用可以说是无处不在的，包括Activity跳转，详情可以参考AMS启动流程。
-为什么要用Binder?在...</p>
+Binder机制可以说是Android的核心。提到Binder，可能会让你想到，通过bindService与Service进行通信(也可能是跨进程的通信)，实际上，Android中Binder的使用可...
+    </p>
     
     
-    <a href="/2022/09/18/2022-09-19-Binder%E6%9C%BA%E5%88%B6%E5%88%86%E6%9E%90/" class="post-thumb">
-      <img src="/assets/images/traditional_ipc.jpg" alt="Binder机制分析" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
       
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
+        <div class="article-images grid-9">
+          
+            <div class="image-item">
+              <img src="/assets/images/traditional_ipc.jpg" alt="Binder机制分析 - 图片 1">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/linux_memory.png" alt="Binder机制分析 - 图片 2">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/linux_ipc.jpg" alt="Binder机制分析 - 图片 3">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/binder.jpg" alt="Binder机制分析 - 图片 4">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/android_binder.jpg" alt="Binder机制分析 - 图片 5">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/client_server_service_manager.jpg" alt="Binder机制分析 - 图片 6">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/binder_data_trans.jpg" alt="Binder机制分析 - 图片 7">
+              
+            </div>
+          
+        </div>
       
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-ASM/">ASM库介绍与使用</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-ASM/">ASM库介绍与使用</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">
+    <p class="article-summary">
+      
 原文
 
-前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可能会看不懂，所以推荐先看下前面几篇文章。 这篇文章主要介绍 ASM 库的结构、主要的 API，并且通...</p>
+前面几篇文章介绍了 .class 文件的结构、JVM 如何加载 .class 文件、JVM 中如何执行方法的调用和访问者模式，其实前面几篇文章都是为这篇文章做铺垫的，如果不知道 .class 文件结构、也不知道在 JVM 中 .class 文件中的方法是如何被执行的，这篇文章中的有些部分可...
+    </p>
     
     
-    <a href="/2022/09/18/2022-09-19-ASM/" class="post-thumb">
-      <img src="/assets/images/ezgif-6-73b502b11e16.jpg" alt="ASM库介绍与使用" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
       
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
+        <div class="article-images grid-9">
+          
+            <div class="image-item">
+              <img src="/assets/images/ezgif-6-73b502b11e16.jpg" alt="ASM库介绍与使用 - 图片 1">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-d4f950ec94a12cde.webp" alt="ASM库介绍与使用 - 图片 2">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-f5a428b729962860.webp" alt="ASM库介绍与使用 - 图片 3">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-32ee7bd0974a4679.webp" alt="ASM库介绍与使用 - 图片 4">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-af582100631d7eec.webp" alt="ASM库介绍与使用 - 图片 5">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-8c703df0b005aae7.webp" alt="ASM库介绍与使用 - 图片 6">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-a718d240e05a2198.webp" alt="ASM库介绍与使用 - 图片 7">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-e2e730e41623be28.webp" alt="ASM库介绍与使用 - 图片 8">
+              
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/4179925-0cc8712718f08ea0.webp" alt="ASM库介绍与使用 - 图片 9">
+              
+            </div>
+          
+        </div>
       
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-App%E4%BF%9D%E6%B4%BB%E6%9C%AF/">App保活术</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-App%E4%BF%9D%E6%B4%BB%E6%9C%AF/">App保活术</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-      </div>
+      
+      
+        
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">为什么要保活？
+    <p class="article-summary">
+      为什么要保活？
 因为Android的Low memory killer机制，在系统内存不足的情况下，系统开始根据自身的一套进程回收机制结束一些进程，以便腾出内存给需要的进程。
 如何判断内存不足？
 判断的阈值在不同手机上是不一样的，一旦低于该阈值，系统就会杀死对应优先级的进程。
-在adb shell下，通过如下命令来查看阈值：
-cat /sys/module/lowmemorykiller/para...</p>
+在adb shell下...
+    </p>
     
     
-    <a href="/2022/09/18/2022-09-19-App%E4%BF%9D%E6%B4%BB%E6%9C%AF/" class="post-thumb">
-      <img src="/assets/images/process_priority.jpg" alt="App保活术" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
       
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
+        <div class="article-images grid-4">
+          
+            <div class="image-item">
+              <img src="/assets/images/process_priority.jpg" alt="App保活术 - 图片 1">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/oom_adj.png" alt="App保活术 - 图片 2">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/forground_service.png" alt="App保活术 - 图片 3">
+            </div>
+          
+        </div>
       
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-Apk%E7%98%A6%E8%BA%AB%E6%9C%AF/">Apk瘦身术</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
-        
-        
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
-        
-      </div>
-    </div>
-    <p class="post-excerpt">Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
-一、资源文件1.1 删除无用资源文件1.1.1 Lint工具菜单 -&amp;gt; Analyze -&amp;gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除。
-1.1.2 shrinkResourcesbuildTypes &amp;#123;
-  release...</p>
-    
-    
-    
-    <div class="post-taxes">
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-Apk%E7%98%A6%E8%BA%AB%E6%9C%AF/">Apk瘦身术</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
       
         
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
       
       
         
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
+          <a href="/tags/Android/" class="article-tag">Android</a>
         
       
     </div>
+    <p class="article-summary">
+      Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
+一、资源文件1.1 删除无用资源文件1.1.1 Lint工具菜单 -&amp;gt; Analyze -&amp;gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除...
+    </p>
+    
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-AMS%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">AMS启动流程</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-AMS%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">AMS启动流程</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+    <p class="article-summary">
+      AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
 系统启动流程
 graph TD;
     style A fill:#fff
     style F fill:#5befb9
-    Z&amp;#123;&amp;#123;Boot ROM&amp;#125;&amp;#125; --&amp;gt; A([Boot Loader]...</p>
+    Z&amp;#123...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-</div>
+</main>
 
 
-<nav class="pagination">
+<nav class="pagination" aria-label="文章分页">
   
-    <span class="page-arrow disabled">&larr; 上一页</span>
+    <button class="pagination-btn prev-btn" disabled>
+      <span class="material-icons">chevron_left</span>
+    </button>
   
   
-  <span class="page-info">1 / 2</span>
+  <div class="pagination-numbers">
+    
+      
+        <span class="pagination-number active">1</span>
+      
+    
+      
+        <a href="/page/2/" class="pagination-number">2</a>
+      
+    
+  </div>
   
   
-    <a href="/archives/2022/09/page/2/" class="page-arrow">下一页 &rarr;</a>
+    <a href="/archives/2022/09/page/2/" class="pagination-btn next-btn">
+      <span class="material-icons">chevron_right</span>
+    </a>
   
 </nav>
 
 
-    </main>
-
     <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-left">
-          <span>© 2026 Boybeak</span>
-          <span class="footer-dot">·</span>
-          <span class="footer-quote">少即是多</span>
-        </div>
-        <div class="footer-right">
-          
-          
-          
-          <a href="https://github.com/boybeak" class="footer-social-link" target="_blank" rel="noopener">github</a>
-          
-          
-          
-          <a href="mailto:12345567890@qq.com" class="footer-social-link" target="_blank" rel="noopener">email</a>
-          
-          
-          
-          <a href="https://x.com/BeakInAir" class="footer-social-link" target="_blank" rel="noopener">twitter</a>
-          
-          
-          
-          <a href="/atom.xml" class="footer-social-link">rss</a>
-        </div>
-      </div>
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
     </footer>
   </div>
 
   
 <script src="/js/main.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
 </body>
 </html>

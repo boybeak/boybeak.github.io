@@ -7,13 +7,15 @@
     
     <link rel="icon" type="image/png" href="/assets/icons/favicon-32x32.png">
     
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
 <link rel="stylesheet" href="/css/style.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css" id="prism-theme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.min.css" id="prism-theme">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
       mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      // 处理Markdown代码块中的Mermaid语法
       document.addEventListener('DOMContentLoaded', function() {
         const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
         codeBlocks.forEach(function(block) {
@@ -24,15 +26,15 @@
         });
       });
     </script>
-
+    
     
     <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
     
-
+    
     
     <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
     
-
+    
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
     <script>
@@ -45,512 +47,526 @@
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
 </head>
 <body>
-  <div class="site-wrapper">
+  <div class="container">
     <header class="site-header">
-      <div class="header-inner">
-        <div class="site-branding">
-          <a href="/" class="site-logo">
-            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="3"/>
-              <line x1="12" y1="2" x2="12" y2="6"/>
-              <line x1="12" y1="18" x2="12" y2="22"/>
-              <line x1="2" y1="12" x2="6" y2="12"/>
-              <line x1="18" y1="12" x2="22" y2="12"/>
-              <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
-              <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
-              <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
-              <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
-            </svg>
-            <span class="site-title">Boybeak</span>
+      <div class="header-row">
+        <h1 class="site-title">
+          <a href="/">
+            
+            <img src="/assets/icons/favicon-96x96.png" alt="Boybeak" style="height: 40px; vertical-align: middle; margin-right: 10px;">
+            
+            Boybeak
           </a>
-          <p class="site-tagline">内容为本，无关浮华</p>
+        </h1>
+        <div class="nav-container">
+          <nav class="main-nav">
+            <ul class="nav-menu">
+              <li class="nav-item">
+                <a href="/">首页</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">分类</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/categories">全部分类</a></li>
+                  
+                  <li><a href="/categories/源码分析/">源码分析</a></li>
+                  
+                  <li><a href="/categories/Android技巧/">Android技巧</a></li>
+                  
+                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
+                  
+                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/categories/Translator/">Translator</a></li>
+                  
+                  <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
+                  
+                  <li><a href="/categories/面试笔记/">面试笔记</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="dropdown-toggle">标签</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/tags">全部标签</a></li>
+                  
+                  <li><a href="/tags/Android/">Android</a></li>
+                  
+                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
+                  
+                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
+                  
+                  <li><a href="/tags/Translator/">Translator</a></li>
+                  
+                  <li><a href="/tags/J2V8/">J2V8</a></li>
+                  
+                  <li><a href="/tags/Camera/">Camera</a></li>
+                  
+                  <li><a href="/tags/macOS/">macOS</a></li>
+                  
+                  <li><a href="/tags/静态库/">静态库</a></li>
+                  
+                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
+                  
+                  <li><a href="/tags/Jekyll/">Jekyll</a></li>
+                  
+                  <li><a href="/tags/Material-Design/">Material Design</a></li>
+                  
+                  <li><a href="/tags/Github/">Github</a></li>
+                  
+                  <li><a href="/tags/面试/">面试</a></li>
+                  
+                  <li><a href="/tags/Hexo/">Hexo</a></li>
+                  
+                  <li><a href="/tags/要饭/">要饭</a></li>
+                  
+                  <li><a href="/tags/PAG动画/">PAG动画</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="/about">关于</a>
+              </li>
+            </ul>
+          </nav>
+          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
         </div>
-
-        <nav class="site-nav">
-          <a href="/" class="nav-link">文章</a>
-          <a href="/categories" class="nav-link">分类</a>
-          <a href="/tags" class="nav-link">标签</a>
-          <a href="/about" class="nav-link">关于</a>
-          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式">
-            <span class="toggle-icon"></span>
-          </button>
-        </nav>
+      </div>
+      <div class="site-description">
+        技术分享 · 生活感悟 · 读书心得<br>
+        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
+      </div>
+      
+      <div class="author-info">
+        
+        <div class="author-avatar">
+          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        
+        <div class="author-details">
+          <h3 class="author-name">boybeak</h3>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              
+            </a>
+            
+            
+            
+            <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
+              
+              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              
+            </a>
+            
+            
+            
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
-    <main class="site-main">
-      
-
-
-
-<div class="author-block">
-  
-  <a href="/about" class="author-avatar">
-    <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak">
-  </a>
-  
-  <div class="author-text">
-    <a href="/about" class="author-name">boybeak</a>
-    <p class="author-bio">热爱技术，记录生活</p>
-  </div>
-</div>
-
-<div class="post-list">
-  
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-Apk%E7%98%A6%E8%BA%AB%E6%9C%AF/">Apk瘦身术</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
-        
-        
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
-        
-      </div>
-    </div>
-    <p class="post-excerpt">Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
-一、资源文件1.1 删除无用资源文件1.1.1 Lint工具菜单 -&amp;gt; Analyze -&amp;gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除。
-1.1.2 shrinkResourcesbuildTypes &amp;#123;
-  release...</p>
     
-    
-    
-    <div class="post-taxes">
+
+
+
+<main class="article-list">
+  
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-Apk%E7%98%A6%E8%BA%AB%E6%9C%AF/">Apk瘦身术</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
       
         
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
       
       
         
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
+          <a href="/tags/Android/" class="article-tag">Android</a>
         
       
     </div>
+    <p class="article-summary">
+      Apk瘦身主要从三方面入手：资源文件、源代码和第三方类库。
+一、资源文件1.1 删除无用资源文件1.1.1 Lint工具菜单 -&amp;gt; Analyze -&amp;gt; Run Inspection by Name，然后输入Unused resources便可以执行查找无用资源文件。自己根据需要进行删除...
+    </p>
+    
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-AMS%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">AMS启动流程</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-AMS%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">AMS启动流程</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
+    <p class="article-summary">
+      AMS是ActivityManagerService的简称，看名字，似乎是Activity的manager，实际上，它管理的可不只是Activity。
 系统启动流程
 graph TD;
     style A fill:#fff
     style F fill:#5befb9
-    Z&amp;#123;&amp;#123;Boot ROM&amp;#125;&amp;#125; --&amp;gt; A([Boot Loader]...</p>
+    Z&amp;#123...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/18/2022-09-19-Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">Activity启动流程</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-19">2022.09.19</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/18/2022-09-19-Activity%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B/">Activity启动流程</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-19">
+        2022.09.19
+      </time>
+      
         
+          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="article-category">Android技巧</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">原文参考：Activity 启动流程分析(Android10)
+    <p class="article-summary">
+      原文参考：Activity 启动流程分析(Android10)
 
 graph TD;
-A(启动Activity) --&amp;gt; B[通过Binder调用AMS的startActivity方法] --&amp;gt; C[通过Intent获取到目标Activity] --&amp;gt; D&amp;#123;目标Activity是否启动&amp;#125; --&amp;gt; |是|E[通过Instrumentation创建Activ...</p>
+A(启动Activity) --&amp;gt; B[通过Binder调用AMS的startActivity方法] --&amp;gt; C[通过Intent获取到目标Activity] --&amp;gt; D&amp;#123;目标Activ...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/Android%E6%8A%80%E5%B7%A7/" class="taxe-cat">Android技巧</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/17/2022-09-17-%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6IRouter/">IRouter——自己手撸一个路由框架</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/17/2022-09-17-%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6IRouter/">IRouter——自己手撸一个路由框架</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">现在最流行的路由框架应该是阿里的ARouter，这几乎是组件化应用的必备了。但是ARouter用起来稍微有一点不爽，不爽在以下两点：
+    <p class="article-summary">
+      现在最流行的路由框架应该是阿里的ARouter，这几乎是组件化应用的必备了。但是ARouter用起来稍微有一点不爽，不爽在以下两点：
 
 没有一个规范化的api式的调用方式：项目大了，调用路由的方法分布在项目各处，难以查找；
-对startActivityForResult支持不够友好：按照传统方式，在onActivityResult中处理，比较分散。
-
-基于以上问题，闲来无事，手撸一个自己的路由框架...</p>
+对startActivityForResult支持不够友好：按照传统方式，在...
+    </p>
     
     
-    <a href="/2022/09/17/2022-09-17-%E6%89%8B%E6%92%B8%E4%B8%80%E4%B8%AA%E8%B7%AF%E7%94%B1%E6%A1%86%E6%9E%B6IRouter/" class="post-thumb">
-      <img src="/assets/images/jd_loader_manager.jpg" alt="IRouter——自己手撸一个路由框架" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
       
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
+        <div class="article-images single-image">
+          <img src="/assets/images/jd_loader_manager.jpg" alt="IRouter——自己手撸一个路由框架">
+        </div>
       
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/16/2022-09-17-LiveEventBus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">LiveEventBus源码分析</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/16/2022-09-17-LiveEventBus%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">LiveEventBus源码分析</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">
+    <p class="article-summary">
+      
 不再分析了，理解了LiveData后，不难理解这个框架。
 
 阅读本文前，请先阅读[《Jetpack之LiveData源码分析》](&amp;#x2F;源码分析系列&amp;#x2F;LiveEventBus源码分析.md)。因为LiveEventBus是基于LiveData构建的。
-源码地址：LiveEventBus
-典型用法如下：
-// 监听消息
-LiveEventBus
-	.get(&#34;some_key&#34;, ...</p>
+源码地址：LiveEventB...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/16/2022-09-17-LeakCanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">LeakCanary原理分析</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/16/2022-09-17-LeakCanary%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">LeakCanary原理分析</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">dependencies &amp;#123;
+    <p class="article-summary">
+      dependencies &amp;#123;
   // debugImplementation because LeakCanary should only run in debug builds.
-  debugImplementation &#39;com.squareup.leakcanary:leakcanary-android:2.5&#39;
-&amp;#125;
-
-只需要这样简单配置，就能接入LeakCanary...</p>
+  debugImplementation &#39;com.squareup.leakcanary:leakca...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLiveData%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之LiveData源码分析</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLiveData%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之LiveData源码分析</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">在阅读这篇文章前，需要先对Lifecycle有所了解。
+    <p class="article-summary">
+      在阅读这篇文章前，需要先对Lifecycle有所了解。
 Lifecycle是LiveData的根基，先有了生命周期的管理，才能进行安全不泄漏的数据观察。
 先要引入LiveData：
-implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0&#34;
-
-def activity_version = &#34;1.1.0&#34;
-// Kotlin，引...</p>
+implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之Lifecycle源码分析</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/16/2022-09-17-Jetpack%E4%B9%8BLifecycle%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">Jetpack之Lifecycle源码分析</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">这是一篇解析jetpack库中的Lifecycle库的分析文章。
+    <p class="article-summary">
+      这是一篇解析jetpack库中的Lifecycle库的分析文章。
 def lifecycle_version = &#34;2.2.0&#34;
 // Lifecycles only (without ViewModel or LiveData)
-implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version&#34;
-// Anno...</p>
+implementation &#34;androidx.lifecycle...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/">Glide源码分析与自我实现(三)——APT的使用与GIF的优化</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/">Glide源码分析与自我实现(三)——APT的使用与GIF的优化</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">项目Demo地址：GifHelper
+    <p class="article-summary">
+      项目Demo地址：GifHelper
 什么是APT？
 APT是Annotation Processing Tool的简称，即编译时注解处理器。它是一个javac的工具，在编译时，通过注解，按照规则自动生成相关代码的工具。
 APT与Glide什么关系？
-我们通常通过在build.gradle加入这样一段代码来引入Glide库。
-repositories &amp;#123;
-  google()
-  jce...</p>
+我们通常通过在build.gradle加入这样一...
+    </p>
     
     
-    <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B03/" class="post-thumb">
-      <img src="/assets/images/glide_struct.jpg" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化" loading="lazy">
-    </a>
-    
-    
-    <div class="post-taxes">
       
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
+        <div class="article-images grid-4">
+          
+            <div class="image-item">
+              <img src="/assets/images/glide_struct.jpg" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 1">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/gif_before_optimization.png" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 2">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/gif_after_optimization.png" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 3">
+            </div>
+          
+            <div class="image-item">
+              <img src="/assets/images/gif.webp" alt="Glide源码分析与自我实现(三)——APT的使用与GIF的优化 - 图片 4">
+            </div>
+          
+        </div>
       
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-  <article class="post-item">
-    <div class="post-head">
-      <h2 class="post-title">
-        <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/">Glide源码分析与自我实现(二)——缓存与BitmapPool</a>
-      </h2>
-      <div class="post-meta">
-        <time datetime="2022-09-17">2022.09.17</time>
+  <article class="article">
+    <h2 class="article-title">
+      <a href="/2022/09/16/2022-09-17-Glide%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B8%8E%E8%87%AA%E6%88%91%E5%AE%9E%E7%8E%B02/">Glide源码分析与自我实现(二)——缓存与BitmapPool</a>
+    </h2>
+    <div class="article-meta">
+      <time class="article-date" datetime="2022-09-17">
+        2022.09.17
+      </time>
+      
         
+          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-category">源码分析</a>
         
-          <span class="post-meta-sep">/</span>
-          <span class="post-kind post-kind-tech">技术</span>
+      
+      
         
-      </div>
+          <a href="/tags/Android/" class="article-tag">Android</a>
+        
+      
     </div>
-    <p class="post-excerpt">
+    <p class="article-summary">
+      
 本文基于Glide 4.11.0
 
 参考文章：Glide 源码分析解读-缓存模块-基于最新版Glide 4.9.0
 **注意：**由于版本差异问题，本文有些部分与参考文章有差异。
 缓存模块是Glide中非常重要的部分，Glide图片加载的高效性，几乎有一半功劳都在这里了。
-一般来说，Glide有三级缓存，就是内存缓存、磁盘缓存和网络缓存。
-先来看缓存流程图，如下：
-
-graph TD;
-styl...</p>
+一般来说，Glide有三...
+    </p>
     
-    
-    
-    <div class="post-taxes">
-      
-        
-          <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="taxe-cat">源码分析</a>
-        
-      
-      
-        
-          <a href="/tags/Android/" class="taxe-tag">#Android</a>
-        
-      
-    </div>
     
   </article>
   
-</div>
+</main>
 
 
-<nav class="pagination">
+<nav class="pagination" aria-label="文章分页">
   
-    <a href="/archives/2022/" class="page-arrow">&larr; 上一页</a>
+    <a href="/archives/2022/" class="pagination-btn prev-btn">
+      <span class="material-icons">chevron_left</span>
+    </a>
   
   
-  <span class="page-info">2 / 3</span>
+  <div class="pagination-numbers">
+    
+      
+        <a href="/" class="pagination-number">1</a>
+      
+    
+      
+        <span class="pagination-number active">2</span>
+      
+    
+      
+        <a href="/page/3/" class="pagination-number">3</a>
+      
+    
+  </div>
   
   
-    <a href="/archives/2022/page/3/" class="page-arrow">下一页 &rarr;</a>
+    <a href="/archives/2022/page/3/" class="pagination-btn next-btn">
+      <span class="material-icons">chevron_right</span>
+    </a>
   
 </nav>
 
 
-    </main>
-
     <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-left">
-          <span>© 2026 Boybeak</span>
-          <span class="footer-dot">·</span>
-          <span class="footer-quote">少即是多</span>
-        </div>
-        <div class="footer-right">
-          
-          
-          
-          <a href="https://github.com/boybeak" class="footer-social-link" target="_blank" rel="noopener">github</a>
-          
-          
-          
-          <a href="mailto:12345567890@qq.com" class="footer-social-link" target="_blank" rel="noopener">email</a>
-          
-          
-          
-          <a href="https://x.com/BeakInAir" class="footer-social-link" target="_blank" rel="noopener">twitter</a>
-          
-          
-          
-          <a href="/atom.xml" class="footer-social-link">rss</a>
-        </div>
-      </div>
+      <span class="footer-copy">© 2026 本质</span>
+      <span class="footer-quote">"少即是多"</span>
+      <span class="footer-links">
+        <a href="/">首页</a>
+        <a href="/tags">标签</a>
+        <a href="/about">关于</a>
+      </span>
     </footer>
   </div>
 
   
 <script src="/js/main.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
 </body>
 </html>
