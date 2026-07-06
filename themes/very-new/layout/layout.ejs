@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%
+    let titleText = config.title;
+    if (page.title) {
+        if (is_home()) {
+            titleText = config.title + ' — ' + (theme.custom.site_subtitle || config.subtitle || '');
+        } else if (is_post()) {
+            titleText = page.title + ' — ' + config.title;
+        } else if (is_archive()) {
+            titleText = '归档 — ' + config.title;
+        } else if (is_tag()) {
+            titleText = '标签: ' + page.tag + ' — ' + config.title;
+        } else if (is_category()) {
+            titleText = '分类: ' + page.category + ' — ' + config.title;
+        } else {
+            titleText = page.title + ' — ' + config.title;
+        }
+    } else {
+        titleText = config.title + ' — ' + (theme.custom.site_subtitle || config.subtitle || '');
+    }
+    %>
+    <title><%= titleText %></title>
+    <meta name="description" content="<%= config.description %>">
+    <% if (theme.custom.favicon) { %>
+    <link rel="icon" type="image/png" href="<%= theme.custom.favicon %>">
+    <% } %>
+    <%- css('css/style.css') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism.min.css">
+    <script>
+      (function() {
+        var t = localStorage.getItem('blog-theme');
+        if (t) { document.documentElement.setAttribute('data-theme', t); }
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+    <% if (theme.seo.googleSiteVerification) { %>
+    <meta name="google-site-verification" content="<%= theme.seo.googleSiteVerification %>" />
+    <% } %>
+    <% if (theme.seo.bingSiteVerification) { %>
+    <meta name="msvalidate.01" content="<%= theme.seo.bingSiteVerification %>" />
+    <% } %>
+    <% if (theme.seo.googleAnalytics) { %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.seo.googleAnalytics %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<%= theme.seo.googleAnalytics %>');
+    </script>
+    <% } %>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="<%= config.root %>" class="logo">
+                <span class="logo-dot"></span><%= config.title %>
+            </a>
+            <nav class="nav">
+                <a href="<%= config.root %>"<%= is_home() ? ' class="active"' : '' %>>首页</a>
+                <a href="<%= config.root %>categories/tech"<%= (is_category() && page.category === 'tech') ? ' class="active"' : '' %>>技术</a>
+                <a href="<%= config.root %>categories/life"<%= (is_category() && page.category === 'life') ? ' class="active"' : '' %>>生活</a>
+                <a href="<%= config.root %>tags"<%= is_tag() && !page.tag ? ' class="active"' : '' %>>标签</a>
+                <a href="<%= config.root %>about"<%= page.path === 'about/index.html' ? ' class="active"' : '' %>>关于</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-icon" title="搜索" aria-label="搜索" id="searchToggle">&#8981;</button>
+                <button class="btn-icon" title="切换主题" aria-label="切换主题" id="themeToggle">&#9788;</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <%- body %>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="<%= config.root %>" class="logo" style="font-size:1.1rem;">
+                        <span class="logo-dot"></span><%= config.title %>
+                    </a>
+                    <p><%= theme.custom.footer_slogan || config.description %></p>
+                </div>
+                <div class="footer-col">
+                    <h4>导航</h4>
+                    <ul>
+                        <li><a href="<%= config.root %>">首页</a></li>
+                        <li><a href="<%= config.root %>archives">文章归档</a></li>
+                        <li><a href="<%= config.root %>about">关于</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>分类</h4>
+                    <ul>
+                        <li><a href="<%= config.root %>categories/tech">技术</a></li>
+                        <li><a href="<%= config.root %>categories/life">生活</a></li>
+                        <li><a href="<%= config.root %>categories/reading">阅读</a></li>
+                        <li><a href="<%= config.root %>tags">标签</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <%= date(new Date(), 'YYYY') %> <%= config.title %> &middot; Powered by <a href="https://hexo.io" style="color:var(--text-muted);">Hexo</a></p>
+                <div class="footer-social">
+                    <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+                    <% theme.custom.social_links.forEach(function(link) { %>
+                    <a href="<%= link.url %>" target="_blank" rel="noopener"><%= link.name %></a>
+                    <% }); %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <%- js('js/main.js') %>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+</body>
+</html>

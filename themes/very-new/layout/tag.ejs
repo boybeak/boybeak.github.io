@@ -1,0 +1,59 @@
+<%
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+%>
+
+<div class="container">
+    <div class="main-layout">
+        <main>
+            <div class="page-header">
+                <h1 class="page-title">标签: <%= page.tag %></h1>
+                <p class="page-desc"><%= page.posts.length %> 篇文章</p>
+            </div>
+
+            <div class="post-list-simple">
+                <% page.posts.forEach(function(post) { %>
+                <article class="post-item-simple">
+                    <h2 class="post-item-title">
+                        <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+                    </h2>
+                    <div class="post-item-meta">
+                        <time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+                        <% if (post.categories && post.categories.length > 0) { %>
+                        <span class="dot"></span>
+                        <% post.categories.forEach(function(cat) { %>
+                        <a href="<%- url_for(cat.path) %>"><%= cat.name %></a>
+                        <% }); %>
+                        <% } %>
+                    </div>
+                    <p class="post-item-excerpt">
+                        <%= post.excerpt ? truncate(strip_html(post.excerpt), 200) : truncate(strip_html(post.content), 200) %>
+                    </p>
+                </article>
+                <% }); %>
+            </div>
+
+            <% if (page.total > 1) { %>
+            <nav class="pagination">
+                <% if (page.prev) { %><a href="<%- url_for(page.prev_link) %>">&laquo;</a><% } else { %><span class="disabled">&laquo;</span><% } %>
+                <span class="current"><%= page.current %></span>
+                <span>/</span>
+                <span><%= page.total %></span>
+                <% if (page.next) { %><a href="<%- url_for(page.next_link) %>">&raquo;</a><% } else { %><span class="disabled">&raquo;</span><% } %>
+            </nav>
+            <% } %>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>关于我</h3>
+                <p><%= theme.custom.author_bio %></p>
+            </div>
+        </aside>
+    </div>
+</div>

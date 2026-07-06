@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="main-layout">
+        <main>
+            <article class="article-full">
+                <header class="article-header">
+                    <div class="article-meta-top">
+                        <time datetime="<%= date(page.date, 'YYYY-MM-DD') %>"><%= date(page.date, 'YYYY.MM.DD') %></time>
+                        <% if (page.categories && page.categories.length > 0) { %>
+                        <span class="dot"></span>
+                        <% page.categories.forEach(function(cat) { %>
+                        <a href="<%- url_for(cat.path) %>" class="article-cat"><%= cat.name %></a>
+                        <% }); %>
+                        <% } %>
+                    </div>
+                    <h1 class="article-title"><%= page.title %></h1>
+                    <% if (page.tags && page.tags.length > 0) { %>
+                    <div class="article-tags">
+                        <% page.tags.forEach(function(tag) { %>
+                        <a href="<%- url_for(tag.path) %>" class="article-tag">#<%= tag.name %></a>
+                        <% }); %>
+                    </div>
+                    <% } %>
+                </header>
+
+                <div class="article-body">
+                    <%- page.content %>
+                </div>
+            </article>
+
+            <!-- Prev / Next Nav -->
+            <nav class="post-nav">
+                <% if (page.prev) { %>
+                <a href="<%- url_for(page.prev.path) %>" class="post-nav-prev">
+                    <span class="post-nav-label">&larr; 上一篇</span>
+                    <span class="post-nav-title"><%= page.prev.title %></span>
+                </a>
+                <% } else { %>
+                <span class="post-nav-prev empty"></span>
+                <% } %>
+                <% if (page.next) { %>
+                <a href="<%- url_for(page.next.path) %>" class="post-nav-next">
+                    <span class="post-nav-label">下一篇 &rarr;</span>
+                    <span class="post-nav-title"><%= page.next.title %></span>
+                </a>
+                <% } else { %>
+                <span class="post-nav-next empty"></span>
+                <% } %>
+            </nav>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section about-snippet">
+                <h3>关于我</h3>
+                <p><%= theme.custom.author_bio %></p>
+                <p><%= theme.custom.author_location %></p>
+                <div class="social-links">
+                    <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+                    <% theme.custom.social_links.forEach(function(link) { %>
+                    <a href="<%= link.url %>" title="<%= link.name %>" target="_blank" rel="noopener"><%= link.name.charAt(0) %></a>
+                    <% }); %>
+                    <% } %>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>

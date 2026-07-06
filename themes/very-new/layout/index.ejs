@@ -1,0 +1,118 @@
+<%
+  function strip_html(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+
+  function truncate(str, length) {
+    if (str.length <= length) return str;
+    return str.substring(0, length) + '...';
+  }
+
+  var posts = page.posts;
+%>
+
+<!-- Post List -->
+<div class="container">
+    <div class="main-layout">
+        <main>
+            <div class="post-list">
+                <% posts.each(function(post) { %>
+                <article class="post-item">
+                    <div class="post-item-header">
+                        <time class="post-item-date" datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+                        <% if (post.categories && post.categories.length > 0) { %>
+                        <a href="<%- url_for(post.categories.first().path) %>" class="post-item-cat"><%= post.categories.first().name %></a>
+                        <% } %>
+                    </div>
+                    <h2 class="post-item-title">
+                        <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+                    </h2>
+                    <p class="post-item-excerpt">
+                        <%= post.excerpt ? truncate(strip_html(post.excerpt), 200) : truncate(strip_html(post.content), 200) %>
+                    </p>
+                    <% if (post.tags && post.tags.length > 0) { %>
+                    <div class="post-item-tags">
+                        <% post.tags.slice(0, 5).forEach(function(tag) { %>
+                        <a href="<%- url_for(tag.path) %>" class="post-item-tag">#<%= tag.name %></a>
+                        <% }); %>
+                    </div>
+                    <% } %>
+                </article>
+                <% }); %>
+            </div>
+
+            <!-- Pagination -->
+            <% if (page.total > 1) { %>
+            <nav class="pagination">
+                <% if (page.prev) { %>
+                    <a href="<%- url_for(page.prev_link) %>">&laquo;</a>
+                <% } else { %>
+                    <span class="disabled">&laquo;</span>
+                <% } %>
+
+                <% var pageStart = Math.max(1, page.current - 2); %>
+                <% var pageEnd = Math.min(page.total, page.current + 2); %>
+                <% if (pageStart > 1) { %>
+                    <a href="<%- url_for(page.path) %>">1</a>
+                    <% if (pageStart > 2) { %><span>&hellip;</span><% } %>
+                <% } %>
+                <% for (var i = pageStart; i <= pageEnd; i++) { %>
+                    <% if (i === page.current) { %>
+                        <span class="current"><%= i %></span>
+                    <% } else { %>
+                        <a href="<%- url_for(i === 1 ? config.root + 'index.html' : 'page/' + i + '/') %>"><%= i %></a>
+                    <% } %>
+                <% } %>
+                <% if (pageEnd < page.total) { %>
+                    <% if (pageEnd < page.total - 1) { %><span>&hellip;</span><% } %>
+                    <a href="<%- url_for('page/' + page.total + '/') %>"><%= page.total %></a>
+                <% } %>
+
+                <% if (page.next) { %>
+                    <a href="<%- url_for(page.next_link) %>">&raquo;</a>
+                <% } else { %>
+                    <span class="disabled">&raquo;</span>
+                <% } %>
+            </nav>
+            <% } %>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section about-snippet">
+                <h3>关于我</h3>
+                <p><%= theme.custom.author_bio %></p>
+                <p><%= theme.custom.author_location %></p>
+                <div class="social-links">
+                    <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+                    <% theme.custom.social_links.forEach(function(link) { %>
+                    <a href="<%= link.url %>" title="<%= link.name %>" target="_blank" rel="noopener"><%= link.name.charAt(0) %></a>
+                    <% }); %>
+                    <% } %>
+                </div>
+            </div>
+
+            <% if (site.categories && site.categories.length > 0) { %>
+            <div class="sidebar-section">
+                <h3>分类</h3>
+                <ul class="category-list">
+                    <% site.categories.each(function(cat) { %>
+                    <li><a href="<%- url_for(cat.path) %>"><%= cat.name %> <span class="count"><%= cat.length %></span></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+            <% } %>
+
+            <% if (site.tags && site.tags.length > 0) { %>
+            <div class="sidebar-section">
+                <h3>标签</h3>
+                <div class="tag-cloud">
+                    <% site.tags.each(function(tag) { %>
+                    <a href="<%- url_for(tag.path) %>"><%= tag.name %></a>
+                    <% }); %>
+                </div>
+            </div>
+            <% } %>
+        </aside>
+    </div>
+</div>

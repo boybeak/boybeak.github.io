@@ -1,0 +1,33 @@
+name: Very New
+description: 简洁 · 大方 · 充分利用空间的现代博客主题
+author: boybeak
+version: 1.0.0
+
+# 导航菜单
+menu:
+  Home: /
+  About: /about
+  Archives: /archives
+
+# 自定义配置
+custom:
+  site_subtitle: 技术与生活的交叉观察
+  favicon: /favicon.png
+  author_name: boybeak
+  author_bio: 全栈工程师，目前专注于 LLM 应用层与系统架构。喜欢从技术和生活的交叉点寻找洞察，用文字梳理思考。
+  author_avatar: https://avatars.githubusercontent.com/u/6696502?v=4
+  author_location: 杭州 · 远程办公 · 热爱跑步与咖啡
+  footer_slogan: 用文字记录观察，用代码创造价值。
+  social_links:
+    - name: GitHub
+      url: https://github.com/boybeak
+    - name: Twitter
+      url: https://x.com/BeakInAir
+    - name: RSS
+      url: /atom.xml
+
+# SEO
+seo:
+  googleAnalytics: G-6JFG91EQ3M
+  googleSiteVerification: Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI
+  bingSiteVerification: FF63C4E8F966AF567DA7288160196C79

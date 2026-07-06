@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="main-layout">
+        <main>
+            <div class="page-header">
+                <h1 class="page-title">关于</h1>
+            </div>
+            <div class="about-content">
+                <div class="about-card">
+                    <% if (theme.custom.author_avatar) { %>
+                    <img src="<%= theme.custom.author_avatar %>" alt="<%= theme.custom.author_name %>" class="about-avatar">
+                    <% } %>
+                    <h2 class="about-name"><%= theme.custom.author_name || config.author %></h2>
+                    <p class="about-bio"><%= theme.custom.author_bio %></p>
+                    <p class="about-location"><%= theme.custom.author_location %></p>
+                    <div class="about-links">
+                        <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+                        <% theme.custom.social_links.forEach(function(link) { %>
+                        <a href="<%= link.url %>" class="about-link" target="_blank" rel="noopener">
+                            <span><%= link.name %></span>
+                            <span class="about-link-arrow">&rarr;</span>
+                        </a>
+                        <% }); %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>关于本站</h3>
+                <p style="font-size:0.875rem;color:var(--on-surface-variant);line-height:1.7;">
+                    一个关于技术、生活与思考的个人博客。用文字记录观察，用代码创造价值。
+                </p>
+            </div>
+        </aside>
+    </div>
+</div>
