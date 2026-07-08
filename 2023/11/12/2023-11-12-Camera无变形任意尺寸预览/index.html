@@ -15,7 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
       mermaid.initialize({ startOnLoad: true, theme: 'default' });
-      // 处理Markdown代码块中的Mermaid语法
       document.addEventListener('DOMContentLoaded', function() {
         const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
         codeBlocks.forEach(function(block) {
@@ -46,105 +45,18 @@
     
 <meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
 </head>
-<body>
-  <div class="container">
-    <header class="site-header">
-      <div class="header-row">
-        <h1 class="site-title">
-          <a href="/">
-            
-            <img src="/assets/icons/favicon-96x96.png" alt="Boybeak" style="height: 40px; vertical-align: middle; margin-right: 10px;">
-            
-            Boybeak
-          </a>
-        </h1>
-        <div class="nav-container">
-          <nav class="main-nav">
-            <ul class="nav-menu">
-              <li class="nav-item">
-                <a href="/">首页</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="#" class="dropdown-toggle">分类</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/categories">全部分类</a></li>
-                  
-                  <li><a href="/categories/源码分析/">源码分析</a></li>
-                  
-                  <li><a href="/categories/Android技巧/">Android技巧</a></li>
-                  
-                  <li><a href="/categories/Kotlin-Native/">Kotlin Native</a></li>
-                  
-                  <li><a href="/categories/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
-                  <li><a href="/categories/Translator/">Translator</a></li>
-                  
-                  <li><a href="/categories/独立开发笔记/">独立开发笔记</a></li>
-                  
-                  <li><a href="/categories/面试笔记/">面试笔记</a></li>
-                  
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="#" class="dropdown-toggle">标签</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/tags">全部标签</a></li>
-                  
-                  <li><a href="/tags/Android/">Android</a></li>
-                  
-                  <li><a href="/tags/Kotlin/">Kotlin</a></li>
-                  
-                  <li><a href="/tags/陷阱与缺陷/">陷阱与缺陷</a></li>
-                  
-                  <li><a href="/tags/Translator/">Translator</a></li>
-                  
-                  <li><a href="/tags/J2V8/">J2V8</a></li>
-                  
-                  <li><a href="/tags/Camera/">Camera</a></li>
-                  
-                  <li><a href="/tags/macOS/">macOS</a></li>
-                  
-                  <li><a href="/tags/静态库/">静态库</a></li>
-                  
-                  <li><a href="/tags/JustTodo/">JustTodo</a></li>
-                  
-                  <li><a href="/tags/Jekyll/">Jekyll</a></li>
-                  
-                  <li><a href="/tags/Material-Design/">Material Design</a></li>
-                  
-                  <li><a href="/tags/Github/">Github</a></li>
-                  
-                  <li><a href="/tags/面试/">面试</a></li>
-                  
-                  <li><a href="/tags/Hexo/">Hexo</a></li>
-                  
-                  <li><a href="/tags/要饭/">要饭</a></li>
-                  
-                  <li><a href="/tags/PAG动画/">PAG动画</a></li>
-                  
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="/about">关于</a>
-              </li>
-            </ul>
-          </nav>
-          <button class="theme-toggle" id="themeToggle" aria-label="切换夜间模式" title="切换夜间/日间模式">🌓</button>
-        </div>
-      </div>
-      <div class="site-description">
-        技术分享 · 生活感悟 · 读书心得<br>
-        <span style="font-size:0.9rem; border-left: none; padding-left:0; color: var(--footer-quote);">—— 内容为本，无关浮华</span>
-      </div>
-      
-      <div class="author-info">
-        
-        <div class="author-avatar">
-          <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-        </div>
-        
-        <div class="author-details">
-          <h3 class="author-name">boybeak</h3>
+<body class="no-transitions">
+  <div class="panorama-layout">
+    <!-- 左侧面板：作者信息 -->
+    <aside class="left-panel left-hidden" id="leftPanel">
+      <div class="left-panel-inner">
+        <div class="author-card">
+          
+          <div class="author-avatar">
+            <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak">
+          </div>
+          
+          <h2 class="author-name">boybeak</h2>
           <p class="author-bio">我也不知道到底有没有人看我的博客</p>
           <div class="author-social">
             
@@ -152,41 +64,86 @@
             
             <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
               
-              <img src="/assets/icons/github.png" alt="github" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/github.png" alt="github">
               
+              <span class="social-name">Github</span>
             </a>
             
             
             
             <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
               
-              <img src="/assets/icons/gmail.png" alt="email" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/gmail.png" alt="email">
               
+              <span class="social-name">Email</span>
             </a>
             
             
             
             <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
               
-              <img src="/assets/icons/twitter.png" alt="twitter" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="/assets/icons/twitter.png" alt="twitter">
               
+              <span class="social-name">Twitter</span>
             </a>
             
             
             
             <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
               <span class="material-icons">rss_feed</span>
+              <span class="social-name">RSS</span>
             </a>
           </div>
         </div>
+        <div class="left-nav">
+          <a href="/" class="left-nav-item active">
+            <span class="material-icons">home</span>
+            <span>首页</span>
+          </a>
+          <a href="/categories" class="left-nav-item">
+            <span class="material-icons">folder</span>
+            <span>分类</span>
+          </a>
+          <a href="/tags" class="left-nav-item">
+            <span class="material-icons">label</span>
+            <span>标签</span>
+          </a>
+          <a href="/about" class="left-nav-item">
+            <span class="material-icons">person</span>
+            <span>关于</span>
+          </a>
+        </div>
       </div>
-    </header>
+    </aside>
 
-    <main class="article-container">
-  <a href="/" class="back-link">
-    <span class="material-icons">arrow_back</span>
-    返回文章列表
-  </a>
+    <!-- 中间面板：主内容区 -->
+    <main class="center-panel left-collapsed" id="centerPanel">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="toolbar-btn sidebar-toggle" id="sidebarToggle" title="切换侧边栏">
+            <span class="material-icons">menu</span>
+          </button>
+          <a href="/" class="toolbar-title">
+            
+            <img src="/assets/icons/favicon-96x96.png" alt="Boybeak" class="toolbar-logo">
+            
+            <span>Boybeak</span>
+          </a>
+        </div>
+        <div class="toolbar-actions">
+          <a href="/categories" class="toolbar-nav-link">分类</a>
+          <a href="/tags" class="toolbar-nav-link">标签</a>
+          <a href="/about" class="toolbar-nav-link">关于</a>
+          <button class="toolbar-btn theme-toggle" id="themeToggle" title="切换夜间/日间模式">
+            <span class="material-icons">dark_mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 内容区 -->
+      <div class="center-content">
+        <main class="article-container">
 
   <article id="articleDetail">
     <div class="article-header">
@@ -339,29 +296,21 @@ texture<span class="token punctuation">.</span><span class="token function">setO
   </div>
 </main>
 
-    <footer class="site-footer">
-      <span class="footer-copy">© 2026 本质</span>
-      <span class="footer-quote">"少即是多"</span>
-      <span class="footer-links">
-        <a href="/">首页</a>
-        <a href="/tags">标签</a>
-        <a href="/about">关于</a>
-      </span>
-    </footer>
+      </div>
   </div>
 
   
 <script src="/js/main.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
 </body>
 </html>
