@@ -1,0 +1,43 @@
+<div class="article-container">
+  <h1 class="page-title">标签</h1>
+  <div class="tag-cloud">
+    <% site.tags.each(function(tag) { %>
+    <a href="<%= config.root %><%= tag.path %>" class="tag-item" style="font-size: <%= 10 + tag.length * 2 %>px;">
+      <%= tag.name %>
+      <span class="tag-count"><%= tag.length %></span>
+    </a>
+    <% }) %>
+  </div>
+</div>
+
+<style>
+.tag-cloud {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.tag-item:hover {
+  background-color: color-mix(in srgb, var(--tag-bg) 80%, black);
+  transform: translateY(-2px);
+}
+
+.tag-count {
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+</style>

@@ -1,0 +1,51 @@
+<div class="article-container">
+  <h1 class="page-title">分类</h1>
+  <div class="category-list">
+    <% site.categories.each(function(category) { %>
+    <div class="category-item">
+      <h2 class="category-name">
+        <a href="<%= config.root %><%= category.path %>"><%= category.name %></a>
+      </h2>
+      <p class="category-count"><%= category.length %> 篇文章</p>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+<style>
+.category-list {
+  margin-top: 2rem;
+}
+
+.category-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.category-item:last-child {
+  border-bottom: none;
+}
+
+.category-name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.category-name a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.category-name a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.category-count {
+  color: var(--meta-color);
+  font-size: 0.9rem;
+  margin: 0;
+}
+</style>

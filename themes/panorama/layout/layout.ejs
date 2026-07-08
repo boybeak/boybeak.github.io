@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= page.title %> <%= config.title %></title>
+    <% if (theme.custom.favicon) { %>
+    <link rel="icon" type="image/png" href="<%= theme.custom.favicon %>">
+    <% } %>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <%- css('css/style.css') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.min.css" id="prism-theme">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+    
+    <% if (theme.seo.googleSiteVerification) { %>
+    <meta name="google-site-verification" content="<%= theme.seo.googleSiteVerification %>" />
+    <% } %>
+    
+    <% if (theme.seo.bingSiteVerification) { %>
+    <meta name="msvalidate.01" content="<%= theme.seo.bingSiteVerification %>" />
+    <% } %>
+    
+    <% if (theme.seo.googleAnalytics) { %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.seo.googleAnalytics %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<%= theme.seo.googleAnalytics %>');
+    </script>
+    <% } %>
+</head>
+<body class="no-transitions">
+  <div class="panorama-layout">
+    <!-- 左侧面板：作者信息 -->
+    <aside class="left-panel left-hidden" id="leftPanel">
+      <div class="left-panel-inner">
+        <div class="author-card">
+          <% if (theme.custom.author_avatar) { %>
+          <div class="author-avatar">
+            <img src="<%= theme.custom.author_avatar %>" alt="<%= theme.custom.author_name %>">
+          </div>
+          <% } else { %>
+          <div class="author-avatar author-avatar-placeholder">本</div>
+          <% } %>
+          <h2 class="author-name"><%= theme.custom.author_name %></h2>
+          <p class="author-bio"><%= theme.custom.author_bio %></p>
+          <div class="author-social">
+            <% if (theme.custom.social_links && theme.custom.social_links.length > 0) { %>
+            <% theme.custom.social_links.forEach(function(link) { %>
+            <% if (link.url) { %>
+            <a href="<%= link.url %>" class="social-link" title="<%= link.name.charAt(0).toUpperCase() + link.name.slice(1) %>" <%= link.url.indexOf('mailto:') === 0 ? '' : 'target="_blank"' %>>
+              <% if (link.icon && (link.icon.indexOf('/') > -1 || link.icon.indexOf('.') > -1)) { %>
+              <img src="<%= config.root %><%= link.icon %>" alt="<%= link.name %>">
+              <% } else { %>
+              <span class="material-icons"><%= link.icon %></span>
+              <% } %>
+              <span class="social-name"><%= link.name.charAt(0).toUpperCase() + link.name.slice(1) %></span>
+            </a>
+            <% } %>
+            <% }); %>
+            <% } %>
+            <a href="<%= config.root %>atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+              <span class="social-name">RSS</span>
+            </a>
+          </div>
+        </div>
+        <div class="left-nav">
+          <a href="<%= config.root %>" class="left-nav-item active">
+            <span class="material-icons">home</span>
+            <span>首页</span>
+          </a>
+          <a href="<%= config.root %>categories" class="left-nav-item">
+            <span class="material-icons">folder</span>
+            <span>分类</span>
+          </a>
+          <a href="<%= config.root %>tags" class="left-nav-item">
+            <span class="material-icons">label</span>
+            <span>标签</span>
+          </a>
+          <a href="<%= config.root %>about" class="left-nav-item">
+            <span class="material-icons">person</span>
+            <span>关于</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 中间面板：主内容区 -->
+    <main class="center-panel left-collapsed" id="centerPanel">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="toolbar-btn sidebar-toggle" id="sidebarToggle" title="切换侧边栏">
+            <span class="material-icons">menu</span>
+          </button>
+          <a href="<%= config.root %>" class="toolbar-title">
+            <% if (theme.custom.site_logo) { %>
+            <img src="<%= theme.custom.site_logo %>" alt="<%= config.title %>" class="toolbar-logo">
+            <% } %>
+            <span><%= config.title %></span>
+          </a>
+        </div>
+        <div class="toolbar-actions">
+          <a href="<%= config.root %>categories" class="toolbar-nav-link">分类</a>
+          <a href="<%= config.root %>tags" class="toolbar-nav-link">标签</a>
+          <a href="<%= config.root %>about" class="toolbar-nav-link">关于</a>
+          <button class="toolbar-btn theme-toggle" id="themeToggle" title="切换夜间/日间模式">
+            <span class="material-icons">dark_mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 内容区 -->
+      <div class="center-content">
+        <%- body %>
+      </div>
+  </div>
+
+  <%- js('js/main.js') %>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+</body>
+</html>
