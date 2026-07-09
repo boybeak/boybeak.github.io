@@ -607,6 +607,8 @@ a {
   border-radius: 3px;
   font-family: 'Courier New', monospace;
   font-size: 0.9em;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 .article-content pre {
@@ -615,11 +617,15 @@ a {
   border-radius: 6px;
   overflow-x: auto;
   margin: 1.5rem 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .article-content pre code {
   background-color: transparent;
   padding: 0;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .article-content blockquote {
@@ -776,6 +782,23 @@ body.night-mode .article-content a:hover {
 
   .center-content {
     padding: 1.25rem 1rem 2rem;
+    overflow: hidden;
+  }
+
+  .article-content pre {
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+
+  .article-content table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .article-content img {
+    max-width: 100%;
+    height: auto;
   }
 
   .article-title {
@@ -798,6 +821,12 @@ body.night-mode .article-content a:hover {
 @media (max-width: 500px) {
   .center-content {
     padding: 1rem 0.75rem 2rem;
+    overflow: hidden;
+  }
+
+  .article-content pre {
+    font-size: 0.78rem;
+    padding: 0.6rem;
   }
 
   .article-title {
