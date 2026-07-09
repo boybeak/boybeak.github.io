@@ -119,12 +119,12 @@ theme_config:
         url: https://x.com/BeakInAir
         icon: assets/icons/twitter.png
     apps:
-      - name: Translator
-        url: https://github.com/boybeak/translator
-        icon: /assets/images/Translator.png
-        icon_type: image
+      # - name: Translator
+      #   url: https://github.com/boybeak/translator
+      #   icon: /assets/images/Translator.png
+      #   icon_type: image
       - name: JustTodo
-        url: https://github.com/boybeak/just-todo
+        url: https://github.com/boybeak/JustTodo
         icon: /assets/images/JustTodo.png
         icon_type: image
       # - name: BannerDog
@@ -136,7 +136,7 @@ theme_config:
       #   icon: /assets/images/Tray.png
       #   icon_type: image
       - name: AOD Volume
-        url: https://github.com/boybeak/aod-volume
+        url: https://play.google.com/store/apps/details?id=com.github.boybeak.aodvolumebar
         icon: /assets/images/AODVolume.png
         icon_type: image
       # - name: Hexo Theme
