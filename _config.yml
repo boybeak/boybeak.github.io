@@ -118,6 +118,25 @@ theme_config:
       - name: twitter
         url: https://x.com/BeakInAir
         icon: assets/icons/twitter.png
+    apps:
+      - name: Translator
+        url: https://github.com/boybeak/translator
+        icon: translate
+      - name: JustTodo
+        url: https://github.com/boybeak/just-todo
+        icon: check_circle
+      - name: BannerDog
+        url: https://github.com/boybeak/banner-dog
+        icon: image
+      - name: Tray
+        url: https://github.com/boybeak/tray
+        icon: dock
+      - name: AOD Volume
+        url: https://github.com/boybeak/aod-volume
+        icon: volume_up
+      - name: Hexo Theme
+        url: https://github.com/boybeak/hexo-theme
+        icon: palette
 
 # Mermaid
 mermaid:

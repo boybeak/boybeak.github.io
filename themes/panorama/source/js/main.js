@@ -159,15 +159,6 @@
 
   // --- Active nav items ---
   function updateActiveNav(path) {
-    // Left nav
-    var leftNavItems = document.querySelectorAll('.left-nav-item');
-    leftNavItems.forEach(function(item) {
-      var href = item.getAttribute('href');
-      if (href) {
-        var itemPath = new URL(href, window.location.origin).pathname;
-        item.classList.toggle('active', path === itemPath || (itemPath !== '/' && path.startsWith(itemPath)));
-      }
-    });
     // Toolbar nav links
     var toolbarLinks = document.querySelectorAll('.toolbar-nav-link');
     toolbarLinks.forEach(function(link) {

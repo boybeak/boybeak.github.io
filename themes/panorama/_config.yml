@@ -29,6 +29,13 @@ custom:
     - name: email
       url: mailto:boybeak@gmail.com
       icon: mail
+  # 个人作品展示（九宫格），6个以内最佳
+  # 图标支持 Material Icons 名称，或设置 icon_type: image 使用自定义图片
+  apps:
+    - name: 示例项目
+      url: https://github.com
+      icon: apps
+      # icon_type: image  # 如需使用图片图标，取消此行注释
 
 # SEO 配置
 seo:

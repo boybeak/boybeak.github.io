@@ -78,24 +78,26 @@
             </a>
           </div>
         </div>
-        <div class="left-nav">
-          <a href="<%= config.root %>" class="left-nav-item active">
-            <span class="material-icons">home</span>
-            <span>首页</span>
-          </a>
-          <a href="<%= config.root %>categories" class="left-nav-item">
-            <span class="material-icons">folder</span>
-            <span>分类</span>
-          </a>
-          <a href="<%= config.root %>tags" class="left-nav-item">
-            <span class="material-icons">label</span>
-            <span>标签</span>
-          </a>
-          <a href="<%= config.root %>about" class="left-nav-item">
-            <span class="material-icons">person</span>
-            <span>关于</span>
-          </a>
+        <% if (theme.custom.apps && theme.custom.apps.length > 0) { %>
+        <div class="apps-section">
+          <div class="apps-header">
+            <h3 class="apps-title">个人作品</h3>
+            <a href="<%= config.root %>apps" class="apps-more">更多 →</a>
+          </div>
+          <div class="apps-grid">
+            <% theme.custom.apps.forEach(function(app) { %>
+            <a href="<%= app.url %>" class="app-item" <%= app.url.indexOf('http') === 0 ? 'target="_blank"' : '' %>>
+              <% if (app.icon_type === 'image' && app.icon) { %>
+              <img src="<%= app.icon %>" alt="<%= app.name %>" class="app-icon-img">
+              <% } else { %>
+              <span class="material-icons app-icon"><%= app.icon %></span>
+              <% } %>
+              <span class="app-name"><%= app.name %></span>
+            </a>
+            <% }) %>
+          </div>
         </div>
+        <% } %>
       </div>
     </aside>
 
