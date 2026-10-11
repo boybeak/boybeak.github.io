@@ -36,6 +36,10 @@ custom:
       url: https://github.com
       icon: apps
       # icon_type: image  # 如需使用图片图标，取消此行注释
+    - name: 每日越南语
+      url: https://play.google.com/store/apps/details?id=com.github.boybeak.daily.lang.vi
+      icon: https://daily-lang.github.io/assets/logo-vi.png
+      icon_type: image
 
 # SEO 配置
 seo:
