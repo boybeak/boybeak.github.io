@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Boybeak</title>
+    
+    <link rel="icon" type="image/png" href="/assets/icons/favicon-32x32.png">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.min.css" id="prism-theme">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeBlocks = document.querySelectorAll('pre code[class*="mermaid"]');
+        codeBlocks.forEach(function(block) {
+          const mermaidDiv = document.createElement('div');
+          mermaidDiv.className = 'mermaid';
+          mermaidDiv.textContent = block.textContent;
+          block.parentNode.replaceWith(mermaidDiv);
+        });
+      });
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MF8XRBF6');</script>
+    <!-- End Google Tag Manager -->
+    
+    
+    <meta name="google-site-verification" content="Dw6K7nrSaFd0T-q4SAzzloGzxypfdeMRnSHyid3trNI" />
+    
+    
+    
+    <meta name="msvalidate.01" content="FF63C4E8F966AF567DA7288160196C79" />
+    
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6JFG91EQ3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-6JFG91EQ3M');
+    </script>
+    
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Boybeak" type="application/atom+xml">
+</head>
+<body class="no-transitions">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF8XRBF6"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+  <div class="panorama-layout">
+    <!-- 左侧面板：作者信息 -->
+    <aside class="left-panel left-hidden" id="leftPanel">
+      <div class="left-panel-inner">
+        <div class="author-card">
+          
+          <div class="author-avatar">
+            <img src="https://avatars.githubusercontent.com/u/6696502?v=4" alt="boybeak">
+          </div>
+          
+          <h2 class="author-name">boybeak</h2>
+          <p class="author-bio">我也不知道到底有没有人看我的博客</p>
+          <div class="author-social">
+            
+            
+            
+            <a href="https://github.com/boybeak" class="social-link" title="Github" target=&#34;_blank&#34;>
+              
+              <img src="/assets/icons/github.png" alt="github">
+              
+              <span class="social-name">Github</span>
+            </a>
+            
+            
+            
+            <a href="mailto:12345567890@qq.com" class="social-link" title="Email" >
+              
+              <img src="/assets/icons/gmail.png" alt="email">
+              
+              <span class="social-name">Email</span>
+            </a>
+            
+            
+            
+            <a href="https://x.com/BeakInAir" class="social-link" title="Twitter" target=&#34;_blank&#34;>
+              
+              <img src="/assets/icons/twitter.png" alt="twitter">
+              
+              <span class="social-name">Twitter</span>
+            </a>
+            
+            
+            
+            <a href="/atom.xml" class="social-link" title="RSS订阅" target="_blank">
+              <span class="material-icons">rss_feed</span>
+              <span class="social-name">RSS</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="apps-section">
+          <div class="apps-header">
+            <h3 class="apps-title">个人作品</h3>
+            <a href="/apps" class="apps-more">更多 →</a>
+          </div>
+          <div class="apps-grid">
+            
+            <a href="https://github.com/boybeak/JustTodo" class="app-item" target=&#34;_blank&#34;>
+              
+              <img src="/assets/images/JustTodo.png" alt="JustTodo" class="app-icon-img">
+              
+              <span class="app-name">JustTodo</span>
+            </a>
+            
+            <a href="https://play.google.com/store/apps/details?id=com.github.boybeak.aodvolumebar" class="app-item" target=&#34;_blank&#34;>
+              
+              <img src="/assets/images/AODVolume.png" alt="AOD Volume" class="app-icon-img">
+              
+              <span class="app-name">AOD Volume</span>
+            </a>
+            
+          </div>
+        </div>
+        
+      </div>
+    </aside>
+
+    <!-- 中间面板：主内容区 -->
+    <main class="center-panel left-collapsed" id="centerPanel">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="toolbar-btn sidebar-toggle" id="sidebarToggle" title="切换侧边栏">
+            <span class="material-icons">menu</span>
+          </button>
+          <a href="/" class="toolbar-title">
+            
+            <img src="/assets/icons/favicon-96x96.png" alt="Boybeak" class="toolbar-logo">
+            
+            <span>Boybeak</span>
+          </a>
+        </div>
+        <div class="toolbar-actions">
+          <a href="/categories" class="toolbar-nav-link">分类</a>
+          <a href="/tags" class="toolbar-nav-link">标签</a>
+          <a href="/about" class="toolbar-nav-link">关于</a>
+          <button class="toolbar-btn theme-toggle" id="themeToggle" title="切换夜间/日间模式">
+            <span class="material-icons">dark_mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 内容区 -->
+      <div class="center-content">
+        
+
+<div class="article-container">
+  <h1 class="page-title">标签：独立开发</h1>
+  <p class="tag-description">包含 1 篇文章</p>
+  
+  <main class="article-list">
+    
+    <article class="article">
+      <h2 class="article-title">
+        <a href="/2026/10/11/2026-10-11-%E6%88%91%E5%8F%88%E5%86%99%E4%BA%86%E4%B8%AAApp%E2%80%94%E2%80%94%E6%AF%8F%E6%97%A5%E8%B6%8A%E5%8D%97%E8%AF%AD/">我又写了个App——每日越南语</a>
+      </h2>
+      <div class="article-meta">
+        <time class="article-date" datetime="2026-10-11">
+          2026.10.11
+        </time>
+        
+        
+          
+            <a href="/tags/Android/" class="article-tag">Android</a>
+          
+            <a href="/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/" class="article-tag">独立开发</a>
+          
+        
+      </div>
+      <p class="article-summary">
+        先说清楚，这篇不是技术文，是吆喝文。
+我又写了个App，叫每日越南语（Daily Viet），一个教越南语的App。事情是这样的，去年我又要饭成功，回了公司当牛马，白天在老代码上屎上雕花，晚上回家总得干点自己说了算的事，不然人就馊了。于是白天写别人要的东西，晚上写自己想写的东西，下班后这么零零碎碎地...
+      </p>
+      
+      
+        
+          <div class="article-images grid-4">
+            
+              <div class="image-item">
+                <img src="/assets/images/shot-vi-home.png" alt="我又写了个App——每日越南语 - 图片 1">
+              </div>
+            
+              <div class="image-item">
+                <img src="/assets/images/shot-vi-practice.png" alt="我又写了个App——每日越南语 - 图片 2">
+              </div>
+            
+              <div class="image-item">
+                <img src="/assets/images/shot-vi-quiz.png" alt="我又写了个App——每日越南语 - 图片 3">
+              </div>
+            
+          </div>
+        
+      
+    </article>
+    
+  </main>
+
+  
+</div>
+
+<style>
+.page-title {
+  margin-bottom: 0.5rem;
+}
+
+.tag-description {
+  color: var(--meta-color);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+</style>
+
+      </div>
+  </div>
+
+  
+<script src="/js/main.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-kotlin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-xml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-python.min.js"></script>
+</body>
+</html>

@@ -10,7 +10,23 @@
   <rights>All rights reserved 2026, boybeak</rights>
   <subtitle>技术分享 · 生活感悟 · 读书心得</subtitle>
   <title>Boybeak</title>
-  <updated>2026-03-03T15:41:59.163Z</updated>
+  <updated>2026-10-11T06:17:55.830Z</updated>
+  <entry>
+    <author>
+      <name>boybeak</name>
+    </author>
+    <category term="Android" scheme="http://example.com/tags/Android/"/>
+    <category term="独立开发" scheme="http://example.com/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91/"/>
+    <id>http://example.com/2026/10/11/2026-10-11-%E6%88%91%E5%8F%88%E5%86%99%E4%BA%86%E4%B8%AAApp%E2%80%94%E2%80%94%E6%AF%8F%E6%97%A5%E8%B6%8A%E5%8D%97%E8%AF%AD/</id>
+    <link href="http://example.com/2026/10/11/2026-10-11-%E6%88%91%E5%8F%88%E5%86%99%E4%BA%86%E4%B8%AAApp%E2%80%94%E2%80%94%E6%AF%8F%E6%97%A5%E8%B6%8A%E5%8D%97%E8%AF%AD/"/>
+    <published>2026-10-11T13:38:00.000Z</published>
+    <summary>
+      <![CDATA[<p>先说清楚，这篇不是技术文，是吆喝文。</p>
+<p>我又写了个App，叫每日越南语（Daily]]>
+    </summary>
+    <title>我又写了个App——每日越南语</title>
+    <updated>2026-10-11T06:17:55.830Z</updated>
+  </entry>
   <entry>
     <author>
       <name>boybeak</name>
@@ -304,21 +320,5 @@
     </summary>
     <title>MacOS项目引入c语言源码</title>
     <updated>2026-03-03T15:41:59.157Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>boybeak</name>
-    </author>
-    <category term="独立开发笔记" scheme="http://example.com/categories/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/"/>
-    <category term="macOS" scheme="http://example.com/tags/macOS/"/>
-    <category term="静态库" scheme="http://example.com/tags/%E9%9D%99%E6%80%81%E5%BA%93/"/>
-    <id>http://example.com/2024/04/26/2024-04-26-MacOS%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E5%85%A5c%E9%9D%99%E6%80%81%E5%BA%93/</id>
-    <link href="http://example.com/2024/04/26/2024-04-26-MacOS%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%BC%95%E5%85%A5c%E9%9D%99%E6%80%81%E5%BA%93/"/>
-    <published>2024-04-26T14:43:00.000Z</published>
-    <summary>
-      <![CDATA[<p>最近在写一款多平台的文件传输工具，Android平台已经写的差不多了，现在正在写macOS端，为了多端共享同一套底层协议代码，通讯协议部分，使用了c语言开发，对于Android通过jni调用c的相关代码，我已经驾轻就熟了，但是在macOS项目里，添加静态库并成功调试，我还是]]>
-    </summary>
-    <title>macOS项目中引入c静态库</title>
-    <updated>2026-03-03T15:41:59.153Z</updated>
   </entry>
 </feed>
